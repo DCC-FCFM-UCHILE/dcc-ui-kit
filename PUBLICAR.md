@@ -27,50 +27,18 @@ Esta guía cubre lo que queda por hacer y el día a día. No da por sabido nada 
 - [x] `gh` instalado y con tu sesión iniciada
 - [x] Tag `v1.0.0` subido
 - [x] Protección de la rama `main`: exige pull request y que pasen las verificaciones
+- [x] GitHub Pages activo: el styleguide se republica en cada push a `main`
+- [x] El kit publica su JavaScript: la instalación son dos etiquetas (v1.1.0)
 
 ---
 
 ## Lo que falta
 
-### Activar el styleguide como página web
+### ~~Activar el styleguide como página web~~ — hecho
 
-Hace que el catálogo de componentes quede accesible por URL, para que cualquiera del equipo lo vea
-sin descargar nada. Es lo que hace funcionar el enlace "Ver el styleguide" del README, que **hoy
-está muerto**.
+El styleguide ya está publicado y se actualiza solo en cada push a `main`:
 
-Son dos pasos, y el primero es el que está bloqueando todo:
-
-**Paso 1 — Desbloquear Pages en la organización.** Ahora mismo `DCC-FCFM-UCHILE` tiene la creación
-de Pages deshabilitada, así que el repositorio no puede activarla aunque quiera. Eres administrador
-de la organización, así que puedes hacerlo tú:
-
-1. Entra a <https://github.com/organizations/DCC-FCFM-UCHILE/settings/member_privileges>
-2. Busca **Pages creation**
-3. Marca **Public** (basta con público; el repositorio ya lo es)
-
-**Paso 2 — Activarla en el repositorio.**
-
-1. Entra a <https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit/settings/pages>
-2. En *Source*, elige **GitHub Actions**
-
-No hay que apretar Guardar: se aplica solo. Después vuelve a lanzar el workflow para que publique:
-
-```bash
-gh workflow run ci.yml --ref main
-```
-
-Espera 2 o 3 minutos y entra a:
-
-```
-https://dcc-fcfm-uchile.github.io/dcc-ui-kit/
-```
-
-> Ojo: la dirección va **toda en minúsculas**, aunque la organización se escriba con mayúsculas. Es
-> una regla de GitHub, no un error.
-
-> **Mientras tanto el CI va a salir rojo.** El job *Build y verificaciones* pasa; el que falla es
-> *Publicar styleguide*, con el error `Get Pages site failed`. Es exactamente este pendiente, no un
-> problema del kit.
+<https://dcc-fcfm-uchile.github.io/dcc-ui-kit/>
 
 ### Montar el CDN
 
@@ -167,7 +135,8 @@ Los dos fallos típicos:
 |---|---|---|
 | `dist/ no coincide con src/` | Editaste `src/` y no reconstruiste | `npm run build`, commitea de nuevo |
 | `Dependencies lock file is not found` | Falta `package-lock.json` en el repositorio | Tiene que estar versionado; no lo agregues a `.gitignore` |
-| `Get Pages site failed` | Pages no está activado | Ver "Activar el styleguide como página web" |
+| `Get Pages site failed` | Pages se desactivó | Settings → Pages → Source: GitHub Actions |
+| `las URLs de la documentación apuntan a…` | Subiste la versión y quedaron URLs viejas | Actualiza los números en `README.md` y `dist/README.md` |
 
 ---
 
@@ -175,11 +144,11 @@ Los dos fallos típicos:
 
 Nada de esto impide publicar, pero conviene resolverlo:
 
-- [ ] Desbloquear Pages en la organización (ver arriba) — sin eso el CI queda rojo y el enlace
-      al styleguide del README no funciona
 - [ ] Montar `cdn.dcc.uchile.cl` (ver arriba) — sin eso el kit no se puede consumir por URL
 - [ ] Reemplazar los logotipos de U. de Chile, FCFM y CNA en `src/assets/` — son marcadores de
       posición, no los logos reales (no se pudieron exportar desde Figma)
 - [ ] Reemplazar `src/assets/card-media.svg` por una imagen real, en proporción 3:2
 - [ ] Decidir si los badges `subtle` de LightBlue y Green suben de contraste — hoy quedan bajo el
       mínimo de accesibilidad (ver `docs/decisiones-de-diseno.md`)
+- [ ] Decidir si un ícono suelto —fuera de un componente del kit— debe tener tamaño por defecto.
+      Hoy se renderiza 0×0 sin avisar (ver sección 3 de `dist/README.md`)
