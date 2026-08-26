@@ -5,8 +5,9 @@ Sistema de diseño del **Departamento de Ciencias de la Computación** de la Uni
 CSS sin dependencias ni framework: clases planas sobre variables. Funciona igual en React, Vue y
 HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 
-[**Ver el styleguide**](https://dcc-fcfm-uchile.github.io/dcc-ui-kit/src/styleguide.html) ·
+[**Ver el styleguide**](https://dcc-fcfm-uchile.github.io/dcc-ui-kit/) ·
 [Guía de consumo](dist/README.md) ·
+[Integrar en Django](docs/integracion-django.md) ·
 [Decisiones de diseño](docs/decisiones-de-diseno.md) ·
 [Cómo publicarlo](PUBLICAR.md)
 
