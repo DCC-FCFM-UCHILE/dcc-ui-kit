@@ -1,0 +1,2307 @@
+/* ==========================================================================
+   UI KIT DCC — Departamento de Ciencias de la Computación, Universidad de Chile
+   Traducción a HTML/CSS del archivo Figma "UI-KIT-DCC" (página "Design Kit").
+   Los valores provienen de las Variables de Figma y del contexto de diseño
+   de cada frame. Ver ASUNCIONES.md para lo que tuvo que inferirse.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS  (Figma → Variables)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Paleta — nombre en Figma: Grupo/Tono */
+  --dcc-grey-ultralight:      #e2ecf3;
+  --dcc-grey-light:           #5d7c8e;
+  --dcc-grey-default:         #40506a;
+  --dcc-grey-dark:            #303b4d;
+
+  --dcc-lightblue-ultralight: #e5f1ff;
+  --dcc-lightblue-light:      #bdd2ea;
+  --dcc-lightblue-default:    #3594c7;
+  --dcc-lightblue-dark:       #2a5c7d;
+
+  --dcc-red-ultralight:       #ffe6da;
+  --dcc-red-light:            #eeb397;
+  --dcc-red-default:          #d23118;
+  --dcc-red-dark:             #802913;
+
+  --dcc-blue-ultralight:      #e4e4fd;
+  --dcc-blue-light:           #b7b7dd;
+  --dcc-blue-default:         #4957a3;
+  --dcc-blue-dark:            #2e3764;
+
+  --dcc-green-ultralight:     #dff3f7;
+  --dcc-green-light:          #bbd6dc;
+  --dcc-green-default:        #0e9ca8;
+  --dcc-green-dark:           #20626a;
+
+  /* Amarillo: no existe en Figma. Derivado del perfil de la paleta
+     (H 38°, S 70%, L 42% contra la media de S 57% / L 42% del resto), para que
+     el favorito se lea como oro sin desentonar. */
+  --dcc-yellow-ultralight:    #fdf3e2;
+  --dcc-yellow-light:         #f4d39a;
+  --dcc-yellow-default:       #b67f20;
+  --dcc-yellow-dark:          #77500d;
+
+  --dcc-white:                #fcfdfe;
+
+  /* Grises de texto que el kit usa como hex crudo (no son variables en Figma) */
+  --dcc-gray-800:             #1a202c;   /* títulos de sección del kit */
+  --dcc-gray-700:             #2d3748;   /* texto dentro de Alert */
+
+  /* Efectos */
+  --dcc-shadow:        0 2px 4px -1px #0000000f, 0 4px 6px -1px #0000001a;
+  --dcc-shadow-button: 0 4px 3px rgba(0, 0, 0, .1), 0 2px 2px rgba(0, 0, 0, .06);
+  --dcc-inner-shadow:  inset 0 1px 4px 0 #0000001a;
+
+  /* Tipografía */
+  --dcc-font-display: "Poppins", "Trebuchet MS", system-ui, sans-serif;
+  --dcc-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Componente: Badge (variables de componente en Figma) */
+  --dcc-badge-height: 20px;
+  --dcc-badge-px: 8px;
+  --dcc-badge-py: 2px;
+  --dcc-badge-gap: 4px;
+  --dcc-badge-radius: 26px;
+  --dcc-badge-border-width: 1px;
+
+  /* Layout del styleguide */
+  --dcc-page-max: 1200px;
+  --dcc-card-radius: 16px;
+
+  /* ---- Ancho máximo del contenido de las barras ----
+     1320px = el frame de Figma (1440) menos sus 60px de padding lateral,
+     y a la vez el tope de `.container` de Bootstrap 5, que es lo que usa
+     dcc.uchile.cl. Cambiar SÓLO aquí para ajustar todas las barras. */
+  --dcc-container-max: 1320px;
+  --dcc-gutter-lg: 60px;   /* padding lateral mínimo: nav institucional y footer */
+  --dcc-gutter-md: 40px;   /* padding lateral mínimo: nav de aplicación */
+
+  /* Separación entre ítems del menú principal.
+     Medido con las métricas reales de Inter Medium 16: las 8 cajas suman 916px
+     y la fila disponible a 1440px es de 964px. O sea, el diseño tiene apenas
+     48px de holgura repartidos en 7 huecos = 6,8px cada uno. Con más de 6px el
+     menú ya no cabe en una línea y se parte en dos. */
+  --dcc-nav-menu-gap: 6px;
+}
+
+/* Canaleta fluida (el patrón se repite abajo en cada barra): mantiene la banda
+   a sangre completa pero centra el contenido y lo topa en --dcc-container-max.
+   A 1440px de viewport da exactamente los 60px del diseño.
+     padding-inline: max(<gutter>, calc((100% - var(--dcc-container-max)) / 2)); */
+
+/* --------------------------------------------------------------------------
+   2. RESET
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  background: var(--dcc-grey-ultralight);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* necesario para las secciones full-bleed */
+}
+
+img, svg { display: block; max-width: 100%; }
+
+/* Grosor de trazo de los íconos Lucide.
+   Va por CSS y no como atributo en los <g> de <defs>: un atributo de
+   presentación en el <g> gana sobre la herencia y no se podría sobrescribir por
+   instancia. Al heredarse, entra al shadow tree que crea cada <use>.
+   La clase va en el propio <svg> y no en un contenedor, para que el kit no
+   dependa de ningún envoltorio de la página que lo consume.
+   2 unidades del viewBox de 24 dan 1px a 12px, 1,33px a 16px y 2px a 24px:
+   los mismos valores que declara Figma en cada ícono. */
+.dcc-i { stroke-width: 2; }
+p  { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+hr { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+table { border-collapse: collapse; border-spacing: 0; }
+
+/* --------------------------------------------------------------------------
+   3. ESCALA TIPOGRÁFICA  (estilos de texto de Figma)
+   -------------------------------------------------------------------------- */
+.dcc-t-display,        /* Display      / Poppins Bold Caps / 48px / 1.1 */
+.dcc-t-heading-l,      /* Heading L    / Poppins Bold Caps / 36px / 1.1 */
+.dcc-t-heading-m,      /* Heading M    / Poppins Bold Caps / 24px / 1.1 */
+.dcc-t-heading-s {     /* Heading S    / Poppins Bold Caps / 16px / 1.1 */
+  font-family: var(--dcc-font-display);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--dcc-grey-default);
+  margin: 0;
+}
+.dcc-t-display   { font-size: 48px; }
+.dcc-t-heading-l { font-size: 36px; }
+.dcc-t-heading-m { font-size: 24px; }
+.dcc-t-heading-s { font-size: 16px; }
+
+.dcc-t-body-l, .dcc-t-body-m, .dcc-t-body-s {
+  font-family: var(--dcc-font-body);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--dcc-grey-dark);
+  margin: 0;
+}
+.dcc-t-body-l { font-size: 20px; }
+.dcc-t-body-m { font-size: 16px; }
+.dcc-t-body-s { font-size: 12px; }
+
+.dcc-t-bold   { font-weight: 700; }
+.dcc-t-italic { font-style: italic; }
+
+/* --------------------------------------------------------------------------
+   4. CHROME DEL STYLEGUIDE
+   -------------------------------------------------------------------------- */
+.dcc-page {
+  max-width: var(--dcc-page-max);
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.dcc-page-header { margin-bottom: 40px; }
+.dcc-page-header h1 { margin: 0 0 8px; }
+.dcc-page-header p  { color: var(--dcc-grey-light); max-width: 60ch; }
+
+.dcc-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+.dcc-toc a {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 26px;
+  background: var(--dcc-white);
+  color: var(--dcc-grey-default);
+  border: 1px solid var(--dcc-grey-light);
+}
+.dcc-toc a:hover { background: var(--dcc-grey-default); color: var(--dcc-white); border-color: var(--dcc-grey-default); }
+
+/* Tarjeta blanca = cada frame del kit en Figma (bg blanco, radius 16) */
+.dcc-section {
+  background: #fff;
+  border-radius: var(--dcc-card-radius);
+  padding: 40px 45px;
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+/* Sección a ancho completo de viewport (la usa Nav: la barra debe ocupar todo) */
+.dcc-section--bleed {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* Los títulos y notas se alinean con el contenido de las barras */
+.dcc-section--bleed > h2,
+.dcc-section--bleed > .dcc-sub-label,
+.dcc-section--bleed > .dcc-sidebar-demo {
+  padding-inline: max(var(--dcc-gutter-lg), calc((100% - var(--dcc-container-max)) / 2));
+}
+
+.dcc-section > h2 {
+  font-family: var(--dcc-font-body);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dcc-gray-800);
+  margin: 0 0 32px;
+}
+/* CONVENCIÓN DEL KIT: el andamiaje del styleguide NUNCA usa selectores por
+   etiqueta descendiente (`.dcc-section h3`), porque se filtran dentro de los
+   componentes y les ganan por especificidad a sus clases. Todo lo que es
+   andamiaje lleva su propia clase `sg-*`. */
+.dcc-sg-h3 {
+  font-family: var(--dcc-font-body);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dcc-gray-800);
+  margin: 40px 0 20px;
+}
+.dcc-table-row .dcc-sg-h3 { margin-top: 0; }
+
+.dcc-sub-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--dcc-grey-light);
+  margin: 0 0 12px;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. COLOR — swatches
+   -------------------------------------------------------------------------- */
+.dcc-palette-group { margin-bottom: 40px; }
+.dcc-palette-group:last-child { margin-bottom: 0; }
+.dcc-palette-group > h3 { margin: 0 0 20px; }
+
+.dcc-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+.dcc-swatch { display: flex; align-items: center; gap: 16px; }
+.dcc-swatch .dcc-chip {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, .08);
+}
+.dcc-swatch .dcc-meta { min-width: 0; }
+.dcc-swatch .dcc-name { font-size: 12px; font-weight: 700; color: var(--dcc-gray-800); }
+.dcc-swatch .dcc-hex  { font-size: 12px; color: var(--dcc-grey-light); text-transform: uppercase; }
+
+/* --------------------------------------------------------------------------
+   6. TIPOGRAFÍA — muestra
+   -------------------------------------------------------------------------- */
+.dcc-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px;
+}
+.dcc-type-item { margin-bottom: 32px; }
+.dcc-type-item:last-child { margin-bottom: 0; }
+.dcc-type-spec {
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--dcc-gray-800);
+  margin: 0 0 12px;
+}
+.dcc-type-spec strong { font-weight: 700; }
+.dcc-type-sample + .dcc-type-sample { margin-top: 12px; }
+
+/* --------------------------------------------------------------------------
+   7. BOTONES
+   -------------------------------------------------------------------------- */
+.dcc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 24px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: pointer;
+  border: 0 solid transparent;
+  box-shadow: var(--dcc-shadow-button);
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  white-space: nowrap;
+}
+.dcc-btn .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }
+
+/* Tamaños — padding sólido; las variantes stroke restan el borde de 2px */
+.dcc-btn--sm { padding: 4px 8px; }
+.dcc-btn--md { padding: 8px 12px; }
+.dcc-btn--lg { padding: 12px 20px; }
+
+/* Primario sobre fondo claro (color = Grey) */
+.dcc-btn--primary-grey { background: var(--dcc-grey-default); color: var(--dcc-white); }
+.dcc-btn--primary-grey:hover { background: var(--dcc-red-default); }
+
+/* Primario sobre fondo oscuro (color = White) */
+.dcc-btn--primary-white { background: var(--dcc-white); color: var(--dcc-grey-default); }
+.dcc-btn--primary-white:hover { background: var(--dcc-red-default); color: var(--dcc-white); }
+
+/* Secundario sobre fondo claro */
+.dcc-btn--secondary-grey {
+  background: var(--dcc-white);
+  color: var(--dcc-grey-default);
+  border: 2px solid var(--dcc-grey-default);
+}
+.dcc-btn--secondary-grey:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }
+
+/* Secundario sobre fondo oscuro. Hover en Red/Default, igual que sobre fondo
+   claro (ver nota de contraste en ASUNCIONES 0.12). */
+.dcc-btn--secondary-white {
+  background: transparent;
+  color: var(--dcc-white);
+  border: 2px solid var(--dcc-white);
+}
+.dcc-btn--secondary-white:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }
+
+/* Links (componente "Frame 248" del kit) */
+.dcc-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 4px;
+  font-size: 16px;
+  line-height: 1.2;
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
+  transition: color .15s ease;
+}
+.dcc-link .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-link--grey  { color: var(--dcc-grey-default); }
+.dcc-link--dcc-white { color: var(--dcc-white); }
+.dcc-link--grey:hover  { color: var(--dcc-red-default); }
+.dcc-link--dcc-white:hover { color: var(--dcc-red-default); }
+
+/* Rejillas de demostración */
+.dcc-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
+  gap: 20px 24px;
+  align-items: center;
+  /* Sin esto los botones se estiran al ancho de la columna (150px) en vez de
+     medir su ancho natural, que va de 85 a 109px según el tamaño. */
+  justify-items: start;
+}
+.dcc-surface-dark {
+  background: var(--dcc-grey-default);
+  border-radius: 8px;
+  padding: 24px;
+}
+.dcc-demo-stack { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+
+/* --------------------------------------------------------------------------
+   8. BADGES / TAGS
+   -------------------------------------------------------------------------- */
+.dcc-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dcc-badge-gap);
+  height: var(--dcc-badge-height);
+  padding: var(--dcc-badge-py) var(--dcc-badge-px);
+  border-radius: var(--dcc-badge-radius);
+  font-family: var(--dcc-font-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: var(--dcc-badge-border-width) solid transparent;
+}
+.dcc-badge .dcc-icon { width: 12px; height: 12px; flex: 0 0 12px; }
+
+/* Solid */
+.dcc-badge--solid-default    { background: var(--dcc-grey-default);       color: var(--dcc-white); }
+.dcc-badge--solid-light      { background: var(--dcc-grey-light);         color: var(--dcc-white); }
+.dcc-badge--solid-ultralight { background: var(--dcc-grey-ultralight);    color: var(--dcc-grey-default); }
+.dcc-badge--solid-lightblue  { background: var(--dcc-lightblue-default);  color: var(--dcc-white); }
+.dcc-badge--solid-red        { background: var(--dcc-red-default);        color: var(--dcc-white); }
+.dcc-badge--solid-blue       { background: var(--dcc-blue-default);       color: var(--dcc-white); }
+.dcc-badge--solid-green      { background: var(--dcc-green-default);      color: var(--dcc-white); }
+
+/* Soft — variante de alto contraste para los componentes nuevos.
+   Los `subtle` que vienen de Figma quedan entre 2,17 y 3,41:1, bajo el mínimo
+   AA de 4,5:1 para texto chico. Con fondo Ultralight y texto Dark suben a
+   6,07–9,43:1 manteniendo el mismo matiz. */
+.dcc-badge--soft-default   { background: var(--dcc-grey-ultralight);      color: var(--dcc-grey-dark); }
+.dcc-badge--soft-lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-dark); }
+.dcc-badge--soft-red       { background: var(--dcc-red-ultralight);       color: var(--dcc-red-dark); }
+.dcc-badge--soft-blue      { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-dark); }
+.dcc-badge--soft-green     { background: var(--dcc-green-ultralight);     color: var(--dcc-green-dark); }
+
+/* Subtle */
+/* Fondo un paso más claro que en Figma (Light -> Ultralight). Sube el
+   contraste de 2,17–3,41 a 2,89–5,30:1. Ver nota en ASUNCIONES: lightblue y
+   green siguen bajo AA; para texto pequeño está `badge--soft-*`. */
+.dcc-badge--subtle-lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-default); }
+.dcc-badge--subtle-red       { background: var(--dcc-red-ultralight);       color: var(--dcc-red-default); }
+.dcc-badge--subtle-blue      { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-default); }
+.dcc-badge--subtle-green     { background: var(--dcc-green-ultralight);     color: var(--dcc-green-default); }
+
+/* Stroke */
+.dcc-badge--stroke-lightblue { border-color: var(--dcc-lightblue-default); color: var(--dcc-lightblue-default); }
+.dcc-badge--stroke-red       { border-color: var(--dcc-red-default);       color: var(--dcc-red-default); }
+.dcc-badge--stroke-blue      { border-color: var(--dcc-blue-default);      color: var(--dcc-blue-default); }
+.dcc-badge--stroke-green     { border-color: var(--dcc-green-default);     color: var(--dcc-green-default); }
+
+.dcc-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
+  gap: 10px 12px;
+  align-items: center;
+  justify-content: start;
+}
+
+/* --------------------------------------------------------------------------
+   9. SELECTION CONTROL — checkbox, radio, switch
+   -------------------------------------------------------------------------- */
+.dcc-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  cursor: pointer;
+  user-select: none;
+}
+.dcc-control input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.dcc-control .dcc-box {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border: 2px solid var(--dcc-grey-light);
+  border-radius: 3px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  transition: background-color .12s ease;
+}
+.dcc-control .dcc-box svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; opacity: 0; }
+.dcc-control input:checked + .dcc-box,
+.dcc-control input:indeterminate + .dcc-box { background: var(--dcc-grey-light); }
+.dcc-control input:checked + .dcc-box svg.dcc-check,
+.dcc-control input:checked + .dcc-box svg.dcc-dash,
+.dcc-control input:indeterminate + .dcc-box svg.dcc-dash { opacity: 1; }
+.dcc-control input:focus-visible + .dcc-box,
+.dcc-control input:focus-visible + .dcc-dot,
+.dcc-control input:focus-visible + .dcc-track { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+
+.dcc-control .dcc-dot {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border: 2px solid var(--dcc-grey-light);
+  border-radius: 9999px;
+  background: #fff;
+  transition: border-width .12s ease;
+}
+.dcc-control input:checked + .dcc-dot { border-width: 6px; }
+
+/* Switch: un solo elemento que transiciona. El knob recorre los 16px de la
+   pista (32px interiores − 12px del knob − 2px de holgura a cada lado) mientras
+   pista y knob intercambian color. Nada aparece ni desaparece. */
+.dcc-control .dcc-track {
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  border: 2px solid var(--dcc-grey-light);
+  border-radius: 9999px;
+  background: #fff;
+  position: relative;
+  transition: background-color .22s cubic-bezier(.4, 0, .2, 1),
+              border-color   .22s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-control .dcc-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--dcc-grey-light);
+  /* leve rebote al llegar, para que se lea el desplazamiento */
+  transition: transform        .26s cubic-bezier(.34, 1.4, .64, 1),
+              background-color .22s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-control input:checked + .dcc-track { background: var(--dcc-grey-light); border-color: var(--dcc-grey-light); }
+.dcc-control input:checked + .dcc-track::after { transform: translateX(16px); background: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-control .dcc-track,
+  .dcc-control .dcc-track::after { transition: none; }
+}
+
+.dcc-control-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  gap: 12px 64px;
+  align-items: start;
+}
+.dcc-control-col { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+
+/* --------------------------------------------------------------------------
+   10. ALERT
+   -------------------------------------------------------------------------- */
+.dcc-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  width: 400px;
+  max-width: 100%;
+  color: var(--dcc-gray-700);
+  font-size: 16px;
+  line-height: 1.2;
+}
+.dcc-alert .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; }
+.dcc-alert .dcc-stack { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.dcc-alert .dcc-stack strong { font-weight: 700; }
+
+.dcc-alert--info    { background: var(--dcc-lightblue-ultralight); }
+.dcc-alert--info    .dcc-icon { color: var(--dcc-lightblue-default); }
+.dcc-alert--success { background: var(--dcc-green-ultralight); }
+.dcc-alert--success .dcc-icon { color: var(--dcc-green-default); }
+.dcc-alert--error   { background: var(--dcc-red-ultralight); }
+.dcc-alert--error   .dcc-icon { color: var(--dcc-red-default); }
+
+.dcc-alert-stack { display: flex; flex-direction: column; gap: 36px; }
+
+/* --------------------------------------------------------------------------
+   11. TABLE
+   -------------------------------------------------------------------------- */
+.dcc-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.dcc-table {
+  width: 100%;
+  min-width: 520px;
+  font-size: 16px;
+  line-height: 1.2;
+  /* Con bordes colapsados el alto de la celda es ambiguo entre navegadores.
+     Separados + box-sizing:border-box, `height` es exactamente la caja de borde
+     y el cálculo de centrado de abajo es determinista. No hay bordes verticales,
+     así que nada se duplica. */
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Centrado vertical del texto en las celdas.
+   `vertical-align: middle` centra la caja de línea en el ÁREA DE CONTENIDO, que
+   es la celda menos el borde inferior. Eso subía el texto medio borde: 1,04px en
+   la cabecera. Con padding-top = grosor del borde, el área de contenido vuelve a
+   quedar simétrica y la caja de línea se centra en la celda completa.
+   Verificado con las métricas reales de Poppins e Inter: el centro óptico de las
+   mayúsculas queda a menos de 0,05px del centro de la celda. */
+.dcc-table th {
+  height: 40px;
+  padding: 2px 24px 0;   /* 2px = borde inferior de la cabecera */
+  vertical-align: middle;
+  text-align: left;
+  background: var(--dcc-grey-ultralight);
+  border-bottom: 2px solid var(--dcc-grey-light);
+  font-family: var(--dcc-font-display);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--dcc-grey-default);
+  white-space: nowrap;
+}
+.dcc-table thead th:first-child { border-top-left-radius: 8px; }
+.dcc-table thead th:last-child  { border-top-right-radius: 8px; }
+.dcc-table td {
+  height: 52px;
+  padding: .5px 24px 0;  /* .5px = borde inferior de la fila */
+  vertical-align: middle;
+  background: var(--dcc-white);
+  border-bottom: .5px solid var(--dcc-grey-light);
+  color: var(--dcc-grey-dark);
+}
+.dcc-table tbody tr:last-child td {
+  border-bottom: 2px solid var(--dcc-grey-light);
+  padding-top: 2px;      /* la última fila tiene borde de 2px */
+}
+
+.dcc-table--single { min-width: 260px; max-width: 260px; }
+
+.dcc-table-row { display: flex; gap: 64px; align-items: flex-start; flex-wrap: wrap; }
+.dcc-table-row > * { min-width: 0; }
+
+/* --------------------------------------------------------------------------
+   12. NAV
+   -------------------------------------------------------------------------- */
+.dcc-nav-demo { margin-bottom: 40px; }
+.dcc-nav-demo:last-child { margin-bottom: 0; }
+
+.dcc-logo-dcc { width: 160px; height: 79px; flex: 0 0 160px; }
+
+/* --- 12a. Nav institucional --------------------------------------------- */
+.dcc-nav-inst {
+  background: var(--dcc-grey-default);
+  padding-block: 32px;
+  padding-inline: max(var(--dcc-gutter-lg), calc((100% - var(--dcc-container-max)) / 2));
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+}
+.dcc-nav-inst__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Componente "Menú Principal" (128:774) — h 27, px 8 / py 4, radio 4px arriba */
+.dcc-nav-inst__menu {
+  display: flex;
+  flex-wrap: wrap;
+  /* Figma usa space-between, pero al envolverse eso reparte el sobrante entre
+     los pocos ítems de la primera fila y los separa ~60px. Con flex-start el
+     hueco es constante en cualquier ancho. */
+  justify-content: flex-start;
+  column-gap: var(--dcc-nav-menu-gap);
+  row-gap: 4px;
+  border-bottom: 2px solid var(--dcc-red-default);
+}
+.dcc-nav-inst__menu > li { display: flex; }
+.dcc-nav-inst__menu > li > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 27px;
+  padding: 4px 8px;
+  border: 1px solid var(--dcc-grey-default);        /* Status = Default */
+  border-radius: 4px 4px 0 0;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.dcc-nav-inst__menu > li > a:hover,
+.dcc-nav-inst__menu > li > a:focus-visible {         /* Status = Hover: sólo contorno rojo */
+  border-color: var(--dcc-red-default);
+  outline: none;
+}
+.dcc-nav-inst__menu > li > a[aria-current="page"] {  /* Status = Active: relleno rojo */
+  background: var(--dcc-red-default);
+  border-color: var(--dcc-red-default);
+}
+
+/* Componente "Menú Secundario" (128:1005) — h 30, px 8 / py 4, radio 4px, gap 20 */
+.dcc-nav-inst__submenu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  padding-top: 12px;
+}
+.dcc-nav-inst__submenu > li { display: flex; }
+.dcc-nav-inst__submenu a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 4px 8px;
+  border: 1px solid var(--dcc-grey-default);        /* Status = Default */
+  border-radius: 4px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: normal;
+  color: #fff;
+  white-space: nowrap;
+  transition: border-color .15s ease;
+}
+.dcc-nav-inst__submenu a:hover,
+.dcc-nav-inst__submenu a:focus-visible {             /* Status = Hover: borde Grey/Light */
+  border-color: var(--dcc-grey-light);
+  outline: none;
+}
+.dcc-nav-inst__submenu a[aria-current="page"] {      /* Status = Active: borde blanco */
+  border-color: var(--dcc-white);
+}
+
+.dcc-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 32px;
+  flex: 0 0 auto;
+}
+.dcc-social a { color: #fff; transition: opacity .15s ease; }
+.dcc-social a:hover { opacity: .7; }   /* sin acento rojo en las marcas sociales */
+.dcc-social a:focus-visible { outline: 2px solid var(--dcc-lightblue-light); outline-offset: 3px; border-radius: 2px; }
+.dcc-social svg { width: 24px; height: 24px; }
+
+/* Vitrina de estados Default / Hover / Active de ambos componentes de menú */
+.dcc-menu-states {
+  background: var(--dcc-grey-default);
+  padding-block: 32px;
+  padding-inline: max(var(--dcc-gutter-lg), calc((100% - var(--dcc-container-max)) / 2));
+}
+.dcc-menu-states__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 64px;
+}
+.dcc-menu-states__title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(255, 255, 255, .7);
+  margin-bottom: 12px;
+}
+.dcc-menu-states .dcc-menu-states__row {
+  justify-content: flex-start;
+  border-bottom: 0;
+  column-gap: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.dcc-menu-states .dcc-nav-inst__menu > li > a.is-hover { border-color: var(--dcc-red-default); }
+.dcc-menu-states .dcc-nav-inst__submenu a.is-hover     { border-color: var(--dcc-grey-light); }
+
+/* Botón hamburguesa: no existe en Figma, se añade para <768px */
+.dcc-nav-toggle { display: none; }
+
+/* --- 12b. Nav de aplicación --------------------------------------------- */
+.dcc-nav-app {
+  background: var(--dcc-grey-default);
+  padding-block: 24px;
+  padding-inline: max(var(--dcc-gutter-md), calc((100% - var(--dcc-container-max)) / 2));
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.dcc-nav-app__brand { display: flex; align-items: center; gap: 40px; min-width: 0; }
+.dcc-nav-app__title {
+  font-family: var(--dcc-font-display);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--dcc-white);
+  margin: 0;
+  white-space: nowrap;
+}
+.dcc-nav-app__user { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 16px; white-space: nowrap; }
+/* circle-user reducido de 40 a 32px (Figma lo tenía en 40). El trazo se
+   mantiene en 2px absolutos, así que las unidades del viewBox cambian:
+   2 × 24/32 = 1,5. */
+.dcc-nav-app__user svg,
+.dcc-sidebar__user svg { stroke-width: 1.5; width: 32px; height: 32px; flex: 0 0 32px; }
+
+/* --- 12c. Sidebar -------------------------------------------------------- */
+.dcc-sidebar {
+  background: var(--dcc-grey-default);
+  border-radius: 5px;
+  padding: 32px;
+  width: 240px;
+  min-height: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+}
+.dcc-sidebar__top { display: flex; flex-direction: column; gap: 40px; }
+
+.dcc-sidebar__cta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 35px;
+  padding: 8px 12px;
+  border-radius: 24px;
+  background: var(--dcc-white);
+  color: var(--dcc-grey-default);
+  font-size: 16px;
+  line-height: 1.2;
+  box-shadow: var(--dcc-shadow-button);
+  cursor: pointer;
+  border: 0;
+  width: 100%;
+}
+.dcc-sidebar__cta svg { width: 16px; height: 16px; flex: 0 0 16px; }
+
+.dcc-sidebar__group { display: flex; flex-direction: column; gap: 8px; }
+/* Grey/Light: es la única variable del subárbol del sidebar que no consume
+   ningún otro elemento, y el trazo del separador es de 1px (inset -0.5px). */
+.dcc-sidebar__sep { height: 1px; background: var(--dcc-grey-light); border: 0; margin: 0; }
+.dcc-sidebar__group + .dcc-sidebar__sep { margin: 20px 0; }
+
+.dcc-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 12px;
+  border: 1px solid var(--dcc-grey-default);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  line-height: normal;
+  transition: border-color .15s ease;
+}
+.dcc-sidebar__item svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-sidebar__item:hover,
+.dcc-sidebar__item[aria-current="page"] { border-color: var(--dcc-grey-ultralight); }
+
+.dcc-sidebar__bottom { display: flex; flex-direction: column; gap: 8px; }
+.dcc-sidebar__user { display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: #fff; font-size: 16px; }
+.dcc-sidebar__user svg { width: 40px; height: 40px; flex: 0 0 40px; }
+
+.dcc-sidebar-demo { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; }
+
+/* --------------------------------------------------------------------------
+   13. FOOTER
+   -------------------------------------------------------------------------- */
+/* Mismo comportamiento que la nav: banda a sangre completa, contenido topado
+   en --dcc-container-max y centrado. A 1440px reproduce los 60px del frame. */
+.dcc-footer {
+  background: var(--dcc-grey-default);
+  padding-block: 32px;
+  padding-inline: max(var(--dcc-gutter-lg), calc((100% - var(--dcc-container-max)) / 2));
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  color: var(--dcc-white);
+}
+.dcc-footer__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+.dcc-footer__links { display: flex; flex-direction: column; gap: 8px; width: 169px; flex: 0 0 auto; }
+.dcc-footer__links a { font-size: 16px; line-height: 1.2; }
+.dcc-footer__links a:hover { text-decoration: underline; }
+
+.dcc-footer__contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 40px;
+  width: 448px;
+  max-width: 100%;
+  flex: 0 0 auto;
+  text-align: right;
+}
+.dcc-footer__contact .dcc-social { padding-top: 0; gap: 20px; }
+.dcc-footer__info { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; width: 100%; }
+.dcc-footer__info .dcc-org { font-size: 20px; font-weight: 700; line-height: 1.2; }
+.dcc-footer__info .dcc-faculty { font-style: italic; font-size: 16px; line-height: 1.2; }
+.dcc-footer__info .dcc-address { font-size: 16px; line-height: 1.2; }
+.dcc-footer__info .dcc-contact-line { display: flex; align-items: center; justify-content: flex-end; gap: 8px; font-size: 16px; }
+.dcc-footer__info .dcc-contact-line svg { width: 16px; height: 16px; flex: 0 0 16px; }
+
+.dcc-footer__logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.dcc-footer__logos img { flex: 0 0 auto; }
+
+/* --------------------------------------------------------------------------
+   14. RESPONSIVE
+   Figma sólo define 1440px. Los breakpoints de abajo son inferidos.
+   -------------------------------------------------------------------------- */
+
+/* ---- Tablet: ≤1024px ---- */
+@media (max-width: 1024px) {
+  .dcc-section { padding: 32px 28px; }
+  .dcc-section--bleed { padding-left: 0; padding-right: 0; }
+
+  .dcc-swatches      { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dcc-type-grid     { grid-template-columns: 1fr; gap: 40px; }
+  .dcc-control-grid  { grid-template-columns: repeat(2, minmax(0, max-content)); gap: 24px 48px; }
+
+  :root { --dcc-gutter-lg: 32px; --dcc-gutter-md: 24px; }
+
+  .dcc-nav-inst { padding-block: 24px; flex-wrap: wrap; }
+  .dcc-nav-inst__main { padding-top: 16px; }
+  .dcc-nav-inst__menu { justify-content: flex-start; column-gap: 12px; row-gap: 4px; padding-bottom: 6px; }
+  .dcc-social { padding-top: 16px; }
+
+  .dcc-nav-app { padding-block: 20px; }
+  .dcc-nav-app__brand { gap: 24px; }
+  .dcc-nav-app__title { font-size: 28px; white-space: normal; }
+
+  .dcc-footer { padding-block: 32px; gap: 40px; }
+  .dcc-footer__top { gap: 32px; }
+  .dcc-footer__contact { width: auto; flex: 1 1 320px; }
+  .dcc-footer__logos { justify-content: flex-start; gap: 24px 40px; }
+}
+
+/* ---- Móvil: ≤768px ---- */
+@media (max-width: 768px) {
+  .dcc-page { padding: 24px 16px 56px; }
+  .dcc-section { padding: 24px 20px; border-radius: 12px; }
+  .dcc-section--bleed { padding-left: 0; padding-right: 0; border-radius: 0; }
+  :root { --dcc-gutter-lg: 20px; --dcc-gutter-md: 20px; }
+
+  .dcc-t-display   { font-size: 36px; }
+  .dcc-t-heading-l { font-size: 28px; }
+  .dcc-t-heading-m { font-size: 20px; }
+
+  .dcc-demo-grid { grid-template-columns: repeat(auto-fit, minmax(120px, max-content)); gap: 16px; }
+  .dcc-badge-grid { grid-template-columns: repeat(2, max-content); }
+  .dcc-control-grid { grid-template-columns: 1fr; gap: 20px; }
+  .dcc-table-row { gap: 32px; }
+  .dcc-alert-stack { gap: 24px; }
+
+  /* Nav institucional → hamburguesa */
+  .dcc-nav-inst {
+    flex-wrap: wrap;
+    align-items: center;
+    padding-block: 16px;
+    gap: 16px;
+  }
+  .dcc-logo-dcc { width: 120px; height: 59px; flex: 0 0 120px; }
+
+  .dcc-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .4);
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+  }
+  .dcc-nav-toggle svg { width: 24px; height: 24px; }
+
+  /* Cerrado se retira del flujo: con max-height:0 seguía siendo un ítem flex y
+     aportaba dos gaps de 16px, dejando un hueco vacío bajo el logo. */
+  .dcc-nav-inst__main {
+    flex: 0 0 100%;
+    padding-top: 0;
+    display: none;
+  }
+  .dcc-nav-inst.is-open .dcc-nav-inst__main { display: flex; }
+
+  .dcc-nav-inst__menu {
+    flex-direction: column;
+    align-items: stretch;
+    column-gap: 0;
+    row-gap: 4px;
+    padding-bottom: 8px;
+  }
+  .dcc-nav-inst__menu > li,
+  .dcc-nav-inst__submenu > li { display: block; }
+  .dcc-nav-inst__menu > li > a { justify-content: flex-start; height: auto; padding: 10px 8px; border-radius: 4px; }
+  .dcc-nav-inst__submenu { flex-direction: column; align-items: stretch; gap: 8px; padding-top: 12px; }
+  .dcc-nav-inst__submenu a { justify-content: flex-start; height: auto; padding: 8px; }
+
+  /* Las redes acompañan al menú: cerrado, la barra es sólo logo + hamburguesa */
+  .dcc-nav-inst .dcc-social {
+    display: none;
+    flex: 0 0 100%;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--dcc-grey-light);
+  }
+  .dcc-nav-inst.is-open .dcc-social { display: flex; }
+
+  /* Nav de aplicación */
+  .dcc-nav-app { flex-wrap: wrap; padding-block: 16px; gap: 16px; }
+  .dcc-nav-app__brand { flex: 1 1 100%; gap: 16px; }
+  .dcc-nav-app__title { font-size: 22px; }
+  .dcc-nav-app__user { margin-left: auto; }
+
+  /* Sidebar → ancho completo */
+  .dcc-sidebar { width: 100%; min-height: 0; }
+
+  /* Footer: los enlaces pasan a dos columnas para no volverse una tira de 8
+     filas, el bloque de contacto se alinea a la izquierda y los logos se
+     centran con una altura pareja. */
+  /* Footer angosto: se ocultan los enlaces de navegación —ya están en la nav—
+     y todo queda centrado: textos, redes y logos. */
+  .dcc-footer { padding-block: 24px; gap: 28px; }
+  .dcc-footer__top { flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+  .dcc-footer__links { display: none; }
+  .dcc-footer__contact {
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .dcc-footer__contact .dcc-social { order: 2; justify-content: center; gap: 20px; }
+  .dcc-footer__info { order: 1; align-items: center; min-width: 0; text-align: center; }
+  .dcc-footer__info .dcc-org { font-size: 18px; }
+  .dcc-footer__info .dcc-faculty,
+  .dcc-footer__info .dcc-address { text-align: center; }
+  .dcc-footer__info .dcc-contact-line { justify-content: center; }
+  .dcc-footer__info .dcc-address,
+  .dcc-footer__info .dcc-contact-line a { overflow-wrap: anywhere; }
+  .dcc-footer__logos {
+    justify-content: center;
+    align-items: center;
+    gap: 24px 28px;
+    padding-top: 8px;
+    border-top: 1px solid var(--dcc-grey-light);
+  }
+  .dcc-footer__logos img { max-height: 56px; width: auto; }
+}
+
+/* ---- Móvil chico: ≤480px ---- */
+@media (max-width: 480px) {
+  .dcc-swatches { grid-template-columns: 1fr; }
+  .dcc-badge-grid { grid-template-columns: max-content; }
+  .dcc-alert { width: 100%; }
+  .dcc-t-display { font-size: 30px; }
+
+  .dcc-footer__links { grid-template-columns: 1fr; gap: 10px; }
+  .dcc-footer__logos { gap: 20px 24px; }
+  .dcc-footer__logos img { max-height: 44px; }
+  .dcc-footer__info .dcc-org { font-size: 16px; }
+
+  .dcc-logo-dcc { width: 104px; height: 51px; flex: 0 0 104px; }
+  .dcc-bottom-nav__item { font-size: 11px; padding: 8px 2px; }
+}
+
+/* ==========================================================================
+   15. COMPONENTES EXTENDIDOS
+   No existen en el archivo de Figma. Están derivados de los tokens del kit:
+   paleta, escala Poppins/Inter, radios 4/8/24/26, bordes de 1 y 2px, sombras,
+   y el mismo lenguaje de estados de la nav (rojo = activo/hover).
+   ========================================================================== */
+:root {
+  --dcc-field-h: 40px;          /* mismo alto que la cabecera de tabla */
+  --dcc-radius-sm: 4px;         /* chips de menú, botones de paginación */
+  --dcc-radius-md: 8px;         /* tarjetas, tabla, acordeón */
+  /* El foco se marca sólo con el borde, sin halo. */
+  --dcc-focus-border: var(--dcc-lightblue-default);
+}
+
+/* --------------------------------------------------------------------------
+   15.1 CAMPOS DE FORMULARIO
+   -------------------------------------------------------------------------- */
+.dcc-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; }
+.dcc-field--wide { max-width: 100%; }
+
+.dcc-field__label {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+}
+.dcc-field__label .dcc-req { color: var(--dcc-red-default); }
+
+.dcc-field__help {
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--dcc-grey-light);
+}
+.dcc-field__help--error   { color: var(--dcc-red-default); }
+.dcc-field__help--success { color: var(--dcc-green-default); }
+.dcc-field__help svg { width: 12px; height: 12px; flex: 0 0 12px; }
+.dcc-field__help { display: flex; align-items: center; gap: 4px; }
+
+/* Caja compartida por input, select y textarea */
+.dcc-input {
+  width: 100%;
+  height: var(--dcc-field-h);
+  padding: 8px 12px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  background: var(--dcc-white);
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-sm);
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
+
+.dcc-input::placeholder { color: var(--dcc-grey-light); opacity: 1; }
+/* El foco manda sobre el hover: sin el :not(:focus), esta regla gana por
+   especificidad (0,4,0 contra 0,2,0) y mientras el mouse está encima pinta el
+   borde de Grey/Default, que a 2px se lee como una línea negra. */
+.dcc-input:hover:not(:disabled):not(:focus) { border-color: var(--dcc-grey-default); }
+
+/* Foco: borde REAL de 2px, con 1px menos de padding para que nada se mueva.
+   Antes usaba `box-shadow: inset 0 0 0 1px`, pero una hairline pegada al borde
+   se compone con antialiasing y en pantallas con DPR fraccionario deja una
+   costura oscura — la línea negra. Con un borde de verdad no existe.
+   El cambio de color por sí solo da 1,31:1 entre estados y WCAG pide 3:1; es el
+   grosor lo que hace válido el indicador. */
+.dcc-input:focus,
+.dcc-input:focus-visible {
+  outline: none;
+  border-width: 2px;
+  border-color: var(--dcc-focus-border);
+  padding: 7px 11px;
+  /* Sin transición al enfocar. El hover ya había llevado el borde a
+     Grey/Default; animar de ahí al azul hace que los primeros ~60ms el borde
+     de 2px pase por tonos de más de 6:1 contra el blanco — el parpadeo negro.
+     Al entrar de golpe, el borde nunca pasa por un tono oscuro. */
+  transition: none;
+}
+.dcc-input-wrap .dcc-input.dcc-has-lead:focus  { padding-left: 35px; }
+.dcc-input-wrap .dcc-input.dcc-has-trail:focus { padding-right: 35px; }
+.dcc-field--error   .dcc-input:focus { border-color: var(--dcc-red-default); }
+.dcc-field--success .dcc-input:focus { border-color: var(--dcc-green-default); }
+.dcc-input:disabled {
+  background: var(--dcc-grey-ultralight);
+  color: var(--dcc-grey-light);
+  border-color: var(--dcc-grey-light);
+  cursor: not-allowed;
+}
+
+.dcc-field--error   .dcc-input { border-color: var(--dcc-red-default); }
+.dcc-field--success .dcc-input { border-color: var(--dcc-green-default); }
+
+/* Input con adorno a un lado o a ambos */
+.dcc-input-wrap { position: relative; display: flex; align-items: center; }
+.dcc-input-wrap > svg {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  color: var(--dcc-grey-light);
+  pointer-events: none;   /* el ícono decorativo no debe robar el clic */
+}
+.dcc-input-wrap > .dcc-lead { left: 12px; }
+.dcc-input-wrap > .dcc-trail { right: 12px; }
+.dcc-input-wrap:focus-within > svg { color: var(--dcc-lightblue-default); }
+.dcc-input-wrap .dcc-input.dcc-has-lead  { padding-left: 36px; }
+.dcc-input-wrap .dcc-input.dcc-has-trail { padding-right: 36px; }
+
+/* El botón sí debe recibir clics: va en su propia regla, con la misma
+   especificidad que la de arriba, para que no herede pointer-events:none. */
+.dcc-input-wrap > .dcc-input-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  color: var(--dcc-grey-light);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.dcc-input-wrap > .dcc-input-btn.dcc-trail { right: 8px; }
+.dcc-input-wrap > .dcc-input-btn svg { width: 16px; height: 16px; }
+.dcc-input-btn:hover { color: var(--dcc-grey-default); background: var(--dcc-grey-ultralight); }
+.dcc-input-btn:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 1px; }
+
+/* Chrome y Safari dibujan su propia cruz en type="search": la ocultamos para
+   no tener dos botones de limpiar. */
+.dcc-input[type="search"]::-webkit-search-cancel-button,
+.dcc-input[type="search"]::-webkit-search-decoration,
+.dcc-input[type="search"]::-webkit-search-results-button { -webkit-appearance: none; appearance: none; display: none; }
+.dcc-input[type="search"] { appearance: none; -webkit-appearance: none; }
+
+/* Select propio (combobox). El <select> nativo abre la lista del sistema
+   operativo, que no se puede estilizar; este la reemplaza por una lista con
+   los tokens del kit y el patrón ARIA de combobox. */
+.dcc-combo { position: relative; }
+.dcc-combo__button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  height: var(--dcc-field-h);
+  padding: 8px 12px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  text-align: left;
+  background: var(--dcc-white);
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-sm);
+  cursor: pointer;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.dcc-combo__button svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: var(--dcc-grey-default);
+  transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-combo__button:hover:not([disabled]):not(:focus-visible):not([aria-expanded="true"]) {
+  border-color: var(--dcc-grey-default);
+}
+.dcc-combo__button:focus-visible,
+.dcc-combo__button[aria-expanded="true"] {
+  outline: none;
+  border-width: 2px;
+  border-color: var(--dcc-focus-border);
+  padding: 7px 11px;
+  transition: none;
+}
+.dcc-combo__button[aria-expanded="true"] svg { transform: rotate(180deg); }
+.dcc-combo__button[disabled] {
+  background: var(--dcc-grey-ultralight);
+  color: var(--dcc-grey-light);
+  cursor: not-allowed;
+}
+.dcc-combo__button[disabled] svg { color: var(--dcc-grey-light); }
+.dcc-combo__value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.dcc-combo__list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 232px;
+  overflow-y: auto;
+  padding: 4px;
+  background: var(--dcc-white);
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-sm);
+  box-shadow: var(--dcc-shadow);
+}
+.dcc-combo__list[hidden] { display: none; }
+.dcc-combo__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--dcc-radius-sm);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  cursor: pointer;
+}
+/* El check hereda el color del texto de la opción, sin acento propio */
+.dcc-combo__option svg { width: 16px; height: 16px; flex: 0 0 16px; opacity: 0; color: currentColor; }
+.dcc-combo__option:hover,
+.dcc-combo__option.is-active { background: var(--dcc-grey-ultralight); }
+.dcc-combo__option[aria-selected="true"] { font-weight: 700; color: var(--dcc-grey-default); }
+.dcc-combo__option[aria-selected="true"] svg { opacity: 1; }
+
+.dcc-field--error .dcc-combo__button   { border-color: var(--dcc-red-default); }
+.dcc-field--success .dcc-combo__button { border-color: var(--dcc-green-default); }
+
+/* --------------------------------------------------------------------------
+   15.2 AVATAR
+   -------------------------------------------------------------------------- */
+/* Las iniciales van SIEMPRE dentro de .dcc-avatar__label. Si se dejan como texto
+   suelto junto al badge, el salto de línea del markup se convierte en un ítem
+   anónimo con espacio en blanco y el texto se descoloca. */
+.dcc-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  background: var(--dcc-grey-default);
+  color: var(--dcc-white);
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  user-select: none;
+}
+.dcc-avatar__label {
+  display: block;
+  line-height: 1;
+  white-space: nowrap;
+}
+.dcc-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  object-fit: cover;
+}
+.dcc-avatar--xs { width: 24px; height: 24px; font-size: 10px; }
+.dcc-avatar--sm { width: 32px; height: 32px; font-size: 12px; }
+.dcc-avatar--lg { width: 48px; height: 48px; font-size: 18px; }
+.dcc-avatar--xl { width: 64px; height: 64px; font-size: 24px; }
+
+.dcc-avatar--lightblue { background: var(--dcc-lightblue-default); }
+.dcc-avatar--red       { background: var(--dcc-red-default); }
+.dcc-avatar--blue      { background: var(--dcc-blue-default); }
+.dcc-avatar--green     { background: var(--dcc-green-default); }
+.dcc-avatar--light     { background: var(--dcc-grey-ultralight); color: var(--dcc-grey-default); }
+
+/* Punto de estado */
+.dcc-avatar__dot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  background: var(--dcc-green-default);
+}
+.dcc-avatar--lg .dcc-avatar__dot, .dcc-avatar--xl .dcc-avatar__dot { width: 14px; height: 14px; }
+.dcc-avatar__dot--busy  { background: var(--dcc-red-default); }
+.dcc-avatar__dot--away  { background: var(--dcc-lightblue-default); }
+.dcc-avatar__dot--off   { background: var(--dcc-grey-light); }
+
+/* Contador */
+.dcc-avatar__count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  background: var(--dcc-red-default);
+  color: var(--dcc-white);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.dcc-avatar-group { display: flex; }
+.dcc-avatar-group .dcc-avatar { border: 2px solid #fff; margin-left: -10px; }
+.dcc-avatar-group .dcc-avatar:first-child { margin-left: 0; }
+
+/* --------------------------------------------------------------------------
+   15.3 BADGES ADICIONALES
+   -------------------------------------------------------------------------- */
+.dcc-badge .dcc-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 9999px;
+  background: currentColor;
+}
+.dcc-badge__close {
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+  margin-right: -2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 9999px;
+  opacity: .75;
+}
+.dcc-badge__close:hover { opacity: 1; }
+.dcc-badge__close svg { width: 10px; height: 10px; }
+.dcc-badge--count {
+  min-width: 20px;
+  padding: var(--dcc-badge-py) 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   15.4 LISTA DE ELEMENTOS
+   -------------------------------------------------------------------------- */
+.dcc-list {
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-md);
+  overflow: hidden;
+  background: var(--dcc-white);
+  max-width: 520px;
+}
+.dcc-list__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: .5px solid var(--dcc-grey-light);
+  color: var(--dcc-grey-dark);
+  transition: background-color .15s ease;
+}
+.dcc-list__item:last-child { border-bottom: 0; }
+a.dcc-list__item:hover,
+button.dcc-list__item:hover { background: var(--dcc-grey-ultralight); }
+a.dcc-list__item:focus-visible,
+button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-list__item[aria-current="true"] { background: var(--dcc-grey-ultralight); }
+
+/* Sólo el ícono, sin caja ni color propio: hereda Grey/Default y el color
+   se reserva para los badges del extremo derecho. */
+.dcc-list__icon {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  color: var(--dcc-grey-default);
+}
+.dcc-list__icon svg { width: 20px; height: 20px; }
+
+.dcc-list__body { flex: 1; min-width: 0; }
+.dcc-list__title { font-size: 16px; font-weight: 700; line-height: 1.2; }
+.dcc-list__desc {
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--dcc-grey-light);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dcc-list__trail { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: var(--dcc-grey-light); }
+.dcc-list__trail svg { width: 16px; height: 16px; }
+
+/* --------------------------------------------------------------------------
+   15.5 CABECERA DE TABLA ORDENABLE
+   -------------------------------------------------------------------------- */
+.dcc-table th.is-sortable { padding: 0; }
+.dcc-th-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  padding: 2px 24px 0;   /* mismo criterio de centrado que .dcc-table th */
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: color .15s ease;
+}
+
+.dcc-th-sort:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+/* Tres estados que se distinguen por forma, no sólo por tono:
+   sin orden = glifo suelto en Grey/Light;
+   hover     = chip blanco con glifo Grey/Default (8,16:1 dentro del chip);
+   ordenada  = chip Grey/Default relleno con glifo blanco (8,01:1), y el chip
+               contra la cabecera da 6,81:1, que es el salto que faltaba. */
+.dcc-th-sort .dcc-sort-ico {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 9999px;
+  color: var(--dcc-grey-light);
+  transition: background-color .15s ease, color .15s ease;
+}
+.dcc-th-sort svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-th-sort:hover .dcc-sort-ico { background: var(--dcc-white); color: var(--dcc-grey-default); }
+[aria-sort="ascending"]  .dcc-th-sort .dcc-sort-ico,
+[aria-sort="descending"] .dcc-th-sort .dcc-sort-ico { background: var(--dcc-grey-default); color: var(--dcc-white); }
+[aria-sort="ascending"]  .dcc-th-sort,
+[aria-sort="descending"] .dcc-th-sort { color: var(--dcc-grey-dark); }
+.dcc-th-sort .dcc-sort-none,
+.dcc-th-sort .dcc-sort-asc,
+.dcc-th-sort .dcc-sort-desc { display: none; }
+[aria-sort="none"]       .dcc-th-sort .dcc-sort-none { display: block; }
+[aria-sort="ascending"]  .dcc-th-sort .dcc-sort-asc  { display: block; }
+[aria-sort="descending"] .dcc-th-sort .dcc-sort-desc { display: block; }
+
+/* --------------------------------------------------------------------------
+   15.6 ACORDEÓN
+   -------------------------------------------------------------------------- */
+.dcc-accordion {
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-md);
+  overflow: hidden;
+  background: var(--dcc-white);
+  max-width: 640px;
+}
+.dcc-accordion__item { border-bottom: .5px solid var(--dcc-grey-light); }
+.dcc-accordion__item:last-child { border-bottom: 0; }
+
+.dcc-accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  background: none;
+  border: 0;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.dcc-accordion__trigger:hover { background: var(--dcc-grey-ultralight); }
+.dcc-accordion__trigger:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-accordion__trigger svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  transition: transform .22s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-accordion__trigger[aria-expanded="true"] { color: var(--dcc-grey-default); }
+.dcc-accordion__trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+.dcc-accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .26s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-accordion__panel[data-open="true"] { grid-template-rows: 1fr; }
+.dcc-accordion__panel > div { overflow: hidden; }
+/* 8px extra sobre los 16px del padding inferior del título = 24px de aire
+   entre el encabezado y el texto. */
+.dcc-accordion__panel p {
+  padding: 8px 16px 20px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--dcc-grey-dark);
+}
+.dcc-accordion__trigger[aria-expanded="true"] { padding-bottom: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-accordion__panel, .dcc-accordion__trigger svg { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   15.7 BREADCRUMB
+   -------------------------------------------------------------------------- */
+.dcc-breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.dcc-breadcrumb li { display: flex; align-items: center; gap: 8px; }
+.dcc-breadcrumb a,
+.dcc-breadcrumb span {
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-light);
+}
+.dcc-breadcrumb a { border-radius: 2px; transition: color .15s ease; }
+.dcc-breadcrumb a:hover { color: var(--dcc-red-default); text-decoration: underline; }
+.dcc-breadcrumb a:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-breadcrumb [aria-current="page"] { color: var(--dcc-grey-default); font-weight: 700; }
+.dcc-breadcrumb .dcc-sep { width: 16px; height: 16px; color: var(--dcc-grey-light); flex: 0 0 16px; }
+.dcc-breadcrumb .dcc-home { width: 16px; height: 16px; flex: 0 0 16px; }
+
+/* --------------------------------------------------------------------------
+   15.8 TABS  (mismo lenguaje que la nav institucional: subrayado rojo)
+   -------------------------------------------------------------------------- */
+/* Sin gap: los 2px del borde inferior de cada pestaña tienen que formar una
+   línea continua con la del contenedor, sin cortes entre pestañas. */
+.dcc-tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 2px solid var(--dcc-grey-ultralight);
+}
+.dcc-tabs__tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin-bottom: -2px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--dcc-grey-light);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s ease, border-color .15s ease;
+}
+.dcc-tabs__tab svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-tabs__tab:hover { color: var(--dcc-grey-default); border-bottom-color: var(--dcc-grey-light); }
+.dcc-tabs__tab:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-tabs__tab[aria-selected="true"] {
+  color: var(--dcc-red-default);
+  border-bottom-color: var(--dcc-red-default);
+  font-weight: 700;
+}
+.dcc-tabs__tab[disabled] { color: var(--dcc-grey-light); opacity: .5; cursor: not-allowed; }
+.dcc-tabs__panel { padding: 20px 0; font-size: 16px; line-height: 1.4; }
+.dcc-tabs__panel[hidden] { display: none; }
+
+/* --------------------------------------------------------------------------
+   15.9 PAGINATION
+   -------------------------------------------------------------------------- */
+.dcc-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.dcc-pagination__btn {
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--dcc-radius-sm);
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-default);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+.dcc-pagination__btn svg { width: 16px; height: 16px; }
+.dcc-pagination__btn:hover:not([disabled]):not([aria-current="page"]) {
+  background: var(--dcc-grey-ultralight);
+  color: var(--dcc-grey-default);
+}
+.dcc-pagination__btn:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-pagination__btn[aria-current="page"] {
+  background: var(--dcc-grey-default);
+  border-color: var(--dcc-grey-default);
+  color: var(--dcc-white);
+  font-weight: 700;
+}
+.dcc-pagination__btn[disabled] { color: var(--dcc-grey-light); cursor: not-allowed; }
+.dcc-pagination__gap {
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 36px;
+  color: var(--dcc-grey-light);
+}
+.dcc-pagination__gap svg { width: 16px; height: 16px; }
+
+
+
+/* --------------------------------------------------------------------------
+   15.10 STEPPER
+   -------------------------------------------------------------------------- */
+.dcc-stepper { display: flex; align-items: flex-start; }
+.dcc-stepper__step { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; text-align: center; position: relative; }
+.dcc-stepper__step::before,
+.dcc-stepper__step::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  height: 2px;
+  background: var(--dcc-grey-ultralight);
+}
+.dcc-stepper__step::before { left: 0;    right: 50%; margin-right: 22px; }
+.dcc-stepper__step::after  { left: 50%;  right: 0;   margin-left: 22px; }
+.dcc-stepper__step:first-child::before,
+.dcc-stepper__step:last-child::after { display: none; }
+.dcc-stepper__step[data-state="done"]::after,
+.dcc-stepper__step[data-state="done"]::before,
+.dcc-stepper__step[data-state="current"]::before { background: var(--dcc-grey-default); }
+
+.dcc-stepper__bullet {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: var(--dcc-white);
+  border: 2px solid var(--dcc-grey-light);
+  color: var(--dcc-grey-light);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  font-variant-numeric: tabular-nums;
+}
+.dcc-stepper__bullet svg { width: 16px; height: 16px; }
+.dcc-stepper__step[data-state="done"] .dcc-stepper__bullet {
+  background: var(--dcc-grey-default);
+  border-color: var(--dcc-grey-default);
+  color: var(--dcc-white);
+}
+.dcc-stepper__step[data-state="current"] .dcc-stepper__bullet {
+  background: var(--dcc-red-default);
+  border-color: var(--dcc-red-default);
+  color: var(--dcc-white);
+}
+.dcc-stepper__label { font-size: 12px; line-height: 1.2; color: var(--dcc-grey-light); max-width: 14ch; }
+.dcc-stepper__step[data-state="current"] .dcc-stepper__label { color: var(--dcc-grey-default); font-weight: 700; }
+.dcc-stepper__step[data-state="done"]    .dcc-stepper__label { color: var(--dcc-grey-dark); }
+
+/* Texto secundario opcional bajo el título del paso */
+.dcc-stepper__desc {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--dcc-grey-light);
+  max-width: 18ch;
+}
+.dcc-stepper__body { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+
+/* Vertical */
+.dcc-stepper--vertical { flex-direction: column; align-items: stretch; gap: 0; }
+.dcc-stepper--vertical .dcc-stepper__step { flex-direction: row; align-items: flex-start; gap: 12px; text-align: left; flex: none; padding-bottom: 24px; }
+.dcc-stepper--vertical .dcc-stepper__step::before { display: none; }
+.dcc-stepper--vertical .dcc-stepper__step::after {
+  top: 32px; bottom: 0; left: 15px; right: auto;
+  width: 2px; height: auto; margin: 0;
+}
+.dcc-stepper--vertical .dcc-stepper__step:last-child { padding-bottom: 0; }
+.dcc-stepper--vertical .dcc-stepper__body { align-items: flex-start; gap: 4px; flex: 1; min-width: 0; }
+/* El título ocupa exactamente el alto de la pelotita y centra su línea dentro,
+   así ambos quedan alineados por su centro y no por el borde superior. */
+.dcc-stepper--vertical .dcc-stepper__label {
+  max-width: none;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+.dcc-stepper--vertical .dcc-stepper__desc { max-width: none; }
+.dcc-stepper__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+
+/* --------------------------------------------------------------------------
+   15.11 BOTTOM NAVIGATION  (móvil)
+   -------------------------------------------------------------------------- */
+.dcc-phone {
+  width: 375px;
+  max-width: 100%;
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--dcc-grey-ultralight);
+  display: flex;
+  flex-direction: column;
+}
+.dcc-phone__screen { flex: 1; min-height: 220px; padding: 20px; font-size: 12px; color: var(--dcc-grey-light); }
+
+.dcc-bottom-nav {
+  display: flex;
+  background: var(--dcc-grey-default);
+  padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px));
+}
+/* El ítem activo se resalta COMPLETO —ícono y etiqueta— con una pastilla
+   Grey/Dark. Nada de línea roja: ese recurso es de la nav institucional. */
+.dcc-bottom-nav__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 16px;
+  background: none;
+  color: var(--dcc-lightblue-light);
+  font-family: var(--dcc-font-body);
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: color .15s ease, background-color .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-bottom-nav__ico { display: grid; place-items: center; position: relative; }
+.dcc-bottom-nav__ico svg { width: 24px; height: 24px; }
+.dcc-bottom-nav__item:hover { color: #fff; background: rgba(255, 255, 255, .08); }
+.dcc-bottom-nav__item:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-bottom-nav__item[aria-current="page"] {
+  background: var(--dcc-grey-dark);
+  color: #fff;
+  font-weight: 700;
+}
+
+.dcc-bottom-nav__ico--badge::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--dcc-red-default);
+  border: 1.5px solid var(--dcc-grey-default);
+}
+.dcc-bottom-nav__item[aria-current="page"] .dcc-bottom-nav__ico--badge::after { border-color: var(--dcc-grey-dark); }
+
+/* Variante flotante: despegada de los bordes, redondeada y con sombra */
+.dcc-bottom-nav--floating {
+  margin: 0 12px 12px;
+  border-radius: 24px;
+  padding: 8px 6px;
+  box-shadow: var(--dcc-shadow);
+}
+.dcc-phone--floating .dcc-phone__screen { padding-bottom: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-bottom-nav__ico { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   15.12 CALENDARIO
+   -------------------------------------------------------------------------- */
+.dcc-calendar {
+  width: 320px;
+  max-width: 100%;
+  padding: 16px;
+  background: var(--dcc-white);
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-md);
+  box-shadow: var(--dcc-shadow);
+}
+.dcc-calendar__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.dcc-calendar__title {
+  font-family: var(--dcc-font-display);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--dcc-grey-default);
+}
+.dcc-calendar__nav {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--dcc-radius-sm);
+  color: var(--dcc-grey-default);
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease;
+}
+.dcc-calendar__nav svg { width: 16px; height: 16px; }
+.dcc-calendar__nav:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }
+.dcc-calendar__nav:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+
+/* minmax(0,1fr) en vez de 1fr: con `1fr` el mínimo automático de cada columna
+   es su min-content, y si el contenedor se angosta la grilla desborda la
+   tarjeta en vez de encogerse. */
+.dcc-calendar__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.dcc-calendar__dow {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  height: 28px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--dcc-grey-light);
+}
+.dcc-calendar__day {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0;            /* los <button> traen padding propio del navegador */
+  width: min(100%, 36px);
+  aspect-ratio: 1;
+  justify-self: center;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 9999px;   /* selección redonda, no cuadrada */
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.dcc-calendar__day:hover:not([disabled]) { background: var(--dcc-grey-ultralight); }
+.dcc-calendar__day:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-calendar__day.is-outside { color: var(--dcc-grey-light); }
+.dcc-calendar__day.is-today { border-color: var(--dcc-grey-default); font-weight: 700; }
+.dcc-calendar__day.is-selected {
+  background: var(--dcc-grey-default);
+  border-color: var(--dcc-grey-default);
+  color: var(--dcc-white);
+  font-weight: 700;
+}
+.dcc-calendar__day.is-selected:hover { background: var(--dcc-grey-dark); }
+.dcc-calendar__day[disabled] { color: var(--dcc-grey-light); opacity: .45; cursor: not-allowed; }
+
+/* Popover del date picker. No hereda el ancho del campo: si el campo es
+   angosto, el calendario mantiene sus 320px y sólo cede ante el viewport. */
+.dcc-datepicker { position: relative; max-width: 320px; }
+.dcc-datepicker .dcc-calendar {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+}
+.dcc-datepicker .dcc-calendar[hidden] { display: none; }
+
+/* --------------------------------------------------------------------------
+   15.13 TARJETA DE PROGRAMA
+   Traída del archivo «Educación Continua» (XRlMGrAb...), nodo 275:9776.
+   Medidas y tipografías tal cual el original; el texto usa #40506A, que es
+   exactamente el Grey/Default de este kit.
+   -------------------------------------------------------------------------- */
+:root {
+  --dcc-card-media-h: 200px;
+  /* Etiquetas mapeadas a la paleta del kit, igual criterio que con las
+     tipografías. Blue/Default da 6,61:1 con texto blanco, casi idéntico al
+     6,60:1 del morado original; Green/Dark da 6,96:1 y aporta un tercer matiz
+     claramente distinto (rojo / índigo / verde azulado). */
+  --dcc-tag-magister: var(--dcc-blue-default);
+  --dcc-tag-bootcamp: var(--dcc-green-dark);
+}
+
+.dcc-card {
+  position: relative;
+  width: 300px;
+  max-width: 100%;
+  font-family: var(--dcc-font-body);
+  color: var(--dcc-grey-default);
+}
+.dcc-card__paper {
+  background: var(--dcc-white);
+  border-radius: var(--dcc-radius-sm);
+  overflow: hidden;   /* recorta la imagen contra el radio, como el <Paper> */
+  /* elevation/1 del archivo original */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12),
+              0 1px 1px rgba(0, 0, 0, .14),
+              0 2px 1px -1px rgba(0, 0, 0, .2);
+}
+
+.dcc-card__media {
+  position: relative;
+  height: var(--dcc-card-media-h);
+  background: var(--dcc-grey-dark);
+}
+.dcc-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .8;        /* el <CardMedia> del original va al 80% */
+}
+.dcc-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .1);
+  pointer-events: none;
+}
+
+.dcc-card__content { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
+.dcc-card__head { display: flex; flex-direction: column; gap: 8px; }
+.dcc-card__eyebrow { font-size: 16px; line-height: 1; letter-spacing: .15px; }
+/* Reserva siempre el alto de dos líneas, así todas las tarjetas de una fila
+   alinean la regla, la duración y el pie aunque los títulos midan distinto.
+   line-height es 1, de modo que 2em = exactamente dos líneas. */
+.dcc-card__title {
+  margin: 0;
+  font-family: var(--dcc-font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
+  text-transform: uppercase;
+  min-height: 2em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.dcc-card__rule { height: 1px; background: var(--dcc-grey-light); border: 0; margin: 0; }
+.dcc-card__meta { font-size: 12px; line-height: 1; font-style: italic; letter-spacing: .15px; }
+
+.dcc-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.dcc-card__date { display: flex; align-items: center; gap: 8px; }
+.dcc-card__date svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.dcc-card__date span { display: flex; flex-direction: column; font-size: 14px; line-height: 1; }
+.dcc-card__date b { font-weight: 700; }
+
+/* El pie usa el botón del kit (.dcc-btn), no un botón propio. El <Fab> del archivo
+   original mide 34px de alto; .dcc-btn--md mide 35,2px, así que la sustitución es
+   casi exacta. */
+.dcc-card__foot .dcc-btn { flex: 0 0 auto; }
+
+/* Etiqueta y descuento son hermanos de la tarjeta, no de la imagen: sangran
+   hasta el borde y por eso no pueden ir dentro del contenedor recortado. */
+.dcc-card__tag {
+  position: absolute;
+  right: 0;
+  top: calc(var(--dcc-card-media-h) - 10.5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 4px 11px;
+  border-radius: var(--dcc-radius-sm) 0 0 var(--dcc-radius-sm);
+  background: var(--dcc-tag-magister);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+.dcc-card__tag--magister { background: var(--dcc-tag-magister); }
+.dcc-card__tag--bootcamp { background: var(--dcc-tag-bootcamp); }
+.dcc-card__tag--diploma  { background: var(--dcc-red-default); }
+
+.dcc-card__discount {
+  position: absolute;
+  left: 0;
+  top: 28px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 0 var(--dcc-radius-sm) var(--dcc-radius-sm) 0;
+  background: var(--dcc-white);
+  color: var(--dcc-grey-default);
+}
+.dcc-card__discount b { font-size: 24px; font-weight: 700; line-height: 1.1; }
+.dcc-card__discount span { font-size: 10px; line-height: 1.2; }
+
+/* --------------------------------------------------------------------------
+   TARJETA COMPRIMIDA
+   Dos propuestas sobre la misma base: A para estado de tarea (chips arriba y
+   metadatos con ícono) y B para ficha de sistema (barra lateral de color).
+   -------------------------------------------------------------------------- */
+.dcc-ccard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 440px;
+  padding: 16px;
+  background: var(--dcc-white);
+  border: 1px solid var(--dcc-grey-ultralight);
+  border-radius: var(--dcc-radius-md);
+  box-shadow: var(--dcc-shadow);
+  font-family: var(--dcc-font-body);
+}
+
+.dcc-ccard__chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* Favorito. La misma ruta de Lucide sirve en contorno y rellena: el estado
+   vive en aria-pressed y el CSS sólo cambia `fill`. Los márgenes negativos lo
+   pegan a la esquina sin que su caja de 28px agrande la fila. */
+.dcc-ccard__fav {
+  /* estrella amarilla por defecto; .dcc-ccard__fav--heart las cambia a rojo */
+  --dcc-fav-on: var(--dcc-yellow-default);
+  --dcc-fav-on-strong: var(--dcc-yellow-dark);
+  --dcc-fav-on-soft: var(--dcc-yellow-ultralight);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  margin: -4px -4px 0 auto;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 9999px;
+  color: var(--dcc-grey-light);
+  cursor: pointer;
+  transition: color .15s ease, background-color .15s ease;
+}
+.dcc-ccard__fav svg {
+  width: 18px;
+  height: 18px;
+  /* El <g> de <defs> ya no fija `fill`, así que este valor se hereda hasta el
+     shadow tree que crea <use> y la estrella puede rellenarse. */
+  fill: none;
+  transition: fill .15s ease, transform .18s cubic-bezier(.34, 1.5, .64, 1);
+}
+.dcc-ccard__fav:hover { background: var(--dcc-grey-ultralight); color: var(--dcc-grey-default); }
+.dcc-ccard__fav:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-ccard__fav:active svg { transform: scale(.85); }
+.dcc-ccard__fav[aria-pressed="true"] { color: var(--dcc-fav-on); }
+.dcc-ccard__fav[aria-pressed="true"] svg { fill: currentColor; transform: scale(1.08); }
+.dcc-ccard__fav[aria-pressed="true"]:hover { color: var(--dcc-fav-on-strong); background: var(--dcc-fav-on-soft); }
+
+/* El color del estado activo viaja en tres variables locales, así que una
+   variante nueva sólo tiene que redefinirlas: no hay que repetir reglas. */
+.dcc-ccard__fav--heart {
+  --dcc-fav-on: var(--dcc-red-default);
+  --dcc-fav-on-strong: var(--dcc-red-dark);
+  --dcc-fav-on-soft: var(--dcc-red-ultralight);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-ccard__fav svg { transition: fill .15s ease; }
+  .dcc-ccard__fav:active svg,
+  .dcc-ccard__fav[aria-pressed="true"] svg { transform: none; }
+}
+
+/* Chip punteado para añadir metadatos */
+.dcc-ccard__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 4px 8px;
+  background: none;
+  border: 1px dashed var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-sm);
+  font-family: var(--dcc-font-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--dcc-grey-default);
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.dcc-ccard__add svg { width: 12px; height: 12px; flex: 0 0 12px; }
+.dcc-ccard__add:hover { border-style: solid; background: var(--dcc-grey-ultralight); }
+.dcc-ccard__add:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+
+.dcc-ccard__title {
+  margin: 0;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+}
+
+.dcc-ccard__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--dcc-grey-light);
+}
+.dcc-ccard__meta svg { width: 14px; height: 14px; flex: 0 0 14px; }
+.dcc-ccard__meta b { font-weight: 700; color: var(--dcc-grey-default); }
+
+.dcc-ccard__eyebrow {
+  font-size: 12px;
+  /* 12px ya es el mínimo de la escala del kit, así que el peso es lo único que
+     se puede bajar: 500 (Inter Medium) ya se usa en el menú y en los tabs. */
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--dcc-grey-light);
+}
+
+.dcc-ccard__desc { font-size: 12px; line-height: 1.4; color: var(--dcc-grey-default); }
+
+/* Propuesta B: portada cuadrada a la izquierda y versión arriba a la derecha. */
+.dcc-ccard--media { flex-direction: row; align-items: flex-start; gap: 12px; }
+
+.dcc-ccard__cover {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border-radius: var(--dcc-radius-md);
+  overflow: hidden;
+  background: var(--dcc-grey-ultralight);
+  color: var(--dcc-grey-dark);
+}
+.dcc-ccard__cover svg { width: 24px; height: 24px; }
+.dcc-ccard__cover img { width: 100%; height: 100%; object-fit: cover; }
+.dcc-ccard__cover--green     { background: var(--dcc-green-ultralight);     color: var(--dcc-green-dark); }
+.dcc-ccard__cover--blue      { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-dark); }
+.dcc-ccard__cover--red       { background: var(--dcc-red-ultralight);       color: var(--dcc-red-dark); }
+.dcc-ccard__cover--lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-dark); }
+
+.dcc-ccard__body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+/* La descripción sí conserva aire; lo que se aprieta es categoría → título. */
+.dcc-ccard__body .dcc-ccard__desc { margin-top: 4px; }
+
+/* La categoría a la izquierda y la versión a la derecha comparten la primera
+   línea, así la versión queda en la esquina sin recurrir a posición absoluta
+   ni a reservar padding a mano. */
+.dcc-ccard__top { display: flex; align-items: center; gap: 8px; }
+.dcc-ccard__top .dcc-ccard__eyebrow {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* El botón mide 28px y estiraba la fila de la categoría, que sólo necesita
+   14,4px. Con -7px arriba y abajo aporta 14px, así que deja de mandar en el
+   alto: la separación hasta el título queda igual con estrella y sin ella. */
+.dcc-ccard__top .dcc-ccard__fav { margin: -7px -4px -7px 0; }
+.dcc-ccard__ver {
+  flex: 0 0 auto;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--dcc-grey-default);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Variante arrastrable. El asa es lo único que inicia el arrastre: así se puede
+   seleccionar texto dentro de la tarjeta sin dispararlo sin querer. */
+.dcc-ccard--draggable { position: relative; padding-left: 40px; }
+
+.dcc-ccard__grip {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  color: var(--dcc-grey-light);
+  cursor: grab;
+  touch-action: none;
+  transition: color .15s ease, background-color .15s ease;
+}
+.dcc-ccard__grip svg { width: 18px; height: 18px; }
+.dcc-ccard__grip:hover { color: var(--dcc-grey-default); background: var(--dcc-grey-ultralight); }
+.dcc-ccard__grip:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-ccard__grip:active { cursor: grabbing; }
+
+.dcc-ccard--draggable.is-dragging {
+  opacity: .55;
+  cursor: grabbing;
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, .3);
+}
+/* Destino de la soltada */
+.dcc-ccard--draggable.is-over {
+  outline: 2px dashed var(--dcc-lightblue-default);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-ccard__grip { transition: none; }
+}
+
+.dcc-ccard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 440px));
+  gap: 20px;
+  justify-content: start;
+}
+
+.dcc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 300px));
+  gap: 30px;
+  justify-content: start;
+}
+
+/* --------------------------------------------------------------------------
+   15.14 RESPONSIVE DE LOS COMPONENTES NUEVOS
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .dcc-field { max-width: 100%; }
+  .dcc-stepper { flex-direction: column; align-items: stretch; }
+  .dcc-stepper .dcc-stepper__step { flex-direction: row; align-items: flex-start; gap: 12px; text-align: left; flex: none; padding-bottom: 24px; }
+  .dcc-stepper .dcc-stepper__step::before { display: none; }
+  .dcc-stepper .dcc-stepper__step::after {
+    top: 32px; bottom: 0; left: 15px; right: auto;
+    width: 2px; height: auto; margin: 0;
+  }
+  .dcc-stepper .dcc-stepper__step:last-child { padding-bottom: 0; }
+  .dcc-stepper .dcc-stepper__label { max-width: none; padding-top: 6px; }
+    .dcc-calendar { width: 100%; }
+}
+
+/* ---- Impresión ---- */
+@media print {
+  body { background: #fff; }
+  .dcc-toc, .dcc-nav-toggle { display: none; }
+  .dcc-section { break-inside: avoid; box-shadow: none; }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "@dcc/ui",
+  "version": "1.0.0",
+  "description": "Sistema de diseño del Departamento de Ciencias de la Computación, Universidad de Chile. CSS sin dependencias, para React, Vue o HTML plano.",
+  "keywords": [
+    "design-system",
+    "ui-kit",
+    "css",
+    "dcc",
+    "uchile"
+  ],
+  "homepage": "https://github.com/dccuchile/dcc-ui-kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dccuchile/dcc-ui-kit.git"
+  },
+  "bugs": "https://github.com/dccuchile/dcc-ui-kit/issues",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/dcc-ui.css",
+  "style": "dist/dcc-ui.css",
+  "exports": {
+    ".": "./dist/dcc-ui.css",
+    "./css": "./dist/dcc-ui.css",
+    "./css/min": "./dist/dcc-ui.min.css",
+    "./tokens": "./dist/dcc-tokens.css",
+    "./icons.svg": "./dist/dcc-icons.svg",
+    "./icons.js": "./dist/dcc-icons.js",
+    "./fonts/*": "./dist/fonts/*"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "lucideVersion": "0.544.0",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check:dist": "node scripts/build.mjs --check",
+    "check:html": "node scripts/verify.mjs",
+    "test": "npm run check:dist && npm run check:html",
+    "start": "npx --yes serve ."
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.0.0",
+    "@fontsource/poppins": "^5.0.0",
+    "jsdom": "^24.0.0",
+    "lightningcss": "^1.25.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

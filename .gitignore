@@ -1,0 +1,18 @@
+node_modules/
+package-lock.json
+
+# sistema
+.DS_Store
+Thumbs.db
+
+# editores
+.vscode/
+.idea/
+*.swp
+
+# temporales
+*.log
+.cache/
+
+# dist/ SÍ se versiona a propósito: es el producto publicable y el CI verifica
+# que coincida con lo que produce `npm run build`. No lo agregues aquí.

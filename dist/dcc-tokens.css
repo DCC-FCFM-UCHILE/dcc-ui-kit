@@ -1,0 +1,101 @@
+/*! DCC UI Kit 1.0.0 — tokens de diseño */
+
+:root {
+  /* Paleta — nombre en Figma: Grupo/Tono */
+  --dcc-grey-ultralight:      #e2ecf3;
+  --dcc-grey-light:           #5d7c8e;
+  --dcc-grey-default:         #40506a;
+  --dcc-grey-dark:            #303b4d;
+
+  --dcc-lightblue-ultralight: #e5f1ff;
+  --dcc-lightblue-light:      #bdd2ea;
+  --dcc-lightblue-default:    #3594c7;
+  --dcc-lightblue-dark:       #2a5c7d;
+
+  --dcc-red-ultralight:       #ffe6da;
+  --dcc-red-light:            #eeb397;
+  --dcc-red-default:          #d23118;
+  --dcc-red-dark:             #802913;
+
+  --dcc-blue-ultralight:      #e4e4fd;
+  --dcc-blue-light:           #b7b7dd;
+  --dcc-blue-default:         #4957a3;
+  --dcc-blue-dark:            #2e3764;
+
+  --dcc-green-ultralight:     #dff3f7;
+  --dcc-green-light:          #bbd6dc;
+  --dcc-green-default:        #0e9ca8;
+  --dcc-green-dark:           #20626a;
+
+  /* Amarillo: no existe en Figma. Derivado del perfil de la paleta
+     (H 38°, S 70%, L 42% contra la media de S 57% / L 42% del resto), para que
+     el favorito se lea como oro sin desentonar. */
+  --dcc-yellow-ultralight:    #fdf3e2;
+  --dcc-yellow-light:         #f4d39a;
+  --dcc-yellow-default:       #b67f20;
+  --dcc-yellow-dark:          #77500d;
+
+  --dcc-white:                #fcfdfe;
+
+  /* Grises de texto que el kit usa como hex crudo (no son variables en Figma) */
+  --dcc-gray-800:             #1a202c;   /* títulos de sección del kit */
+  --dcc-gray-700:             #2d3748;   /* texto dentro de Alert */
+
+  /* Efectos */
+  --dcc-shadow:        0 2px 4px -1px #0000000f, 0 4px 6px -1px #0000001a;
+  --dcc-shadow-button: 0 4px 3px rgba(0, 0, 0, .1), 0 2px 2px rgba(0, 0, 0, .06);
+  --dcc-inner-shadow:  inset 0 1px 4px 0 #0000001a;
+
+  /* Tipografía */
+  --dcc-font-display: "Poppins", "Trebuchet MS", system-ui, sans-serif;
+  --dcc-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Componente: Badge (variables de componente en Figma) */
+  --dcc-badge-height: 20px;
+  --dcc-badge-px: 8px;
+  --dcc-badge-py: 2px;
+  --dcc-badge-gap: 4px;
+  --dcc-badge-radius: 26px;
+  --dcc-badge-border-width: 1px;
+
+  /* Layout del styleguide */
+  --dcc-page-max: 1200px;
+  --dcc-card-radius: 16px;
+
+  /* ---- Ancho máximo del contenido de las barras ----
+     1320px = el frame de Figma (1440) menos sus 60px de padding lateral,
+     y a la vez el tope de `.container` de Bootstrap 5, que es lo que usa
+     dcc.uchile.cl. Cambiar SÓLO aquí para ajustar todas las barras. */
+  --dcc-container-max: 1320px;
+  --dcc-gutter-lg: 60px;   /* padding lateral mínimo: nav institucional y footer */
+  --dcc-gutter-md: 40px;   /* padding lateral mínimo: nav de aplicación */
+
+  /* Separación entre ítems del menú principal.
+     Medido con las métricas reales de Inter Medium 16: las 8 cajas suman 916px
+     y la fila disponible a 1440px es de 964px. O sea, el diseño tiene apenas
+     48px de holgura repartidos en 7 huecos = 6,8px cada uno. Con más de 6px el
+     menú ya no cabe en una línea y se parte en dos. */
+  --dcc-nav-menu-gap: 6px;
+}
+
+:root { --dcc-gutter-lg: 32px; --dcc-gutter-md: 24px; }
+
+:root { --dcc-gutter-lg: 20px; --dcc-gutter-md: 20px; }
+
+:root {
+  --dcc-field-h: 40px;          /* mismo alto que la cabecera de tabla */
+  --dcc-radius-sm: 4px;         /* chips de menú, botones de paginación */
+  --dcc-radius-md: 8px;         /* tarjetas, tabla, acordeón */
+  /* El foco se marca sólo con el borde, sin halo. */
+  --dcc-focus-border: var(--dcc-lightblue-default);
+}
+
+:root {
+  --dcc-card-media-h: 200px;
+  /* Etiquetas mapeadas a la paleta del kit, igual criterio que con las
+     tipografías. Blue/Default da 6,61:1 con texto blanco, casi idéntico al
+     6,60:1 del morado original; Green/Dark da 6,96:1 y aporta un tercer matiz
+     claramente distinto (rojo / índigo / verde azulado). */
+  --dcc-tag-magister: var(--dcc-blue-default);
+  --dcc-tag-bootcamp: var(--dcc-green-dark);
+}

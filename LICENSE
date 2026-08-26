@@ -1,0 +1,33 @@
+MIT License
+
+Copyright (c) 2026 Departamento de Ciencias de la Computación, Universidad de Chile
+
+Se concede permiso, libre de cargo, a cualquier persona que obtenga una copia de
+este software y de los archivos de documentación asociados (el "Software"), para
+utilizar el Software sin restricción, incluyendo sin limitación los derechos de
+uso, copia, modificación, fusión, publicación, distribución, sublicencia y/o
+venta de copias del Software, y a permitir a las personas a las que se les
+proporcione el Software a hacer lo mismo, sujeto a las siguientes condiciones:
+
+El aviso de copyright anterior y este aviso de permiso se incluirán en todas las
+copias o partes sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
+IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A GARANTÍAS DE COMERCIALIZACIÓN,
+IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS
+AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN,
+DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UNA ACCIÓN CONTRACTUAL, AGRAVIO O
+CUALQUIER OTRO MOTIVO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O SU
+USO U OTRO TIPO DE ACCIONES EN EL SOFTWARE.
+
+---
+
+Este repositorio incluye recursos de terceros con licencia propia:
+
+  · Íconos Lucide 0.544.0 — ISC License — https://lucide.dev
+  · Tipografía Inter — SIL Open Font License 1.1 — https://rsms.me/inter/
+  · Tipografía Poppins — SIL Open Font License 1.1
+
+Los logotipos del DCC, la FCFM y la Universidad de Chile son marcas
+institucionales y NO están cubiertos por esta licencia. Su uso se rige por las
+normas gráficas de la Universidad de Chile.

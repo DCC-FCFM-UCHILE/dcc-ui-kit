@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verificar:
+    name: Build y verificaciones
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Falla si alguien editó dist/ a mano, o cambió src/ sin reconstruir.
+      # Es lo que mantiene el fuente y lo publicado en sincronía.
+      - name: dist/ coincide con src/
+        run: npm run check:dist
+
+      # Clases huérfanas, variables sin declarar, <use> rotos, assets faltantes
+      # y las pruebas de comportamiento sobre el DOM.
+      - name: Verificaciones del kit
+        run: npm run check:html
+
+  pages:
+    name: Publicar styleguide
+    needs: verificar
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4
