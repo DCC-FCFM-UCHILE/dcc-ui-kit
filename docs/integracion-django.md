@@ -72,6 +72,26 @@ def dcc_ui_kit(request):
 Eso es toda la instalación. El bundle inyecta los íconos y enlaza los componentes solo, al terminar
 de cargar la página.
 
+> **Si la app ya usa Bootstrap —o cualquier CSS con resets—, carga el kit ANTES.** El CSS del kit
+> trae, además de sus clases prefijadas, resets de elemento **sin** prefijar: `a`, `p`, `ul`, `hr`,
+> `img`, `svg`, `button` y `table`. Cargado al final, esos resets le cambian a toda la app la
+> tipografía, el color de los enlaces, las viñetas y los márgenes.
+>
+> Medido en el Portal SSO: los enlaces pasaban del rojo institucional `#b5091d` a gris, los `<p>`
+> perdían su margen, las listas sus viñetas y el cuerpo pasaba de Poppins a Inter.
+>
+> Cargándolo primero, Bootstrap recupera lo suyo y los componentes del kit quedan **intactos**,
+> porque se definen por clase y ganan por especificidad. Quedan dos resets que el kit gana igual,
+> porque Bootstrap no declara nada equivalente: `ul { list-style: none }` e `img, svg { display:
+> block }`. Se reponen con tres reglas:
+>
+> ```css
+> ul:not([class*="dcc-"])  { list-style: disc; }
+> img:not([class*="dcc-"]),
+> svg:not([class*="dcc-"]) { display: inline-block; vertical-align: middle; }
+> .dcc-list                { padding-left: 0; list-style: none; }
+> ```
+
 ## 3. Usa las clases
 
 Todo va prefijado con `dcc-`, para que el kit conviva con Bootstrap o lo que la app ya tenga.
@@ -130,6 +150,9 @@ bloque de JavaScript de paginación del styleguide es sólo una demostración de
 ---
 
 ## Advertencias
+
+**Revisa el orden de carga del CSS** si la app ya tiene Bootstrap: el kit va primero. Está
+explicado en el paso 2, y es el error que más cambia el aspecto de una app existente.
 
 **No copies los archivos dentro del proyecto.** Es exactamente lo que este montaje evita. Si los
 copias, la app deja de recibir las correcciones del kit y las copias derivan entre sí.
