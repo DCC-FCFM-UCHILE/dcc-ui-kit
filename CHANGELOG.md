@@ -16,7 +16,7 @@ Primera versión publicable.
 ### Incluye
 
 - 23 familias de componentes traducidas de Figma o diseñadas sobre sus tokens.
-- 54 tokens de diseño como variables CSS.
+- 51 tokens de diseño como variables CSS.
 - 36 íconos de Lucide 0.544.0 en sprite, con inyector para consumo entre orígenes.
 - Fuentes Inter y Poppins auto-hospedadas.
 - Styleguide navegable en `src/styleguide.html`.

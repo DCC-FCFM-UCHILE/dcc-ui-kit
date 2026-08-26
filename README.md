@@ -43,7 +43,7 @@ date picker, tarjeta de programa y tarjeta comprimida.
 
 **36 íconos** de [Lucide](https://lucide.dev) 0.544.0, en sprite.
 
-**54 tokens** de diseño como variables CSS.
+**51 tokens** de diseño como variables CSS.
 
 Todo con teclado y ARIA donde corresponde, y respetando `prefers-reduced-motion`.
 

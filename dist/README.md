@@ -1,4 +1,4 @@
-# DCC UI Kit 1.0.1 — guía de consumo
+# DCC UI Kit 1.0.0 — guía de consumo
 
 CSS servido desde tus propios servidores, como Bootstrap. Funciona igual en React, Vue y
 Django, porque son clases planas sobre variables CSS: no hay build ni framework de por medio.
@@ -8,22 +8,18 @@ Django, porque son clases planas sobre variables CSS: no hay build ni framework 
 ## 1. Qué se sirve
 
 ```
-https://cdn.dcc.uchile.cl/ui-kit/1.0.1/
-├── dcc-ui.css          73 KB   todo el kit, legible
-├── dcc-ui.min.css      47 KB   lo mismo, minificado  ← el que se usa en producción
+https://cdn.dcc.uchile.cl/ui-kit/1.0.0/
+├── dcc-ui.css          75 KB   todo el kit, legible
+├── dcc-ui.min.css      48 KB   lo mismo, minificado  ← el que se usa en producción
 ├── dcc-tokens.css       4 KB   sólo las 51 variables, por si alguien quiere sólo la paleta
 ├── dcc-icons.js        11 KB   inyector del sprite (ver sección 3)
 ├── dcc-icons.svg        9 KB   el sprite suelto, para consumo del mismo origen
 ├── fonts/             144 KB   Inter y Poppins en woff2
-├── app.html                    ejemplo mínimo de consumo, sin envoltorios del kit
 └── SRI.txt                     hashes de integridad
 ```
 
-Total: **293 KB**, de los cuales sólo viajan al navegador ~47 KB de CSS más las fuentes que la
+Total: **293 KB**, de los cuales sólo viajan al navegador ~48 KB de CSS más las fuentes que la
 página realmente use.
-
-Abre `app.html` para ver el kit funcionando en una página que **no** usa nada del styleguide: es la
-prueba de que no hay dependencias ocultas.
 
 **La ruta lleva la versión.** Publica cada release en su propia carpeta inmutable y no la toques
 nunca más. Así una app puede quedarse en `1.0.0` mientras otra pasa a `1.1.0`, y nadie se rompe por
@@ -34,15 +30,15 @@ sorpresa. No uses un alias tipo `/ui-kit/latest/`: te va a morder.
 ## 2. Instalación en dos líneas
 
 ```html
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.0.1/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/1.0.1/dcc-icons.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-icons.js" defer></script>
 ```
 
 Con integridad verificada, si quieres el hash de `SRI.txt`:
 
 ```html
 <link rel="stylesheet"
-      href="https://cdn.dcc.uchile.cl/ui-kit/1.0.1/dcc-ui.min.css"
+      href="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-ui.min.css"
       integrity="sha384-…"
       crossorigin="anonymous">
 ```
@@ -69,7 +65,7 @@ Es idempotente —cargarlo dos veces no duplica nada— y funciona tanto con `de
 tarde.
 
 Si el CDN termina sirviéndose desde **el mismo origen** que la app, puedes saltarte el JS y
-referenciar el sprite directo: `<use href="/ui-kit/1.0.1/dcc-icons.svg#i-star">`.
+referenciar el sprite directo: `<use href="/ui-kit/1.0.0/dcc-icons.svg#i-star">`.
 
 > **La clase `.dcc-i` es obligatoria en cada `<svg>`.** Es la que fija el grosor de trazo. Sin ella
 > los íconos se ven notoriamente más delgados.
@@ -80,7 +76,7 @@ referenciar el sprite directo: `<use href="/ui-kit/1.0.1/dcc-icons.svg#i-star">`
 
 ```jsx
 // una sola vez, en el layout raíz
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.0.1/dcc-ui.min.css" />
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-ui.min.css" />
 
 export function Boton({ children }) {
   return (
@@ -135,8 +131,8 @@ vanilla, sin dependencias.
 
 ```django
 {# templates/base.html #}
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.0.1/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/1.0.1/dcc-icons.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-icons.js" defer></script>
 ```
 
 ```django
@@ -145,7 +141,7 @@ vanilla, sin dependencias.
 </button>
 ```
 
-Copia los bloques de comportamiento que necesites desde el `<script>` de `index.html` a un
+Copia los bloques de comportamiento que necesites desde el `<script>` de `src/styleguide.html` a un
 `dcc-behaviors.js` propio.
 
 ---

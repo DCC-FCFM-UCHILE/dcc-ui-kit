@@ -1,5 +1,7 @@
 node_modules/
-package-lock.json
+
+# package-lock.json SÍ se versiona: el CI usa `npm ci` y `cache: npm`,
+# y ambos lo necesitan. Sin él el workflow falla antes de instalar nada.
 
 # sistema
 .DS_Store
