@@ -42,17 +42,24 @@ El styleguide ya está publicado y se actualiza solo en cada push a `main`:
 
 ### Montar el CDN
 
-Hoy el README y la guía de consumo apuntan a `https://cdn.dcc.uchile.cl/ui-kit/1.0.0/`. **Ese
-dominio todavía no sirve nada.** Hasta que alguien lo monte, ninguna app puede consumir el kit por
-URL.
+La configuración de nginx ya está escrita y en `main` del repositorio
+[web-config](https://github.com/DCC-FCFM-UCHILE/web-config), junto con el script que publica las
+versiones. Falta **desplegarla**, que se hace una sola vez:
 
-Para montarlo:
+```bash
+ssh -p210 apps 'cd ~/apps/web-config/produccion && make update && make build && make ui-kit'
+```
 
-1. Copia la carpeta `dist/` completa al servidor, dentro de `/ui-kit/1.0.0/`.
-2. Configura las cabeceras que pide la sección 7 de [`dist/README.md`](dist/README.md). El
-   `Access-Control-Allow-Origin` **no es opcional**: sin él las fuentes fallan en silencio.
-3. Cada versión nueva va en su propia carpeta —`/ui-kit/1.1.0/`— y **nunca encima de una anterior**,
-   porque las apps que usan la versión vieja se romperían.
+Eso deja el kit servido en `https://apps.dcc.uchile.cl/ui-kit/<versión>/`.
+
+Y después, para que las versiones nuevas se publiquen solas, instala el cron (una vez):
+
+```cron
+*/10 * * * * $HOME/apps/web-config/common/scripts/publicar-ui-kit.sh >> $HOME/logs/ui-kit.log 2>&1
+```
+
+Para que además funcione `cdn.dcc.uchile.cl` hay que pedirle a sistemas que apunte el subdominio a
+ese host y lo incluya en el terminador TLS. El vhost ya está escrito y esperando.
 
 Mientras tanto, las apps con build (React, Vue) sí pueden consumirlo ya:
 
@@ -98,16 +105,27 @@ GitHub corre solo las 28 verificaciones. Cuando pasen, mezclas con `gh pr merge 
 ### Cuando quieras publicar una versión nueva
 
 ```bash
-# 1. Edita "version" en package.json (ej: de 1.0.0 a 1.1.0)
+# 1. Edita "version" en package.json (ej: de 1.1.0 a 1.2.0)
 # 2. Anota los cambios en CHANGELOG.md
 # 3. Actualiza los números de versión de las URLs en README.md y dist/README.md
 npm run build && npm test
-git add -A && git commit -m "Versión 1.1.0"
-git tag v1.1.0
+git add -A && git commit -m "Versión 1.2.0"
+git tag v1.2.0
 git push && git push --tags
 ```
 
-Y copia `dist/` al servidor en la carpeta nueva, como dice arriba.
+**El tag es lo que publica.** Con el cron instalado, dentro de los 10 minutos siguientes la versión
+aparece sola en el CDN. No hay que entrar al servidor ni copiar nada.
+
+Si no quieres esperar:
+
+```bash
+ssh -p210 apps 'cd ~/apps/web-config/produccion && make ui-kit'
+```
+
+> **Un push a `main` sin tag no publica nada**, y está bien que así sea: las carpetas de versión son
+> inmutables porque las apps clavan la versión en la URL. Si cambias el CSS, sube la versión. Para
+> ver cambios sin publicar está el styleguide, que sí se actualiza en cada push.
 
 > **Cuidado con el paso 3.** Los números de versión de las URLs se escriben a mano: el build no los
 > genera. Ya pasó una vez que la guía de consumo quedó apuntando a una versión que no existía.
@@ -144,7 +162,9 @@ Los dos fallos típicos:
 
 Nada de esto impide publicar, pero conviene resolverlo:
 
-- [ ] Montar `cdn.dcc.uchile.cl` (ver arriba) — sin eso el kit no se puede consumir por URL
+- [ ] Desplegar el CDN: `make update && make build && make ui-kit` en el servidor, más el cron
+      (ver arriba). La configuración ya está escrita; falta aplicarla
+- [ ] Pedir a sistemas el DNS de `cdn.dcc.uchile.cl` y su inclusión en el terminador TLS
 - [ ] Reemplazar los logotipos de U. de Chile, FCFM y CNA en `src/assets/` — son marcadores de
       posición, no los logos reales (no se pudieron exportar desde Figma)
 - [ ] Reemplazar `src/assets/card-media.svg` por una imagen real, en proporción 3:2
