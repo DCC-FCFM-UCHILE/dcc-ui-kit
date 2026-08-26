@@ -9,12 +9,12 @@
     "dcc",
     "uchile"
   ],
-  "homepage": "https://github.com/dccuchile/dcc-ui-kit",
+  "homepage": "https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dccuchile/dcc-ui-kit.git"
+    "url": "git+https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit.git"
   },
-  "bugs": "https://github.com/dccuchile/dcc-ui-kit/issues",
+  "bugs": "https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit/issues",
   "license": "MIT",
   "type": "module",
   "sideEffects": [

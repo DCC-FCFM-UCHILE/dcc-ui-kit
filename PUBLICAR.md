@@ -8,18 +8,18 @@ y empujar — eso requiere tus credenciales, así que lo tienes que correr tú.
 Con [GitHub CLI](https://cli.github.com), desde esta misma carpeta:
 
 ```bash
-gh repo create dccuchile/dcc-ui-kit \
+gh repo create DCC-FCFM-UCHILE/dcc-ui-kit \
   --public \
   --source=. \
   --description "Sistema de diseño del DCC, Universidad de Chile" \
   --push
 ```
 
-O a mano: crea `dccuchile/dcc-ui-kit` **vacío** en github.com —sin README, sin .gitignore, sin
+O a mano: crea `DCC-FCFM-UCHILE/dcc-ui-kit` **vacío** en github.com —sin README, sin .gitignore, sin
 licencia, porque ya vienen— y luego:
 
 ```bash
-git remote add origin git@github.com:dccuchile/dcc-ui-kit.git
+git remote add origin git@github.com:DCC-FCFM-UCHILE/dcc-ui-kit.git
 git push -u origin main
 git push --tags
 ```
@@ -32,7 +32,7 @@ El workflow ya está configurado: publica el styleguide en cada push a `main`, d
 las verificaciones. Queda en:
 
 ```
-https://dccuchile.github.io/dcc-ui-kit/
+https://dcc-fcfm-uchile.github.io/dcc-ui-kit/
 ```
 
 ## 3. Proteger `main`
