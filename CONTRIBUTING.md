@@ -9,7 +9,7 @@ npm install               # sólo la primera vez
 npm start                 # sirve el proyecto; abre /src/styleguide.html
 # editar src/styles.css y src/styleguide.html
 npm run build             # regenera dist/ con los cambios
-npm test                  # 18 verificaciones
+npm test                  # 28 verificaciones
 ```
 
 `dist/` se versiona en el repositorio y el CI comprueba que coincida con lo que produce el build.

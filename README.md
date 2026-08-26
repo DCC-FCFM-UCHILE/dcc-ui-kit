@@ -15,8 +15,8 @@ HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 ## Uso rápido
 
 ```html
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/1.0.0/dcc-icons.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.1.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/1.1.0/dcc-ui.bundle.min.js" defer></script>
 
 <button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">
   Guardar <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg>
@@ -26,7 +26,7 @@ HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 O como paquete:
 
 ```bash
-npm i github:DCC-FCFM-UCHILE/dcc-ui-kit#v1.0.0
+npm i github:DCC-FCFM-UCHILE/dcc-ui-kit#v1.1.0
 ```
 
 La [guía de consumo](dist/README.md) cubre React, Vue, Django y las cabeceras que debe servir el
@@ -45,6 +45,10 @@ date picker, tarjeta de programa y tarjeta comprimida.
 
 **51 tokens** de diseño como variables CSS.
 
+**El comportamiento incluido.** Acordeón, tabs, combobox, tabla ordenable, calendario y el resto
+vienen en un bundle que se auto-inicializa. Dos etiquetas y funciona; no hay JavaScript que copiar
+a cada app.
+
 Todo con teclado y ARIA donde corresponde, y respetando `prefers-reduced-motion`.
 
 ---
@@ -55,11 +59,12 @@ Todo con teclado y ARIA donde corresponde, y respetando `prefers-reduced-motion`
 src/
   styleguide.html     documentación viva: cada componente con sus variantes
   styles.css          la fuente de verdad del CSS
+  behaviors.js        la fuente de verdad del comportamiento
   assets/             logotipos y placeholders
 dist/                 lo que se publica (generado, versionado y verificado en CI)
 scripts/
   build.mjs           genera dist/ desde src/
-  verify.mjs          18 verificaciones, incluidas las de comportamiento
+  verify.mjs          28 verificaciones, incluidas las de comportamiento
 docs/
   decisiones-de-diseno.md   por qué cada cosa es como es
 ```
@@ -75,8 +80,11 @@ npm run build      # regenera dist/
 npm test           # verifica que dist/ esté sincronizado y que nada se rompió
 ```
 
-El styleguide es el entorno de trabajo: se edita `src/styles.css`, se mira el resultado en
-`src/styleguide.html` y se corre `npm run build` antes de commitear.
+El styleguide es el entorno de trabajo: se edita `src/styles.css` o `src/behaviors.js`, se mira el
+resultado en `src/styleguide.html` y se corre `npm run build` antes de commitear.
+
+El styleguide carga el mismo `behaviors.js` que se publica, y las pruebas de comportamiento lo
+ejecutan tal cual. Si el kit se rompe, se rompe también la documentación: no pueden divergir.
 
 ---
 

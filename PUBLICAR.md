@@ -111,7 +111,7 @@ git push          # 5. sube a GitHub
 **El paso 1 no es opcional.** Si editas `src/styles.css` y no corres `npm run build`, lo publicado
 queda distinto del código fuente y el CI te va a rechazar el cambio.
 
-**El paso 2 tampoco.** Si sale `18 verificaciones pasan, 0 fallan`, vas bien. Si alguna falla, el
+**El paso 2 tampoco.** Si sale `28 verificaciones pasan, 0 fallan`, vas bien. Si alguna falla, el
 mensaje dice cuál y por qué; arréglalo antes de seguir.
 
 ### Si el push te rebota
@@ -125,7 +125,7 @@ git push -u origin mi-cambio
 gh pr create --fill
 ```
 
-GitHub corre solo las 18 verificaciones. Cuando pasen, mezclas con `gh pr merge --squash`.
+GitHub corre solo las 28 verificaciones. Cuando pasen, mezclas con `gh pr merge --squash`.
 
 ### Cuando quieras publicar una versión nueva
 

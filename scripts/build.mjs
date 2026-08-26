@@ -13,6 +13,7 @@ import { createHash } from "node:crypto";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { transform } from "lightningcss";
+import { minify } from "terser";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(raiz, "src");
@@ -166,7 +167,30 @@ const iconosJs = `/*! DCC UI Kit ${VERSION} — inyector del sprite de íconos.
 `;
 
 /* --------------------------------------------------------------------------
-   4. Escritura y verificación
+   4. Comportamiento
+       El JavaScript de los componentes se publica como archivo, en vez de
+       vivir embebido en el styleguide: si no, cada app tendría que copiarlo a
+       mano y las copias derivarían entre sí.
+   -------------------------------------------------------------------------- */
+const comportamiento = readFileSync(join(SRC, "behaviors.js"), "utf8");
+
+const banner = (que) => `/*! DCC UI Kit ${VERSION} — ${que} | MIT | ${pkg.homepage} */\n`;
+
+const behaviorsJs = banner("comportamiento de los componentes") + comportamiento;
+
+// El bundle es lo que instala una app corriente: sprite de íconos más
+// comportamiento, en un solo archivo, para que la instalación sean dos
+// etiquetas y no cuatro. Mismo criterio que bootstrap.bundle.js.
+const bundleJs = banner("bundle (íconos + comportamiento)") + iconosJs + "\n" + comportamiento;
+
+const minificar = async (js, nombre) => {
+  const r = await minify(js, { format: { comments: /^!/ } });
+  if (r.error) throw new Error(`terser falló en ${nombre}: ${r.error}`);
+  return r.code + "\n";
+};
+
+/* --------------------------------------------------------------------------
+   5. Escritura y verificación
    -------------------------------------------------------------------------- */
 const salidas = {
   "dcc-ui.css": cssCompleto,
@@ -174,13 +198,18 @@ const salidas = {
   "dcc-tokens.css": tokensCss,
   "dcc-icons.svg": sprite,
   "dcc-icons.js": iconosJs,
+  "dcc-behaviors.js": behaviorsJs,
+  "dcc-behaviors.min.js": await minificar(behaviorsJs, "dcc-behaviors.js"),
+  "dcc-ui.bundle.js": bundleJs,
+  "dcc-ui.bundle.min.js": await minificar(bundleJs, "dcc-ui.bundle.js"),
 };
 
 const sri = (txt) => "sha384-" + createHash("sha384").update(txt).digest("base64");
 salidas["SRI.txt"] =
   `DCC UI Kit ${VERSION} — hashes de integridad (sha384)\n\n` +
-  ["dcc-ui.css", "dcc-ui.min.css", "dcc-tokens.css", "dcc-icons.js"]
-    .map((f) => f.padEnd(18) + " " + sri(salidas[f])).join("\n") + "\n";
+  ["dcc-ui.css", "dcc-ui.min.css", "dcc-tokens.css", "dcc-icons.js",
+   "dcc-behaviors.js", "dcc-behaviors.min.js", "dcc-ui.bundle.js", "dcc-ui.bundle.min.js"]
+    .map((f) => f.padEnd(22) + " " + sri(salidas[f])).join("\n") + "\n";
 
 if (!existsSync(DIST)) mkdirSync(DIST, { recursive: true });
 
@@ -221,11 +250,14 @@ if (check) {
   }
   console.log("✓ dist/ está sincronizado con src/");
 } else {
-  const kb = (s) => (s.length / 1024).toFixed(1) + " KB";
+  const kb = (s) => (Buffer.byteLength(s) / 1024).toFixed(1) + " KB";
+  const nota = {
+    "dcc-tokens.css": `(${tokens.length} bloques :root)`,
+    "dcc-icons.svg": `(${simbolos.length} íconos)`,
+    "dcc-ui.bundle.min.js": "← el que instalan las apps",
+  };
   console.log(`DCC UI Kit ${VERSION} construido:`);
-  console.log(`  dcc-ui.css      ${kb(cssCompleto)}`);
-  console.log(`  dcc-ui.min.css  ${kb(cssMin)}`);
-  console.log(`  dcc-tokens.css  ${kb(tokensCss)}  (${tokens.length} bloques :root)`);
-  console.log(`  dcc-icons.svg   ${kb(sprite)}  (${simbolos.length} íconos)`);
-  console.log(`  dcc-icons.js    ${kb(iconosJs)}`);
+  for (const [nombre, contenido] of Object.entries(salidas)) {
+    console.log(`  ${nombre.padEnd(22)} ${kb(contenido).padStart(8)}  ${nota[nombre] || ""}`.trimEnd());
+  }
 }

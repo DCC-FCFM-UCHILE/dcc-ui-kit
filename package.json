@@ -1,6 +1,6 @@
 {
   "name": "@dcc/ui",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sistema de diseño del Departamento de Ciencias de la Computación, Universidad de Chile. CSS sin dependencias, para React, Vue o HTML plano.",
   "keywords": [
     "design-system",
@@ -29,6 +29,10 @@
     "./tokens": "./dist/dcc-tokens.css",
     "./icons.svg": "./dist/dcc-icons.svg",
     "./icons.js": "./dist/dcc-icons.js",
+    "./js": "./dist/dcc-ui.bundle.js",
+    "./js/min": "./dist/dcc-ui.bundle.min.js",
+    "./behaviors": "./dist/dcc-behaviors.js",
+    "./behaviors/min": "./dist/dcc-behaviors.min.js",
     "./fonts/*": "./dist/fonts/*"
   },
   "files": [
@@ -49,7 +53,8 @@
     "@fontsource/inter": "^5.0.0",
     "@fontsource/poppins": "^5.0.0",
     "jsdom": "^24.0.0",
-    "lightningcss": "^1.25.0"
+    "lightningcss": "^1.25.0",
+    "terser": "^5.51.0"
   },
   "engines": {
     "node": ">=18"
