@@ -2,16 +2,23 @@
 
 ## Flujo
 
+Si no manejas git, [`PUBLICAR.md`](PUBLICAR.md) explica el ciclo completo paso a paso.
+
 ```bash
-npm install
-npm start                 # abre /src/styleguide.html
+npm install               # sólo la primera vez
+npm start                 # sirve el proyecto; abre /src/styleguide.html
 # editar src/styles.css y src/styleguide.html
-npm run build             # regenera dist/
+npm run build             # regenera dist/ con los cambios
 npm test                  # 18 verificaciones
 ```
 
 `dist/` se versiona en el repositorio y el CI comprueba que coincida con lo que produce el build.
-**Si cambias `src/`, corre `npm run build` antes de commitear** o el CI va a fallar.
+**Si cambias `src/`, corre `npm run build` antes de commitear** o el CI va a fallar con
+`dist/ no coincide con src/`.
+
+El styleguide (`src/styleguide.html`) es a la vez la documentación y el entorno de trabajo: cada
+componente aparece con todas sus variantes y estados. Si agregas un componente, agrégalo ahí
+también, o `npm test` va a avisar que tiene CSS sin uso.
 
 ## Reglas del kit
 

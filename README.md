@@ -7,7 +7,8 @@ HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 
 [**Ver el styleguide**](https://dcc-fcfm-uchile.github.io/dcc-ui-kit/src/styleguide.html) ·
 [Guía de consumo](dist/README.md) ·
-[Decisiones de diseño](docs/decisiones-de-diseno.md)
+[Decisiones de diseño](docs/decisiones-de-diseno.md) ·
+[Cómo publicarlo](PUBLICAR.md)
 
 ---
 
