@@ -2196,10 +2196,22 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   color: var(--dcc-grey-light);
 }
 
-.dcc-ccard__desc { font-size: 12px; line-height: 1.4; color: var(--dcc-grey-default); }
+/* Una sola línea, con puntos suspensivos si no alcanza: la tarjeta es
+   "comprimida" justamente porque su alto no depende del largo del texto. Así
+   todas las tarjetas de una fila miden lo mismo. */
+.dcc-ccard__desc {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--dcc-grey-default);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Propuesta B: portada cuadrada a la izquierda y versión arriba a la derecha. */
-.dcc-ccard--media { flex-direction: row; align-items: flex-start; gap: 12px; }
+/* La portada va centrada respecto del cuerpo: con flex-start quedaba pegada
+   arriba y dejaba un hueco visiblemente mayor abajo. */
+.dcc-ccard--media { flex-direction: row; align-items: center; gap: 12px; }
 
 .dcc-ccard__cover {
   display: grid;

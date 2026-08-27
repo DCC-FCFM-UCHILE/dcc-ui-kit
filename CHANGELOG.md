@@ -9,6 +9,21 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.1.0] — 2026-08-26
+
+### Agrega
+
+- Dos íconos de Lucide 0.544.0: `i-flask-conical` —ambiente de pruebas— y `i-monitor` —entorno
+  local—. Con eso el sprite queda en 38.
+
+### Corrige
+
+- **La descripción de la tarjeta comprimida es de una línea**, con puntos suspensivos si no
+  alcanza. Antes crecía con el texto y descuadraba el alto de las tarjetas de una misma fila; la
+  tarjeta se llama comprimida justamente porque su alto no debería depender del largo del texto.
+- **La portada de la propuesta B va centrada** respecto del cuerpo. Con `align-items: flex-start`
+  quedaba pegada arriba y dejaba un hueco visiblemente mayor abajo: 17px arriba contra 36 abajo.
+
 ## [2.0.0] — 2026-08-26
 
 El kit dejó de pisarle los estilos a la aplicación que lo consume.

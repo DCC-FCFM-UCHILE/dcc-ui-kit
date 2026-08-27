@@ -1,4 +1,4 @@
-# DCC UI Kit 2.0.0 — guía de consumo
+# DCC UI Kit 2.1.0 — guía de consumo
 
 CSS servido desde tus propios servidores, como Bootstrap. Funciona igual en React, Vue y
 Django, porque son clases planas sobre variables CSS: no hay build ni framework de por medio.
@@ -8,7 +8,7 @@ Django, porque son clases planas sobre variables CSS: no hay build ni framework 
 ## 1. Qué se sirve
 
 ```
-https://cdn.dcc.uchile.cl/ui-kit/2.0.0/
+https://cdn.dcc.uchile.cl/ui-kit/2.1.0/
 ├── dcc-ui.min.css        48 KB   el CSS, minificado        ← se usa en producción
 ├── dcc-ui.bundle.min.js  20 KB   íconos + comportamiento   ← se usa en producción
 ├── dcc-ui.css            76 KB   el CSS legible, para depurar
@@ -27,7 +27,7 @@ la página realmente use. El resto de la carpeta son variantes legibles y piezas
 particulares.
 
 **La ruta lleva la versión.** Publica cada release en su propia carpeta inmutable y no la toques
-nunca más. Así una app puede quedarse en `1.0.0` mientras otra pasa a `2.0.0`, y nadie se rompe por
+nunca más. Así una app puede quedarse en `1.0.0` mientras otra pasa a `2.1.0`, y nadie se rompe por
 sorpresa. No uses un alias tipo `/ui-kit/latest/`: te va a morder.
 
 ---
@@ -35,8 +35,8 @@ sorpresa. No uses un alias tipo `/ui-kit/latest/`: te va a morder.
 ## 2. Instalación en dos líneas
 
 ```html
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.bundle.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.bundle.min.js" defer></script>
 ```
 
 Eso es todo. No hay que llamar a ninguna función: el bundle inyecta los íconos y enlaza los
@@ -57,10 +57,10 @@ Con integridad verificada, si quieres los hashes de `SRI.txt`:
 
 ```html
 <link rel="stylesheet"
-      href="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.min.css"
+      href="https://cdn.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.min.css"
       integrity="sha384-…"
       crossorigin="anonymous">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.bundle.min.js"
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.bundle.min.js"
         integrity="sha384-…"
         crossorigin="anonymous" defer></script>
 ```
@@ -152,7 +152,7 @@ no se ve nada y no hay error en consola.
 
 ```jsx
 // una sola vez, en el layout raíz
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.min.css" />
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.min.css" />
 
 export function Boton({ children }) {
   return (
@@ -209,8 +209,8 @@ exactamente el escenario para el que fue pensado. No hay nada que portar ni que 
 
 ```django
 {# templates/base.html #}
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.bundle.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.bundle.min.js" defer></script>
 ```
 
 ```django
@@ -219,7 +219,7 @@ exactamente el escenario para el que fue pensado. No hay nada que portar ni que 
 </button>
 ```
 
-Para actualizar, cambias `2.0.0` por la versión nueva en esas dos líneas del `base.html`. Nada más.
+Para actualizar, cambias `2.1.0` por la versión nueva en esas dos líneas del `base.html`. Nada más.
 
 ### Desde `staticfiles`, sin CDN
 

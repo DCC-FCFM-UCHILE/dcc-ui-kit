@@ -1,4 +1,4 @@
-/*! DCC UI Kit 2.0.0 — Departamento de Ciencias de la Computación, U. de Chile
+/*! DCC UI Kit 2.1.0 — Departamento de Ciencias de la Computación, U. de Chile
    Todas las clases van prefijadas con dcc- y las variables con --dcc-, para no
    colisionar con el CSS de la aplicación que lo consume.
    Los íconos requieren la clase .dcc-i en el <svg>. */
@@ -1541,8 +1541,21 @@ así que una
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--dcc-grey-light);
-}.dcc-ccard__desc { font-size: 12px; line-height: 1.4; color: var(--dcc-grey-default); }/* Propuesta B: portada cuadrada a la izquierda y versión arriba a la derecha. */
-.dcc-ccard--media { flex-direction: row; align-items: flex-start; gap: 12px; }.dcc-ccard__cover {
+}/* Una sola línea,
+con puntos suspensivos si no alcanza: la tarjeta es
+   "comprimida" justamente porque su alto no depende del largo del texto. Así
+   todas las tarjetas de una fila miden lo mismo. */
+.dcc-ccard__desc {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--dcc-grey-default);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}/* Propuesta B: portada cuadrada a la izquierda y versión arriba a la derecha. */
+/* La portada va centrada respecto del cuerpo: con flex-start quedaba pegada
+   arriba y dejaba un hueco visiblemente mayor abajo. */
+.dcc-ccard--media { flex-direction: row; align-items: center; gap: 12px; }.dcc-ccard__cover {
   display: grid;
   place-items: center;
   width: 56px;
