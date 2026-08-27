@@ -1,7 +1,7 @@
 DCC UI Kit 2.2.0 — hashes de integridad (sha384)
 
-dcc-ui.css             sha384-cI88tjTtArZMQBSuxIp6+ZH4r+VfthOq8M2tszD9xBYf8b6MKqVrglYTi/+9ALAU
-dcc-ui.min.css         sha384-Xo4SkJt/9chPTdAa6S1+6MaThADwnBNCufRh7vTS9FpbiCcLBOIlxrkqN0G3egtg
+dcc-ui.css             sha384-h/7WJOiVS0jqBmqo2UjeY1QAWM5Y/mVsqfXc0auU2qTFaLE0SBcxcjz8F7ZJt88X
+dcc-ui.min.css         sha384-w4RqM6U9igMPjBixVuDCACUakRRtajGsE00+jesBOgOyNk5vfX7FPYTZSFRg8lir
 dcc-tokens.css         sha384-pgxkwv3/cdjGJfXC4ljWhCOkgKZ7QUgYBRkzcLtg+b5gfVCu+6bjh9vxhZ58TldI
 dcc-icons.js           sha384-41SRgfMuJ/ATUECS6pmR74bJxIBof0Jj7BD+mDE+8sJ2njzP43M5ybsFIQZnRRyl
 dcc-behaviors.js       sha384-n3f6QOfFcxMgLcZZaFVvtDyEZSZTgoAgf72TbbWnF55GaTC8sNGsNYJ2nqIlGQnI

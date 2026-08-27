@@ -1384,7 +1384,10 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   padding: 10px;
   margin-bottom: 4px;
   border-bottom: 1px solid var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-light);
+  /* grey-default y no grey-light: este último se queda en 4,35:1 sobre blanco,
+     bajo el mínimo AA para texto de 14px. Sigue leyéndose más tenue que las
+     opciones, que van en grey-dark. */
+  color: var(--dcc-grey-default);
   font-size: 14px;
   line-height: 1.3;
 }
