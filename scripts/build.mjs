@@ -190,7 +190,29 @@ const minificar = async (js, nombre) => {
 };
 
 /* --------------------------------------------------------------------------
-   5. Escritura y verificación
+   5. Assets compartidos
+       Logotipos institucionales e imágenes que cualquier aplicación puede
+       necesitar. Se publican tal cual, sin transformar: basta dejar el archivo
+       en src/assets/ y reconstruir.
+
+       Van como salidas —y no copiados aparte, como las fuentes— para que
+       `--check` los cubra: si alguien edita dist/assets/ a mano, el CI falla.
+
+       OJO: los logotipos del DCC, la FCFM, la Universidad y el CNA NO están
+       cubiertos por la licencia MIT del kit. Son marcas institucionales y su
+       uso se rige por las normas gráficas de la Universidad.
+   -------------------------------------------------------------------------- */
+const ASSETS = join(SRC, "assets");
+const assets = {};
+if (existsSync(ASSETS)) {
+  for (const archivo of readdirSync(ASSETS).sort()) {
+    if (archivo.startsWith(".")) continue;
+    assets[`assets/${archivo}`] = readFileSync(join(ASSETS, archivo), "utf8");
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Escritura y verificación
    -------------------------------------------------------------------------- */
 const salidas = {
   "dcc-ui.css": cssCompleto,
@@ -202,6 +224,7 @@ const salidas = {
   "dcc-behaviors.min.js": await minificar(behaviorsJs, "dcc-behaviors.js"),
   "dcc-ui.bundle.js": bundleJs,
   "dcc-ui.bundle.min.js": await minificar(bundleJs, "dcc-ui.bundle.js"),
+  ...assets,
 };
 
 const sri = (txt) => "sha384-" + createHash("sha384").update(txt).digest("base64");
@@ -216,6 +239,7 @@ if (!existsSync(DIST)) mkdirSync(DIST, { recursive: true });
 let difieren = [];
 for (const [nombre, contenido] of Object.entries(salidas)) {
   const destino = join(DIST, nombre);
+  if (!check) mkdirSync(dirname(destino), { recursive: true });
   if (check) {
     const actual = existsSync(destino) ? readFileSync(destino, "utf8") : null;
     if (actual !== contenido) difieren.push(nombre);

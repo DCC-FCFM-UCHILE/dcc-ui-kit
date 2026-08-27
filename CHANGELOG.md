@@ -9,6 +9,28 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.2.0] — 2026-08-27
+
+### Agrega
+
+- **El kit publica sus logotipos.** `src/assets/` ya existía pero el build no lo tocaba, así que
+  los archivos no llegaban a `dist/` y ninguna aplicación podía usarlos. Ahora se publican en
+  `assets/` y quedan disponibles por URL, igual que el CSS:
+
+      https://cdn.dcc.uchile.cl/ui-kit/2.2.0/assets/logo-dcc.svg
+
+  Para agregar uno nuevo basta dejarlo en `src/assets/` y reconstruir. Van como salidas del build,
+  no copiados aparte, así que `npm run check:dist` también los cubre: editar `dist/assets/` a mano
+  hace fallar el CI.
+- Export `@dcc/ui/assets/*` para quien lo consuma como paquete.
+
+### Notas
+
+- Los logotipos del DCC, la FCFM, la Universidad de Chile y el CNA **no** están cubiertos por la
+  licencia MIT del kit: son marcas institucionales.
+- Los cuatro logotipos que vienen hoy siguen siendo **marcadores de posición**; falta reemplazarlos
+  por los reales.
+
 ## [2.1.0] — 2026-08-26
 
 ### Agrega

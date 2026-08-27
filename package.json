@@ -1,6 +1,6 @@
 {
   "name": "@dcc/ui",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Sistema de diseño del Departamento de Ciencias de la Computación, Universidad de Chile. CSS sin dependencias, para React, Vue o HTML plano.",
   "keywords": [
     "design-system",
@@ -33,6 +33,7 @@
     "./js/min": "./dist/dcc-ui.bundle.min.js",
     "./behaviors": "./dist/dcc-behaviors.js",
     "./behaviors/min": "./dist/dcc-behaviors.min.js",
+    "./assets/*": "./dist/assets/*",
     "./fonts/*": "./dist/fonts/*"
   },
   "files": [

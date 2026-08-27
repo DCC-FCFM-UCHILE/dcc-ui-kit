@@ -166,7 +166,9 @@ Nada de esto impide publicar, pero conviene resolverlo:
       (ver arriba). La configuración ya está escrita; falta aplicarla
 - [ ] Pedir a sistemas el DNS de `cdn.dcc.uchile.cl` y su inclusión en el terminador TLS
 - [ ] Reemplazar los logotipos de U. de Chile, FCFM y CNA en `src/assets/` — son marcadores de
-      posición, no los logos reales (no se pudieron exportar desde Figma)
+      posición, no los logos reales (no se pudieron exportar desde Figma). **Desde 2.2.0 se
+      publican en el CDN**, así que ahora los consumen otras aplicaciones: cambiarlos ahí los
+      arregla en todas de una vez
 - [ ] Reemplazar `src/assets/card-media.svg` por una imagen real, en proporción 3:2
 - [ ] Decidir si los badges `subtle` de LightBlue y Green suben de contraste — hoy quedan bajo el
       mínimo de accesibilidad (ver `docs/decisiones-de-diseno.md`)

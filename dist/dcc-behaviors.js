@@ -1,4 +1,4 @@
-/*! DCC UI Kit 2.1.0 — comportamiento de los componentes | MIT | https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit */
+/*! DCC UI Kit 2.2.0 — comportamiento de los componentes | MIT | https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit */
 /**
  * Comportamiento de los componentes del DCC UI Kit.
  *
