@@ -127,8 +127,13 @@ ssh -p210 apps 'cd ~/apps/web-config/produccion && make ui-kit'
 > inmutables porque las apps clavan la versión en la URL. Si cambias el CSS, sube la versión. Para
 > ver cambios sin publicar está el styleguide, que sí se actualiza en cada push.
 
-> **Cuidado con el paso 3.** Los números de versión de las URLs se escriben a mano: el build no los
-> genera. Ya pasó una vez que la guía de consumo quedó apuntando a una versión que no existía.
+> **El orden importa, y saltárselo ya costó una vez.** `package.json` primero, `npm run build`
+> después, y el tag al final. El build estampa la versión dentro de los archivos —`SRI.txt`, las
+> cabeceras del CSS y del bundle—, así que si etiquetas antes de subirla, la carpeta del CDN se
+> llama `2.5.0` pero su contenido dice `2.4.0`. Eso fue exactamente lo que pasó con 2.3.0.
+>
+> `npm test` te avisa si las URLs de la documentación no coinciden con `package.json`, pero no
+> puede saber qué tag vas a poner después. Esa parte es tuya.
 
 ---
 

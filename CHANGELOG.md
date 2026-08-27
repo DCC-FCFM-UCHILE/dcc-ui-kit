@@ -9,6 +9,54 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.4.0] — 2026-08-27
+
+### Agrega
+
+- **Menú desplegable** (`dcc-menu`). Faltaba, y por eso el Portal SSO tuvo que quedarse con el de
+  Bootstrap para el menú de usuario. Abre con clic, Enter o flechas; se recorre con flechas, Home y
+  End, saltando las opciones deshabilitadas; cierra con Escape —devolviendo el foco al botón—, con
+  Tab, con un clic fuera o al activar una opción, porque son acciones y no un valor que quede
+  seleccionado.
+  - `dcc-menu--end` lo cuelga del borde derecho, para disparadores en una esquina.
+  - `dcc-menu__group` separa bloques de opciones.
+  - Se despliega **siempre bajo** el disparador: el avatar tiene que seguir visible con el menú
+    abierto.
+- Tres íconos de Lucide 0.544.0: `i-archive`, `i-log-out` e `i-chart-column`. El sprite queda en 41.
+- `dcc-nav-app__user-name`, para poder ocultar el nombre en pantallas angostas sin tocar el avatar.
+
+### Cambia
+
+- **Las alertas ocupan el ancho de su contenedor.** Eran 400px fijos, lo que las dejaba cortas
+  dentro de una columna ancha. Si quieres una más angosta, limítala desde el contenedor.
+- **La barra de aplicación cabe en una línea en el teléfono.** Antes envolvía y gastaba dos franjas
+  de alto donde el alto es lo escaso: logo a 88px, título a 18px con recorte, y el nombre de la
+  persona se oculta dejando su avatar.
+
+### Corrige
+
+- **El color se declara en `.dcc-nav-app`, no sólo en `.dcc-nav-app__user`.** Al colgar el menú en
+  la barra, el nombre quedaba en gris oscuro sobre azul —1,38:1— porque `.dcc-menu__trigger`
+  declara `color: inherit` y ganaba por orden. Ahora cualquier componente que se cuelgue en la
+  barra hereda blanco: 8,01:1.
+- El styleguide mostraba los dos menús cerrados, así que la sección parecía vacía. Ahora abre con
+  un ejemplo desplegado fijo.
+
+### Notas
+
+- Verificaciones: de 28 a 37.
+
+## [2.3.0] — 2026-08-27
+
+- Los logotipos institucionales dejan de ser marcadores de posición: entran los reales del DCC, la
+  FCFM, la Universidad de Chile y el CNA.
+
+> **Ojo con esta versión.** Se etiquetó sin subir `package.json`, así que los archivos publicados en
+> `/ui-kit/2.3.0/` se identifican a sí mismos como 2.2.0 —su `SRI.txt` y las cabeceras del CSS—. El
+> contenido es correcto; sólo la etiqueta interna quedó atrasada. Se corrige desde 2.4.0. Al
+> publicar, el orden importa: primero `package.json`, después `npm run build`, y recién entonces el
+> tag.
+
 ## [2.2.0] — 2026-08-27
 
 ### Agrega
