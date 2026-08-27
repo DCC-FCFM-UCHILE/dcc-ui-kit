@@ -185,6 +185,75 @@
       });
     });
 
+    /* ---------- Menú desplegable ---------- */
+    cada(raiz, ".js-menu", "menu", function (menu) {
+      var trigger = menu.querySelector(".dcc-menu__trigger");
+      var list = menu.querySelector(".dcc-menu__list");
+      if (!trigger || !list) return;
+
+      var items = function () {
+        return Array.prototype.slice.call(list.querySelectorAll(".dcc-menu__item"))
+          .filter(function (i) { return i.getAttribute("aria-disabled") !== "true"; });
+      };
+
+      function abrir() {
+        list.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+      }
+      function cerrar(devolverFoco) {
+        if (list.hidden) return;
+        list.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+        if (devolverFoco) trigger.focus();
+      }
+      function enfocar(i) {
+        var xs = items();
+        if (!xs.length) return;
+        var j = (i + xs.length) % xs.length;
+        xs.forEach(function (x, k) { x.classList.toggle("is-active", k === j); });
+        xs[j].focus();
+      }
+
+      trigger.addEventListener("click", function () {
+        list.hidden ? abrir() : cerrar(false);
+      });
+
+      trigger.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          abrir();
+          enfocar(0);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          abrir();
+          enfocar(-1);
+        } else if (e.key === "Escape") {
+          cerrar(true);
+        }
+      });
+
+      list.addEventListener("keydown", function (e) {
+        var xs = items();
+        var i = xs.indexOf(document.activeElement);
+        if (e.key === "ArrowDown") { e.preventDefault(); enfocar(i + 1); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); enfocar(i - 1); }
+        else if (e.key === "Home") { e.preventDefault(); enfocar(0); }
+        else if (e.key === "End") { e.preventDefault(); enfocar(-1); }
+        else if (e.key === "Escape") { e.preventDefault(); cerrar(true); }
+        else if (e.key === "Tab") { cerrar(false); }
+      });
+
+      // Al activar una opción el menú se cierra: son acciones, no un valor que
+      // se quede seleccionado.
+      list.addEventListener("click", function (e) {
+        if (e.target.closest(".dcc-menu__item")) cerrar(false);
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!list.hidden && !menu.contains(e.target)) cerrar(false);
+      });
+    });
+
     /* ---------- Acordeón ---------- */
     cada(raiz, ".js-accordion .dcc-accordion__trigger", "accordion", function (trigger) {
       trigger.addEventListener("click", function () {

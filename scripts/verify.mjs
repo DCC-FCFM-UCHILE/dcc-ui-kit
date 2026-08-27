@@ -133,6 +133,37 @@ const orden = titulos();
 key(lista.querySelectorAll(".dcc-ccard__grip")[1], "ArrowUp");
 check(titulos()[0] === orden[1], "las tarjetas se reordenan con el teclado");
 
+const menu = doc.querySelector(".js-menu");
+const menuTrigger = menu.querySelector(".dcc-menu__trigger");
+const menuLista = menu.querySelector(".dcc-menu__list");
+click(menuTrigger);
+check(menuLista.hidden === false && menuTrigger.getAttribute("aria-expanded") === "true",
+  "el menú abre y lo anuncia con aria-expanded");
+
+key(menuLista, "ArrowDown");
+check(doc.activeElement && doc.activeElement.classList.contains("dcc-menu__item"),
+  "las flechas mueven el foco entre las opciones");
+
+// La opción deshabilitada no debe recibir foco al recorrer el menú.
+const habilitadas = [...menu.querySelectorAll(".dcc-menu__item")]
+  .filter((i) => i.getAttribute("aria-disabled") !== "true");
+check(habilitadas.length < menu.querySelectorAll(".dcc-menu__item").length,
+  "el ejemplo incluye una opción deshabilitada");
+
+key(menuLista, "Escape");
+check(menuLista.hidden === true && doc.activeElement === menuTrigger,
+  "Escape cierra el menú y devuelve el foco al botón");
+
+// Un clic fuera lo cierra: si no, quedaría abierto al navegar por la página.
+click(menuTrigger);
+click(doc.body);
+check(menuLista.hidden === true, "un clic fuera cierra el menú");
+
+// Activar una opción cierra el menú: son acciones, no un valor seleccionable.
+click(menuTrigger);
+click(menu.querySelector(".dcc-menu__item"));
+check(menuLista.hidden === true, "elegir una opción cierra el menú");
+
 /* ---------- 6. la API pública, que es de lo que dependen las apps ---------- */
 console.log("\nAPI de DCCUI");
 check(typeof window.DCCUI === "object" && typeof window.DCCUI.init === "function",

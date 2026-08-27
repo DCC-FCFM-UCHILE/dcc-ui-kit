@@ -377,8 +377,10 @@ switch
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  width: 400px;
-  max-width: 100%;
+  /* Ocupa el ancho de su contenedor. Antes eran 400px fijos, lo que dejaba las
+     alertas cortas dentro de una columna ancha; si se quiere una más angosta,
+     se limita desde fuera con el contenedor. */
+  width: 100%;
   color: var(--dcc-gray-700);
   font-size: 16px;
   line-height: 1.2;
@@ -677,8 +679,29 @@ contenido topado
       gap: 20px;
       padding-top: 12px;
       border-top: 1px solid var(--dcc-grey-light);
-    }.dcc-nav-inst.is-open .dcc-social { display: flex; }/* Nav de aplicación */
-    .dcc-nav-app { flex-wrap: wrap; padding-block: 16px; gap: 16px; }.dcc-nav-app__brand { flex: 1 1 100%; gap: 16px; }.dcc-nav-app__title { font-size: 22px; }.dcc-nav-app__user { margin-left: auto; }/* Sidebar → ancho completo */
+    }.dcc-nav-inst.is-open .dcc-social { display: flex; }/* Nav de aplicación: todo en una sola línea.
+       Antes envolvía —la marca ocupaba el 100% y el usuario caía debajo—,
+  lo que
+       gastaba dos franjas de alto en una pantalla donde el alto es lo escaso.
+       Para que quepa: logo más chico,
+  título más chico y el nombre de la persona
+       se oculta,
+  quedando sólo su avatar o ícono. */
+    .dcc-nav-app { flex-wrap: nowrap; padding-block: 12px; gap: 12px; }.dcc-nav-app__brand { flex: 0 1 auto; gap: 12px; min-width: 0; }.dcc-nav-app__title {
+      font-size: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }/* `flex` y no sólo `width`: en un contenedor flex manda el flex-basis,
+  y la
+       regla general del logo trae `flex: 0 0 …`. Con width solo,
+  no pasaba nada. */
+    .dcc-nav-app__brand .dcc-logo-dcc { flex: 0 0 88px; width: 88px; height: auto; }.dcc-nav-app__user { margin-left: auto; flex: 0 0 auto; }/* El nombre se va; el avatar o el ícono se queda. Se contempla la clase
+       explícita y también el <span> sin clase del markup anterior,
+  para no
+       obligar a tocar las páginas que ya existen. */
+    .dcc-nav-app__user-name,
+  .dcc-nav-app__user > span:not([class]) { display: none; }/* Sidebar → ancho completo */
     .dcc-sidebar { width: 100%; min-height: 0; }/* Footer: los enlaces pasan a dos columnas para no volverse una tira de 8
        filas,
   el bloque de contacto se alinea a la izquierda y los logos se
@@ -879,7 +902,64 @@ que no se puede estilizar; este la reemplaza por una lista con
 }/* El check hereda el color del texto de la opción,
 sin acento propio */
 .dcc-combo__option svg { width: 16px; height: 16px; flex: 0 0 16px; opacity: 0; color: currentColor; }.dcc-combo__option:hover,
-.dcc-combo__option.is-active { background: var(--dcc-grey-ultralight); }.dcc-combo__option[aria-selected="true"] { font-weight: 700; color: var(--dcc-grey-default); }.dcc-combo__option[aria-selected="true"] svg { opacity: 1; }.dcc-field--error .dcc-combo__button { border-color: var(--dcc-red-default); }.dcc-field--success .dcc-combo__button { border-color: var(--dcc-green-default); }/* --------------------------------------------------------------------------
+.dcc-combo__option.is-active { background: var(--dcc-grey-ultralight); }.dcc-combo__option[aria-selected="true"] { font-weight: 700; color: var(--dcc-grey-default); }.dcc-combo__option[aria-selected="true"] svg { opacity: 1; }/* --------------------------------------------------------------------------
+   Menú desplegable
+   Para menús de acciones colgados de un botón —el de usuario en la barra de
+   aplicación es el caso típico—. No es un <select>: sus elementos navegan o
+   ejecutan,
+no eligen un valor. Para elegir un valor está el combobox.
+   -------------------------------------------------------------------------- */
+.dcc-menu { position: relative; display: inline-flex; }.dcc-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font-family: var(--dcc-font-body);
+}.dcc-menu__trigger:focus-visible {
+  outline: 2px solid var(--dcc-lightblue-default);
+  outline-offset: 3px;
+  border-radius: var(--dcc-radius-sm);
+}.dcc-menu__list {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  padding: 4px;
+  background: var(--dcc-white);
+  border: 1px solid var(--dcc-grey-light);
+  border-radius: var(--dcc-radius-sm);
+  box-shadow: var(--dcc-shadow);
+}/* Colgado del borde derecho: es lo que se necesita cuando el disparador vive
+   en la esquina de la barra y el menú se saldría de la pantalla. */
+.dcc-menu--end .dcc-menu__list { left: auto; right: 0; }.dcc-menu__list[hidden] { display: none; }.dcc-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  background: none;
+  border-radius: var(--dcc-radius-sm);
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-grey-dark);
+  text-align: left;
+  cursor: pointer;
+}.dcc-menu__item svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--dcc-grey-light); }.dcc-menu__item:hover,
+.dcc-menu__item.is-active { background: var(--dcc-grey-ultralight); }.dcc-menu__item:focus-visible {
+  outline: 2px solid var(--dcc-lightblue-default);
+  outline-offset: -2px;
+}.dcc-menu__item[aria-disabled="true"] { opacity: .5; pointer-events: none; }.dcc-menu__sep {
+  border: 0;
+  border-top: 1px solid var(--dcc-grey-ultralight);
+  margin: 4px 0;
+}.dcc-field--error .dcc-combo__button { border-color: var(--dcc-red-default); }.dcc-field--success .dcc-combo__button { border-color: var(--dcc-green-default); }/* --------------------------------------------------------------------------
    15.2 AVATAR
    -------------------------------------------------------------------------- */
 /* Las iniciales van SIEMPRE dentro de .dcc-avatar__label. Si se dejan como texto

@@ -151,6 +151,7 @@
       <a href="#inputs">Inputs</a>
       <a href="#switch">Switch</a>
       <a href="#avatares">Avatares y badges</a>
+      <a href="#menu">Menú desplegable</a>
       <a href="#lista">Lista</a>
       <a href="#orden">Tabla ordenable</a>
       <a href="#acordeon">Acordeón</a>
@@ -588,7 +589,7 @@
           <p class="dcc-nav-app__title">Nombre Aplicación</p>
         </div>
         <div class="dcc-nav-app__user">
-          <span>Nombre Apellido</span>
+          <span class="dcc-nav-app__user-name">Nombre Apellido</span>
           <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-circle-user"/></svg>
         </div>
       </nav>
@@ -881,6 +882,56 @@
         </button>
       </span>
     </div>
+  </section>
+  <!-- ==================================================================== -->
+  <section class="dcc-section" id="menu">
+    <h2>Menú desplegable</h2>
+
+    <p class="dcc-sub-label">Menú de acciones colgado de un botón. Para elegir un valor está el combobox.</p>
+    <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,max-content));gap:32px;align-items:start">
+
+      <div class="dcc-menu js-menu">
+        <button class="dcc-menu__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-acciones">
+          Acciones
+          <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+        </button>
+        <div class="dcc-menu__list" id="menu-acciones" role="menu" hidden>
+          <a class="dcc-menu__item" role="menuitem" href="#menu">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"/></svg>Ver detalle
+          </a>
+          <a class="dcc-menu__item" role="menuitem" href="#menu">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg>Descargar
+          </a>
+          <hr class="dcc-menu__sep">
+          <button class="dcc-menu__item" role="menuitem" type="button" aria-disabled="true">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"/></svg>Configurar
+          </button>
+        </div>
+      </div>
+
+      <div class="dcc-menu dcc-menu--end js-menu">
+        <button class="dcc-menu__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-usuario">
+          <span class="dcc-nav-app__user-name">Cristian Salazar</span>
+          <span class="dcc-avatar dcc-avatar--sm"><span class="dcc-avatar__label">CS</span></span>
+        </button>
+        <div class="dcc-menu__list" id="menu-usuario" role="menu" hidden>
+          <a class="dcc-menu__item" role="menuitem" href="#menu">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-user"/></svg>Mi perfil
+          </a>
+          <a class="dcc-menu__item" role="menuitem" href="#menu">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"/></svg>Administración
+          </a>
+          <hr class="dcc-menu__sep">
+          <a class="dcc-menu__item" role="menuitem" href="#menu">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>Salir
+          </a>
+        </div>
+      </div>
+
+    </div>
+    <p class="dcc-sub-label" style="margin-top:24px">Se abre con clic, con Enter o con las flechas; se recorre con las flechas
+      y se cierra con Escape, con Tab o haciendo clic fuera. <code>dcc-menu--end</code> lo cuelga del borde derecho,
+      para cuando el disparador vive en una esquina.</p>
   </section>
   <!-- ==================================================================== -->
   <section class="dcc-section" id="lista">
