@@ -207,7 +207,9 @@ const assets = {};
 if (existsSync(ASSETS)) {
   for (const archivo of readdirSync(ASSETS).sort()) {
     if (archivo.startsWith(".")) continue;
-    assets[`assets/${archivo}`] = readFileSync(join(ASSETS, archivo), "utf8");
+    // Como Buffer y no como texto: un logotipo puede venir en PNG o WebP, y
+    // leerlo como utf8 lo corrompe en silencio.
+    assets[`assets/${archivo}`] = readFileSync(join(ASSETS, archivo));
   }
 }
 
@@ -241,8 +243,12 @@ for (const [nombre, contenido] of Object.entries(salidas)) {
   const destino = join(DIST, nombre);
   if (!check) mkdirSync(dirname(destino), { recursive: true });
   if (check) {
-    const actual = existsSync(destino) ? readFileSync(destino, "utf8") : null;
-    if (actual !== contenido) difieren.push(nombre);
+    const binario = Buffer.isBuffer(contenido);
+    const actual = existsSync(destino)
+      ? (binario ? readFileSync(destino) : readFileSync(destino, "utf8"))
+      : null;
+    const iguales = actual !== null && (binario ? contenido.equals(actual) : actual === contenido);
+    if (!iguales) difieren.push(nombre);
   } else {
     writeFileSync(destino, contenido);
   }
