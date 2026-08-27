@@ -53,6 +53,14 @@ const varSinPrefijo = [...declaradas].filter((v) => !v.startsWith("--dcc-")).sor
 check(varSinPrefijo.length === 0, "todas las variables llevan el prefijo --dcc-" +
   (varSinPrefijo.length ? ` — sueltas: ${varSinPrefijo.join(", ")}` : ""));
 
+// La barra de aplicación tiene fondo oscuro. Si el color se declara sólo en
+// .dcc-nav-app__user, cualquier componente que se cuelgue dentro —un menú, un
+// botón— hereda el color del cuerpo y queda gris sobre azul. Tiene que estar en
+// la barra misma para que se herede.
+const navApp = cssSinComentarios.match(/\.dcc-nav-app\s*\{[^}]*\}/);
+check(!!navApp && /(^|[;{])\s*color\s*:/.test(navApp[0]),
+  ".dcc-nav-app declara color, para que sus hijos lo hereden");
+
 /* ---------- 3. íconos ---------- */
 console.log("\nÍconos");
 const ids = new Set([...markup.matchAll(/<g id="(i-[^"]+)"/g)].map((m) => m[1]));

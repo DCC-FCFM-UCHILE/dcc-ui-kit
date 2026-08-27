@@ -523,9 +523,17 @@ gap 20 */
 }.dcc-social a { color: #fff; transition: opacity .15s ease; }.dcc-social a:hover { opacity: .7; }/* sin acento rojo en las marcas sociales */
 .dcc-social a:focus-visible { outline: 2px solid var(--dcc-lightblue-light); outline-offset: 3px; border-radius: 2px; }.dcc-social svg { width: 24px; height: 24px; }/* Botón hamburguesa: no existe en Figma,
 se añade para <768px */
-.dcc-nav-toggle { display: none; }/* --- 12b. Nav de aplicación --------------------------------------------- */
-.dcc-nav-app {
-  background: var(--dcc-grey-default);
+.dcc-nav-toggle { display: none; }
+
+/* --- 12b. Nav de aplicación --------------------------------------------- */
+.dcc-nav-app {background: var(--dcc-grey-default);
+  /* El color va en la barra y no sólo en __user: así cualquier componente que
+     se cuelgue acá dentro —un menú,
+un botón— hereda blanco. Con el color sólo
+     en __user,
+.dcc-menu__trigger { color: inherit } le ganaba por orden y el
+     nombre quedaba en gris oscuro sobre azul: 1,38:1 de contraste. */
+  color: var(--dcc-white);
   padding-block: 24px;
   padding-inline: max(var(--dcc-gutter-md), calc((100% - var(--dcc-container-max)) / 2));
   width: 100%;

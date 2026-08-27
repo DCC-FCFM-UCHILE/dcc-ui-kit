@@ -787,6 +787,11 @@ body.dcc-root {
 /* --- 12b. Nav de aplicación --------------------------------------------- */
 .dcc-nav-app {
   background: var(--dcc-grey-default);
+  /* El color va en la barra y no sólo en __user: así cualquier componente que
+     se cuelgue acá dentro —un menú, un botón— hereda blanco. Con el color sólo
+     en __user, .dcc-menu__trigger { color: inherit } le ganaba por orden y el
+     nombre quedaba en gris oscuro sobre azul: 1,38:1 de contraste. */
+  color: var(--dcc-white);
   padding-block: 24px;
   padding-inline: max(var(--dcc-gutter-md), calc((100% - var(--dcc-container-max)) / 2));
   width: 100%;
