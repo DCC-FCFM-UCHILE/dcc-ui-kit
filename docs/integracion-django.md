@@ -27,9 +27,13 @@ https://dcc-fcfm-uchile.github.io/dcc-ui-kit/dist
 > desarrollar, pero antes de salir a producción hay que moverse al CDN, que sí da rutas inmutables
 > por versión. El paso 1 está pensado para que ese cambio sea de una línea.
 
-Cuando el CDN esté arriba, la URL pasa a ser
-`https://cdn.dcc.uchile.cl/ui-kit/1.1.0` —o `https://apps.dcc.uchile.cl/ui-kit/1.1.0`, que no
-depende de que se cree el subdominio—.
+Cuando quieras pasar a producción, la URL es `https://apps.dcc.uchile.cl/ui-kit/2.1.0`, que sí da
+rutas inmutables por versión. Confírmalo antes de apuntar ahí, porque cada versión se publica al
+empujar su tag:
+
+```bash
+curl -sI https://apps.dcc.uchile.cl/ui-kit/2.1.0/dcc-ui.min.css | head -1
+```
 
 ---
 
@@ -72,7 +76,7 @@ def dcc_ui_kit(request):
 Eso es toda la instalación. El bundle inyecta los íconos y enlaza los componentes solo, al terminar
 de cargar la página.
 
-> **Desde 2.0.0 el kit no le toca nada al resto de tu página.** Sus estilos alcanzan sólo a los
+> **Desde 2.x el kit no le toca nada al resto de tu página.** Sus estilos alcanzan sólo a los
 > elementos con clase `dcc-` y a lo que viva dentro de ellos, así que puedes cargarlo antes o
 > después de Bootstrap: da igual.
 >
@@ -105,7 +109,7 @@ El catálogo completo, con cada variante y su markup, está en el
 
 ## 4. Íconos
 
-Son 36, de Lucide. Se referencian por `id`, sin rutas:
+Son 38, de Lucide. Se referencian por `id`, sin rutas:
 
 ```django
 <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg>
