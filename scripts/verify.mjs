@@ -152,11 +152,19 @@ key(menuLista, "ArrowDown");
 check(doc.activeElement && doc.activeElement.classList.contains("dcc-menu__item"),
   "las flechas mueven el foco entre las opciones");
 
-// La opción deshabilitada no debe recibir foco al recorrer el menú.
-const habilitadas = [...menu.querySelectorAll(".dcc-menu__item")]
-  .filter((i) => i.getAttribute("aria-disabled") !== "true");
-check(habilitadas.length < menu.querySelectorAll(".dcc-menu__item").length,
-  "el ejemplo incluye una opción deshabilitada");
+// La opción deshabilitada no debe recibir foco al recorrer el menú: si lo
+// recibiera, el teclado se quedaría atascado en una opción que no hace nada.
+const todas = [...menu.querySelectorAll(".dcc-menu__item")];
+const deshabilitadas = todas.filter((i) => i.getAttribute("aria-disabled") === "true");
+check(deshabilitadas.length > 0, "el ejemplo incluye una opción deshabilitada");
+
+const recorridos = new Set();
+for (let i = 0; i < todas.length + 1; i++) {
+  key(menuLista, "ArrowDown");
+  if (doc.activeElement) recorridos.add(doc.activeElement);
+}
+check(![...recorridos].some((el) => el.getAttribute("aria-disabled") === "true"),
+  "las flechas saltan la opción deshabilitada");
 
 key(menuLista, "Escape");
 check(menuLista.hidden === true && doc.activeElement === menuTrigger,
@@ -171,21 +179,6 @@ check(menuLista.hidden === true, "un clic fuera cierra el menú");
 click(menuTrigger);
 click(menu.querySelector(".dcc-menu__item"));
 check(menuLista.hidden === true, "elegir una opción cierra el menú");
-
-// El menú de usuario: la cabecera identifica la sesión pero no es una opción,
-// así que no debe recibir foco al recorrer con las flechas.
-const menuUsuario = doc.querySelectorAll(".js-menu")[1];
-const trigUsuario = menuUsuario.querySelector(".dcc-menu__trigger");
-const listaUsuario = menuUsuario.querySelector(".dcc-menu__list");
-check(!!menuUsuario.querySelector(".dcc-menu__header"), "el menú de usuario lleva cabecera con el nombre");
-check(!menuUsuario.querySelector('.dcc-menu__header[role="menuitem"]'),
-  "la cabecera no se anuncia como opción del menú");
-
-click(trigUsuario);
-key(listaUsuario, "ArrowDown");
-check(doc.activeElement && doc.activeElement.classList.contains("dcc-menu__item"),
-  "la flecha salta la cabecera y cae en la primera opción");
-key(listaUsuario, "Escape");
 
 // El desplegable va SIEMPRE bajo el disparador: si lo tapara, se perdería de
 // vista el avatar justo cuando el menú está abierto.
