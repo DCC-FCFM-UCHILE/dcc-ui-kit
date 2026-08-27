@@ -172,6 +172,27 @@ click(menuTrigger);
 click(menu.querySelector(".dcc-menu__item"));
 check(menuLista.hidden === true, "elegir una opción cierra el menú");
 
+// El menú de usuario: la cabecera identifica la sesión pero no es una opción,
+// así que no debe recibir foco al recorrer con las flechas.
+const menuUsuario = doc.querySelectorAll(".js-menu")[1];
+const trigUsuario = menuUsuario.querySelector(".dcc-menu__trigger");
+const listaUsuario = menuUsuario.querySelector(".dcc-menu__list");
+check(!!menuUsuario.querySelector(".dcc-menu__header"), "el menú de usuario lleva cabecera con el nombre");
+check(!menuUsuario.querySelector('.dcc-menu__header[role="menuitem"]'),
+  "la cabecera no se anuncia como opción del menú");
+
+click(trigUsuario);
+key(listaUsuario, "ArrowDown");
+check(doc.activeElement && doc.activeElement.classList.contains("dcc-menu__item"),
+  "la flecha salta la cabecera y cae en la primera opción");
+key(listaUsuario, "Escape");
+
+// El desplegable va SIEMPRE bajo el disparador: si lo tapara, se perdería de
+// vista el avatar justo cuando el menú está abierto.
+const reglaMenu = cssSinComentarios.match(/\.dcc-menu__list\s*\{[^}]*\}/);
+check(!!reglaMenu && /top:\s*calc\(100%/.test(reglaMenu[0]),
+  "el menú se despliega bajo el disparador, sin taparlo");
+
 /* ---------- 6. la API pública, que es de lo que dependen las apps ---------- */
 console.log("\nAPI de DCCUI");
 check(typeof window.DCCUI === "object" && typeof window.DCCUI.init === "function",

@@ -107,6 +107,15 @@
     <g id="i-bell" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
       <path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
     </g>
+    <g id="i-archive" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>
+    </g>
+    <g id="i-log-out" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    </g>
+    <g id="i-chart-column" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+    </g>
     <g id="i-flask-conical" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
       <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/>
     </g>
@@ -915,23 +924,37 @@
           <span class="dcc-avatar dcc-avatar--sm"><span class="dcc-avatar__label">CS</span></span>
         </button>
         <div class="dcc-menu__list" id="menu-usuario" role="menu" hidden>
-          <a class="dcc-menu__item" role="menuitem" href="#menu">
-            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-user"/></svg>Mi perfil
-          </a>
-          <a class="dcc-menu__item" role="menuitem" href="#menu">
-            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"/></svg>Administración
-          </a>
-          <hr class="dcc-menu__sep">
-          <a class="dcc-menu__item" role="menuitem" href="#menu">
-            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>Salir
-          </a>
+          <p class="dcc-menu__header">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-user"/></svg>
+            <span class="dcc-menu__header-name">Cristian Andrés Salazar de la Fuente</span>
+          </p>
+          <div class="dcc-menu__group">
+            <a class="dcc-menu__item" role="menuitem" href="#menu">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"/></svg>Gestionar recursos
+            </a>
+            <a class="dcc-menu__item" role="menuitem" href="#menu">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"/></svg>Administrar usuarios
+            </a>
+          </div>
+          <div class="dcc-menu__group">
+            <a class="dcc-menu__item" role="menuitem" href="#menu">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chart-column"/></svg>Estadísticas
+            </a>
+          </div>
+          <div class="dcc-menu__group">
+            <a class="dcc-menu__item" role="menuitem" href="#menu">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-log-out"/></svg>Cerrar sesión
+            </a>
+          </div>
         </div>
       </div>
 
     </div>
     <p class="dcc-sub-label" style="margin-top:24px">Se abre con clic, con Enter o con las flechas; se recorre con las flechas
-      y se cierra con Escape, con Tab o haciendo clic fuera. <code>dcc-menu--end</code> lo cuelga del borde derecho,
-      para cuando el disparador vive en una esquina.</p>
+      y se cierra con Escape, con Tab o haciendo clic fuera. Siempre se despliega <strong>bajo</strong> el disparador, nunca
+      encima: el avatar tiene que seguir visible. <code>dcc-menu--end</code> lo cuelga del borde derecho, para cuando el
+      disparador vive en una esquina. <code>dcc-menu__header</code> identifica la sesión —no es interactiva, así que las
+      flechas la saltan— y <code>dcc-menu__group</code> separa bloques de opciones.</p>
   </section>
   <!-- ==================================================================== -->
   <section class="dcc-section" id="lista">
