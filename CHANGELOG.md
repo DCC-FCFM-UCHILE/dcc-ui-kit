@@ -9,6 +9,32 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.0.0] — 2026-08-26
+
+El kit dejó de pisarle los estilos a la aplicación que lo consume.
+
+### Cambia (incompatible)
+
+- **Los resets de elemento ya no son globales.** `p`, `ul`, `hr`, `a`, `button`, `table`, `img` y
+  `svg` sólo se resetean dentro de los componentes del kit. Antes alcanzaban a toda la página: al
+  integrarlo en una app con Bootstrap le cambiaban la tipografía, el color de los enlaces, las
+  viñetas y los márgenes.
+- **La tipografía y el fondo del kit son opt-in.** Antes vivían en `body`. Ahora hay que poner la
+  clase `dcc-root` en el `<body>` —o en un contenedor— para activarlos. Una app que sólo quiere
+  componentes sueltos no la pone y el kit no le toca nada.
+
+**Qué hay que hacer al actualizar desde 1.x:** si tu página se apoyaba en la tipografía o el fondo
+del kit, agrega `class="dcc-root"` al `<body>`. Si no, no hay nada que cambiar: los componentes se
+ven igual y dejan de contaminar el resto.
+
+### Notas
+
+- El reset acotado usa `[class*="dcc-"] :where(elemento)`, que deja la especificidad en (0,1,0):
+  le gana a los resets de elemento de la app —(0,0,1)— y pierde con las reglas de componente del
+  propio kit, que se declaran después.
+- Verificado midiendo 1053 elementos del styleguide por 17 propiedades antes y después: **cero
+  diferencias**. Y en una página con Bootstrap y el kit cargado al final, cero fugas.
+
 ## [1.1.0] — 2026-08-26
 
 El kit ahora publica su JavaScript. Antes había que copiarlo a mano desde el styleguide a cada

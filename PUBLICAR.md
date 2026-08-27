@@ -172,9 +172,3 @@ Nada de esto impide publicar, pero conviene resolverlo:
       mínimo de accesibilidad (ver `docs/decisiones-de-diseno.md`)
 - [ ] Decidir si un ícono suelto —fuera de un componente del kit— debe tener tamaño por defecto.
       Hoy se renderiza 0×0 sin avisar (ver sección 3 de `dist/README.md`)
-- [ ] Decidir qué hacer con los resets de elemento **sin prefijar** (`a`, `p`, `ul`, `hr`, `img`,
-      `svg`, `button`, `table`). Contradicen la promesa de que "el kit convive con lo que la app ya
-      tenga": al integrarlo en el Portal SSO le cambiaron la tipografía, el color de los enlaces y
-      los márgenes a toda la aplicación. El paliativo es cargar el kit antes que Bootstrap, pero la
-      solución de fondo es que cada componente declare lo que necesita en vez de apoyarse en un
-      reset global. Ver la advertencia del paso 2 en `docs/integracion-django.md`

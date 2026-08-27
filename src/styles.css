@@ -92,24 +92,45 @@
      padding-inline: max(<gutter>, calc((100% - var(--dcc-container-max)) / 2)); */
 
 /* --------------------------------------------------------------------------
-   2. RESET
+   2. RESET, ACOTADO AL KIT
+
+   Estas reglas eran globales —`p`, `ul`, `a`, `button`, `body`…— y se filtraban
+   a la aplicación que consumía el kit: al integrarlo en una app con Bootstrap
+   le cambiaban la tipografía, el color de los enlaces, las viñetas y los
+   márgenes a toda la página. Ahora sólo alcanzan a los componentes del kit y a
+   lo que vive dentro de ellos.
+
+   La forma `[class*="dcc-"] :where(elemento)` deja la especificidad en (0,1,0):
+   le gana a los resets de elemento de la app —que son (0,0,1)— y pierde con
+   cualquier regla de componente del kit, que se declara más abajo en este mismo
+   archivo. Sin el `:where()` sería (0,1,1) y le ganaría a los componentes.
    -------------------------------------------------------------------------- */
-*, *::before, *::after { box-sizing: border-box; }
+[class*="dcc-"],
+[class*="dcc-"] *,
+[class*="dcc-"] *::before,
+[class*="dcc-"] *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
-
-body {
-  margin: 0;
+/* Tipografía y fondo del kit. Es lo único que alcanza a la página entera, así
+   que es opt-in: se activa poniendo `dcc-root` en el <body> —o en cualquier
+   contenedor—. Una app que sólo quiere componentes sueltos no lo pone, y el kit
+   no le toca nada de lo que ya tenía. */
+.dcc-root {
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
   color: var(--dcc-grey-dark);
   background: var(--dcc-grey-ultralight);
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+body.dcc-root {
+  margin: 0;
   overflow-x: hidden; /* necesario para las secciones full-bleed */
 }
 
-img, svg { display: block; max-width: 100%; }
+[class*="dcc-"] :where(img, svg),
+:where(img, svg)[class*="dcc-"] { display: block; max-width: 100%; }
 
 /* Grosor de trazo de los íconos Lucide.
    Va por CSS y no como atributo en los <g> de <defs>: un atributo de
@@ -120,12 +141,12 @@ img, svg { display: block; max-width: 100%; }
    2 unidades del viewBox de 24 dan 1px a 12px, 1,33px a 16px y 2px a 24px:
    los mismos valores que declara Figma en cada ícono. */
 .dcc-i { stroke-width: 2; }
-p  { margin: 0; }
-ul { margin: 0; padding: 0; list-style: none; }
-hr { margin: 0; }
-a { color: inherit; text-decoration: none; }
-button { font: inherit; color: inherit; }
-table { border-collapse: collapse; border-spacing: 0; }
+[class*="dcc-"] :where(p),      :where(p)[class*="dcc-"]      { margin: 0; }
+[class*="dcc-"] :where(ul),     :where(ul)[class*="dcc-"]     { margin: 0; padding: 0; list-style: none; }
+[class*="dcc-"] :where(hr),     :where(hr)[class*="dcc-"]     { margin: 0; }
+[class*="dcc-"] :where(a),      :where(a)[class*="dcc-"]      { color: inherit; text-decoration: none; }
+[class*="dcc-"] :where(button), :where(button)[class*="dcc-"] { font: inherit; color: inherit; }
+[class*="dcc-"] :where(table),  :where(table)[class*="dcc-"]  { border-collapse: collapse; border-spacing: 0; }
 
 /* --------------------------------------------------------------------------
    3. ESCALA TIPOGRÁFICA  (estilos de texto de Figma)
@@ -2301,7 +2322,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 
 /* ---- Impresión ---- */
 @media print {
-  body { background: #fff; }
+  .dcc-root { background: #fff; }
   .dcc-toc, .dcc-nav-toggle { display: none; }
   .dcc-section { break-inside: avoid; box-shadow: none; }
 }

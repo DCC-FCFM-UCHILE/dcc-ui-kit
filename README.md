@@ -16,8 +16,8 @@ HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 ## Uso rápido
 
 ```html
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/1.1.0/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/1.1.0/dcc-ui.bundle.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.0.0/dcc-ui.bundle.min.js" defer></script>
 
 <button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">
   Guardar <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg>
@@ -27,7 +27,7 @@ HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 O como paquete:
 
 ```bash
-npm i github:DCC-FCFM-UCHILE/dcc-ui-kit#v1.1.0
+npm i github:DCC-FCFM-UCHILE/dcc-ui-kit#v2.0.0
 ```
 
 La [guía de consumo](dist/README.md) cubre React, Vue, Django y las cabeceras que debe servir el
