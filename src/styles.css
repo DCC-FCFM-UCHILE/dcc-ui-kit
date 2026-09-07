@@ -648,6 +648,10 @@ body.dcc-root {
 .dcc-nav-demo:last-child { margin-bottom: 0; }
 
 .dcc-logo-dcc { width: 160px; height: 79px; flex: 0 0 160px; }
+/* Versión horizontal del logotipo (405×75). Es la que va en la barra de
+   aplicación y en el sidebar: el vertical obligaba a una barra de 119px de
+   alto, y éste la deja en 92 con la misma legibilidad. */
+.dcc-logo-dcc-h { width: 240px; height: auto; flex: 0 0 240px; }
 
 /* --- 12a. Nav institucional --------------------------------------------- */
 .dcc-nav-inst {
@@ -787,6 +791,10 @@ body.dcc-root {
 /* --- 12b. Nav de aplicación --------------------------------------------- */
 .dcc-nav-app {
   background: var(--dcc-grey-default);
+  /* Altura declarada, no heredada del logo: como el logo horizontal ya no
+     aporta altura (ver `.dcc-nav-app__brand .dcc-logo-dcc-h`), sin esto la
+     barra se encogería a la del texto. 92px es lo que daba el logo a 240px. */
+  min-height: 92px;
   /* El color va en la barra y no sólo en __user: así cualquier componente que
      se cuelgue acá dentro —un menú, un botón— hereda blanco. Con el color sólo
      en __user, .dcc-menu__trigger { color: inherit } le ganaba por orden y el
@@ -800,11 +808,25 @@ body.dcc-root {
   justify-content: space-between;
   gap: 24px;
 }
-.dcc-nav-app__brand { display: flex; align-items: center; gap: 40px; min-width: 0; }
+/* `baseline` y no `center`: el baseline de una imagen es su borde inferior, así
+   que el nombre de la aplicación se asienta justo sobre la línea en que termina
+   el logo. El SVG llena su viewBox —0,5px de aire abajo—, así que el borde de
+   la caja y el del dibujo son el mismo sitio. */
+.dcc-nav-app__brand { display: flex; align-items: baseline; gap: 32px; min-width: 0; }
+
+/* El título manda y el logo lo sigue. Con un margen superior negativo mayor que
+   su alto, el logo deja de contar por encima del baseline: la altura del bloque
+   de marca pasa a ser la del título, y el `align-items: center` de la barra
+   centra el título, no el par. El logo sigue colgado del baseline y sube 8,7px
+   sobre el padding, sin salirse de los 92px.
+   No hay ninguna constante de la fuente: basta con que el margen supere los
+   44px que mide el logo horizontal a 240 de ancho. */
+.dcc-nav-app__brand .dcc-logo-dcc-h { margin-top: -100px; }
+
 .dcc-nav-app__title {
   font-family: var(--dcc-font-display);
   font-weight: 700;
-  font-size: 36px;
+  font-size: 30px;
   line-height: 1.1;
   text-transform: uppercase;
   color: var(--dcc-white);
@@ -819,62 +841,241 @@ body.dcc-root {
 .dcc-sidebar__user svg { stroke-width: 1.5; width: 32px; height: 32px; flex: 0 0 32px; }
 
 /* --- 12c. Sidebar -------------------------------------------------------- */
+/* Reescrita en la 2.5.0 tomando la disposición de Faro y la forma de marcar el
+   ítem seleccionado de Titulación. Todo cuelga de dos verticales: 24px para el
+   borde de las cajas —logo, botón, relleno del ítem, separadores, bloque de
+   usuario— y 36px para los íconos, que es donde caen tanto el del botón como
+   los de la lista. */
 .dcc-sidebar {
   background: var(--dcc-grey-default);
   border-radius: 5px;
-  padding: 32px;
   width: 240px;
+  height: 100%;
   min-height: 620px;
+  padding-block: 20px 12px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 40px;
+  color: var(--dcc-white);
 }
-.dcc-sidebar__top { display: flex; flex-direction: column; gap: 40px; }
+
+/* Marca: logotipo horizontal, separador y nombre de la aplicación. Sin esto la
+   barra se veía igual en las cinco apps del departamento. */
+.dcc-sidebar__brand { padding: 0 24px 20px; display: flex; flex-direction: column; gap: 18px; }
+.dcc-sidebar__brand .dcc-logo-dcc-h { width: 192px; flex: 0 0 auto; }
+.dcc-sidebar__app {
+  font-family: var(--dcc-font-display);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.15;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--dcc-white);
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Envoltura del botón de acción. Lleva también `dcc-menu js-menu` cuando la
+   acción tiene destinos: el desplegable se cuelga de acá. */
+.dcc-sidebar__action { position: relative; display: block; margin: 0 24px 12px; }
+.dcc-sidebar__action .dcc-menu__list { left: 0; right: 0; min-width: 0; }
 
 .dcc-sidebar__cta {
   display: flex;
   align-items: center;
-  gap: 20px;
-  height: 35px;
-  padding: 8px 12px;
-  border-radius: 24px;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
   background: var(--dcc-white);
-  color: var(--dcc-grey-default);
-  font-size: 16px;
+  color: var(--dcc-grey-dark);
+  font-family: var(--dcc-font-body);
+  font-size: 15px;
+  font-weight: 600;
   line-height: 1.2;
   box-shadow: var(--dcc-shadow-button);
   cursor: pointer;
   border: 0;
   width: 100%;
 }
-.dcc-sidebar__cta svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-sidebar__cta svg { width: 18px; height: 18px; flex: 0 0 18px; }
+.dcc-sidebar__cta .dcc-sidebar__caret { margin-left: auto; }
 
-.dcc-sidebar__group { display: flex; flex-direction: column; gap: 8px; }
+/* Cuando el botón es además el disparador del menú lleva las dos clases, y
+   `.dcc-menu__trigger` —que vive más abajo en este archivo y pesa lo mismo— le
+   gana por orden: lo dejaba sin fondo, sin relleno y con el color heredado, o
+   sea un botón blanco invisible sobre la barra oscura. Se restablece con el
+   contenedor por delante, que pesa una clase más.
+   Sólo las cuatro que el disparador pisa; el resto no hace falta repetirlo. */
+.dcc-sidebar__action .dcc-sidebar__cta {
+  display: flex;
+  background: var(--dcc-white);
+  color: var(--dcc-grey-dark);
+  padding: 0 12px;
+  gap: 10px;
+}
+
+/* Lista navegable. Sin padding a la derecha: ese margen es donde vive la barra
+   de desplazamiento. */
+.dcc-sidebar__nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 0 8px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(252, 253, 254, .22) transparent;
+}
+/* Ancho fijo y `flex: none`, las dos mitades del mismo arreglo. Con el ancho
+   estirado, al aparecer la barra de desplazamiento el área de contenido se
+   angostaba y los ítems se encogían con ella: terminaban 11px antes que el
+   botón. Con ancho fijo la barra se queda con los 24px del margen derecho y
+   nada se mueve. Y sin `flex: none`, en una columna flex los hijos se aplastan
+   a lo alto cuando sobran, así que con veinte ítems se comprimían en vez de
+   desplazarse. */
+.dcc-sidebar__nav > * { width: 192px; flex: none; }
+/* `display: flex` le gana al hidden nativo si no se dice lo contrario. */
+.dcc-sidebar__nav > [hidden] { display: none; }
+
+.dcc-sidebar__nav::-webkit-scrollbar { width: 8px; }
+.dcc-sidebar__nav::-webkit-scrollbar-track { background: transparent; }
+.dcc-sidebar__nav::-webkit-scrollbar-thumb {
+  background: rgba(252, 253, 254, .22);
+  border-radius: var(--dcc-radius-sm);
+}
+.dcc-sidebar__nav::-webkit-scrollbar-thumb:hover { background: rgba(252, 253, 254, .35); }
+
 /* Grey/Light: es la única variable del subárbol del sidebar que no consume
    ningún otro elemento, y el trazo del separador es de 1px (inset -0.5px). */
-.dcc-sidebar__sep { height: 1px; background: var(--dcc-grey-light); border: 0; margin: 0; }
-.dcc-sidebar__group + .dcc-sidebar__sep { margin: 20px 0; }
+.dcc-sidebar__sep { height: 1px; background: rgba(252, 253, 254, .14); border: 0; margin: 4px 0; }
 
 .dcc-sidebar__item {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 8px 12px;
-  border: 1px solid var(--dcc-grey-default);
-  border-radius: 4px;
-  color: #fff;
-  font-size: 16px;
-  line-height: normal;
-  transition: border-color .15s ease;
+  gap: 12px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--dcc-radius-md);
+  background: transparent;
+  color: rgba(252, 253, 254, .72);
+  font-family: var(--dcc-font-body);
+  font-size: 15px;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
 }
-.dcc-sidebar__item svg { width: 16px; height: 16px; flex: 0 0 16px; }
-.dcc-sidebar__item:hover,
-.dcc-sidebar__item[aria-current="page"] { border-color: var(--dcc-grey-ultralight); }
+.dcc-sidebar__item svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  color: rgba(252, 253, 254, .55);
+  transition: color .15s ease;
+}
+.dcc-sidebar__item > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Hover y seleccionado son el mismo blanco a dos intensidades, como en
+   Titulación: uno insinúa lo que el otro confirma. Con el borde de 1px que se
+   usaba antes, hover y activo eran el mismo trazo y no se distinguían. */
+.dcc-sidebar__item:hover,
+.dcc-sidebar__item.is-hover { background: rgba(252, 253, 254, .07); color: var(--dcc-white); }
+.dcc-sidebar__item:hover svg,
+.dcc-sidebar__item.is-hover svg { color: var(--dcc-white); }
+.dcc-sidebar__item[aria-current="page"] {
+  background: rgba(252, 253, 254, .18);
+  color: var(--dcc-white);
+  font-weight: 600;
+}
+.dcc-sidebar__item[aria-current="page"] svg { color: var(--dcc-white); }
+
+/* Contador al final del ítem. La variante de aviso es para lo que no se ha
+   visto; el resto es sólo cuántos hay. */
+.dcc-sidebar__count {
+  margin-left: auto;
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(252, 253, 254, .7);
+  background: rgba(252, 253, 254, .14);
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+.dcc-sidebar__count--alert { color: var(--dcc-white); background: var(--dcc-red-default); }
+.dcc-sidebar__item[aria-current="page"] .dcc-sidebar__count {
+  background: rgba(252, 253, 254, .22);
+  color: var(--dcc-white);
+}
+
+/* Grupo desplegable */
+.dcc-sidebar__caret { width: 16px; height: 16px; flex: 0 0 16px; margin-left: auto; opacity: .5; transition: transform .18s ease; }
+.dcc-sidebar__item[aria-expanded="true"] .dcc-sidebar__caret { transform: rotate(180deg); }
+.dcc-sidebar__sub { display: flex; flex-direction: column; gap: 2px; }
+.dcc-sidebar__sub[hidden] { display: none; }
+.dcc-sidebar__subitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 44px;
+  border-radius: var(--dcc-radius-md);
+  color: rgba(252, 253, 254, .6);
+  font-size: 14px;
+  transition: background-color .15s ease, color .15s ease;
+}
+.dcc-sidebar__subitem:hover { background: rgba(252, 253, 254, .07); color: var(--dcc-white); }
+.dcc-sidebar__subitem[aria-current="page"] {
+  background: rgba(252, 253, 254, .14);
+  color: var(--dcc-white);
+  font-weight: 600;
+}
+.dcc-sidebar__subitem .dcc-sidebar__count { font-size: 11px; padding: 0 6px; }
+
+/* Pie. El bloque de usuario se comporta como un ítem más de la lista —mismo
+   margen de 24px, mismos 12px adentro—, así el avatar cae en el eje de los
+   íconos y el engranaje en el de los contadores. */
+.dcc-sidebar__foot { padding: 8px 24px 0; display: flex; flex-direction: column; gap: 8px; }
+.dcc-sidebar__user { position: relative; display: flex; align-items: center; gap: 12px; padding: 4px 12px; }
+.dcc-sidebar__avatar {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 50%;
+  background: var(--dcc-grey-light);
+  color: var(--dcc-white);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+.dcc-sidebar__who { min-width: 0; display: flex; flex-direction: column; }
+.dcc-sidebar__who b { font-size: 14px; font-weight: 500; }
+.dcc-sidebar__who small { font-size: 12px; color: rgba(252, 253, 254, .62); }
+.dcc-sidebar__who b,
+.dcc-sidebar__who small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dcc-sidebar__gear {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--dcc-radius-md);
+  background: transparent;
+  color: rgba(252, 253, 254, .6);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.dcc-sidebar__gear svg { width: 18px; height: 18px; }
+.dcc-sidebar__gear:hover,
+.dcc-sidebar__gear[aria-expanded="true"] { background: rgba(252, 253, 254, .1); color: var(--dcc-white); }
+
+/* Heredadas de la 2.4.0: el markup anterior sigue renderizando. No las uses en
+   páginas nuevas — `__top` y `__bottom` los reemplazan `__brand`, `__nav` y
+   `__foot`, y los grupos ahora se separan con `__sep` dentro de `__nav`. */
+.dcc-sidebar__top { display: flex; flex-direction: column; gap: 40px; }
+.dcc-sidebar__group { display: flex; flex-direction: column; gap: 8px; }
 .dcc-sidebar__bottom { display: flex; flex-direction: column; gap: 8px; }
-.dcc-sidebar__user { display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: #fff; font-size: 16px; }
-.dcc-sidebar__user svg { width: 40px; height: 40px; flex: 0 0 40px; }
 
 .dcc-sidebar-demo { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; }
 
@@ -930,6 +1131,35 @@ body.dcc-root {
 }
 .dcc-footer__logos img { flex: 0 0 auto; }
 
+/* --- 13b. Pie plano ------------------------------------------------------ */
+/* Una sola línea de texto. Venía del Portal, que necesitaba el pie del kit sin
+   enlaces ni logotipos y se lo hizo aparte; acá entra como variante para que no
+   tenga que rehacerlo cada aplicación.
+   Conserva el fondo y las canaletas de `.dcc-footer`, pero sin bloques que
+   separar el gap de 60px y el padding de 32px sobran. */
+.dcc-footer--plano { gap: 0; padding-block: 12px; }
+.dcc-footer__linea {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+}
+/* El separador es un <span aria-hidden> y no un ::after: así el lector de
+   pantalla no lee «punto» entre cada parte, y se puede esconder en angosto. */
+.dcc-footer__sep { padding-inline: 4px; }
+
+/* 560px y no los 768 del kit: acá el corte lo pone el texto, no el layout. A
+   700px la línea todavía cabe entera, y partirla antes de tiempo gasta tres
+   renglones de más. Angosto, un renglón por parte y los separadores fuera: un
+   punto medio suelto al inicio de un renglón se lee peor que nada.
+   Los dos selectores llevan `.dcc-footer__linea >` para que pesen igual — si
+   el de la clase queda más liviano, `display: block` gana y los separadores
+   reaparecen, cada uno en su propio renglón. */
+@media (max-width: 560px) {
+  .dcc-footer__linea > span { display: block; }
+  .dcc-footer__linea > .dcc-footer__sep { display: none; }
+}
+
 /* --------------------------------------------------------------------------
    14. RESPONSIVE
    Figma sólo define 1440px. Los breakpoints de abajo son inferidos.
@@ -951,9 +1181,10 @@ body.dcc-root {
   .dcc-nav-inst__menu { justify-content: flex-start; column-gap: 12px; row-gap: 4px; padding-bottom: 6px; }
   .dcc-social { padding-top: 16px; }
 
-  .dcc-nav-app { padding-block: 20px; }
+  .dcc-nav-app { padding-block: 20px; min-height: 80px; }
   .dcc-nav-app__brand { gap: 24px; }
-  .dcc-nav-app__title { font-size: 28px; white-space: normal; }
+  .dcc-nav-app__brand .dcc-logo-dcc-h { width: 200px; flex: 0 0 200px; }
+  .dcc-nav-app__title { font-size: 26px; white-space: normal; }
 
   .dcc-footer { padding-block: 32px; gap: 40px; }
   .dcc-footer__top { gap: 32px; }
@@ -1051,6 +1282,12 @@ body.dcc-root {
   /* `flex` y no sólo `width`: en un contenedor flex manda el flex-basis, y la
      regla general del logo trae `flex: 0 0 …`. Con width solo, no pasaba nada. */
   .dcc-nav-app__brand .dcc-logo-dcc { flex: 0 0 88px; width: 88px; height: auto; }
+  /* El horizontal cabe mejor que el vertical en un teléfono: a 150px son 28px
+     de alto. Y el título vuelve al centro: con el logo de 28 y el texto de 18,
+     colgarlo del baseline lo dejaba pegado al borde de abajo. */
+  .dcc-nav-app__brand .dcc-logo-dcc-h { flex: 0 0 150px; width: 150px; }
+  .dcc-nav-app__brand { align-items: center; }
+  .dcc-nav-app__brand .dcc-logo-dcc-h { margin-top: 0; }
   .dcc-nav-app__user { margin-left: auto; flex: 0 0 auto; }
 
   /* El nombre se va; el avatar o el ícono se queda. Se contempla la clase
@@ -1059,8 +1296,13 @@ body.dcc-root {
   .dcc-nav-app__user-name,
   .dcc-nav-app__user > span:not([class]) { display: none; }
 
-  /* Sidebar → ancho completo */
-  .dcc-sidebar { width: 100%; min-height: 0; }
+  /* Sidebar → ancho completo. Los ítems dejan el ancho fijo y vuelven a
+     estirarse: el que estaba calculado para 240px dejaría una franja muerta a
+     la derecha en una pantalla de 360. */
+  .dcc-sidebar { width: 100%; min-height: 0; height: auto; }
+  .dcc-sidebar__nav { padding-right: 24px; }
+  .dcc-sidebar__nav > * { width: auto; }
+  .dcc-sidebar__brand .dcc-logo-dcc-h { width: 176px; }
 
   /* Footer: los enlaces pasan a dos columnas para no volverse una tira de 8
      filas, el bloque de contacto se alinea a la izquierda y los logos se
@@ -1372,6 +1614,12 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 /* Colgado del borde derecho: es lo que se necesita cuando el disparador vive
    en la esquina de la barra y el menú se saldría de la pantalla. */
 .dcc-menu--end .dcc-menu__list { left: auto; right: 0; }
+
+/* Desplegado hacia arriba. La regla general abre siempre bajo el disparador
+   —se decidió así para el avatar de la barra de aplicación, que tiene que
+   seguir visible—, pero en el pie de una barra lateral eso lo manda fuera de
+   la pantalla. */
+.dcc-menu--up .dcc-menu__list { top: auto; bottom: calc(100% + 8px); }
 
 .dcc-menu__list[hidden] { display: none; }
 

@@ -9,6 +9,75 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.5.0] — 2026-09-07
+
+### Agrega
+
+- **Logotipo horizontal** (`dcc-logo-dcc-h`, `assets/logo-dcc-horizontal.svg`). El vertical es
+  casi cuadrado —160×79— y obligaba a una barra de aplicación de 119px de alto. El horizontal
+  mide 240×44 y la deja en 92, con la misma legibilidad.
+- **Nombre de la aplicación en la barra lateral** (`dcc-sidebar__app`), con un separador entre el
+  logotipo y él. Sin esto la barra se veía igual en las cinco aplicaciones del departamento.
+- **Contadores en los ítems** (`dcc-sidebar__count`, y `--alert` para lo que no se ha visto).
+- **Grupos desplegables en la barra lateral** (`dcc-sidebar__sub`, `dcc-sidebar__subitem`,
+  `js-sidebar-group`). No es el acordeón: ahí sólo uno puede estar abierto y el panel se anima;
+  acá cada grupo es independiente y se esconde de verdad, porque un panel a media altura dentro
+  de una lista que scrollea deja el resto de los ítems fuera de alcance.
+- **Pie del usuario con menú** (`dcc-sidebar__foot`, `__user`, `__avatar`, `__who`, `__gear`).
+  Antes el nombre y el avatar eran decorado: no había dónde hacer clic para perfil, notificaciones
+  o salir.
+- **`dcc-menu--up`**, que despliega el menú hacia arriba. La regla general abre siempre bajo el
+  disparador —se decidió así en la 2.4.0 para el avatar de la barra de aplicación—, pero en el pie
+  de una barra lateral eso lo manda fuera de la pantalla.
+- **`dcc-footer--plano`** (`dcc-footer__linea`, `dcc-footer__sep`). Pie de una sola línea para
+  aplicaciones internas, donde el pie completo es más de lo que se necesita. Venía del Portal, que
+  se lo había hecho aparte; su propio comentario ya lo llamaba «el pie del kit en su versión
+  delgada». Cada aplicación escribe su texto; el componente pone la forma. Bajo 560px cae a un
+  renglón por parte y los separadores se esconden: un punto medio suelto al inicio de un renglón
+  se lee peor que nada.
+- Dos íconos al sprite en uso: el pie del sidebar consume `i-bell` y `i-log-out`, que ya existían.
+
+### Cambia
+
+- **La barra lateral se rehízo entera** (§12c), tomando la disposición de Faro y la forma de
+  marcar el seleccionado de Titulación. Todo cuelga de dos verticales: 24px para el borde de las
+  cajas —logotipo, botón, relleno del ítem, separadores, bloque de usuario— y 36px para los
+  íconos, donde caen tanto el del botón como los de la lista.
+  - **El seleccionado se marca con relleno y peso, no con un borde.** El borde de 1px era el mismo
+    trazo que el hover, así que no se distinguían. Ahora hover y activo son el mismo blanco a dos
+    intensidades —7% y 18%—: uno insinúa lo que el otro confirma.
+  - Ítem: 192px de ancho útil en vez de 176, ícono de 20px en vez de 16, 12px entre ícono y texto
+    en vez de 20, radio 8 en vez de 4, y 4px de separación entre ítems en vez de 8 —el relleno del
+    activo ya separa—.
+  - La lista tiene su propio scroll y el logotipo, el botón y el pie no se mueven.
+  - El avatar baja de 40 a 32px y se alinea en el eje de los íconos.
+- **La barra de aplicación centra el nombre en su eje vertical.** El par logotipo + nombre estaba
+  centrado como bloque, lo que dejaba el nombre 8,7px bajo el eje. Ahora manda el nombre y el
+  logotipo lo sigue, sin soltar su borde inferior. Título a 30px en vez de 36, y 32px de
+  separación en vez de 40.
+- **El botón de la barra lateral admite desplegable.** Se le puede colgar un `dcc-menu` para que
+  la acción lleve a varios destinos —a un área, a una persona, a uno mismo—. Sigue siendo una
+  píldora blanca.
+
+### Corrige
+
+- **La barra de desplazamiento ya no encoge los ítems de la barra lateral.** Al aparecer, el área
+  de contenido se angostaba y los ítems se encogían con ella: terminaban 11px antes que el botón,
+  con el que están alineados. Ahora llevan ancho fijo y esa barra ocupa el margen derecho de 24px.
+  Con `flex: none` se arregla además un problema latente: en una columna flex los hijos se
+  aplastan a lo alto cuando sobran, así que con veinte ítems se comprimían en vez de desplazarse.
+- **El comprobador del menú miraba la regla equivocada.** `verify.mjs` buscaba `.dcc-menu__list`
+  con un patrón sin anclar, así que cualquier selector descendiente que la afinara se comía el
+  match. Y tomaba el primer `.js-menu` del documento, que desde esta versión es el del sidebar;
+  ahora apunta al ejemplo canónico por id.
+
+### Nota de migración
+
+El markup de la 2.4.0 sigue renderizando: `dcc-sidebar__top`, `__group` y `__bottom` se conservan.
+La barra se ve distinta —es el punto de la versión—, pero ninguna página deja de funcionar. Para
+las nuevas, la estructura es `__brand` · `__action` · `__nav` · `__foot`, y los grupos se separan
+con `__sep` dentro de `__nav`.
+
 ## [2.4.0] — 2026-08-27
 
 ### Agrega

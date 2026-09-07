@@ -141,7 +141,9 @@ const orden = titulos();
 key(lista.querySelectorAll(".dcc-ccard__grip")[1], "ArrowUp");
 check(titulos()[0] === orden[1], "las tarjetas se reordenan con el teclado");
 
-const menu = doc.querySelector(".js-menu");
+// Se apunta al ejemplo canónico por id y no al primer `.js-menu` de la página:
+// desde la 2.5.0 el sidebar trae su propio menú y aparece antes en el documento.
+const menu = doc.querySelector("#menu-acciones").closest(".js-menu");
 const menuTrigger = menu.querySelector(".dcc-menu__trigger");
 const menuLista = menu.querySelector(".dcc-menu__list");
 click(menuTrigger);
@@ -180,11 +182,43 @@ click(menuTrigger);
 click(menu.querySelector(".dcc-menu__item"));
 check(menuLista.hidden === true, "elegir una opción cierra el menú");
 
-// El desplegable va SIEMPRE bajo el disparador: si lo tapara, se perdería de
-// vista el avatar justo cuando el menú está abierto.
-const reglaMenu = cssSinComentarios.match(/\.dcc-menu__list\s*\{[^}]*\}/);
+// El desplegable va bajo el disparador por defecto: si lo tapara, se perdería
+// de vista el avatar justo cuando el menú está abierto. El `^` ancla la regla
+// base — sin él, cualquier selector descendiente que la afine (el del sidebar,
+// por ejemplo) se come el match y el test deja de mirar lo que dice mirar.
+const reglaMenu = cssSinComentarios.match(/^\.dcc-menu__list\s*\{[^}]*\}/m);
 check(!!reglaMenu && /top:\s*calc\(100%/.test(reglaMenu[0]),
   "el menú se despliega bajo el disparador, sin taparlo");
+
+// El botón del sidebar lleva las dos clases cuando además abre un menú, y
+// `.dcc-menu__trigger` pesa lo mismo pero va después: le gana. Lo que el
+// disparador pisa hay que devolverlo con el contenedor por delante, o el botón
+// se queda sin fondo —blanco invisible sobre la barra oscura—, sin relleno y
+// con el color heredado. Se comprueba el invariante y no un valor: toda
+// propiedad que ambos declaren tiene que estar restablecida.
+const cuerpo = (sel) => {
+  const m = cssSinComentarios.match(new RegExp("(?:^|\\})\\s*" + sel.replace(/[.\\]/g, "\\$&") + "\\s*\\{([^}]*)\\}"));
+  return m ? m[1] : "";
+};
+const props = (sel) => new Map([...cuerpo(sel).matchAll(/([a-z-]+)\s*:\s*([^;]+)/g)]
+  .map((m) => [m[1], m[2].trim()]));
+// Sólo importan las que declaran las dos con valores distintos: donde coinciden,
+// que gane el disparador da igual.
+const propsTrigger = props(".dcc-menu__trigger");
+const propsCta = props(".dcc-sidebar__cta");
+const pisadas = [...propsTrigger.keys()]
+  .filter((x) => propsCta.has(x) && propsCta.get(x) !== propsTrigger.get(x));
+const restablecidas = props(".dcc-sidebar__action .dcc-sidebar__cta");
+const sueltas = pisadas.filter((x) => !restablecidas.has(x));
+check(pisadas.length > 0 && sueltas.length === 0,
+  "el botón del sidebar recupera lo que .dcc-menu__trigger le pisa" +
+  (sueltas.length ? ` — faltan: ${sueltas.join(", ")}` : ""));
+
+// Y `dcc-menu--up` lo invierte, para el disparador que vive al pie de una barra
+// lateral: hacia abajo se saldría de la pantalla.
+const reglaArriba = cssSinComentarios.match(/\.dcc-menu--up\s+\.dcc-menu__list\s*\{[^}]*\}/);
+check(!!reglaArriba && /bottom:\s*calc\(100%/.test(reglaArriba[0]) && /top:\s*auto/.test(reglaArriba[0]),
+  "dcc-menu--up lo despliega hacia arriba");
 
 /* ---------- 6. la API pública, que es de lo que dependen las apps ---------- */
 console.log("\nAPI de DCCUI");

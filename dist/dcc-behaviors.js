@@ -1,4 +1,4 @@
-/*! DCC UI Kit 2.4.0 — comportamiento de los componentes | MIT | https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit */
+/*! DCC UI Kit 2.5.0 — comportamiento de los componentes | MIT | https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit */
 /**
  * Comportamiento de los componentes del DCC UI Kit.
  *
@@ -251,6 +251,21 @@
 
       document.addEventListener("click", function (e) {
         if (!list.hidden && !menu.contains(e.target)) cerrar(false);
+      });
+    });
+
+    /* ---------- Grupo desplegable de la barra lateral ---------- */
+    /* No es el acordeón: ahí el panel se anima con `data-open` y sólo uno puede
+       estar abierto. Acá cada grupo es independiente y se esconde de verdad,
+       porque un panel a media altura dentro de una lista que scrollea deja el
+       resto de los ítems fuera de alcance. */
+    cada(raiz, ".js-sidebar-group", "sidebarGroup", function (trigger) {
+      var panel = document.getElementById(trigger.getAttribute("aria-controls"));
+      if (!panel) return;
+      trigger.addEventListener("click", function () {
+        var abierto = trigger.getAttribute("aria-expanded") === "true";
+        trigger.setAttribute("aria-expanded", String(!abierto));
+        panel.hidden = abierto;
       });
     });
 
