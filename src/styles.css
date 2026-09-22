@@ -842,10 +842,12 @@ body.dcc-root {
 
 /* --- 12c. Sidebar -------------------------------------------------------- */
 /* Reescrita en la 2.5.0 tomando la disposición de Faro y la forma de marcar el
-   ítem seleccionado de Titulación. Todo cuelga de dos verticales: 24px para el
-   borde de las cajas —logo, botón, relleno del ítem, separadores, bloque de
-   usuario— y 36px para los íconos, que es donde caen tanto el del botón como
-   los de la lista. */
+   ítem seleccionado de Titulación. En la 2.5.1 se ajustó la sangría para que
+   coincida con la de Faro medida en pantalla: la caja de cada bloque se pega
+   más al borde a medida que baja —24px la marca, 16px el botón y el pie, 8px
+   los ítems—, y el ítem seleccionado pasa de 192 a 213px de ancho. El eje de
+   los íconos queda en 28px, y ahí caen los tres: el del botón (16 de margen +
+   12 de relleno), los de la lista (8 + 20) y el avatar del pie (16 + 12). */
 .dcc-sidebar {
   background: var(--dcc-grey-default);
   border-radius: 5px;
@@ -876,7 +878,7 @@ body.dcc-root {
 
 /* Envoltura del botón de acción. Lleva también `dcc-menu js-menu` cuando la
    acción tiene destinos: el desplegable se cuelga de acá. */
-.dcc-sidebar__action { position: relative; display: block; margin: 0 24px 12px; }
+.dcc-sidebar__action { position: relative; display: block; margin: 0 16px 12px; }
 .dcc-sidebar__action .dcc-menu__list { left: 0; right: 0; min-width: 0; }
 
 .dcc-sidebar__cta {
@@ -914,27 +916,30 @@ body.dcc-root {
   gap: 10px;
 }
 
-/* Lista navegable. Sin padding a la derecha: ese margen es donde vive la barra
-   de desplazamiento. */
+/* Lista navegable. `scrollbar-gutter: stable` reserva el hueco de la barra de
+   desplazamiento esté o no visible, así que el relleno puede ser parejo a los
+   cuatro lados sin que la lista se corra al aparecer la barra. */
 .dcc-sidebar__nav {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 8px 0 8px 24px;
+  scrollbar-gutter: stable;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 4px;
   scrollbar-width: thin;
   scrollbar-color: rgba(252, 253, 254, .22) transparent;
 }
-/* Ancho fijo y `flex: none`, las dos mitades del mismo arreglo. Con el ancho
-   estirado, al aparecer la barra de desplazamiento el área de contenido se
-   angostaba y los ítems se encogían con ella: terminaban 11px antes que el
-   botón. Con ancho fijo la barra se queda con los 24px del margen derecho y
-   nada se mueve. Y sin `flex: none`, en una columna flex los hijos se aplastan
-   a lo alto cuando sobran, así que con veinte ítems se comprimían en vez de
-   desplazarse. */
-.dcc-sidebar__nav > * { width: 192px; flex: none; }
+/* Se estiran al ancho de la lista en vez del 192 fijo que llevaban hasta la
+   2.5.0: 213px sobre el riel de 240 donde el sistema dibuja barras clásicas
+   —que se llevan 11 en el hueco reservado— y 224 donde las dibuja flotantes.
+   Aquel ancho fijo estaba para que los ítems no se encogieran al aparecer la
+   barra; ahora eso lo resuelve el `scrollbar-gutter` de arriba, que reserva el
+   hueco siempre. `flex: none` sí se queda: sin él, en una columna flex los
+   hijos se aplastan a lo alto cuando sobran, así que con veinte ítems se
+   comprimían en vez de desplazarse. */
+.dcc-sidebar__nav > * { flex: none; }
 /* `display: flex` le gana al hidden nativo si no se dice lo contrario. */
 .dcc-sidebar__nav > [hidden] { display: none; }
 
@@ -954,7 +959,10 @@ body.dcc-root {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 9px 12px;
+  /* Los 20px de los costados son los que dejan el texto a 60px del borde del
+     riel: 8 de la lista + 20 + 20 del ícono + 12 de separación. Si se tocan,
+     el texto se corre. */
+  padding: 9px 20px;
   border: 0;
   border-radius: var(--dcc-radius-md);
   background: transparent;
@@ -1016,7 +1024,7 @@ body.dcc-root {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px 6px 44px;
+  padding: 6px 12px 6px 52px;
   border-radius: var(--dcc-radius-md);
   color: rgba(252, 253, 254, .6);
   font-size: 14px;
@@ -1030,10 +1038,10 @@ body.dcc-root {
 }
 .dcc-sidebar__subitem .dcc-sidebar__count { font-size: 11px; padding: 0 6px; }
 
-/* Pie. El bloque de usuario se comporta como un ítem más de la lista —mismo
-   margen de 24px, mismos 12px adentro—, así el avatar cae en el eje de los
-   íconos y el engranaje en el de los contadores. */
-.dcc-sidebar__foot { padding: 8px 24px 0; display: flex; flex-direction: column; gap: 8px; }
+/* Pie. El bloque de usuario comparte la caja del botón de acción —16px de
+   margen, 12px adentro—, así el avatar cae en el eje de los íconos y el
+   engranaje en el de los contadores. */
+.dcc-sidebar__foot { padding: 8px 16px 0; display: flex; flex-direction: column; gap: 8px; }
 .dcc-sidebar__user { position: relative; display: flex; align-items: center; gap: 12px; padding: 4px 12px; }
 .dcc-sidebar__avatar {
   width: 32px;
@@ -1296,12 +1304,9 @@ body.dcc-root {
   .dcc-nav-app__user-name,
   .dcc-nav-app__user > span:not([class]) { display: none; }
 
-  /* Sidebar → ancho completo. Los ítems dejan el ancho fijo y vuelven a
-     estirarse: el que estaba calculado para 240px dejaría una franja muerta a
-     la derecha en una pantalla de 360. */
+  /* Sidebar → ancho completo. Los ítems ya se estiran solos desde la 2.5.1, así
+     que acá alcanza con soltar el ancho del riel; el logotipo sí se achica. */
   .dcc-sidebar { width: 100%; min-height: 0; height: auto; }
-  .dcc-sidebar__nav { padding-right: 24px; }
-  .dcc-sidebar__nav > * { width: auto; }
   .dcc-sidebar__brand .dcc-logo-dcc-h { width: 176px; }
 
   /* Footer: los enlaces pasan a dos columnas para no volverse una tira de 8

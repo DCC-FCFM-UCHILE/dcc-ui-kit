@@ -9,6 +9,28 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.5.1] — 2026-09-10
+
+### Cambia
+
+- **La sangría de la barra lateral se ajustó a la de Faro**, que era la referencia de la 2.5.0 pero
+  se había copiado de más. Medidos los dos rieles en pantalla a 1280px, el ancho era el mismo —240px
+  en ambos— y lo que se veía distinto era el relleno: el ítem seleccionado ocupaba 192 de esos 240 y
+  quedaba a 24px de cada borde, contra los 223 a 8px de Faro. Ahora la caja de cada bloque se pega
+  más al borde a medida que baja: 24px la marca, 16px el botón de acción y el pie, 8px los ítems.
+  - **El ítem pasa de 192 a 224px** y deja de llevar ancho fijo: se estira al de la lista.
+  - **El relleno del ítem sube de 12 a 20px** por costado, que es lo que deja el texto a 60px del
+    borde del riel, igual que en Faro. El subítem acompaña con 52px de sangría en vez de 44.
+  - **El eje de los íconos baja de 36 a 28px** y ahí siguen cayendo los tres: el del botón, los de
+    la lista y el avatar del pie.
+- **`scrollbar-gutter: stable` en la lista.** Reemplaza al ancho fijo de 192px, que estaba para que
+  los ítems no se encogieran al aparecer la barra de desplazamiento. Reservar el hueco siempre
+  resuelve lo mismo sin clavar el ancho, y permite que el relleno sea parejo a los cuatro lados.
+  - **El hueco cuesta ancho.** Medido en Chrome con barras clásicas, reserva 11px y el ítem queda en
+    213px: 8px de sangría a la izquierda y 19 a la derecha. Donde el sistema dibuja barras flotantes
+    el hueco es 0 y el ítem llega a los 224 parejos. Faro no reserva nada: sus ítems miden 223 y se
+    encogen a 213 mientras la lista desborda. Se prefirió el ancho quieto al ancho exacto.
+
 ## [2.5.0] — 2026-09-07
 
 ### Agrega
