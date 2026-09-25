@@ -9,6 +9,77 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.6.0] — 2026-09-25
+
+### Agrega
+
+- **Tema oscuro.** Se activa con `data-dcc-theme="dark"` en `<html>` o en cualquier contenedor, o
+  con `data-dcc-theme="auto"` para seguir al sistema. Sin el atributo el kit se queda en claro, así
+  que ninguna aplicación cambia de aspecto al actualizar.
+  - Una capa de **colores por rol** en `:root` (`--dcc-bg`, `--dcc-surface`, `--dcc-surface-raised`,
+    `--dcc-surface-muted`, `--dcc-fg`, `--dcc-fg-strong`, `--dcc-fg-accent`, `--dcc-fg-muted`,
+    `--dcc-border`, `--dcc-border-subtle`, `--dcc-accent`, `--dcc-on-accent`, `--dcc-focus` y los
+    estados `--dcc-danger`, `--dcc-success`, `--dcc-info`, `--dcc-warning` con sus `-bg` y
+    `-strong`). Todos los componentes pasaron a pedir el rol en vez del color de paleta.
+  - En claro los roles valen lo mismo que los colores de antes: se comparó el color calculado de
+    cada elemento de las 26 páginas antes y después, y sólo cambian el blanco de las superficies
+    (`#fcfdfe` → `#fff`) y el texto de las alertas (`gray-700` → `grey-dark`).
+  - La nav, el pie, la barra lateral y la navegación inferior son de marca y se quedan oscuras en
+    los dos temas.
+- **Selector de tema en la documentación**, como el de MUI: Claro, Oscuro o Sistema. La elección
+  se guarda en el navegador y se aplica antes de pintar.
+- **Adornos en campos y select** (el `InputAdornment` de MUI): `.dcc-adorned` con
+  `.dcc-adorned__input` y uno o más `.dcc-adornment` —texto, ícono o botón— antes o después del
+  valor. `.dcc-adornment--box` le da fondo propio y separador. El select (`.dcc-combo__button`)
+  acepta un adorno al principio. Un clic en el contenedor enfoca el campo.
+- **Mostrar u ocultar la contraseña** con `.js-password-toggle`: alterna el tipo del campo y
+  `aria-pressed`.
+- **Íconos `i-sun`, `i-moon`, `i-eye` e `i-eye-off`.**
+- **Sitio de documentación nuevo, en `site/`, que reemplaza al styleguide.** Como el de MUI: una
+  portada con todos los componentes agrupados, cada uno con una miniatura viva, y una página por
+  componente con sus demos, el HTML de cada demo listo para copiar, navegación lateral e índice de
+  la página. Se genera con `npm run build` desde `src/sitio/`, un fragmento por componente, y el
+  `--check` del CI lo cubre igual que a `dist/`.
+- **Botón con dos ejes, variante y color, como en MUI.**
+  - Variantes: `--contained` (por omisión), `--outlined` y la nueva `--text`.
+  - Colores: `--primary` (por omisión), y los nuevos `--secondary` (`Grey/Light`, el del Figma),
+    `--success` (`Green/Dark`) y `--error` (`Red/Default`), más `--white` para fondos oscuros.
+  - Cualquier variante combina con cualquier color: el color sólo fija `--dcc-btn-main` y
+    `--dcc-btn-on`.
+  - Estado deshabilitado (`disabled` o `aria-disabled="true"`) y foco de teclado visible.
+- **`--dcc-shadow-button-hover`**: la sombra del botón con desplazamiento y difuminado ×1,5 y las
+  opacidades un tercio más altas. Es el salto de elevación 2 a 4 de MUI dicho con la sombra del kit.
+- **Íconos `i-trash` e `i-send`.**
+
+### Cambia
+
+- **Todos los botones se comportan igual bajo el cursor.** Aparece una capa del color de la
+  etiqueta al 8% y el botón sube un escalón de sombra (el de texto, que no tiene sombra, sólo gana
+  la capa). Al presionar o con foco, la capa sube al 12%. Fondo, borde y etiqueta no cambian, así
+  que el contraste en hover es el mismo que en reposo.
+- **El hover deja de ser rojo.** Sale el `Red/Default` de la asunción de la sección 0.12. Los links
+  pasan a `Grey/Light`, como en el Figma.
+- **La transición pasa de 150ms `ease` a 250ms sobre la curva estándar de Material.**
+- **Los íconos viven en `src/icons.svg`** y no dentro de la página de documentación.
+- **La raíz del repositorio y GitHub Pages abren `site/`.**
+
+### Se mantiene
+
+- **`--primary-grey`, `--primary-white`, `--secondary-grey` y `--secondary-white` siguen
+  funcionando**, así que las aplicaciones no tienen que tocar nada. En esos nombres “primario” y
+  “secundario” eran la variante, no el color; la página del botón trae la tabla de equivalencias.
+
+### Corrige
+
+- **El build dejaba CSS roto en `dist/`** cuando un comentario con comas precedía a una regla: lo
+  partía como si fueran selectores. Ahora separa los comentarios antes de filtrar el andamiaje, y
+  `dist/dcc-ui.css` conserva sus comentarios intactos.
+
+### Anota
+
+- `--secondary` da 4,35:1 con etiqueta blanca: es el color del Figma y no llega a 4,5:1. `--success`
+  usa `Green/Dark` porque `Green/Default` da 3,25:1. Sección 0.18.
+
 ## [2.5.1] — 2026-09-10
 
 ### Cambia

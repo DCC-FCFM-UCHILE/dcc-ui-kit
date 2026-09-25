@@ -1,0 +1,49 @@
+<!--
+titulo: Acordeón
+grupo: Superficies
+resumen: Secciones que se expanden y se contraen para mostrar contenido por partes.
+miniatura: .dcc-accordion
+escala: .55
+ancho: 420px
+-->
+<h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-accordion js-accordion">
+        <div class="dcc-accordion__item">
+          <h3 style="margin:0">
+            <button class="dcc-accordion__trigger" type="button" aria-expanded="true" aria-controls="acc-p1" id="acc-t1">
+              ¿Cómo postulo al Magíster en TI?
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+          </h3>
+          <div class="dcc-accordion__panel" id="acc-p1" role="region" aria-labelledby="acc-t1" data-open="true">
+            <div><p>Las postulaciones se abren en dos periodos al año. Necesitas título profesional o licenciatura,
+              certificado de notas y una carta de motivación. El proceso completo se hace en línea.</p></div>
+          </div>
+        </div>
+        <div class="dcc-accordion__item">
+          <h3 style="margin:0">
+            <button class="dcc-accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-p2" id="acc-t2">
+              ¿Hay becas disponibles?
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+          </h3>
+          <div class="dcc-accordion__panel" id="acc-p2" role="region" aria-labelledby="acc-t2" data-open="false">
+            <div><p>Sí. El Departamento ofrece becas de arancel parcial y existen fondos externos concursables.
+              Los plazos suelen cerrar un mes antes del inicio de clases.</p></div>
+          </div>
+        </div>
+        <div class="dcc-accordion__item">
+          <h3 style="margin:0">
+            <button class="dcc-accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-p3" id="acc-t3">
+              ¿Las clases son presenciales?
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+          </h3>
+          <div class="dcc-accordion__panel" id="acc-p3" role="region" aria-labelledby="acc-t3" data-open="false">
+            <div><p>La mayoría son presenciales en Beauchef 851, Edificio Norte. Algunos cursos de Educación Continua
+              tienen modalidad híbrida o completamente remota.</p></div>
+          </div>
+        </div>
+      </div>
+</div>

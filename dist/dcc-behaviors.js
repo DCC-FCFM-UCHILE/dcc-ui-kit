@@ -1,4 +1,4 @@
-/*! DCC UI Kit 2.5.1 — comportamiento de los componentes | MIT | https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit */
+/*! DCC UI Kit 2.6.0 — comportamiento de los componentes | MIT | https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit */
 /**
  * Comportamiento de los componentes del DCC UI Kit.
  *
@@ -125,6 +125,30 @@
           var i = hijos.indexOf(origen), j = hijos.indexOf(card);
           lista.insertBefore(origen, i < j ? card.nextSibling : card);
         });
+      });
+    });
+
+    /* ---------- Campo con adornos ----------
+       Un clic en el contenedor —en un adorno de texto, o en el espacio que
+       queda— enfoca el campo, como si todo fuera el input. Los botones del
+       adorno conservan su propio clic. */
+    cada(raiz, ".dcc-adorned", "adorned", function (caja) {
+      caja.addEventListener("mousedown", function (e) {
+        var campo = caja.querySelector(".dcc-adorned__input");
+        if (!campo || campo.disabled || e.target === campo || e.target.closest("button, a, input, select, textarea")) return;
+        e.preventDefault();
+        campo.focus();
+      });
+    });
+
+    /* ---------- Mostrar u ocultar la contraseña ---------- */
+    cada(raiz, ".js-password-toggle", "password-toggle", function (btn) {
+      var campo = doc.getElementById(btn.getAttribute("aria-controls"));
+      if (!campo) return;
+      btn.addEventListener("click", function () {
+        var visible = campo.type === "password";
+        campo.type = visible ? "text" : "password";
+        btn.setAttribute("aria-pressed", String(visible));
       });
     });
 

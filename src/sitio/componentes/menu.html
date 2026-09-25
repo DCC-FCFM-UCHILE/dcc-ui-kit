@@ -1,0 +1,84 @@
+<!--
+titulo: Menú desplegable
+grupo: Entradas
+resumen: Una lista de acciones que se abre desde un botón.
+miniatura: .dcc-menu__list
+escala: .6
+-->
+<h2 class="dcc-doc-h2" id="anatomia">Anatomía</h2>
+<p class="dcc-doc-p">Desplegado, para verlo sin tener que abrirlo.</p>
+<div class="dcc-doc-demo">
+  <div style="min-height:250px">
+        <div class="dcc-menu">
+          <button class="dcc-menu__trigger" type="button" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-anatomia">
+            Acciones
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+          </button>
+          <div class="dcc-menu__list" id="menu-anatomia" role="menu">
+            <div class="dcc-menu__group">
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"></use></svg>Gestionar recursos
+              </a>
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg>Administrar usuarios
+              </a>
+            </div>
+            <div class="dcc-menu__group">
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chart-column"></use></svg>Estadísticas
+              </a>
+              <button class="dcc-menu__item" role="menuitem" type="button" aria-disabled="true">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>Configurar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="funcionando">Funcionando</h2>
+<p class="dcc-doc-p">Haz clic para abrirlos.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,max-content));gap:48px;align-items:start;min-height:60px">
+  
+        <div class="dcc-menu js-menu">
+          <button class="dcc-menu__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-acciones">
+            Acciones
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+          </button>
+          <div class="dcc-menu__list" id="menu-acciones" role="menu" hidden="">
+            <a class="dcc-menu__item" role="menuitem" href="#menu">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"></use></svg>Ver detalle
+            </a>
+            <a class="dcc-menu__item" role="menuitem" href="#menu">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"></use></svg>Descargar
+            </a>
+            <button class="dcc-menu__item" role="menuitem" type="button" aria-disabled="true">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>Configurar
+            </button>
+          </div>
+        </div>
+  
+        <div class="dcc-menu dcc-menu--end js-menu">
+          <button class="dcc-menu__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-usuario" aria-label="Menú de Cristian Salazar">
+            <span class="dcc-nav-app__user-name">Cristian Salazar</span>
+            <span class="dcc-avatar dcc-avatar--sm"><span class="dcc-avatar__label">CS</span></span>
+          </button>
+          <div class="dcc-menu__list" id="menu-usuario" role="menu" hidden="">
+            <div class="dcc-menu__group">
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>Administración
+              </a>
+            </div>
+            <div class="dcc-menu__group">
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-log-out"></use></svg>Cerrar sesión
+              </a>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+</div>
+<p class="dcc-doc-p">Se abre con clic, con Enter o con las flechas; se recorre con las flechas y se cierra con Escape, con Tab o haciendo clic fuera. Por defecto se despliega <strong>bajo</strong> el disparador, nunca encima: el avatar tiene que seguir visible. <code>dcc-menu--up</code> lo invierte, para el disparador que vive al pie de una barra lateral y hacia abajo no tiene sitio. <code>dcc-menu--end</code> lo cuelga del borde derecho, para cuando el disparador vive en una esquina, y <code>dcc-menu__group</code> separa bloques de opciones.</p>
+<p class="dcc-doc-p">El menú de usuario <strong>no repite el nombre</strong>: ya está en la barra, al lado del avatar.</p>

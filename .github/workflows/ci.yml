@@ -31,7 +31,7 @@ jobs:
         run: npm run check:html
 
   pages:
-    name: Publicar styleguide
+    name: Publicar documentación
     needs: verificar
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI Kit DCC — Todos los componentes</title>
+<meta name="description" content="Sistema de diseño del DCC, Universidad de Chile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,700;1,400&amp;family=Poppins:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../src/styles.css">
+<script>
+  // Antes de pintar, para que no parpadee en claro: el tema elegido se guarda
+  // en este navegador y, si no hay ninguno, se sigue al sistema.
+  (function () {
+    var tema = "auto";
+    try { tema = localStorage.getItem("dcc-doc-tema") || "auto"; } catch (e) {}
+    document.documentElement.setAttribute("data-dcc-theme", tema);
+  })();
+</script>
+</head>
+<!-- Archivo generado por `npm run build` desde src/sitio/. No se edita a mano. -->
+<body class="dcc-root dcc-doc">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="i-smile" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>
+    </g>
+    <g id="i-info" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+    </g>
+    <g id="i-circle-check" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+    </g>
+    <g id="i-circle-alert" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+    </g>
+    <g id="i-circle-user" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
+    </g>
+    <g id="i-users" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/>
+    </g>
+    <g id="i-plus" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14"/><path d="M12 5v14"/>
+    </g>
+    <g id="i-phone" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+    </g>
+    <g id="i-mail" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/>
+    </g>
+    <g id="i-menu" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/>
+    </g>
+    <g id="i-linkedin" fill="currentColor">
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/>
+    </g>
+    <g id="i-instagram" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+    </g>
+    <g id="i-facebook" fill="currentColor">
+      <path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07Z"/>
+    </g>
+    <g id="i-youtube" fill="currentColor">
+      <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/>
+    </g>
+    <g id="i-search" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>
+    </g>
+    <g id="i-x" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+    </g>
+    <g id="i-check" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6 9 17l-5-5"/>
+    </g>
+    <g id="i-chevron-down" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m6 9 6 6 6-6"/>
+    </g>
+    <g id="i-chevron-left" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m15 18-6-6 6-6"/>
+    </g>
+    <g id="i-chevron-right" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"/>
+    </g>
+    <g id="i-chevrons-up-down" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>
+    </g>
+    <g id="i-arrow-up" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </g>
+    <g id="i-arrow-down" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>
+    </g>
+    <g id="i-heart" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+    </g>
+    <g id="i-grip-vertical" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/>
+    </g>
+    <g id="i-star" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+    </g>
+    <g id="i-clock" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/>
+    </g>
+    <g id="i-calendar" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>
+    </g>
+    <g id="i-house" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    </g>
+    <g id="i-bell" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+    </g>
+    <g id="i-archive" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>
+    </g>
+    <g id="i-log-out" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    </g>
+    <g id="i-chart-column" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+    </g>
+    <g id="i-flask-conical" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/>
+    </g>
+    <g id="i-monitor" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>
+    </g>
+    <g id="i-settings" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>
+    </g>
+    <g id="i-file-text" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>
+    </g>
+    <g id="i-folder" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+    </g>
+    <g id="i-ellipsis" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+    </g>
+    <g id="i-download" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/>
+    </g>
+    <g id="i-map-pin" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>
+    </g>
+    <g id="i-trash" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+    </g>
+    <g id="i-send" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>
+    </g>
+    <g id="i-sun" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </g>
+    <g id="i-moon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </g>
+    <g id="i-eye" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>
+    </g>
+    <g id="i-eye-off" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>
+    </g>
+  </defs>
+</svg>
+
+<a class="dcc-doc-skip" href="#contenido">Saltar al contenido</a>
+
+<header class="dcc-doc-bar">
+  <button class="dcc-doc-bar__menu" type="button" aria-controls="dcc-doc-nav" aria-expanded="false" aria-label="Abrir la navegación">
+    <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-menu"/></svg>
+  </button>
+  <a class="dcc-doc-bar__brand" href="index.html">
+    <img src="../src/assets/logo-dcc-horizontal.svg" alt="DCC" height="32">
+    <span class="dcc-doc-bar__name">UI Kit</span>
+  </a>
+  <span class="dcc-doc-bar__version">v2.6.0</span>
+  <a class="dcc-doc-bar__link" href="https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit">GitHub</a>
+  <div class="dcc-menu dcc-menu--end dcc-doc-theme js-menu">
+    <button class="dcc-menu__trigger dcc-doc-theme__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="dcc-doc-theme-list" aria-label="Tema de color">
+      <svg class="dcc-i dcc-doc-theme__icon dcc-doc-theme__icon--light" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>
+      <svg class="dcc-i dcc-doc-theme__icon dcc-doc-theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-moon"/></svg>
+    </button>
+    <div class="dcc-menu__list" id="dcc-doc-theme-list" role="menu" hidden>
+      <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-tema="light">
+        <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>Claro
+      </button>
+      <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-tema="dark">
+        <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-moon"/></svg>Oscuro
+      </button>
+      <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-tema="auto">
+        <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-monitor"/></svg>Sistema
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="dcc-doc-layout">
+  <nav class="dcc-doc-nav" id="dcc-doc-nav" aria-label="Componentes">
+    <a class="dcc-doc-nav__home" aria-current="page" href="index.html">Todos los componentes</a>
+      <p class="dcc-doc-nav__group">Fundamentos</p>
+      <ul class="dcc-doc-nav__list">
+        <li><a href="color.html">Color</a></li>
+        <li><a href="tipografia.html">Tipografía</a></li>
+      </ul>
+      <p class="dcc-doc-nav__group">Entradas</p>
+      <ul class="dcc-doc-nav__list">
+        <li><a href="boton.html">Botón</a></li>
+        <li><a href="campo-de-texto.html">Campo de texto</a></li>
+        <li><a href="checkbox-radio.html">Checkbox y radio</a></li>
+        <li><a href="menu.html">Menú desplegable</a></li>
+        <li><a href="selector-de-fecha.html">Selector de fecha</a></li>
+        <li><a href="switch.html">Switch</a></li>
+      </ul>
+      <p class="dcc-doc-nav__group">Visualización de datos</p>
+      <ul class="dcc-doc-nav__list">
+        <li><a href="avatar.html">Avatar</a></li>
+        <li><a href="badge.html">Badge y tag</a></li>
+        <li><a href="lista.html">Lista</a></li>
+        <li><a href="tabla.html">Tabla</a></li>
+        <li><a href="tabla-ordenable.html">Tabla ordenable</a></li>
+      </ul>
+      <p class="dcc-doc-nav__group">Retroalimentación</p>
+      <ul class="dcc-doc-nav__list">
+        <li><a href="alerta.html">Alerta</a></li>
+      </ul>
+      <p class="dcc-doc-nav__group">Superficies</p>
+      <ul class="dcc-doc-nav__list">
+        <li><a href="acordeon.html">Acordeón</a></li>
+        <li><a href="tarjeta-comprimida.html">Tarjeta comprimida</a></li>
+        <li><a href="tarjeta.html">Tarjeta de programa</a></li>
+      </ul>
+      <p class="dcc-doc-nav__group">Navegación</p>
+      <ul class="dcc-doc-nav__list">
+        <li><a href="barra-de-navegacion.html">Barra de navegación</a></li>
+        <li><a href="breadcrumb.html">Breadcrumb</a></li>
+        <li><a href="link.html">Link</a></li>
+        <li><a href="navegacion-inferior.html">Navegación inferior</a></li>
+        <li><a href="paginacion.html">Paginación</a></li>
+        <li><a href="pie-de-pagina.html">Pie de página</a></li>
+        <li><a href="stepper.html">Stepper</a></li>
+        <li><a href="tabs.html">Tabs</a></li>
+      </ul>
+  </nav>
+
+  <main class="dcc-doc-main" id="contenido">
+      <h1 class="dcc-doc-title">Todos los componentes</h1>
+      <p class="dcc-doc-lead">El sistema de diseño del Departamento de Ciencias de la Computación. Cada componente es CSS con prefijo <code>dcc-</code>: sirve igual en React, Vue o una plantilla de Django.</p>
+      <h2 class="dcc-doc-h2">Fundamentos</h2>
+      <div class="dcc-doc-cards">
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><div class="dcc-swatches">
+          <div class="dcc-swatch"><span class="dcc-chip" style="background:var(--dcc-grey-ultralight)"></span><span class="dcc-meta"><span class="dcc-name">Ultralight</span><br><span class="dcc-hex">#E2ECF3</span></span></div>
+          <div class="dcc-swatch"><span class="dcc-chip" style="background:var(--dcc-grey-light)"></span><span class="dcc-meta"><span class="dcc-name">Light</span><br><span class="dcc-hex">#5D7C8E</span></span></div>
+          <div class="dcc-swatch"><span class="dcc-chip" style="background:var(--dcc-grey-default)"></span><span class="dcc-meta"><span class="dcc-name">Default</span><br><span class="dcc-hex">#40506A</span></span></div>
+          <div class="dcc-swatch"><span class="dcc-chip" style="background:var(--dcc-grey-dark)"></span><span class="dcc-meta"><span class="dcc-name">Dark</span><br><span class="dcc-hex">#303B4D</span></span></div>
+        </div></div></div>
+          <a class="dcc-doc-card__link" href="color.html">Color</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><p class="dcc-t-display">Lorem ipsum</p></div></div>
+          <a class="dcc-doc-card__link" href="tipografia.html">Tipografía</a>
+        </div>
+      </div>
+      <h2 class="dcc-doc-h2">Entradas</h2>
+      <div class="dcc-doc-cards">
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.75"><div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Texto</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Relleno</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Delineado</button>
+  </div></div></div>
+          <a class="dcc-doc-card__link" href="boton.html">Botón</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.9"><div class="dcc-field">
+          <label class="dcc-field__label">Nombre completo</label>
+          <input class="dcc-input" type="text" placeholder="Escribe aquí">
+          <span class="dcc-field__help">Como aparece en tu credencial</span>
+        </div></div></div>
+          <a class="dcc-doc-card__link" href="campo-de-texto.html">Campo de texto</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.5"><div class="dcc-control-grid">
+  
+        <div class="dcc-control-col">
+          <label class="dcc-control">
+            <span>Checkbox Label</span>
+            <input type="checkbox">
+            <span class="dcc-box">
+              <svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </span>
+          </label>
+          <label class="dcc-control">
+            <span>Checkbox Label</span>
+            <input type="checkbox" checked="">
+            <span class="dcc-box">
+              <svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </span>
+          </label>
+          <label class="dcc-control">
+            <span>Checkbox Label</span>
+            <input type="checkbox" class="">
+            <span class="dcc-box">
+              <svg class="dcc-dash dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"></path></svg>
+            </span>
+          </label>
+        </div>
+  
+        <div class="dcc-control-col">
+          <label class="dcc-control">
+            <input type="radio" name="demo-radio">
+            <span class="dcc-dot"></span>
+            <span>Radio Label</span>
+          </label>
+          <label class="dcc-control">
+            <input type="radio" name="demo-radio" checked="">
+            <span class="dcc-dot"></span>
+            <span>Radio Label</span>
+          </label>
+        </div>
+  
+        <div class="dcc-control-col">
+          <label class="dcc-control">
+            <span>Switch Label</span>
+            <input type="checkbox" role="switch">
+            <span class="dcc-track"></span>
+          </label>
+          <label class="dcc-control">
+            <span>Switch Label</span>
+            <input type="checkbox" role="switch" checked="">
+            <span class="dcc-track"></span>
+          </label>
+        </div>
+  
+      </div></div></div>
+          <a class="dcc-doc-card__link" href="checkbox-radio.html">Checkbox y radio</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.6"><div class="dcc-menu__list" role="menu">
+            <div class="dcc-menu__group">
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"></use></svg>Gestionar recursos
+              </a>
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg>Administrar usuarios
+              </a>
+            </div>
+            <div class="dcc-menu__group">
+              <a class="dcc-menu__item" role="menuitem" href="#menu">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chart-column"></use></svg>Estadísticas
+              </a>
+              <button class="dcc-menu__item" role="menuitem" type="button" aria-disabled="true">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>Configurar
+              </button>
+            </div>
+          </div></div></div>
+          <a class="dcc-doc-card__link" href="menu.html">Menú desplegable</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:1;--dcc-doc-ancho:240px"><div class="dcc-input-wrap">
+              <input class="dcc-input dcc-has-trail" type="text" readonly="" placeholder="dd/mm/aaaa" value="21/08/2026" autocomplete="off">
+              <button class="dcc-input-btn dcc-trail" type="button" aria-label="Abrir calendario" aria-expanded="false">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"></use></svg>
+              </button>
+            </div></div></div>
+          <a class="dcc-doc-card__link" href="selector-de-fecha.html">Selector de fecha</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><label class="dcc-control">
+            <span>Notificaciones por correo</span>
+            <input type="checkbox" role="switch" checked="">
+            <span class="dcc-track"></span>
+          </label></div></div>
+          <a class="dcc-doc-card__link" href="switch.html">Switch</a>
+        </div>
+      </div>
+      <h2 class="dcc-doc-h2">Visualización de datos</h2>
+      <div class="dcc-doc-cards">
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:1.1"><div class="dcc-avatar-group">
+        <span class="dcc-avatar dcc-avatar--sm"><span class="dcc-avatar__label">CS</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--lightblue"><span class="dcc-avatar__label">MP</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--blue"><span class="dcc-avatar__label">AR</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--green"><span class="dcc-avatar__label">JG</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--light"><span class="dcc-avatar__label">+7</span></span>
+      </div></div></div>
+          <a class="dcc-doc-card__link" href="avatar.html">Avatar</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:1.3"><span class="dcc-badge dcc-badge--solid-default">Label</span></div></div>
+          <a class="dcc-doc-card__link" href="badge.html">Badge y tag</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.55"><ul class="dcc-list">
+          <li><a class="dcc-list__item" href="#lista">
+            <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"></use></svg></span>
+            <span class="dcc-list__body">
+              <span class="dcc-list__title">Programa del curso</span>
+              <span class="dcc-list__desc">CC3001 · Actualizado hace 2 días</span>
+            </span>
+            <span class="dcc-list__trail">
+              <span class="dcc-badge dcc-badge--soft-green">Vigente</span>
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+            </span>
+          </a></li>
+          <li><a class="dcc-list__item" href="#lista">
+            <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flask-conical"></use></svg></span>
+            <span class="dcc-list__body">
+              <span class="dcc-list__title">Ambiente de pruebas</span>
+              <span class="dcc-list__desc">Versión candidata, datos de prueba</span>
+            </span>
+            <span class="dcc-list__trail">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+            </span>
+          </a></li>
+          <li><a class="dcc-list__item" href="#lista">
+            <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-monitor"></use></svg></span>
+            <span class="dcc-list__body">
+              <span class="dcc-list__title">Entorno local</span>
+              <span class="dcc-list__desc">Corriendo en tu máquina</span>
+            </span>
+            <span class="dcc-list__trail">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+            </span>
+          </a></li>
+          <li><a class="dcc-list__item" href="#lista" aria-current="true">
+            <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"></use></svg></span>
+            <span class="dcc-list__body">
+              <span class="dcc-list__title">Material de laboratorio</span>
+              <span class="dcc-list__desc">18 archivos · 240 MB</span>
+            </span>
+            <span class="dcc-list__trail">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+            </span>
+          </a></li>
+          <li><a class="dcc-list__item" href="#lista">
+            <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg></span>
+            <span class="dcc-list__body">
+              <span class="dcc-list__title">Equipo docente</span>
+              <span class="dcc-list__desc">4 académicos y 6 auxiliares</span>
+            </span>
+            <span class="dcc-list__trail">
+              <span class="dcc-badge dcc-badge--solid-default dcc-badge--count">10</span>
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+            </span>
+          </a></li>
+          <li><a class="dcc-list__item" href="#lista">
+            <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"></use></svg></span>
+            <span class="dcc-list__body">
+              <span class="dcc-list__title">Actas descargadas</span>
+              <span class="dcc-list__desc">Último respaldo: 12 de agosto</span>
+            </span>
+            <span class="dcc-list__trail">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+            </span>
+          </a></li>
+        </ul></div></div>
+          <a class="dcc-doc-card__link" href="lista.html">Lista</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><div class="dcc-table-scroll" style="flex:0 0 260px;max-width:100%">
+          <table class="dcc-table dcc-table--single">
+            <thead><tr><th scope="col">Title</th></tr></thead>
+            <tbody>
+              <tr><td>Lorem ipsum dolor</td></tr>
+              <tr><td>Lorem ipsum dolor</td></tr>
+              <tr><td>Lorem ipsum dolor</td></tr>
+              <tr><td>Lorem ipsum dolor</td></tr>
+            </tbody>
+          </table>
+        </div></div></div>
+          <a class="dcc-doc-card__link" href="tabla.html">Tabla</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><table class="dcc-table">
+          <thead>
+            <tr>
+              <th scope="col" class="is-sortable" aria-sort="ascending">
+                <button class="dcc-th-sort" type="button">Curso<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg>
+                  <svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg>
+                  <svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span>
+                </button>
+              </th>
+              <th scope="col" class="is-sortable" aria-sort="none">
+                <button class="dcc-th-sort" type="button">Profesor<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg>
+                  <svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg>
+                  <svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span>
+                </button>
+              </th>
+              <th scope="col" class="is-sortable" aria-sort="none" data-type="number">
+                <button class="dcc-th-sort" type="button">Inscritos<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg>
+                  <svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg>
+                  <svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span>
+                </button>
+              </th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Algoritmos y Estructuras de Datos</td><td>M. Pérez</td><td>128</td><td><span class="dcc-badge dcc-badge--soft-green">Vigente</span></td></tr>
+            <tr><td>Bases de Datos</td><td>A. Rojas</td><td>94</td><td><span class="dcc-badge dcc-badge--soft-lightblue">En revisión</span></td></tr>
+            <tr><td>Compiladores</td><td>J. González</td><td>41</td><td><span class="dcc-badge dcc-badge--soft-red">Cerrado</span></td></tr>
+            <tr><td>Redes de Computadores</td><td>L. Torres</td><td>76</td><td><span class="dcc-badge dcc-badge--soft-green">Vigente</span></td></tr>
+          </tbody>
+        </table></div></div>
+          <a class="dcc-doc-card__link" href="tabla-ordenable.html">Tabla ordenable</a>
+        </div>
+      </div>
+      <h2 class="dcc-doc-h2">Retroalimentación</h2>
+      <div class="dcc-doc-cards">
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><div class="dcc-alert dcc-alert--info" role="status">
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-info"></use></svg>
+          <span class="dcc-stack"><strong>Title</strong><span>This is a description</span></span>
+        </div></div></div>
+          <a class="dcc-doc-card__link" href="alerta.html">Alerta</a>
+        </div>
+      </div>
+      <h2 class="dcc-doc-h2">Superficies</h2>
+      <div class="dcc-doc-cards">
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.55;--dcc-doc-ancho:420px"><div class="dcc-accordion">
+        <div class="dcc-accordion__item">
+          <h3 style="margin:0">
+            <button class="dcc-accordion__trigger" type="button" aria-expanded="true">
+              ¿Cómo postulo al Magíster en TI?
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+          </h3>
+          <div class="dcc-accordion__panel" role="region" data-open="true">
+            <div><p>Las postulaciones se abren en dos periodos al año. Necesitas título profesional o licenciatura,
+              certificado de notas y una carta de motivación. El proceso completo se hace en línea.</p></div>
+          </div>
+        </div>
+        <div class="dcc-accordion__item">
+          <h3 style="margin:0">
+            <button class="dcc-accordion__trigger" type="button" aria-expanded="false">
+              ¿Hay becas disponibles?
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+          </h3>
+          <div class="dcc-accordion__panel" role="region" data-open="false">
+            <div><p>Sí. El Departamento ofrece becas de arancel parcial y existen fondos externos concursables.
+              Los plazos suelen cerrar un mes antes del inicio de clases.</p></div>
+          </div>
+        </div>
+        <div class="dcc-accordion__item">
+          <h3 style="margin:0">
+            <button class="dcc-accordion__trigger" type="button" aria-expanded="false">
+              ¿Las clases son presenciales?
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+          </h3>
+          <div class="dcc-accordion__panel" role="region" data-open="false">
+            <div><p>La mayoría son presenciales en Beauchef 851, Edificio Norte. Algunos cursos de Educación Continua
+              tienen modalidad híbrida o completamente remota.</p></div>
+          </div>
+        </div>
+      </div></div></div>
+          <a class="dcc-doc-card__link" href="acordeon.html">Acordeón</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><article class="dcc-ccard">
+          <div class="dcc-ccard__chips">
+            <span class="dcc-badge dcc-badge--solid-red">
+              <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"></use></svg>Atrasado 3 días
+            </span>
+            <button class="dcc-ccard__add" type="button">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>Categoría
+            </button>
+            <button class="dcc-ccard__fav" type="button" aria-pressed="true" aria-label="Quitar de favoritos">
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"></use></svg>
+            </button>
+          </div>
+          <h3 class="dcc-ccard__title">Corrección juegos — DCC parte 1</h3>
+          <p class="dcc-ccard__meta">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"></use></svg>
+            Creada hace 4 días por <b>Carolina Zúñiga</b>
+          </p>
+          <p class="dcc-ccard__meta">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg>
+            Asignada a <b>Desarrollo de Software</b>
+          </p>
+        </article></div></div>
+          <a class="dcc-doc-card__link" href="tarjeta-comprimida.html">Tarjeta comprimida</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.4;--dcc-doc-ancho:300px"><article class="dcc-card">
+          <div class="dcc-card__paper">
+            <div class="dcc-card__media">
+              <img src="../src/assets/card-media.svg" alt="" width="300" height="200">
+            </div>
+            <div class="dcc-card__content">
+              <div class="dcc-card__head">
+                <p class="dcc-card__eyebrow">Magíster en</p>
+                <h3 class="dcc-card__title">Tecnologías de la Información</h3>
+                <hr class="dcc-card__rule">
+                <p class="dcc-card__meta">000 horas / 5 meses</p>
+              </div>
+              <div class="dcc-card__foot">
+                <p class="dcc-card__date">
+                  <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"></use></svg>
+                  <span><b>Inicio</b>29 de octubre</span>
+                </p>
+                <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">
+                  Ver más <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <p class="dcc-card__tag dcc-card__tag--magister">Magíster</p>
+          <p class="dcc-card__discount"><b>00%</b><span>descuento</span></p>
+        </article></div></div>
+          <a class="dcc-doc-card__link" href="tarjeta.html">Tarjeta de programa</a>
+        </div>
+      </div>
+      <h2 class="dcc-doc-h2">Navegación</h2>
+      <div class="dcc-doc-cards">
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.25;--dcc-doc-ancho:1100px"><div class="dcc-nav-demo">
+        <nav class="dcc-nav-inst">
+          <img class="dcc-logo-dcc" src="../src/assets/logo-dcc.svg" alt="DCC — Ciencias de la Computación, Universidad de Chile" width="160" height="79">
+          <button class="dcc-nav-toggle" type="button" aria-expanded="false" aria-label="Abrir menú">
+            <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-menu"></use></svg>
+          </button>
+          <div class="dcc-nav-inst__main">
+            <ul class="dcc-nav-inst__menu">
+              <li><a href="#nav">Nosotros</a></li>
+              <li><a href="#nav">Pregrado</a></li>
+              <li><a href="#nav">Postgrado</a></li>
+              <li><a href="#nav">Educación Continua</a></li>
+              <li><a href="#nav">Investigación</a></li>
+              <li><a href="#nav">Difusión</a></li>
+              <li><a href="#nav">VIME</a></li>
+              <li><a href="#nav">Alumni</a></li>
+            </ul>
+          </div>
+          <div class="dcc-social">
+            <a href="#nav" aria-label="LinkedIn"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-linkedin"></use></svg></a>
+            <a href="#nav" aria-label="Instagram"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></a>
+            <a href="#nav" aria-label="Facebook"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-facebook"></use></svg></a>
+            <a href="#nav" aria-label="YouTube"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-youtube"></use></svg></a>
+          </div>
+        </nav>
+      </div></div></div>
+          <a class="dcc-doc-card__link" href="barra-de-navegacion.html">Barra de navegación</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><nav class="dcc-breadcrumb" aria-label="Ruta de navegación">
+        <ol>
+          <li><a href="#breadcrumb" aria-label="Inicio"><svg class="dcc-home dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"></use></svg></a></li>
+          <li><svg class="dcc-sep dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg><a href="#breadcrumb">Educación Continua</a></li>
+          <li><svg class="dcc-sep dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg><a href="#breadcrumb">Diplomas</a></li>
+          <li><svg class="dcc-sep dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg><span aria-current="page">Protección de Datos Personales</span></li>
+        </ol>
+      </nav></div></div>
+          <a class="dcc-doc-card__link" href="breadcrumb.html">Breadcrumb</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:1.2"><a href="#basico" class="dcc-link dcc-link--grey">Ver programa <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></a></div></div>
+          <a class="dcc-doc-card__link" href="link.html">Link</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><nav class="dcc-bottom-nav dcc-bottom-nav--floating" aria-label="Navegación principal">
+          <button class="dcc-bottom-nav__item" type="button">
+            <span class="dcc-bottom-nav__ico"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"></use></svg></span>Inicio
+          </button>
+          <button class="dcc-bottom-nav__item" type="button">
+            <span class="dcc-bottom-nav__ico"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg></span>Buscar
+          </button>
+          <button class="dcc-bottom-nav__item" type="button" aria-current="page">
+            <span class="dcc-bottom-nav__ico"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"></use></svg></span>Agenda
+          </button>
+          <button class="dcc-bottom-nav__item" type="button">
+            <span class="dcc-bottom-nav__ico dcc-bottom-nav__ico--badge"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bell"></use></svg></span>Avisos
+          </button>
+          <button class="dcc-bottom-nav__item" type="button">
+            <span class="dcc-bottom-nav__ico"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-user"></use></svg></span>Perfil
+          </button>
+        </nav></div></div>
+          <a class="dcc-doc-card__link" href="navegacion-inferior.html">Navegación inferior</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.8"><nav class="dcc-pagination" aria-label="Paginación de resultados">
+        <button class="dcc-pagination__btn" type="button" aria-label="Página anterior" disabled="">
+          <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
+        </button>
+        <button class="dcc-pagination__btn" type="button" aria-current="page">1</button>
+        <button class="dcc-pagination__btn" type="button">2</button>
+        <button class="dcc-pagination__btn" type="button">3</button>
+        <button class="dcc-pagination__btn" type="button">4</button>
+        <button class="dcc-pagination__btn" type="button">5</button>
+        <span class="dcc-pagination__gap" aria-hidden="true"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-ellipsis"></use></svg></span>
+        <button class="dcc-pagination__btn" type="button">10</button>
+        <button class="dcc-pagination__btn" type="button" aria-label="Página siguiente">
+          <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+        </button>
+      </nav></div></div>
+          <a class="dcc-doc-card__link" href="paginacion.html">Paginación</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.35;--dcc-doc-ancho:900px"><footer class="dcc-footer dcc-footer--plano">
+        <p class="dcc-footer__linea">
+          <span>Área de Tecnologías de la Información</span>
+          <span class="dcc-footer__sep" aria-hidden="true">·</span>
+          <span><strong>Departamento de Ciencias de la Computación</strong></span>
+          <span class="dcc-footer__sep" aria-hidden="true">·</span>
+          <span><strong>Universidad de Chile</strong></span>
+          <span class="dcc-footer__sep" aria-hidden="true">·</span>
+          <span>© 2026</span>
+        </p>
+      </footer></div></div>
+          <a class="dcc-doc-card__link" href="pie-de-pagina.html">Pie de página</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:.5;--dcc-doc-ancho:560px"><ol class="dcc-stepper">
+        <li class="dcc-stepper__step" data-state="done">
+          <span class="dcc-stepper__bullet"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Datos personales</span>
+            <span class="dcc-stepper__desc">Completado el 4 de agosto</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="done">
+          <span class="dcc-stepper__bullet"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Antecedentes académicos</span>
+            <span class="dcc-stepper__desc">3 documentos adjuntos</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="current" aria-current="step">
+          <span class="dcc-stepper__bullet">3</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Documentos</span>
+            <span class="dcc-stepper__desc">Falta el certificado de notas</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="todo">
+          <span class="dcc-stepper__bullet">4</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Pago</span>
+            <span class="dcc-stepper__desc">Arancel de postulación</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="todo">
+          <span class="dcc-stepper__bullet">5</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Confirmación</span>
+            <span class="dcc-stepper__desc">Recibirás un correo</span>
+          </span>
+        </li>
+      </ol></div></div>
+          <a class="dcc-doc-card__link" href="stepper.html">Stepper</a>
+        </div>
+        <div class="dcc-doc-card">
+          <div class="dcc-doc-card__preview" aria-hidden="true" inert><div class="dcc-doc-card__scale" style="--dcc-doc-escala:0.75"><div class="dcc-tabs__list" role="tablist" aria-label="Información del programa">
+          <button class="dcc-tabs__tab" role="tab" aria-selected="true">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"></use></svg>Descripción
+          </button>
+          <button class="dcc-tabs__tab" role="tab" aria-selected="false">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg>Docentes
+          </button>
+          <button class="dcc-tabs__tab" role="tab" aria-selected="false">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"></use></svg>Calendario
+          </button>
+          <button class="dcc-tabs__tab" role="tab" aria-selected="false" disabled="">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>Administración
+          </button>
+        </div></div></div>
+          <a class="dcc-doc-card__link" href="tabs.html">Tabs</a>
+        </div>
+      </div>
+  </main>
+
+  
+</div>
+
+<script src="../src/behaviors.js" defer></script>
+<script>
+  // Sólo para la documentación: abrir la navegación en pantallas angostas y
+  // copiar el HTML de cada demo.
+  (function () {
+    var boton = document.querySelector(".dcc-doc-bar__menu");
+    var nav = document.getElementById("dcc-doc-nav");
+    boton.addEventListener("click", function () {
+      var abierta = boton.getAttribute("aria-expanded") === "true";
+      boton.setAttribute("aria-expanded", String(!abierta));
+      nav.classList.toggle("is-open", !abierta);
+    });
+    var raiz = document.documentElement;
+    var opciones = document.querySelectorAll("[data-tema]");
+    function marcar() {
+      var actual = raiz.getAttribute("data-dcc-theme");
+      opciones.forEach(function (o) {
+        o.setAttribute("aria-checked", String(o.getAttribute("data-tema") === actual));
+      });
+    }
+    opciones.forEach(function (o) {
+      o.addEventListener("click", function () {
+        var tema = o.getAttribute("data-tema");
+        raiz.setAttribute("data-dcc-theme", tema);
+        try { localStorage.setItem("dcc-doc-tema", tema); } catch (e) {}
+        marcar();
+      });
+    });
+    marcar();
+
+    document.querySelectorAll(".dcc-doc-code__copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var texto = b.parentNode.querySelector("code").textContent;
+        navigator.clipboard.writeText(texto).then(function () {
+          b.textContent = "Copiado";
+          setTimeout(function () { b.textContent = "Copiar"; }, 1600);
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -2,11 +2,11 @@
 /**
  * Build del DCC UI Kit.
  *
- *   node scripts/build.mjs          construye dist/
- *   node scripts/build.mjs --check  verifica que dist/ coincida con el fuente
+ *   node scripts/build.mjs          construye dist/ y site/
+ *   node scripts/build.mjs --check  verifica que dist/ y site/ coincidan con el fuente
  *
- * El modo --check es el que corre en CI: si alguien edita dist/ a mano o
- * cambia src/ sin reconstruir, el build falla y lo deja en evidencia.
+ * El modo --check es el que corre en CI: si alguien edita dist/ o site/ a mano,
+ * o cambia src/ sin reconstruir, el build falla y lo deja en evidencia.
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
@@ -14,6 +14,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { transform } from "lightningcss";
 import { minify } from "terser";
+import { construirSitio } from "./sitio.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(raiz, "src");
@@ -23,14 +24,14 @@ const VERSION = pkg.version;
 const check = process.argv.includes("--check");
 
 /* --------------------------------------------------------------------------
-   1. Andamiaje del styleguide: existe sólo para la página de documentación y
+   1. Andamiaje de la documentación: existe sólo para site/ y
       no debe viajar a las aplicaciones que consumen el kit.
    -------------------------------------------------------------------------- */
 const ANDAMIAJE = [
-  "dcc-page", "dcc-page-header", "dcc-toc", "dcc-section", "dcc-sg-h3", "dcc-sub-label",
+  "dcc-doc(?:-[a-z0-9]+)*", "dcc-sg-h3", "dcc-sub-label",
   "dcc-palette-group", "dcc-swatches", "dcc-swatch", "dcc-chip", "dcc-meta", "dcc-name",
   "dcc-hex", "dcc-type-grid", "dcc-type-item", "dcc-type-spec", "dcc-type-sample",
-  "dcc-demo-grid", "dcc-demo-stack", "dcc-surface-dark", "dcc-table-row",
+  "dcc-demo-grid", "dcc-table-row",
   "dcc-menu-states", "dcc-nav-demo", "dcc-sidebar-demo", "dcc-phone",
 ];
 const RE_ANDAMIAJE = new RegExp(
@@ -46,14 +47,18 @@ function filtrar(texto) {
   while ((m = re.exec(texto)) !== null) {
     const previo = texto.slice(i, m.index);
     i = re.lastIndex;
-    const quedan = m[1].split(",").map((s) => s.trim())
+    // Los comentarios que preceden a la regla quedan dentro de m[1]. Se separan
+    // antes de partir por comas: si no, una coma en el comentario lo corta como
+    // si fuera un selector y deja CSS roto en dist/.
+    const comentarios = m[1].match(/^(?:\s*\/\*[\s\S]*?\*\/)*\s*/)[0];
+    const quedan = m[1].slice(comentarios.length).split(",").map((s) => s.trim())
       .filter((s) => s && !RE_ANDAMIAJE.test(s));
     if (quedan.length === 0) {
-      // se descarta la regla y también el comentario que la precedía
-      salida.push(previo.replace(/\/\*[^*]*(?:\*(?!\/)[^*]*)*\*\/\s*$/, ""));
+      // se descarta la regla y también los comentarios que la precedían
+      salida.push(previo + (/^\s*\n/.test(comentarios) ? "\n" : ""));
       continue;
     }
-    salida.push(previo + quedan.join(",\n") + " {" + m[2] + "}");
+    salida.push(previo + comentarios + quedan.join(",\n") + " {" + m[2] + "}");
   }
   salida.push(texto.slice(i));
   return salida.join("");
@@ -124,8 +129,8 @@ const tokensCss = `/*! DCC UI Kit ${VERSION} — tokens de diseño */\n\n${token
       <use href="https://otro-origen/…"> está bloqueado por los navegadores, así
       que el sprite se embebe en un JS que lo inyecta en el documento.
    -------------------------------------------------------------------------- */
-const guia = readFileSync(join(SRC, "styleguide.html"), "utf8");
-const defs = guia.slice(guia.indexOf("<defs>") + 6, guia.indexOf("</defs>"));
+const fuenteIconos = readFileSync(join(SRC, "icons.svg"), "utf8");
+const defs = fuenteIconos.slice(fuenteIconos.indexOf("<defs>") + 6, fuenteIconos.indexOf("</defs>"));
 const simbolos = [...defs.matchAll(/<g id="(i-[^"]+)"([^>]*)>([\s\S]*?)<\/g>/g)]
   .map(([, id, attrs, cuerpo]) =>
     `  <symbol id="${id}" viewBox="0 0 24 24"${attrs.trim() ? " " + attrs.trim() : ""}>` +
@@ -169,7 +174,7 @@ const iconosJs = `/*! DCC UI Kit ${VERSION} — inyector del sprite de íconos.
 /* --------------------------------------------------------------------------
    4. Comportamiento
        El JavaScript de los componentes se publica como archivo, en vez de
-       vivir embebido en el styleguide: si no, cada app tendría que copiarlo a
+       vivir embebido en la documentación: si no, cada app tendría que copiarlo a
        mano y las copias derivarían entre sí.
    -------------------------------------------------------------------------- */
 const comportamiento = readFileSync(join(SRC, "behaviors.js"), "utf8");
@@ -236,22 +241,37 @@ salidas["SRI.txt"] =
    "dcc-behaviors.js", "dcc-behaviors.min.js", "dcc-ui.bundle.js", "dcc-ui.bundle.min.js"]
     .map((f) => f.padEnd(22) + " " + sri(salidas[f])).join("\n") + "\n";
 
-if (!existsSync(DIST)) mkdirSync(DIST, { recursive: true });
+/* --------------------------------------------------------------------------
+   7. Sitio de documentación (site/), generado desde src/sitio/. Va con
+      `--check` igual que dist/: si alguien edita un fragmento sin reconstruir,
+      o toca site/ a mano, el CI falla.
+   -------------------------------------------------------------------------- */
+const SITE = join(raiz, "site");
+const { salidas: sitio, paginas } = construirSitio({ raiz, version: VERSION });
 
 let difieren = [];
-for (const [nombre, contenido] of Object.entries(salidas)) {
-  const destino = join(DIST, nombre);
-  if (!check) mkdirSync(dirname(destino), { recursive: true });
-  if (check) {
-    const binario = Buffer.isBuffer(contenido);
-    const actual = existsSync(destino)
-      ? (binario ? readFileSync(destino) : readFileSync(destino, "utf8"))
-      : null;
-    const iguales = actual !== null && (binario ? contenido.equals(actual) : actual === contenido);
-    if (!iguales) difieren.push(nombre);
-  } else {
-    writeFileSync(destino, contenido);
+function escribir(base, prefijo, mapa) {
+  if (!check && !existsSync(base)) mkdirSync(base, { recursive: true });
+  for (const [nombre, contenido] of Object.entries(mapa)) {
+    const destino = join(base, nombre);
+    if (check) {
+      const binario = Buffer.isBuffer(contenido);
+      const actual = existsSync(destino)
+        ? (binario ? readFileSync(destino) : readFileSync(destino, "utf8"))
+        : null;
+      const iguales = actual !== null && (binario ? contenido.equals(actual) : actual === contenido);
+      if (!iguales) difieren.push(prefijo + nombre);
+    } else {
+      mkdirSync(dirname(destino), { recursive: true });
+      writeFileSync(destino, contenido);
+    }
   }
+}
+escribir(DIST, "dist/", salidas);
+escribir(SITE, "site/", sitio);
+if (check && existsSync(SITE)) {
+  for (const f of readdirSync(SITE))
+    if (!(f in sitio)) difieren.push(`site/${f} (sobra: ya no tiene fragmento)`);
 }
 
 // las fuentes se copian desde node_modules para no versionar binarios a mano
@@ -273,12 +293,12 @@ if (!check) {
 
 if (check) {
   if (difieren.length) {
-    console.error("✗ dist/ no coincide con src/. Archivos desincronizados:");
+    console.error("✗ dist/ o site/ no coinciden con src/. Archivos desincronizados:");
     difieren.forEach((f) => console.error("    " + f));
     console.error("\n  Corre `npm run build` y vuelve a commitear.");
     process.exit(1);
   }
-  console.log("✓ dist/ está sincronizado con src/");
+  console.log("✓ dist/ y site/ están sincronizados con src/");
 } else {
   const kb = (s) => (Buffer.byteLength(s) / 1024).toFixed(1) + " KB";
   const nota = {
@@ -290,4 +310,5 @@ if (check) {
   for (const [nombre, contenido] of Object.entries(salidas)) {
     console.log(`  ${nombre.padEnd(22)} ${kb(contenido).padStart(8)}  ${nota[nombre] || ""}`.trimEnd());
   }
+  console.log(`  site/: portada + ${paginas.length} páginas de componentes`);
 }

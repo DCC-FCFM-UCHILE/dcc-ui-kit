@@ -1,0 +1,79 @@
+<!--
+titulo: Stepper
+grupo: Navegación
+resumen: El avance de un proceso en pasos numerados, horizontal o vertical.
+miniatura: .dcc-stepper
+escala: .5
+ancho: 560px
+-->
+<h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+<div class="dcc-doc-demo">
+  <ol class="dcc-stepper">
+        <li class="dcc-stepper__step" data-state="done">
+          <span class="dcc-stepper__bullet"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Datos personales</span>
+            <span class="dcc-stepper__desc">Completado el 4 de agosto</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="done">
+          <span class="dcc-stepper__bullet"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Antecedentes académicos</span>
+            <span class="dcc-stepper__desc">3 documentos adjuntos</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="current" aria-current="step">
+          <span class="dcc-stepper__bullet">3</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Documentos</span>
+            <span class="dcc-stepper__desc">Falta el certificado de notas</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="todo">
+          <span class="dcc-stepper__bullet">4</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Pago</span>
+            <span class="dcc-stepper__desc">Arancel de postulación</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="todo">
+          <span class="dcc-stepper__bullet">5</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Confirmación</span>
+            <span class="dcc-stepper__desc">Recibirás un correo</span>
+          </span>
+        </li>
+      </ol>
+</div>
+
+<h2 class="dcc-doc-h2" id="vertical-con-texto-secundario-y-acciones">Vertical, con texto secundario y acciones</h2>
+<div class="dcc-doc-demo">
+  <ol class="dcc-stepper dcc-stepper--vertical" style="max-width:420px">
+        <li class="dcc-stepper__step" data-state="done">
+          <span class="dcc-stepper__bullet"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Postulación enviada</span>
+            <span class="dcc-stepper__desc">12 de agosto de 2026, 14:30</span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="current" aria-current="step">
+          <span class="dcc-stepper__bullet">2</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">En evaluación por el comité</span>
+            <span class="dcc-stepper__desc">El resultado se informa dentro de 15 días hábiles.</span>
+            <span class="dcc-stepper__actions">
+              <button class="dcc-btn dcc-btn--sm dcc-btn--contained" type="button">Ver estado</button>
+              <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button">Adjuntar documento</button>
+            </span>
+          </span>
+        </li>
+        <li class="dcc-stepper__step" data-state="todo">
+          <span class="dcc-stepper__bullet">3</span>
+          <span class="dcc-stepper__body">
+            <span class="dcc-stepper__label">Resultado</span>
+            <span class="dcc-stepper__desc">Se notifica por correo institucional</span>
+          </span>
+        </li>
+      </ol>
+</div>

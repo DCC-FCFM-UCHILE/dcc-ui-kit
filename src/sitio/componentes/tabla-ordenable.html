@@ -1,0 +1,42 @@
+<!--
+titulo: Tabla ordenable
+grupo: Visualización de datos
+resumen: Una tabla cuyas columnas se ordenan con un clic y exponen aria-sort.
+miniatura: .dcc-table
+-->
+<h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-table-scroll">
+        <table class="dcc-table js-sortable">
+          <thead>
+            <tr>
+              <th scope="col" class="is-sortable" aria-sort="ascending">
+                <button class="dcc-th-sort" type="button">Curso<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg>
+                  <svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg>
+                  <svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span>
+                </button>
+              </th>
+              <th scope="col" class="is-sortable" aria-sort="none">
+                <button class="dcc-th-sort" type="button">Profesor<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg>
+                  <svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg>
+                  <svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span>
+                </button>
+              </th>
+              <th scope="col" class="is-sortable" aria-sort="none" data-type="number">
+                <button class="dcc-th-sort" type="button">Inscritos<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg>
+                  <svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg>
+                  <svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span>
+                </button>
+              </th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Algoritmos y Estructuras de Datos</td><td>M. Pérez</td><td>128</td><td><span class="dcc-badge dcc-badge--soft-green">Vigente</span></td></tr>
+            <tr><td>Bases de Datos</td><td>A. Rojas</td><td>94</td><td><span class="dcc-badge dcc-badge--soft-lightblue">En revisión</span></td></tr>
+            <tr><td>Compiladores</td><td>J. González</td><td>41</td><td><span class="dcc-badge dcc-badge--soft-red">Cerrado</span></td></tr>
+            <tr><td>Redes de Computadores</td><td>L. Torres</td><td>76</td><td><span class="dcc-badge dcc-badge--soft-green">Vigente</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+</div>

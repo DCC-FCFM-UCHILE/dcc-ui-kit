@@ -1,0 +1,39 @@
+<!--
+titulo: Tabs
+grupo: Navegación
+resumen: Pestañas para alternar entre vistas relacionadas sin salir de la página.
+miniatura: .dcc-tabs__list
+-->
+<h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+<div class="dcc-doc-demo">
+  <div class="js-tabs">
+        <div class="dcc-tabs__list" role="tablist" aria-label="Información del programa">
+          <button class="dcc-tabs__tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"></use></svg>Descripción
+          </button>
+          <button class="dcc-tabs__tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg>Docentes
+          </button>
+          <button class="dcc-tabs__tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"></use></svg>Calendario
+          </button>
+          <button class="dcc-tabs__tab" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1" disabled="">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>Administración
+          </button>
+        </div>
+        <div class="dcc-tabs__panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+          Programa orientado a profesionales que necesitan incorporar tecnologías de información en su gestión.
+          Dura tres semestres y combina cursos obligatorios con electivos.
+        </div>
+        <div class="dcc-tabs__panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0" hidden="">
+          El claustro está formado por académicos de jornada completa con doctorado, más profesionales del sector
+          que dictan los cursos aplicados.
+        </div>
+        <div class="dcc-tabs__panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" tabindex="0" hidden="">
+          Clases los viernes de 18:00 a 21:00 y sábados de 09:00 a 13:00, en Beauchef 851.
+        </div>
+        <div class="dcc-tabs__panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" tabindex="0" hidden="">
+          Sección restringida.
+        </div>
+      </div>
+</div>

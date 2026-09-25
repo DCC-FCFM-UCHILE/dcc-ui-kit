@@ -1,0 +1,208 @@
+<!--
+titulo: Barra de navegación
+grupo: Navegación
+resumen: La barra institucional del sitio público, la barra de aplicación y la barra lateral.
+miniatura: .dcc-nav-demo
+escala: .25
+ancho: 1100px
+-->
+<h2 class="dcc-doc-h2" id="nav-institucional">Nav institucional</h2>
+<div class="dcc-doc-demo dcc-doc-demo--flush">
+  <div class="dcc-nav-demo">
+        <nav class="dcc-nav-inst js-nav">
+          <img class="dcc-logo-dcc" src="assets/logo-dcc.svg" alt="DCC — Ciencias de la Computación, Universidad de Chile" width="160" height="79">
+          <button class="dcc-nav-toggle js-nav-toggle" type="button" aria-expanded="false" aria-label="Abrir menú">
+            <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-menu"></use></svg>
+          </button>
+          <div class="dcc-nav-inst__main">
+            <ul class="dcc-nav-inst__menu">
+              <li><a href="#nav">Nosotros</a></li>
+              <li><a href="#nav">Pregrado</a></li>
+              <li><a href="#nav">Postgrado</a></li>
+              <li><a href="#nav">Educación Continua</a></li>
+              <li><a href="#nav">Investigación</a></li>
+              <li><a href="#nav">Difusión</a></li>
+              <li><a href="#nav">VIME</a></li>
+              <li><a href="#nav">Alumni</a></li>
+            </ul>
+          </div>
+          <div class="dcc-social">
+            <a href="#nav" aria-label="LinkedIn"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-linkedin"></use></svg></a>
+            <a href="#nav" aria-label="Instagram"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></a>
+            <a href="#nav" aria-label="Facebook"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-facebook"></use></svg></a>
+            <a href="#nav" aria-label="YouTube"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-youtube"></use></svg></a>
+          </div>
+        </nav>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="nav-institucional-submenu">Nav institucional con submenú</h2>
+<div class="dcc-doc-demo dcc-doc-demo--flush">
+  <div class="dcc-nav-demo">
+        <nav class="dcc-nav-inst js-nav">
+          <img class="dcc-logo-dcc" src="assets/logo-dcc.svg" alt="DCC — Ciencias de la Computación, Universidad de Chile" width="160" height="79">
+          <button class="dcc-nav-toggle js-nav-toggle" type="button" aria-expanded="false" aria-label="Abrir menú">
+            <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-menu"></use></svg>
+          </button>
+          <div class="dcc-nav-inst__main">
+            <ul class="dcc-nav-inst__menu">
+              <li><a href="#nav">Nosotros</a></li>
+              <li><a href="#nav">Pregrado</a></li>
+              <li><a href="#nav">Postgrado</a></li>
+              <li><a href="#nav" aria-current="page">Educación Continua</a></li>
+              <li><a href="#nav">Investigación</a></li>
+              <li><a href="#nav">Difusión</a></li>
+              <li><a href="#nav">VIME</a></li>
+              <li><a href="#nav">Alumni</a></li>
+            </ul>
+            <ul class="dcc-nav-inst__submenu">
+              <li><a href="#nav">Magíster en TI</a></li>
+              <li><a href="#nav">Diplomas</a></li>
+              <li><a href="#nav">Cursos</a></li>
+              <li><a href="#nav">Programas Corporativos</a></li>
+              <li><a href="#nav">Docentes</a></li>
+              <li><a href="#nav">Equipo</a></li>
+              <li><a href="#nav">Conócenos</a></li>
+            </ul>
+            <!-- Sin ítem activo, igual que el frame 133:1500. El estado Active del
+                 submenú (borde blanco) se ve en la vitrina de estados más abajo. -->
+          </div>
+          <div class="dcc-social">
+            <a href="#nav" aria-label="LinkedIn"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-linkedin"></use></svg></a>
+            <a href="#nav" aria-label="Instagram"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></a>
+            <a href="#nav" aria-label="Facebook"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-facebook"></use></svg></a>
+            <a href="#nav" aria-label="YouTube"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-youtube"></use></svg></a>
+          </div>
+        </nav>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="nav-de-aplicacion">Nav de aplicación</h2>
+<div class="dcc-doc-demo dcc-doc-demo--flush">
+  <div class="dcc-nav-demo">
+        <nav class="dcc-nav-app">
+          <div class="dcc-nav-app__brand">
+            <img class="dcc-logo-dcc-h" src="assets/logo-dcc-horizontal.svg" alt="DCC" width="405" height="75">
+            <p class="dcc-nav-app__title">Nombre Aplicación</p>
+          </div>
+          <div class="dcc-nav-app__user">
+            <span class="dcc-nav-app__user-name">Nombre Apellido</span>
+            <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-circle-user"></use></svg>
+          </div>
+        </nav>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="sidebar">Sidebar</h2>
+<div class="dcc-doc-demo dcc-doc-demo--flush">
+  <div class="dcc-sidebar-demo">
+        <aside class="dcc-sidebar">
+          <div class="dcc-sidebar__brand">
+            <img class="dcc-logo-dcc-h" src="assets/logo-dcc-horizontal.svg" alt="DCC" width="405" height="75">
+            <hr class="dcc-sidebar__sep">
+            <p class="dcc-sidebar__app">Nombre Aplicación</p>
+          </div>
+  
+          <div class="dcc-sidebar__action dcc-menu js-menu">
+            <button class="dcc-sidebar__cta dcc-menu__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-sidebar">
+              <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-plus"></use></svg>
+              <span>Nueva solicitud</span>
+              <svg class="dcc-i dcc-sidebar__caret" viewBox="0 0 24 24"><use href="#i-chevron-down"></use></svg>
+            </button>
+            <div class="dcc-menu__list" id="menu-sidebar" role="menu" hidden="">
+              <button class="dcc-menu__item" role="menuitem" type="button">
+                <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-users"></use></svg>Para un área
+              </button>
+              <button class="dcc-menu__item" role="menuitem" type="button">
+                <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-circle-user"></use></svg>Para una persona
+              </button>
+              <button class="dcc-menu__item" role="menuitem" type="button">
+                <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-house"></use></svg>Para mí
+              </button>
+            </div>
+          </div>
+  
+          <nav class="dcc-sidebar__nav" aria-label="Secciones de la aplicación">
+            <a class="dcc-sidebar__item" href="#nav"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-house"></use></svg><span>Inicio</span></a>
+            <a class="dcc-sidebar__item" href="#nav" aria-current="page">
+              <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-mail"></use></svg><span>Solicitudes</span>
+              <span class="dcc-sidebar__count">12</span>
+            </a>
+            <a class="dcc-sidebar__item" href="#nav">
+              <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-users"></use></svg><span>Personas</span>
+              <span class="dcc-sidebar__count dcc-sidebar__count--alert">3</span>
+            </a>
+  
+            <hr class="dcc-sidebar__sep">
+  
+            <button class="dcc-sidebar__item js-sidebar-group" type="button" aria-expanded="true" aria-controls="sidebar-grupo">
+              <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-folder"></use></svg><span>Áreas</span>
+              <svg class="dcc-i dcc-sidebar__caret" viewBox="0 0 24 24"><use href="#i-chevron-down"></use></svg>
+            </button>
+            <div class="dcc-sidebar__sub" id="sidebar-grupo">
+              <a class="dcc-sidebar__subitem" href="#nav"><span>Pregrado</span><span class="dcc-sidebar__count">8</span></a>
+              <a class="dcc-sidebar__subitem" href="#nav"><span>Postgrado</span><span class="dcc-sidebar__count">2</span></a>
+              <a class="dcc-sidebar__subitem" href="#nav"><span>Educación Continua</span></a>
+            </div>
+  
+            <hr class="dcc-sidebar__sep">
+  
+            <a class="dcc-sidebar__item" href="#nav"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-calendar"></use></svg><span>Calendario</span></a>
+            <a class="dcc-sidebar__item" href="#nav"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-chart-column"></use></svg><span>Reportes</span></a>
+          </nav>
+  
+          <div class="dcc-sidebar__foot">
+            <hr class="dcc-sidebar__sep">
+            <div class="dcc-sidebar__user dcc-menu dcc-menu--end dcc-menu--up js-menu">
+              <span class="dcc-sidebar__avatar">NA</span>
+              <span class="dcc-sidebar__who">
+                <b>Nombre Apellido</b>
+                <small>Área</small>
+              </span>
+              <button class="dcc-sidebar__gear dcc-menu__trigger" type="button" aria-label="Configuración" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-sidebar-cuenta">
+                <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-settings"></use></svg>
+              </button>
+              <div class="dcc-menu__list" id="menu-sidebar-cuenta" role="menu" hidden="">
+                <div class="dcc-menu__group">
+                  <a class="dcc-menu__item" role="menuitem" href="#nav">
+                    <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-circle-user"></use></svg>Mi perfil
+                  </a>
+                  <a class="dcc-menu__item" role="menuitem" href="#nav">
+                    <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-bell"></use></svg>Notificaciones
+                  </a>
+                </div>
+                <div class="dcc-menu__group">
+                  <a class="dcc-menu__item" role="menuitem" href="#nav">
+                    <svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-log-out"></use></svg>Cerrar sesión
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="estados-del-menu">Estados del menú</h2>
+<div class="dcc-doc-demo dcc-doc-demo--flush">
+  <div class="dcc-menu-states">
+        <div class="dcc-menu-states__inner">
+          <div>
+            <p class="dcc-menu-states__title">Menú Principal</p>
+            <ul class="dcc-nav-inst__menu dcc-menu-states__row">
+              <li><a href="#nav">Default</a></li>
+              <li><a href="#nav" class="is-hover">Hover</a></li>
+              <li><a href="#nav" aria-current="page">Active</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="dcc-menu-states__title">Menú Secundario</p>
+            <ul class="dcc-nav-inst__submenu dcc-menu-states__row">
+              <li><a href="#nav">Default</a></li>
+              <li><a href="#nav" class="is-hover">Hover</a></li>
+              <li><a href="#nav" aria-current="page">Active</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+</div>

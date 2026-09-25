@@ -6,19 +6,22 @@ Si no manejas git, [`PUBLICAR.md`](PUBLICAR.md) explica el ciclo completo paso a
 
 ```bash
 npm install               # sólo la primera vez
-npm start                 # sirve el proyecto; abre /src/styleguide.html
-# editar src/styles.css y src/styleguide.html
-npm run build             # regenera dist/ con los cambios
+npm start                 # sirve el proyecto en http://localhost:4173/site/
+# editar src/styles.css o un fragmento de src/sitio/componentes/
+npm run build             # regenera dist/ y site/ con los cambios
 npm test                  # 28 verificaciones
 ```
 
 `dist/` se versiona en el repositorio y el CI comprueba que coincida con lo que produce el build.
 **Si cambias `src/`, corre `npm run build` antes de commitear** o el CI va a fallar con
-`dist/ no coincide con src/`.
+`dist/ o site/ no coinciden con src/`.
 
-El styleguide (`src/styleguide.html`) es a la vez la documentación y el entorno de trabajo: cada
-componente aparece con todas sus variantes y estados. Si agregas un componente, agrégalo ahí
-también, o `npm test` va a avisar que tiene CSS sin uso.
+La documentación (`site/`) es a la vez la vitrina y el entorno de trabajo: una portada con todos los
+componentes y una página por cada uno, con todas sus variantes y estados. Se genera desde
+`src/sitio/`. Para agregar un componente, crea `src/sitio/componentes/<slug>.html`: empieza con una
+cabecera (`titulo`, `grupo`, `resumen`, `miniatura`; ver `scripts/sitio.mjs`) y cada demo va en un
+`<div class="dcc-doc-demo">`. El build le agrega debajo el HTML listo para copiar, y el componente
+aparece solo en la portada y en la navegación.
 
 ## Reglas del kit
 
@@ -27,7 +30,7 @@ también, o `npm test` va a avisar que tiene CSS sin uso.
 
 2. **Nada de selectores por etiqueta descendiente en el andamiaje.** `.dcc-section h3` alcanza
    cualquier `h3` dentro de cualquier componente y le gana por especificidad. Este error causó tres
-   bugs durante el desarrollo. El andamiaje del styleguide usa clases `dcc-sg-*`.
+   bugs durante el desarrollo. El andamiaje de la documentación usa clases `dcc-doc-*`, y el build las saca de `dist/`.
 
 3. **Usa los tokens.** Si necesitas un color que no está en la paleta, agrégalo como token derivado
    del perfil HSL del resto — no lo escribas suelto en una regla.
@@ -43,7 +46,7 @@ también, o `npm test` va a avisar que tiene CSS sin uso.
 ## Íconos
 
 Vienen de [Lucide](https://lucide.dev) **0.544.0**, pineado. Para agregar uno, copia su contenido a
-`<defs>` en `src/styleguide.html` como `<g id="i-nombre">` y corre `npm run build`.
+`<defs>` en `src/icons.svg` como `<g id="i-nombre">` y corre `npm run build`.
 
 No pongas `stroke-width` ni `fill` como atributo en el `<g>`: los atributos de presentación le ganan
 a la herencia CSS y después no se pueden sobrescribir por instancia. Eso deja los íconos imposibles

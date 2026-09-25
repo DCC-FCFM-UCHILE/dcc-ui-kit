@@ -5,7 +5,7 @@ Sistema de diseño del **Departamento de Ciencias de la Computación** de la Uni
 CSS sin dependencias ni framework: clases planas sobre variables. Funciona igual en React, Vue y
 HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 
-[**Ver el styleguide**](https://dcc-fcfm-uchile.github.io/dcc-ui-kit/) ·
+[**Ver la documentación**](https://dcc-fcfm-uchile.github.io/dcc-ui-kit/) ·
 [Guía de consumo](dist/README.md) ·
 [Integrar en Django](docs/integracion-django.md) ·
 [Decisiones de diseño](docs/decisiones-de-diseno.md) ·
@@ -16,10 +16,10 @@ HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 ## Uso rápido
 
 ```html
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.bundle.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.bundle.min.js" defer></script>
 
-<button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">
+<button class="dcc-btn dcc-btn--md dcc-btn--contained">
   Guardar <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg>
 </button>
 ```
@@ -27,7 +27,7 @@ HTML plano (monolitos Django), porque no hay build de por medio para consumirlo.
 O como paquete:
 
 ```bash
-npm i github:DCC-FCFM-UCHILE/dcc-ui-kit#v2.5.1
+npm i github:DCC-FCFM-UCHILE/dcc-ui-kit#v2.6.0
 ```
 
 La [guía de consumo](dist/README.md) cubre React, Vue, Django y las cabeceras que debe servir el
@@ -50,6 +50,9 @@ date picker, tarjeta de programa y tarjeta comprimida.
 vienen en un bundle que se auto-inicializa. Dos etiquetas y funciona; no hay JavaScript que copiar
 a cada app.
 
+**Tema oscuro.** Opcional: `data-dcc-theme="dark"` en `<html>` (o en cualquier contenedor), o
+`data-dcc-theme="auto"` para seguir al sistema. Sin el atributo, el kit se queda en claro.
+
 Todo con teclado y ARIA donde corresponde, y respetando `prefers-reduced-motion`.
 
 ---
@@ -58,13 +61,16 @@ Todo con teclado y ARIA donde corresponde, y respetando `prefers-reduced-motion`
 
 ```
 src/
-  styleguide.html     documentación viva: cada componente con sus variantes
   styles.css          la fuente de verdad del CSS
   behaviors.js        la fuente de verdad del comportamiento
+  icons.svg           los íconos Lucide del kit
   assets/             logotipos y placeholders
+  sitio/              la documentación: plantilla y un fragmento por componente
 dist/                 lo que se publica (generado, versionado y verificado en CI)
+site/                 la documentación generada: portada y una página por componente
 scripts/
-  build.mjs           genera dist/ desde src/
+  build.mjs           genera dist/ y site/ desde src/
+  sitio.mjs           arma site/ a partir de src/sitio/
   verify.mjs          28 verificaciones, incluidas las de comportamiento
 docs/
   decisiones-de-diseno.md   por qué cada cosa es como es
@@ -76,16 +82,20 @@ docs/
 
 ```bash
 npm install
-npm start          # sirve el repo; abre /src/styleguide.html
-npm run build      # regenera dist/
+npm start          # sirve el repo en http://localhost:4173/site/
+                   # (respeta PORT si viene del entorno)
+npm run build      # regenera dist/ y site/
 npm test           # verifica que dist/ esté sincronizado y que nada se rompió
 ```
 
-El styleguide es el entorno de trabajo: se edita `src/styles.css` o `src/behaviors.js`, se mira el
-resultado en `src/styleguide.html` y se corre `npm run build` antes de commitear.
+La documentación es el entorno de trabajo. Tiene una portada con todos los componentes y una página
+por componente, con sus demos y el HTML de cada una listo para copiar. Se edita `src/styles.css`,
+`src/behaviors.js` o un fragmento de `src/sitio/componentes/`, se corre `npm run build` y se mira el
+resultado en `site/`.
 
-El styleguide carga el mismo `behaviors.js` que se publica, y las pruebas de comportamiento lo
-ejecutan tal cual. Si el kit se rompe, se rompe también la documentación: no pueden divergir.
+Las páginas cargan el mismo `styles.css` y el mismo `behaviors.js` que se publican, y las pruebas de
+comportamiento corren sobre esos mismos fragmentos. Si el kit se rompe, se rompe también la
+documentación: no pueden divergir.
 
 ---
 

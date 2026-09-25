@@ -1,0 +1,113 @@
+<!--
+titulo: Botón
+grupo: Entradas
+resumen: Los botones disparan una acción con un clic. Tienen tres variantes, cinco colores y tres tamaños, y todas las combinaciones responden igual al cursor.
+miniatura: .dcc-doc-row
+escala: .75
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">El botón combina tres modificadores: la <strong>variante</strong> (<code>--contained</code>,
+  <code>--outlined</code> o <code>--text</code>), el <strong>color</strong> y el <strong>tamaño</strong>. Si no
+  pones variante ni color, queda relleno y primario.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Texto</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Relleno</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Delineado</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores</h2>
+<p class="dcc-doc-p">Cinco colores: <code>--primary</code>, <code>--secondary</code>, <code>--success</code>,
+  <code>--error</code> y <code>--white</code>, este último para fondos oscuros. Cualquier color va con cualquier
+  variante.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-matrix">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--primary" type="button">Primario</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--secondary" type="button">Secundario</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--success" type="button">Éxito</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--error" type="button">Error</button>
+
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--primary" type="button">Primario</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--secondary" type="button">Secundario</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--success" type="button">Éxito</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--error" type="button">Error</button>
+
+    <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--primary" type="button">Primario</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--secondary" type="button">Secundario</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--success" type="button">Éxito</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--error" type="button">Error</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="fondo-oscuro">Sobre fondo oscuro</h2>
+<p class="dcc-doc-p">Sobre <code>Grey/Default</code> se usa el color <code>--white</code>, en las tres variantes.</p>
+<div class="dcc-doc-demo dcc-doc-demo--oscuro">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--white" type="button">Relleno</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--white" type="button">Delineado</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--white" type="button">Texto</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p"><code>--sm</code>, <code>--md</code> y <code>--lg</code>. El delineado descuenta su borde
+  del padding, así que las tres variantes miden lo mismo en cada tamaño.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--sm dcc-btn--contained" type="button">Pequeño</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Mediano</button>
+    <button class="dcc-btn dcc-btn--lg dcc-btn--contained" type="button">Grande</button>
+  </div>
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button">Pequeño</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Mediano</button>
+    <button class="dcc-btn dcc-btn--lg dcc-btn--outlined" type="button">Grande</button>
+  </div>
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Pequeño</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Mediano</button>
+    <button class="dcc-btn dcc-btn--lg dcc-btn--text" type="button">Grande</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="iconos">Con ícono</h2>
+<p class="dcc-doc-p">El ícono va dentro del botón, antes o después de la etiqueta, con la clase <code>.dcc-icon</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--error" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trash"/></svg> Eliminar</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Enviar <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"/></svg></button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--success" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg> Aprobar</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--secondary" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg> Descargar</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="deshabilitado">Deshabilitado</h2>
+<p class="dcc-doc-p">Con el atributo <code>disabled</code>, o con <code>aria-disabled="true"</code> en un enlace con
+  forma de botón. La pieza se apaga entera y conserva su color.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" disabled>Relleno</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" disabled>Delineado</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button" disabled>Texto</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="comportamiento">Comportamiento</h2>
+<p class="dcc-doc-p">Todas las combinaciones responden igual. Bajo el cursor aparece una capa del color de la
+  etiqueta al 8% y el botón sube un escalón de sombra. Al presionar o con foco de teclado, la capa sube al
+  12%. El fondo, el borde y la etiqueta no cambian de color, así que el contraste en hover es el mismo que en
+  reposo. El botón de texto no tiene sombra, así que en él solo cambia la capa.</p>
+
+<h2 class="dcc-doc-h2" id="nombres-anteriores">Nombres anteriores</h2>
+<p class="dcc-doc-p">Las clases de antes de la versión 2.6.0 siguen funcionando. En ellas “primario” y
+  “secundario” nombraban la variante, no el color:</p>
+<table class="dcc-doc-table">
+  <thead><tr><th>Clase anterior</th><th>Equivale a</th></tr></thead>
+  <tbody>
+    <tr><td><code>--primary-grey</code></td><td><code>--contained --primary</code></td></tr>
+    <tr><td><code>--primary-white</code></td><td><code>--contained --white</code></td></tr>
+    <tr><td><code>--secondary-grey</code></td><td><code>--outlined --primary</code>, con fondo blanco</td></tr>
+    <tr><td><code>--secondary-white</code></td><td><code>--outlined --white</code></td></tr>
+  </tbody>
+</table>

@@ -1,5 +1,8 @@
 # Qué tuve que suponer
 
+> **Revisión 21** — tema oscuro con colores por rol, y adornos en campos y select (sección 0.19).
+> **Revisión 20** — el rojo sale del hover, el botón pasa a variante × color con un solo
+> comportamiento, y el styleguide se reemplaza por un sitio de documentación (sección 0.18).
 > **Revisión 19** — eliminada de raíz la fuga de especificidad del andamiaje, y nueva tarjeta
 > comprimida con dos propuestas (sección 0.17).
 > **Revisión 18** — el título de la tarjeta heredaba estilos del styleguide, y se quitaron las
@@ -30,6 +33,112 @@
 > **Revisión 3** — ancho máximo de contenedor aplicado a las barras (sección 0.1).
 > **Revisión 2** — logo DCC instalado; nav institucional corregida contra los component sets
 > `128:774` (Menú Principal) y `128:1005` (Menú Secundario). Detalle en la sección 0.
+
+---
+
+## 0.19 Tema oscuro y adornos
+
+### Colores por rol
+
+Los componentes pedían colores de paleta: `Grey/Default`, `Grey/Light`, `#fff`. Eso no permite un
+tema oscuro, porque el mismo `Grey/Default` es a veces texto —que en oscuro tiene que aclararse— y a
+veces el fondo de la nav, que tiene que seguir oscuro. Se agregó una capa de **roles** (superficie,
+texto, borde, acento, estados) y cada regla pasó a pedir el rol según qué papel cumple ahí. En claro
+cada rol vale exactamente el color que había, y se comprobó elemento por elemento en las 26 páginas.
+
+El tema oscuro no es opt-out sino opt-in: sin `data-dcc-theme` el kit se queda en claro. Un kit que
+siguiera al sistema por defecto oscurecería de un día para otro aplicaciones que nunca se revisaron
+en oscuro.
+
+| Rol | Oscuro | Contraste sobre la superficie (#19202b) |
+|---|---|---|
+| texto | #e2e9f0 | 13,4:1 |
+| texto secundario | #97abbb | 6,9:1 |
+| borde de campo | #65788e | 3,6:1 (pide 3:1) |
+| acento | #c0cfdd | 10,3:1 |
+| error / éxito / info / advertencia | #ff8f7a / #4cc9d4 / #6bbde8 / #e4b565 | 6,7 a 8,7:1 |
+
+Quedaron fuera, a propósito, las piezas de marca —nav institucional y de aplicación, barra lateral,
+pie, navegación inferior—, que son oscuras en los dos temas; el rojo de marca como acento (subrayado
+de tabs y nav), y las píldoras de categoría, que traen su propio fondo claro y se leen igual sobre
+oscuro.
+
+Los botones se aclaran en oscuro y su etiqueta pasa a oscura, como en MUI: el primario es `#c0cfdd`
+con texto `#19202b`. `--white` no cambia, porque vive sobre superficies de marca.
+
+Una variable CSS se resuelve donde se declara. Por eso el bloque oscuro vuelve a declarar las que
+se derivan de otras (`--dcc-focus-border`): si sólo redefiniera la base, un tema aplicado a un
+contenedor no las alcanzaría. El bloque está dos veces —fijo y dentro de `prefers-color-scheme`— y
+`npm test` verifica que coincidan.
+
+### Adornos
+
+El kit ya tenía `.dcc-input-wrap`, que monta íconos de 16px encima del input con posición absoluta y
+le reserva padding fijo. Sirve para un ícono, pero no para texto de largo variable como `CLP` o
+`@dcc.uchile.cl`. Los adornos nuevos van en el flujo: el contenedor `.dcc-adorned` lleva el borde y
+el foco, y el campo toma lo que sobra. Se mantiene el mismo truco de `.dcc-input` para que el foco
+no mueva nada: 1px de padding que desaparece cuando el borde crece a 2px.
+
+---
+
+## 0.18 Botón: variante × color, un solo hover, y un sitio de documentación
+
+### Un solo hover
+
+Hasta acá el hover de botones y links era `Red/Default`, y era una asunción: cuando se construyó el
+kit el archivo no tenía el estado dibujado, así que se eligió el color de marca y se dejó anotado en
+la sección 0.12. Después el Figma trajo variantes `State=Hover` que llevan todos los botones a
+`Grey/Light` (#5d7c8e). Tomadas al pie de la letra, cada variante hacía algo distinto: el primario
+gris se aclaraba, el primario blanco se invertía entero y el secundario sobre fondo oscuro bajaba a
+**1,63:1**, un estado que se adivinaba más que se leía.
+
+Se decidió que el botón tenga **un solo comportamiento, independiente de su color**. La referencia es
+la capa de estado de Material 3:
+
+| Estado | Capa (`currentColor`) | Sombra |
+|---|---|---|
+| Reposo | 0% | `--dcc-shadow-button` |
+| Hover | 8% | `--dcc-shadow-button-hover` (el de texto no tiene sombra) |
+| Presionado / foco de teclado | 12% | la del estado en que esté |
+
+La capa se tiñe del color de la etiqueta, así que sobre un relleno oscuro aclara y sobre uno claro
+oscurece, sin que ninguna combinación necesite una regla propia. Fondo, borde y etiqueta no cambian,
+y por eso el contraste en hover es exactamente el de reposo. Los links conservan el `Grey/Light` del
+Figma.
+
+### Variante × color
+
+El botón se separa en dos ejes, como en MUI: la **variante** (`--contained`, `--outlined`, `--text`)
+y el **color** (`--primary`, `--secondary`, `--success`, `--error`, `--white`). El color sólo fija
+dos variables, `--dcc-btn-main` y `--dcc-btn-on`, y la variante decide dónde van. Agregar un color
+son dos líneas y no una regla por variante.
+
+Los colores y su contraste con la etiqueta blanca:
+
+| Color | Token | Contraste |
+|---|---|---|
+| primary | `Grey/Default` | 8,01:1 |
+| secondary | `Grey/Light` | **4,35:1** |
+| success | `Green/Dark` | 6,84:1 |
+| error | `Red/Default` | 4,92:1 |
+
+**Secundario** es el color que trae el Figma para ese rol. No llega a 4,5:1 para texto de 16px; se
+respeta el diseño y queda anotado. **Éxito** no usa `Green/Default`, que es el verde de las alertas:
+con etiqueta blanca da 3,25:1, y como botón no sirve. `Green/Dark` es de la misma familia y pasa con
+holgura.
+
+Los nombres anteriores (`--primary-grey`, `--secondary-white`…) siguen funcionando. En ellos
+“primario” y “secundario” nombraban la variante y no el color, lo que choca con el color
+`--secondary` nuevo; por eso quedan como alias y no como la forma recomendada.
+
+### Del styleguide a un sitio de documentación
+
+El styleguide era una sola página de 1.700 líneas. Se reemplaza por `site/`, al estilo de MUI: una
+portada con todos los componentes y una página por cada uno. Cada página sale de un fragmento en
+`src/sitio/componentes/`, y el build le agrega a cada demo su HTML listo para copiar, sin el
+andamiaje. `site/` se genera y se versiona como `dist/`, porque GitHub Pages publica el repositorio
+tal cual, y el `--check` del CI lo cubre. Las pruebas de comportamiento corren sobre los mismos
+fragmentos.
 
 ---
 

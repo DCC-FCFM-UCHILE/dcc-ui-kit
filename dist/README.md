@@ -1,4 +1,4 @@
-# DCC UI Kit 2.5.1 — guía de consumo
+# DCC UI Kit 2.6.0 — guía de consumo
 
 CSS servido desde tus propios servidores, como Bootstrap. Funciona igual en React, Vue y
 Django, porque son clases planas sobre variables CSS: no hay build ni framework de por medio.
@@ -8,7 +8,7 @@ Django, porque son clases planas sobre variables CSS: no hay build ni framework 
 ## 1. Qué se sirve
 
 ```
-https://cdn.dcc.uchile.cl/ui-kit/2.5.1/
+https://cdn.dcc.uchile.cl/ui-kit/2.6.0/
 ├── dcc-ui.min.css        48 KB   el CSS, minificado        ← se usa en producción
 ├── dcc-ui.bundle.min.js  20 KB   íconos + comportamiento   ← se usa en producción
 ├── dcc-ui.css            76 KB   el CSS legible, para depurar
@@ -18,7 +18,7 @@ https://cdn.dcc.uchile.cl/ui-kit/2.5.1/
 ├── dcc-behaviors.js      18 KB   lo mismo, legible
 ├── dcc-icons.js          11 KB   sólo el inyector de íconos, sin el comportamiento
 ├── dcc-icons.svg          9 KB   el sprite suelto, para consumo del mismo origen
-├── assets/               27 KB   logotipos institucionales (ver sección 10)
+├── assets/               27 KB   logotipos institucionales (ver sección 12)
 ├── fonts/               144 KB   Inter y Poppins en woff2
 └── SRI.txt                       hashes de integridad
 ```
@@ -28,7 +28,7 @@ la página realmente use. El resto de la carpeta son variantes legibles y piezas
 particulares.
 
 **La ruta lleva la versión.** Publica cada release en su propia carpeta inmutable y no la toques
-nunca más. Así una app puede quedarse en `1.0.0` mientras otra pasa a `2.5.1`, y nadie se rompe por
+nunca más. Así una app puede quedarse en `1.0.0` mientras otra pasa a `2.6.0`, y nadie se rompe por
 sorpresa. No uses un alias tipo `/ui-kit/latest/`: te va a morder.
 
 ---
@@ -36,8 +36,8 @@ sorpresa. No uses un alias tipo `/ui-kit/latest/`: te va a morder.
 ## 2. Instalación en dos líneas
 
 ```html
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.bundle.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.bundle.min.js" defer></script>
 ```
 
 Eso es todo. No hay que llamar a ninguna función: el bundle inyecta los íconos y enlaza los
@@ -58,10 +58,10 @@ Con integridad verificada, si quieres los hashes de `SRI.txt`:
 
 ```html
 <link rel="stylesheet"
-      href="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.min.css"
+      href="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.min.css"
       integrity="sha384-…"
       crossorigin="anonymous">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.bundle.min.js"
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.bundle.min.js"
         integrity="sha384-…"
         crossorigin="anonymous" defer></script>
 ```
@@ -84,7 +84,7 @@ orígenes distintos, y falla en silencio —no hay error en consola, simplemente
 El bundle lleva el sprite embebido y lo inyecta, con lo que la referencia pasa a ser local:
 
 ```html
-<button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">
+<button class="dcc-btn dcc-btn--md dcc-btn--contained">
   Favorito <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-star"/></svg>
 </button>
 ```
@@ -136,7 +136,7 @@ no se ve nada y no hay error en consola.
 <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg>
 
 <!-- bien: dentro de un componente del kit -->
-<button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">
+<button class="dcc-btn dcc-btn--md dcc-btn--contained">
   Guardar <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg>
 </button>
 
@@ -153,11 +153,11 @@ no se ve nada y no hay error en consola.
 
 ```jsx
 // una sola vez, en el layout raíz
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.min.css" />
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.min.css" />
 
 export function Boton({ children }) {
   return (
-    <button className="dcc-btn dcc-btn--md dcc-btn--primary-grey">
+    <button className="dcc-btn dcc-btn--md dcc-btn--contained">
       {children}
     </button>
   );
@@ -191,7 +191,7 @@ import { Star } from "lucide-vue-next";   // pinear 0.544.0
 </script>
 
 <template>
-  <button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">
+  <button class="dcc-btn dcc-btn--md dcc-btn--contained">
     Guardar <Star class="dcc-i" :size="18" />
   </button>
 </template>
@@ -210,17 +210,17 @@ exactamente el escenario para el que fue pensado. No hay nada que portar ni que 
 
 ```django
 {# templates/base.html #}
-<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.min.css">
-<script src="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/dcc-ui.bundle.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.min.css">
+<script src="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/dcc-ui.bundle.min.js" defer></script>
 ```
 
 ```django
-<button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">
+<button class="dcc-btn dcc-btn--md dcc-btn--contained">
   Guardar <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg>
 </button>
 ```
 
-Para actualizar, cambias `2.5.1` por la versión nueva en esas dos líneas del `base.html`. Nada más.
+Para actualizar, cambias `2.6.0` por la versión nueva en esas dos líneas del `base.html`. Nada más.
 
 ### Desde `staticfiles`, sin CDN
 
@@ -276,7 +276,31 @@ El `immutable` sólo es seguro porque la versión va en la ruta.
 
 ---
 
-## 8. Convenciones del kit
+## 8. Tema oscuro
+
+El kit trae un tema oscuro, y se activa con un atributo:
+
+```html
+<html data-dcc-theme="dark">   <!-- siempre oscuro -->
+<html data-dcc-theme="auto">   <!-- sigue la preferencia del sistema -->
+```
+
+Sin el atributo el kit se queda en claro, así que una aplicación que actualiza no cambia de aspecto
+sin pedirlo. El atributo también funciona en un contenedor (`<section data-dcc-theme="dark">`), para
+oscurecer sólo una parte de la página.
+
+Los componentes piden colores por rol —`--dcc-surface`, `--dcc-fg`, `--dcc-border`, `--dcc-danger`…—
+y cada tema los define. Si tu aplicación tiene CSS propio y quiere seguir el tema, usa esas mismas
+variables en vez de los colores de paleta. La nav, el pie y la barra lateral son de marca: se ven
+oscuros en los dos temas.
+
+Para dejar que el usuario elija, guarda su elección y ponla en `<html>` antes de pintar, en un
+`<script>` dentro de `<head>`, para que la página no parpadee en claro. La documentación del kit lo
+hace así; su plantilla está en `src/sitio/plantilla.html`.
+
+---
+
+## 9. Convenciones del kit
 
 **Todo va prefijado con `dcc-`.** No es cosmético: 26 de las 101 clases del kit chocaban con
 Bootstrap —`btn`, `card`, `badge`, `alert`, `table`, `input`, `list`, `pagination`, `breadcrumb`,
@@ -294,7 +318,7 @@ Se dejaron **sin** prefijo dos familias, a propósito:
 
 ---
 
-## 9. Tarjeta comprimida: favorito y arrastre
+## 10. Tarjeta comprimida: favorito y arrastre
 
 **Favorito con estrella o corazón.** El color del estado activo viaja en tres variables locales, así
 que una variante sólo las redefine — no hay reglas duplicadas:
@@ -338,7 +362,7 @@ Contenedor de la lista: `<div class="dcc-ccard-grid js-dnd">`.
 
 ---
 
-## 10. Publicar una versión nueva
+## 11. Publicar una versión nueva
 
 1. Sube el número en `dcc-ui.css`, `dcc-tokens.css` y `dcc-icons.js`.
 2. Regenera `dcc-ui.min.css` y `SRI.txt`.
@@ -350,20 +374,20 @@ Las apps migran cuando pueden, cambiando un número en su plantilla base.
 
 ---
 
-## 10. Logotipos
+## 12. Logotipos
 
 Los logotipos institucionales se publican junto al resto del kit, para que
 ninguna aplicación tenga que guardar su propia copia:
 
 ```
-https://cdn.dcc.uchile.cl/ui-kit/2.5.1/assets/logo-dcc.svg
-https://cdn.dcc.uchile.cl/ui-kit/2.5.1/assets/logo-uchile.svg
-https://cdn.dcc.uchile.cl/ui-kit/2.5.1/assets/logo-fcfm.svg
-https://cdn.dcc.uchile.cl/ui-kit/2.5.1/assets/logo-cna.svg
+https://cdn.dcc.uchile.cl/ui-kit/2.6.0/assets/logo-dcc.svg
+https://cdn.dcc.uchile.cl/ui-kit/2.6.0/assets/logo-uchile.svg
+https://cdn.dcc.uchile.cl/ui-kit/2.6.0/assets/logo-fcfm.svg
+https://cdn.dcc.uchile.cl/ui-kit/2.6.0/assets/logo-cna.svg
 ```
 
 ```html
-<img src="https://cdn.dcc.uchile.cl/ui-kit/2.5.1/assets/logo-dcc.svg"
+<img src="https://cdn.dcc.uchile.cl/ui-kit/2.6.0/assets/logo-dcc.svg"
      alt="DCC — Ciencias de la Computación" width="160" height="79">
 ```
 

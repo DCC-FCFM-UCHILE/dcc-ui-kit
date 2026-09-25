@@ -1,0 +1,233 @@
+<!--
+titulo: Campo de texto
+grupo: Entradas
+resumen: Campos de texto, búsqueda, selector y área de texto, con sus estados de ayuda, error y éxito.
+miniatura: .dcc-field
+escala: .9
+-->
+<h2 class="dcc-doc-h2" id="texto-libre">Texto libre</h2>
+<p class="dcc-doc-p">Estados.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,320px));gap:24px;justify-items:stretch;align-items:start">
+  
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="in-1">Nombre completo</label>
+          <input class="dcc-input" id="in-1" type="text" placeholder="Escribe aquí">
+          <span class="dcc-field__help">Como aparece en tu credencial</span>
+        </div>
+  
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="in-2">Correo <span class="dcc-req">*</span></label>
+          <input class="dcc-input" id="in-2" type="email" value="cristian@dcc.uchile.cl">
+          <span class="dcc-field__help">&nbsp;</span>
+        </div>
+  
+        <div class="dcc-field dcc-field--error">
+          <label class="dcc-field__label" for="in-3">RUT</label>
+          <input class="dcc-input" id="in-3" type="text" value="12.345.678-K" aria-invalid="true" aria-describedby="in-3-h">
+          <span class="dcc-field__help dcc-field__help--error" id="in-3-h">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"></use></svg>
+            El dígito verificador no coincide
+          </span>
+        </div>
+  
+        <div class="dcc-field dcc-field--success">
+          <label class="dcc-field__label" for="in-4">Usuario</label>
+          <input class="dcc-input" id="in-4" type="text" value="csalazar" aria-describedby="in-4-h">
+          <span class="dcc-field__help dcc-field__help--success" id="in-4-h">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"></use></svg>
+            Disponible
+          </span>
+        </div>
+  
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="in-5">Rol asignado</label>
+          <input class="dcc-input" id="in-5" type="text" value="Académico" disabled="">
+          <span class="dcc-field__help">Lo define la coordinación</span>
+        </div>
+  
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="in-6">Sede</label>
+          <div class="dcc-input-wrap">
+            <svg class="dcc-lead dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"></use></svg>
+            <input class="dcc-input dcc-has-lead" id="in-6" type="text" placeholder="Beauchef 851">
+          </div>
+          <span class="dcc-field__help">Con ícono de apoyo</span>
+        </div>
+  
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="busqueda">Búsqueda</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-field dcc-field--wide" style="max-width:420px">
+        <label class="dcc-field__label" for="in-search">Buscar en el sitio</label>
+        <div class="dcc-input-wrap">
+          <svg class="dcc-lead dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
+          <input class="dcc-input dcc-has-lead dcc-has-trail" id="in-search" type="search" placeholder="Buscar cursos, personas, publicaciones…" value="magíster">
+          <button class="dcc-input-btn dcc-trail js-clear" type="button" aria-label="Limpiar búsqueda" data-target="in-search">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"></use></svg>
+          </button>
+        </div>
+        <span class="dcc-field__help">El botón de limpiar aparece sólo cuando hay texto</span>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="adornos">Adornos</h2>
+<p class="dcc-doc-p">Un adorno es texto, un ícono o un botón pegado al campo, antes o después del valor: la
+  moneda, la unidad, el dominio o el botón para mostrar la contraseña. El borde pasa al contenedor
+  <code>.dcc-adorned</code>, el campo lleva <code>.dcc-adorned__input</code> y cada adorno es un
+  <code>.dcc-adornment</code>, al principio o al final. Un clic en cualquier parte del contenedor enfoca
+  el campo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,320px));gap:24px;justify-items:stretch;align-items:start">
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ad-monto">Monto</label>
+      <div class="dcc-adorned">
+        <span class="dcc-adornment">$</span>
+        <input class="dcc-adorned__input" id="ad-monto" type="text" inputmode="numeric" placeholder="0">
+        <span class="dcc-adornment">CLP</span>
+      </div>
+    </div>
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ad-peso">Peso</label>
+      <div class="dcc-adorned">
+        <input class="dcc-adorned__input" id="ad-peso" type="text" inputmode="decimal" value="12,5">
+        <span class="dcc-adornment">kg</span>
+      </div>
+    </div>
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ad-correo">Correo institucional</label>
+      <div class="dcc-adorned">
+        <span class="dcc-adornment"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <input class="dcc-adorned__input" id="ad-correo" type="text" placeholder="nombre">
+        <span class="dcc-adornment">@dcc.uchile.cl</span>
+      </div>
+    </div>
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ad-clave">Contraseña</label>
+      <div class="dcc-adorned">
+        <input class="dcc-adorned__input" id="ad-clave" type="password" value="secreto123">
+        <span class="dcc-adornment">
+          <button class="dcc-input-btn js-password-toggle" type="button" aria-label="Mostrar la contraseña" aria-pressed="false" aria-controls="ad-clave">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-eye"/></svg>
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-eye-off"/></svg>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="dcc-doc-p">El botón de la contraseña lleva <code>.js-password-toggle</code> y dos íconos: el
+  primero se ve con la contraseña oculta y el segundo con ella visible. El kit alterna el tipo del campo
+  y <code>aria-pressed</code>.</p>
+
+<h2 class="dcc-doc-h2" id="adorno-en-caja">Adorno en caja</h2>
+<p class="dcc-doc-p">Con <code>.dcc-adornment--box</code> el adorno lleva fondo propio y una línea que lo
+  separa del valor. Sirve cuando el prefijo es largo, como una URL.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,320px));gap:24px;justify-items:stretch;align-items:start">
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ad-url">Sitio del curso</label>
+      <div class="dcc-adorned">
+        <span class="dcc-adornment dcc-adornment--box">https://</span>
+        <input class="dcc-adorned__input" id="ad-url" type="text" placeholder="u-cursos.cl/…">
+      </div>
+    </div>
+    <div class="dcc-field dcc-field--error">
+      <label class="dcc-field__label" for="ad-creditos">Créditos</label>
+      <div class="dcc-adorned">
+        <input class="dcc-adorned__input" id="ad-creditos" type="text" inputmode="numeric" value="80" aria-describedby="ad-creditos-h">
+        <span class="dcc-adornment dcc-adornment--box">UD</span>
+      </div>
+      <span class="dcc-field__help dcc-field__help--error" id="ad-creditos-h"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"/></svg>Máximo 60 UD por semestre</span>
+    </div>
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ad-dis">Arancel</label>
+      <div class="dcc-adorned">
+        <span class="dcc-adornment">$</span>
+        <input class="dcc-adorned__input" id="ad-dis" type="text" value="4.250.000" disabled>
+      </div>
+      <span class="dcc-field__help">Deshabilitado</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="select">Select</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,320px));gap:24px;justify-items:stretch;align-items:start">
+        <div class="dcc-field">
+          <span class="dcc-field__label" id="sel-1-l">Programa</span>
+          <div class="dcc-combo js-combo">
+            <button class="dcc-combo__button" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="sel-1-lb" aria-labelledby="sel-1-l">
+              <span class="dcc-combo__value">Magíster en TI</span>
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+            <ul class="dcc-combo__list" role="listbox" id="sel-1-lb" aria-labelledby="sel-1-l" hidden="">
+              <li class="dcc-combo__option" role="option" aria-selected="false">Pregrado<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></li>
+              <li class="dcc-combo__option" role="option" aria-selected="true">Magíster en TI<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></li>
+              <li class="dcc-combo__option" role="option" aria-selected="false">Doctorado<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></li>
+              <li class="dcc-combo__option" role="option" aria-selected="false">Educación Continua<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></li>
+            </ul>
+          </div>
+          <span class="dcc-field__help">Lista propia, con los tokens del kit</span>
+        </div>
+        <div class="dcc-field">
+          <span class="dcc-field__label" id="sel-2-l">Semestre</span>
+          <div class="dcc-combo">
+            <button class="dcc-combo__button" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="sel-2-l" disabled="">
+              <span class="dcc-combo__value">Otoño 2026</span>
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+          </div>
+          <span class="dcc-field__help">Deshabilitado</span>
+        </div>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="select-con-adorno">Select con adorno</h2>
+<p class="dcc-doc-p">El select acepta un <code>.dcc-adornment</code> al principio del botón, antes del valor.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,320px));gap:24px;justify-items:stretch;align-items:start">
+    <div class="dcc-field">
+      <span class="dcc-field__label" id="sel-3-l">Sede</span>
+      <div class="dcc-combo js-combo">
+        <button class="dcc-combo__button" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="sel-3-lb" aria-labelledby="sel-3-l">
+          <span class="dcc-adornment"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"/></svg></span>
+          <span class="dcc-combo__value">Beauchef 851</span>
+          <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+        </button>
+        <ul class="dcc-combo__list" role="listbox" id="sel-3-lb" aria-labelledby="sel-3-l" hidden>
+          <li class="dcc-combo__option" role="option" aria-selected="true">Beauchef 851<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option" aria-selected="false">Blanco Encalada 2120<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option" aria-selected="false">Remoto<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+        </ul>
+      </div>
+    </div>
+    <div class="dcc-field">
+      <span class="dcc-field__label" id="sel-4-l">Duración</span>
+      <div class="dcc-combo js-combo">
+        <button class="dcc-combo__button" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="sel-4-lb" aria-labelledby="sel-4-l">
+          <span class="dcc-adornment dcc-adornment--box">Semestres</span>
+          <span class="dcc-combo__value">4</span>
+          <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+        </button>
+        <ul class="dcc-combo__list" role="listbox" id="sel-4-lb" aria-labelledby="sel-4-l" hidden>
+          <li class="dcc-combo__option" role="option" aria-selected="false">2<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option" aria-selected="true">4<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option" aria-selected="false">6<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="area-de-texto">Área de texto</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-field" style="max-width:420px">
+        <label class="dcc-field__label" for="ta-1">Comentario</label>
+        <textarea class="dcc-input" id="ta-1" rows="4" placeholder="Cuéntanos brevemente…"></textarea>
+        <span class="dcc-field__help">Máximo 500 caracteres</span>
+      </div>
+</div>

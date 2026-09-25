@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{titulo}}</title>
+<meta name="description" content="{{descripcion}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,700;1,400&amp;family=Poppins:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../src/styles.css">
+<script>
+  // Antes de pintar, para que no parpadee en claro: el tema elegido se guarda
+  // en este navegador y, si no hay ninguno, se sigue al sistema.
+  (function () {
+    var tema = "auto";
+    try { tema = localStorage.getItem("dcc-doc-tema") || "auto"; } catch (e) {}
+    document.documentElement.setAttribute("data-dcc-theme", tema);
+  })();
+</script>
+</head>
+<!-- Archivo generado por `npm run build` desde src/sitio/. No se edita a mano. -->
+<body class="dcc-root dcc-doc">
+
+{{iconos}}
+
+<a class="dcc-doc-skip" href="#contenido">Saltar al contenido</a>
+
+<header class="dcc-doc-bar">
+  <button class="dcc-doc-bar__menu" type="button" aria-controls="dcc-doc-nav" aria-expanded="false" aria-label="Abrir la navegación">
+    <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-menu"/></svg>
+  </button>
+  <a class="dcc-doc-bar__brand" href="index.html">
+    <img src="../src/assets/logo-dcc-horizontal.svg" alt="DCC" height="32">
+    <span class="dcc-doc-bar__name">UI Kit</span>
+  </a>
+  <span class="dcc-doc-bar__version">v{{version}}</span>
+  <a class="dcc-doc-bar__link" href="https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit">GitHub</a>
+  <div class="dcc-menu dcc-menu--end dcc-doc-theme js-menu">
+    <button class="dcc-menu__trigger dcc-doc-theme__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="dcc-doc-theme-list" aria-label="Tema de color">
+      <svg class="dcc-i dcc-doc-theme__icon dcc-doc-theme__icon--light" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>
+      <svg class="dcc-i dcc-doc-theme__icon dcc-doc-theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-moon"/></svg>
+    </button>
+    <div class="dcc-menu__list" id="dcc-doc-theme-list" role="menu" hidden>
+      <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-tema="light">
+        <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>Claro
+      </button>
+      <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-tema="dark">
+        <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-moon"/></svg>Oscuro
+      </button>
+      <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-tema="auto">
+        <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-monitor"/></svg>Sistema
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="dcc-doc-layout">
+  <nav class="dcc-doc-nav" id="dcc-doc-nav" aria-label="Componentes">
+    {{navegacion}}
+  </nav>
+
+  <main class="dcc-doc-main" id="contenido">
+      {{contenido}}
+  </main>
+
+  {{indice}}
+</div>
+
+<script src="../src/behaviors.js" defer></script>
+<script>
+  // Sólo para la documentación: abrir la navegación en pantallas angostas y
+  // copiar el HTML de cada demo.
+  (function () {
+    var boton = document.querySelector(".dcc-doc-bar__menu");
+    var nav = document.getElementById("dcc-doc-nav");
+    boton.addEventListener("click", function () {
+      var abierta = boton.getAttribute("aria-expanded") === "true";
+      boton.setAttribute("aria-expanded", String(!abierta));
+      nav.classList.toggle("is-open", !abierta);
+    });
+    var raiz = document.documentElement;
+    var opciones = document.querySelectorAll("[data-tema]");
+    function marcar() {
+      var actual = raiz.getAttribute("data-dcc-theme");
+      opciones.forEach(function (o) {
+        o.setAttribute("aria-checked", String(o.getAttribute("data-tema") === actual));
+      });
+    }
+    opciones.forEach(function (o) {
+      o.addEventListener("click", function () {
+        var tema = o.getAttribute("data-tema");
+        raiz.setAttribute("data-dcc-theme", tema);
+        try { localStorage.setItem("dcc-doc-tema", tema); } catch (e) {}
+        marcar();
+      });
+    });
+    marcar();
+
+    document.querySelectorAll(".dcc-doc-code__copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var texto = b.parentNode.querySelector("code").textContent;
+        navigator.clipboard.writeText(texto).then(function () {
+          b.textContent = "Copiado";
+          setTimeout(function () { b.textContent = "Copiar"; }, 1600);
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

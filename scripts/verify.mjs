@@ -8,16 +8,28 @@
  *   3. Regresiones de comportamiento: acordeón, tabs, calendario, orden de
  *      tabla, combobox, favoritos y arrastre — ejecutados de verdad sobre el DOM.
  */
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { JSDOM } from "jsdom";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
-const guia = readFileSync(join(raiz, "src/styleguide.html"), "utf8");
-const css = readFileSync(join(raiz, "src/styles.css"), "utf8");
-const comportamiento = readFileSync(join(raiz, "src/behaviors.js"), "utf8");
-const markup = guia.replace(/<script[\s\S]*?<\/script>/g, "");
+const leer = (...r) => readFileSync(join(raiz, ...r), "utf8");
+// El sitio publicado, tal como lo ve quien lo visita. `npm test` corre antes
+// check:dist, así que site/ ya está garantizado en sincronía con src/sitio/.
+const sitio = readdirSync(join(raiz, "site")).filter((f) => f.endsWith(".html"))
+  .map((f) => leer("site", f)).join("\n");
+const iconos = leer("src/icons.svg");
+// Para las pruebas de comportamiento, todos los fragmentos en un solo documento:
+// es lo que era el styleguide, y deja probar cada componente una sola vez.
+const DIR_FRAGMENTOS = join(raiz, "src/sitio/componentes");
+const fragmentos = readdirSync(DIR_FRAGMENTOS).filter((f) => f.endsWith(".html")).sort()
+  .map((f) => readFileSync(join(DIR_FRAGMENTOS, f), "utf8").replace(/^<!--[\s\S]*?-->\n/, "")).join("\n");
+const guia = `<!DOCTYPE html><html lang="es"><body>${iconos}${fragmentos}` +
+  `<script src="behaviors.js" defer></script></body></html>`;
+const css = leer("src/styles.css");
+const comportamiento = leer("src/behaviors.js");
+const markup = sitio.replace(/<script[\s\S]*?<\/script>/g, "");
 const cssSinComentarios = css.replace(/\/\*[\s\S]*?\*\//g, "");
 
 let ok = 0, fail = 0;
@@ -45,7 +57,7 @@ check(sinPrefijo.length === 0, "todas las clases están prefijadas" +
 console.log("\nVariables CSS");
 const declaradas = new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map((m) => m[1]));
 const usadasVar = new Set([...css.matchAll(/var\((--[\w-]+)/g)].map((m) => m[1]));
-for (const m of guia.matchAll(/var\((--[\w-]+)/g)) usadasVar.add(m[1]);
+for (const m of sitio.matchAll(/var\((--[\w-]+)/g)) usadasVar.add(m[1]);
 const sinDeclarar = [...usadasVar].filter((v) => !declaradas.has(v)).sort();
 check(sinDeclarar.length === 0, `las ${usadasVar.size} variables usadas están declaradas` +
   (sinDeclarar.length ? ` — faltan: ${sinDeclarar.join(", ")}` : ""));
@@ -61,10 +73,29 @@ const navApp = cssSinComentarios.match(/\.dcc-nav-app\s*\{[^}]*\}/);
 check(!!navApp && /(^|[;{])\s*color\s*:/.test(navApp[0]),
   ".dcc-nav-app declara color, para que sus hijos lo hereden");
 
+// El tema oscuro se declara dos veces: fijo (`data-dcc-theme="dark"`) y
+// automático (`"auto"` dentro de prefers-color-scheme). Si alguien cambia un
+// color en un bloque y no en el otro, los dos modos se separan en silencio.
+const bloqueTema = (re) => {
+  const m = cssSinComentarios.match(re);
+  return m ? m[1].split(";").map((d) => d.trim()).filter(Boolean).join(";") : null;
+};
+const temaFijo = bloqueTema(/\[data-dcc-theme="dark"\]\s*\{([^}]*)\}/);
+const temaAuto = bloqueTema(/@media \(prefers-color-scheme: dark\)\s*\{\s*\[data-dcc-theme="auto"\]\s*\{([^}]*)\}/);
+check(!!temaFijo && temaFijo === temaAuto,
+  "el tema oscuro fijo y el automático declaran los mismos valores");
+const rolesClaros = new Set([...(cssSinComentarios.match(/:root\s*\{[^}]*--dcc-bg:[^}]*\}/) || [""])[0]
+  .matchAll(/(--dcc-[\w-]+)\s*:/g)].map((m) => m[1]));
+const rolesOscuros = new Set([...(temaFijo || "").matchAll(/(--dcc-[\w-]+)\s*:/g)].map((m) => m[1]));
+const sinOscuro = [...rolesClaros].filter((v) =>
+  /^--dcc-(bg|surface|fg|border|accent|on-accent|focus|danger|success|info|warning)/.test(v) && !rolesOscuros.has(v));
+check(sinOscuro.length === 0, "cada color por rol tiene su valor oscuro" +
+  (sinOscuro.length ? ` — faltan: ${sinOscuro.join(", ")}` : ""));
+
 /* ---------- 3. íconos ---------- */
 console.log("\nÍconos");
-const ids = new Set([...markup.matchAll(/<g id="(i-[^"]+)"/g)].map((m) => m[1]));
-const refs = new Set([...guia.matchAll(/<use href="#([^"]+)"/g)].map((m) => m[1]));
+const ids = new Set([...iconos.matchAll(/<g id="(i-[^"]+)"/g)].map((m) => m[1]));
+const refs = new Set([...sitio.matchAll(/<use href="#([^"]+)"/g)].map((m) => m[1]));
 const rotos = [...refs].filter((r) => !ids.has(r)).sort();
 check(rotos.length === 0, `los ${refs.size} <use> resuelven` + (rotos.length ? ` — rotos: ${rotos.join(", ")}` : ""));
 const sobran = [...ids].filter((i) => !refs.has(i)).sort();
@@ -73,7 +104,7 @@ check(sobran.length === 0, `los ${ids.size} íconos del sprite se usan` +
 
 /* ---------- 4. assets ---------- */
 console.log("\nAssets");
-const assets = [...new Set([...markup.matchAll(/src="(assets\/[^"]+)"/g)].map((m) => m[1]))];
+const assets = [...new Set([...markup.matchAll(/src="\.\.\/src\/(assets\/[^"]+)"/g)].map((m) => m[1]))];
 const faltan = assets.filter((a) => !existsSync(join(raiz, "src", a)));
 check(faltan.length === 0, `los ${assets.length} assets referenciados existen` +
   (faltan.length ? ` — faltan: ${faltan.join(", ")}` : ""));
@@ -265,9 +296,9 @@ click(triggerHtmx);
 check(triggerHtmx.getAttribute("aria-expanded") === "true",
   "htmx:afterSwap enlaza lo que llega, sin escribir código");
 
-/* ---------- 7. el artefacto publicado, sobre una página que no es el styleguide ----------
+/* ---------- 7. el artefacto publicado, sobre una página que no es la documentación ----------
    Las pruebas de arriba corren sobre src/. Esta corre sobre dist/, en una página
-   como la que escribiría una app: sin markup del styleguide y con una sola
+   como la que escribiría una app: sin markup de la documentación y con una sola
    etiqueta <script>. Es lo que garantiza que la instalación de dos líneas sirve. */
 console.log("\nBundle publicado");
 const pkg = JSON.parse(readFileSync(join(raiz, "package.json"), "utf8"));

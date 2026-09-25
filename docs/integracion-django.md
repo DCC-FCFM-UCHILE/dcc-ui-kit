@@ -91,7 +91,7 @@ de cargar la página.
 Todo va prefijado con `dcc-`, para que el kit conviva con Bootstrap o lo que la app ya tenga.
 
 ```django
-<button class="dcc-btn dcc-btn--md dcc-btn--primary-grey">Guardar</button>
+<button class="dcc-btn dcc-btn--md dcc-btn--contained">Guardar</button>
 
 <div class="dcc-alert dcc-alert--info">
   <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-info"/></svg>
@@ -105,7 +105,7 @@ Hay dos familias **sin** prefijo, a propósito:
 - `js-*` — ganchos de JavaScript. No tienen estilos; no los uses para maquetar.
 
 El catálogo completo, con cada variante y su markup, está en el
-[styleguide](https://dcc-fcfm-uchile.github.io/dcc-ui-kit/).
+[documentación](https://dcc-fcfm-uchile.github.io/dcc-ui-kit/).
 
 ## 4. Íconos
 
@@ -139,7 +139,7 @@ Es idempotente: enlaza cada elemento una sola vez, así que llamarlo de más no 
 ## 6. Paginación
 
 El kit aporta las clases; la paginación la resuelve el `Paginator` de Django como siempre. El
-bloque de JavaScript de paginación del styleguide es sólo una demostración del estado visual.
+bloque de JavaScript de paginación de la documentación es sólo una demostración del estado visual.
 
 ---
 

@@ -52,6 +52,11 @@
   /* Efectos */
   --dcc-shadow:        0 2px 4px -1px #0000000f, 0 4px 6px -1px #0000001a;
   --dcc-shadow-button: 0 4px 3px rgba(0, 0, 0, .1), 0 2px 2px rgba(0, 0, 0, .06);
+  /* Escalón de hover del botón: la misma sombra de dos capas con el
+     desplazamiento y el difuminado ×1,5 y las opacidades un tercio más altas.
+     Es el salto que hace MUI entre sus elevaciones 2 y 4, dicho con la sombra
+     que el kit ya tenía en vez de con la suya. */
+  --dcc-shadow-button-hover: 0 6px 5px rgba(0, 0, 0, .14), 0 3px 3px rgba(0, 0, 0, .08);
   --dcc-inner-shadow:  inset 0 1px 4px 0 #0000001a;
 
   /* Tipografía */
@@ -66,7 +71,7 @@
   --dcc-badge-radius: 26px;
   --dcc-badge-border-width: 1px;
 
-  /* Layout del styleguide */
+  /* Layout de página */
   --dcc-page-max: 1200px;
   --dcc-card-radius: 16px;
 
@@ -84,6 +89,115 @@
      48px de holgura repartidos en 7 huecos = 6,8px cada uno. Con más de 6px el
      menú ya no cabe en una línea y se parte en dos. */
   --dcc-nav-menu-gap: 6px;
+
+  /* ---- Colores por rol (tema claro) ----
+     Los componentes no piden "Grey/Default" sino "el texto" o "la superficie",
+     y cada tema decide qué color es. En claro son los mismos tokens de Figma de
+     siempre, así que nada cambia para quien no activa el oscuro.
+     Las piezas de marca —la nav, el pie, la barra lateral— siguen usando la
+     paleta directa: son oscuras en los dos temas. */
+  --dcc-bg:             var(--dcc-grey-ultralight);  /* fondo de página */
+  --dcc-surface:        #fff;                        /* tarjetas, campos, paneles */
+  --dcc-surface-raised: #fff;                        /* menús, listas desplegables, calendario */
+  --dcc-surface-muted:  var(--dcc-grey-ultralight);  /* hover de filas, rellenos suaves, deshabilitado */
+  --dcc-fg:             var(--dcc-grey-dark);        /* texto */
+  --dcc-fg-strong:      var(--dcc-gray-800);         /* títulos */
+  --dcc-fg-accent:      var(--dcc-grey-default);     /* texto con acento: links, etiquetas activas */
+  --dcc-fg-muted:       var(--dcc-grey-light);       /* texto secundario, placeholders, íconos */
+  --dcc-border:         var(--dcc-grey-light);       /* borde de campos y controles */
+  --dcc-border-subtle:  var(--dcc-grey-ultralight);  /* divisores */
+  --dcc-accent:         var(--dcc-grey-default);     /* relleno de acento: seleccionado, activo */
+  --dcc-on-accent:      var(--dcc-white);            /* texto sobre ese relleno */
+  --dcc-focus:          var(--dcc-lightblue-default);
+  --dcc-danger:         var(--dcc-red-default);
+  --dcc-danger-bg:      var(--dcc-red-ultralight);
+  --dcc-success:        var(--dcc-green-default);
+  --dcc-success-bg:     var(--dcc-green-ultralight);
+  --dcc-info:           var(--dcc-lightblue-default);
+  --dcc-info-bg:        var(--dcc-lightblue-ultralight);
+  --dcc-warning:        var(--dcc-yellow-default);
+  --dcc-warning-bg:     var(--dcc-yellow-ultralight);
+  /* "Fuerte": el mismo matiz con más contraste contra la superficie —más
+     oscuro en claro, más claro en oscuro—. Para hover de estados y rellenos. */
+  --dcc-danger-strong:  var(--dcc-red-dark);
+  --dcc-success-strong: var(--dcc-green-dark);
+  --dcc-info-strong:    var(--dcc-lightblue-dark);
+  --dcc-warning-strong: var(--dcc-yellow-dark);
+}
+
+/* ---- Tema oscuro ----
+   Se activa con `data-dcc-theme="dark"` en <html> o en cualquier contenedor,
+   o con `data-dcc-theme="auto"` para seguir la preferencia del sistema. Sin el
+   atributo el kit se queda en claro: una aplicación que actualiza no cambia de
+   aspecto sin pedirlo.
+   Contraste sobre --dcc-surface (#19202b): texto 13,4:1, secundario 6,9:1,
+   borde de campo 3,6:1, estados de 6,7 a 8,7:1.
+   Los tokens que se derivan de otros (--dcc-focus-border) se vuelven a
+   declarar acá: una variable se resuelve donde se declara, y si sólo se
+   redefiniera la base, un tema aplicado a un contenedor no la alcanzaría.
+   El bloque está dos veces —fijo y automático— y `npm test` verifica que
+   digan lo mismo. */
+[data-dcc-theme="dark"] {
+  color-scheme: dark;
+  --dcc-bg:             #11161e;
+  --dcc-surface:        #19202b;
+  --dcc-surface-raised: #222b38;
+  --dcc-surface-muted:  #283243;
+  --dcc-fg:             #e2e9f0;
+  --dcc-fg-strong:      #f3f6f9;
+  --dcc-fg-accent:      #c0cfdd;
+  --dcc-fg-muted:       #97abbb;
+  --dcc-border:         #65788e;
+  --dcc-border-subtle:  #2e3949;
+  --dcc-accent:         #c0cfdd;
+  --dcc-on-accent:      #19202b;
+  --dcc-focus:          #5aaee0;
+  --dcc-focus-border:   #5aaee0;
+  --dcc-danger:         #ff8f7a;
+  --dcc-danger-bg:      #3b211d;
+  --dcc-success:        #4cc9d4;
+  --dcc-success-bg:     #173a3f;
+  --dcc-info:           #6bbde8;
+  --dcc-info-bg:        #1a3448;
+  --dcc-warning:        #e4b565;
+  --dcc-warning-bg:     #3a2e18;
+  --dcc-danger-strong:  #ffb3a4;
+  --dcc-success-strong: #7fdce4;
+  --dcc-info-strong:    #9ad2f0;
+  --dcc-warning-strong: #f0cf8f;
+  --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
+}
+@media (prefers-color-scheme: dark) {
+  [data-dcc-theme="auto"] {
+    color-scheme: dark;
+    --dcc-bg:             #11161e;
+    --dcc-surface:        #19202b;
+    --dcc-surface-raised: #222b38;
+    --dcc-surface-muted:  #283243;
+    --dcc-fg:             #e2e9f0;
+    --dcc-fg-strong:      #f3f6f9;
+    --dcc-fg-accent:      #c0cfdd;
+    --dcc-fg-muted:       #97abbb;
+    --dcc-border:         #65788e;
+    --dcc-border-subtle:  #2e3949;
+    --dcc-accent:         #c0cfdd;
+    --dcc-on-accent:      #19202b;
+    --dcc-focus:          #5aaee0;
+    --dcc-focus-border:   #5aaee0;
+    --dcc-danger:         #ff8f7a;
+    --dcc-danger-bg:      #3b211d;
+    --dcc-success:        #4cc9d4;
+    --dcc-success-bg:     #173a3f;
+    --dcc-info:           #6bbde8;
+    --dcc-info-bg:        #1a3448;
+    --dcc-warning:        #e4b565;
+    --dcc-warning-bg:     #3a2e18;
+    --dcc-danger-strong:  #ffb3a4;
+    --dcc-success-strong: #7fdce4;
+    --dcc-info-strong:    #9ad2f0;
+    --dcc-warning-strong: #f0cf8f;
+    --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
+  }
 }
 
 /* Canaleta fluida (el patrón se repite abajo en cada barra): mantiene la banda
@@ -118,8 +232,8 @@
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
-  background: var(--dcc-grey-ultralight);
+  color: var(--dcc-fg);
+  background: var(--dcc-bg);
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
 }
@@ -160,7 +274,7 @@ body.dcc-root {
   line-height: 1.1;
   letter-spacing: 0;
   text-transform: uppercase;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   margin: 0;
 }
 .dcc-t-display   { font-size: 48px; }
@@ -173,7 +287,7 @@ body.dcc-root {
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: 0;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   margin: 0;
 }
 .dcc-t-body-l { font-size: 20px; }
@@ -184,76 +298,364 @@ body.dcc-root {
 .dcc-t-italic { font-style: italic; }
 
 /* --------------------------------------------------------------------------
-   4. CHROME DEL STYLEGUIDE
+   4. SITIO DE DOCUMENTACIÓN
+      Andamiaje de site/, la documentación: barra superior, navegación lateral,
+      índice de la página, cajas de demo y portada con todos los componentes.
+      Todo lleva el prefijo dcc-doc- y el build lo saca de dist/.
    -------------------------------------------------------------------------- */
-.dcc-page {
-  max-width: var(--dcc-page-max);
-  margin: 0 auto;
-  padding: 40px 24px 80px;
+.dcc-doc { background: var(--dcc-surface); }
+
+.dcc-doc-skip {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 60;
+  padding: 8px 12px;
+  background: var(--dcc-grey-default);
+  color: var(--dcc-white);
+  border-radius: var(--dcc-radius-sm);
 }
+.dcc-doc-skip:focus { top: 12px; }
 
-.dcc-page-header { margin-bottom: 40px; }
-.dcc-page-header h1 { margin: 0 0 8px; }
-.dcc-page-header p  { color: var(--dcc-grey-light); max-width: 60ch; }
-
-.dcc-toc {
+/* Barra superior */
+.dcc-doc-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 24px;
+  align-items: center;
+  gap: 16px;
+  height: 64px;
+  padding: 0 24px;
+  background: var(--dcc-grey-default);
+  color: var(--dcc-white);
 }
-.dcc-toc a {
+.dcc-doc-bar__menu {
+  display: none;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid rgba(252, 253, 254, .3);
+  border-radius: var(--dcc-radius-sm);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.dcc-doc-bar__menu svg { width: 20px; height: 20px; }
+.dcc-doc-bar__brand { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
+.dcc-doc-bar__brand img { height: 32px; width: auto; }
+.dcc-doc-bar__name { font-family: var(--dcc-font-display); font-weight: 700; font-size: 18px; white-space: nowrap; }
+.dcc-doc-bar__version {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(252, 253, 254, .16);
+}
+.dcc-doc-bar__link { font-size: 14px; font-weight: 500; color: inherit; }
+.dcc-doc-bar__link:hover { text-decoration: underline; }
+
+/* Selector de tema: el menú desplegable del kit, colgado de la barra. El ícono
+   del disparador muestra el tema que se está viendo —con "Sistema" depende de
+   la preferencia del equipo—, y la opción elegida lleva un punto. */
+.dcc-doc-bar__link { margin-left: auto; }
+.dcc-doc-theme__trigger {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(252, 253, 254, .3);
+  border-radius: var(--dcc-radius-sm);
+}
+.dcc-doc-theme__trigger:hover { background: rgba(252, 253, 254, .1); }
+.dcc-doc-theme__icon { width: 20px; height: 20px; }
+.dcc-doc-theme__icon--dark { display: none; }
+[data-dcc-theme="dark"] .dcc-doc-theme__icon--light { display: none; }
+[data-dcc-theme="dark"] .dcc-doc-theme__icon--dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  [data-dcc-theme="auto"] .dcc-doc-theme__icon--light { display: none; }
+  [data-dcc-theme="auto"] .dcc-doc-theme__icon--dark { display: block; }
+}
+.dcc-doc-theme .dcc-menu__list { min-width: 160px; color: var(--dcc-fg); }
+.dcc-doc-theme .dcc-menu__item[aria-checked="true"] { font-weight: 700; color: var(--dcc-fg-accent); }
+.dcc-doc-theme .dcc-menu__item[aria-checked="true"]::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Tres columnas: navegación, contenido e índice de la página */
+.dcc-doc-layout {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr) 200px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.dcc-doc-layout:not(:has(.dcc-doc-toc)) { grid-template-columns: 248px minmax(0, 1fr); }
+
+.dcc-doc-nav {
+  position: sticky;
+  top: 64px;
+  align-self: start;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding: 24px 12px 48px 24px;
+  border-right: 1px solid var(--dcc-border-subtle);
+}
+.dcc-doc-nav__home,
+.dcc-doc-nav__list a {
+  display: block;
+  padding: 6px 12px;
+  border-radius: var(--dcc-radius-sm);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--dcc-fg-accent);
+  text-decoration: none;
+}
+.dcc-doc-nav__home { font-weight: 700; }
+.dcc-doc-nav__home:hover,
+.dcc-doc-nav__list a:hover { background: var(--dcc-surface-muted); }
+.dcc-doc-nav__home[aria-current="page"],
+.dcc-doc-nav__list a[aria-current="page"] {
+  background: var(--dcc-info-bg);
+  color: var(--dcc-info-strong);
+  font-weight: 700;
+}
+.dcc-doc-nav__group {
+  margin: 20px 0 4px;
+  padding: 0 12px;
   font-size: 12px;
   font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 26px;
-  background: var(--dcc-white);
-  color: var(--dcc-grey-default);
-  border: 1px solid var(--dcc-grey-light);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--dcc-fg-muted);
 }
-.dcc-toc a:hover { background: var(--dcc-grey-default); color: var(--dcc-white); border-color: var(--dcc-grey-default); }
+.dcc-doc-nav__list { list-style: none; margin: 0; padding: 0; }
 
-/* Tarjeta blanca = cada frame del kit en Figma (bg blanco, radius 16) */
-.dcc-section {
-  background: #fff;
-  border-radius: var(--dcc-card-radius);
-  padding: 40px 45px;
-  margin-bottom: 32px;
+.dcc-doc-main { min-width: 0; padding: 40px 48px 96px; }
+
+.dcc-doc-crumb { margin: 0 0 8px; font-size: 14px; color: var(--dcc-fg-muted); }
+.dcc-doc-crumb a { color: inherit; }
+.dcc-doc-title {
+  margin: 0 0 12px;
+  font-family: var(--dcc-font-display);
+  font-size: 40px;
+  line-height: 1.15;
+  color: var(--dcc-fg-strong);
+}
+.dcc-doc-lead {
+  margin: 0 0 40px;
+  max-width: 68ch;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--dcc-fg-accent);
+}
+.dcc-doc-h2 {
+  margin: 48px 0 12px;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--dcc-fg-strong);
+  scroll-margin-top: 88px;
+}
+.dcc-doc-p {
+  margin: 0 0 20px;
+  max-width: 72ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--dcc-fg);
+}
+.dcc-doc-p code,
+.dcc-doc-lead code,
+.dcc-doc-table code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .88em;
+  padding: 1px 5px;
+  border-radius: var(--dcc-radius-sm);
+  background: var(--dcc-info-bg);
+  color: var(--dcc-fg);
+}
+
+/* Caja de demo y su código */
+.dcc-doc-demo {
+  padding: 32px;
+  border: 1px solid var(--dcc-border-subtle);
+  border-radius: 12px 12px 0 0;
+  background: var(--dcc-surface);
+  overflow-x: auto;
+}
+.dcc-doc-demo:not(:has(+ .dcc-doc-code)) { border-radius: 12px; margin-bottom: 8px; }
+.dcc-doc-demo--flush { padding: 0; }
+.dcc-doc-demo--flush > .dcc-sub-label { margin: 16px 24px; }
+.dcc-doc-demo--oscuro { background: var(--dcc-grey-default); border-color: var(--dcc-grey-default); }
+
+.dcc-doc-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.dcc-doc-row + .dcc-doc-row { margin-top: 20px; }
+.dcc-doc-matrix {
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
+  gap: 20px 16px;
+  align-items: center;
+  justify-items: start;
+}
+
+.dcc-doc-code {
+  position: relative;
+  margin-bottom: 8px;
+  border: 1px solid var(--dcc-border-subtle);
+  border-top: 0;
+  border-radius: 0 0 12px 12px;
+  /* Un pelo más oscura que la superficie. En claro da #fafcfd, que es el
+     #fafcfe de antes; en oscuro queda apenas bajo la caja de demo. */
+  background: color-mix(in srgb, var(--dcc-bg) 16%, var(--dcc-surface));
+}
+.dcc-doc-code > summary {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dcc-fg-accent);
+  cursor: pointer;
+}
+.dcc-doc-code > summary:hover { color: var(--dcc-fg); }
+.dcc-doc-code > summary:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-doc-code pre {
+  margin: 0;
+  padding: 16px 20px 20px;
+  max-height: 480px;
+  overflow: auto;
+  border-top: 1px solid var(--dcc-border-subtle);
+  /* El bloque de código es oscuro en los dos temas: el fondo y el texto se
+     quedan en valores fijos. */
+  background: var(--dcc-grey-dark);
+  border-radius: 0 0 11px 11px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e6edf5;
+}
+.dcc-doc-code__copy {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  padding: 4px 10px;
+  border: 1px solid var(--dcc-border-subtle);
+  border-radius: var(--dcc-radius-sm);
+  background: var(--dcc-surface);
+  font: inherit;
+  font-size: 12px;
+  color: var(--dcc-fg-accent);
+  cursor: pointer;
+}
+.dcc-doc-code:not([open]) .dcc-doc-code__copy { display: none; }
+
+.dcc-doc-table { border-collapse: collapse; font-size: 15px; margin-bottom: 24px; }
+.dcc-doc-table th,
+.dcc-doc-table td { padding: 10px 16px 10px 0; border-bottom: 1px solid var(--dcc-border-subtle); text-align: left; }
+.dcc-doc-table th { font-size: 13px; color: var(--dcc-fg-muted); }
+
+/* Índice de la página */
+.dcc-doc-toc {
+  position: sticky;
+  top: 64px;
+  align-self: start;
+  padding: 40px 24px 0 0;
+  font-size: 13px;
+}
+.dcc-doc-toc__title { margin: 0 0 8px; font-weight: 700; color: var(--dcc-fg-strong); }
+.dcc-doc-toc ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--dcc-border-subtle); }
+.dcc-doc-toc a { display: block; padding: 4px 0 4px 12px; color: var(--dcc-fg-accent); text-decoration: none; }
+.dcc-doc-toc a:hover { color: var(--dcc-info-strong); }
+
+/* Portada: tarjetas con la miniatura viva de cada componente */
+.dcc-doc-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.dcc-doc-card {
+  position: relative;
+  border: 1px solid var(--dcc-border-subtle);
+  border-radius: 12px;
   overflow: hidden;
+  background: var(--dcc-surface);
+  transition: border-color .25s cubic-bezier(.4, 0, .2, 1), box-shadow .25s cubic-bezier(.4, 0, .2, 1);
 }
-/* Sección a ancho completo de viewport (la usa Nav: la barra debe ocupar todo) */
-.dcc-section--bleed {
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  border-radius: 0;
-  padding-left: 0;
-  padding-right: 0;
+.dcc-doc-card:hover { border-color: var(--dcc-lightblue-light); box-shadow: var(--dcc-shadow); }
+.dcc-doc-card:focus-within { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-doc-card__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  overflow: hidden;
+  background: var(--dcc-info-bg);
+  pointer-events: none;
 }
-/* Los títulos y notas se alinean con el contenido de las barras */
-.dcc-section--bleed > h2,
-.dcc-section--bleed > .dcc-sub-label,
-.dcc-section--bleed > .dcc-sidebar-demo {
-  padding-inline: max(var(--dcc-gutter-lg), calc((100% - var(--dcc-container-max)) / 2));
+/* La miniatura se dibuja a su ancho natural —o al de `ancho:` en la cabecera
+   del fragmento, para las piezas que ocupan toda la fila— y después se achica. */
+.dcc-doc-card__scale {
+  --dcc-doc-escala: .75;
+  --dcc-doc-ancho: max-content;
+  flex: none;
+  width: var(--dcc-doc-ancho);
+  transform: scale(var(--dcc-doc-escala));
+  transform-origin: center;
+}
+.dcc-doc-card__link {
+  display: block;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--dcc-fg-strong);
+  text-decoration: none;
+  border-top: 1px solid var(--dcc-border-subtle);
+}
+/* El enlace cubre la tarjeta entera, sin anidar controles dentro de un <a>. */
+.dcc-doc-card__link::after { content: ""; position: absolute; inset: 0; }
+
+@media (max-width: 1200px) {
+  .dcc-doc-layout,
+  .dcc-doc-layout:not(:has(.dcc-doc-toc)) { grid-template-columns: 232px minmax(0, 1fr); }
+  .dcc-doc-toc { display: none; }
+}
+@media (max-width: 900px) {
+  .dcc-doc-bar { padding: 0 16px; gap: 12px; }
+  .dcc-doc-bar__menu { display: grid; }
+  .dcc-doc-bar__version { display: none; }
+  .dcc-doc-layout,
+  .dcc-doc-layout:not(:has(.dcc-doc-toc)) { grid-template-columns: minmax(0, 1fr); }
+  .dcc-doc-nav {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    z-index: 40;
+    width: 280px;
+    max-width: 85vw;
+    background: var(--dcc-surface);
+    box-shadow: var(--dcc-shadow);
+    transform: translateX(-100%);
+    transition: transform .25s cubic-bezier(.4, 0, .2, 1);
+  }
+  .dcc-doc-nav.is-open { transform: none; }
+  .dcc-doc-main { padding: 28px 16px 72px; }
+  .dcc-doc-title { font-size: 32px; }
+  .dcc-doc-demo { padding: 20px 16px; }
+  .dcc-doc-demo--flush { padding: 0; }
+  .dcc-doc-matrix { grid-template-columns: repeat(2, max-content); }
 }
 
-.dcc-section > h2 {
-  font-family: var(--dcc-font-body);
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--dcc-gray-800);
-  margin: 0 0 32px;
-}
-/* CONVENCIÓN DEL KIT: el andamiaje del styleguide NUNCA usa selectores por
-   etiqueta descendiente (`.dcc-section h3`), porque se filtran dentro de los
+/* CONVENCIÓN DEL KIT: el andamiaje de la documentación NUNCA usa selectores por
+   etiqueta descendiente (`.dcc-doc-main h3`), porque se filtran dentro de los
    componentes y les ganan por especificidad a sus clases. Todo lo que es
-   andamiaje lleva su propia clase `sg-*`. */
+   andamiaje lleva su propia clase `dcc-doc-*` o `dcc-sg-*`. */
 .dcc-sg-h3 {
   font-family: var(--dcc-font-body);
   font-size: 20px;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dcc-gray-800);
+  color: var(--dcc-fg-strong);
   margin: 40px 0 20px;
 }
 .dcc-table-row .dcc-sg-h3 { margin-top: 0; }
@@ -263,7 +665,7 @@ body.dcc-root {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .06em;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   margin: 0 0 12px;
 }
 
@@ -289,8 +691,8 @@ body.dcc-root {
   border: 1px solid rgba(0, 0, 0, .08);
 }
 .dcc-swatch .dcc-meta { min-width: 0; }
-.dcc-swatch .dcc-name { font-size: 12px; font-weight: 700; color: var(--dcc-gray-800); }
-.dcc-swatch .dcc-hex  { font-size: 12px; color: var(--dcc-grey-light); text-transform: uppercase; }
+.dcc-swatch .dcc-name { font-size: 12px; font-weight: 700; color: var(--dcc-fg-strong); }
+.dcc-swatch .dcc-hex  { font-size: 12px; color: var(--dcc-fg-muted); text-transform: uppercase; }
 
 /* --------------------------------------------------------------------------
    6. TIPOGRAFÍA — muestra
@@ -305,7 +707,7 @@ body.dcc-root {
 .dcc-type-spec {
   font-size: 20px;
   line-height: 1.2;
-  color: var(--dcc-gray-800);
+  color: var(--dcc-fg-strong);
   margin: 0 0 12px;
 }
 .dcc-type-spec strong { font-weight: 700; }
@@ -314,7 +716,28 @@ body.dcc-root {
 /* --------------------------------------------------------------------------
    7. BOTONES
    -------------------------------------------------------------------------- */
+/* El botón se arma con dos ejes independientes, como en MUI:
+
+     variante  →  --contained (relleno, por omisión) · --outlined · --text
+     color     →  --primary (por omisión) · --secondary · --success · --error
+                  · --white, para fondos oscuros
+
+   El color sólo fija dos variables —`--dcc-btn-main`, el color del botón, y
+   `--dcc-btn-on`, el de la etiqueta sobre ese relleno— y cada variante decide
+   dónde van. Así cualquier variante combina con cualquier color sin reglas
+   cruzadas, y agregar un color son dos líneas.
+
+   Contraste de la etiqueta blanca sobre cada relleno:
+     primary   Grey/Default   8,01:1
+     secondary Grey/Light     4,35:1  (el color del Figma; no llega a 4,5)
+     success   Green/Dark     6,84:1  (Green/Default da 3,25:1 y no sirve)
+     error     Red/Default    4,92:1 */
 .dcc-btn {
+  --dcc-btn-main: var(--dcc-accent);
+  --dcc-btn-on: var(--dcc-on-accent);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -324,43 +747,112 @@ body.dcc-root {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.2;
+  text-decoration: none;
   cursor: pointer;
+  background: var(--dcc-btn-main);
+  color: var(--dcc-btn-on);
   border: 0 solid transparent;
   box-shadow: var(--dcc-shadow-button);
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  /* 250ms sobre la curva estándar de Material —la que MUI le pone a sus botones
+     en `background-color`, `box-shadow` y `border-color`—. */
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              box-shadow .25s cubic-bezier(.4, 0, .2, 1),
+              border-color .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1);
   white-space: nowrap;
 }
 .dcc-btn .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }
 
-/* Tamaños — padding sólido; las variantes stroke restan el borde de 2px */
+/* Tamaños */
 .dcc-btn--sm { padding: 4px 8px; }
 .dcc-btn--md { padding: 8px 12px; }
 .dcc-btn--lg { padding: 12px 20px; }
 
-/* Primario sobre fondo claro (color = Grey) */
-.dcc-btn--primary-grey { background: var(--dcc-grey-default); color: var(--dcc-white); }
-.dcc-btn--primary-grey:hover { background: var(--dcc-red-default); }
+/* Colores */
+/* Los colores van por rol, así que en tema oscuro se aclaran solos y la
+   etiqueta pasa a oscura (--dcc-on-accent). --white es de marca: se usa sobre
+   superficies oscuras en los dos temas y no cambia. */
+.dcc-btn--primary   { --dcc-btn-main: var(--dcc-accent);         --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--secondary { --dcc-btn-main: var(--dcc-fg-muted);       --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--success   { --dcc-btn-main: var(--dcc-success-strong); --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--error     { --dcc-btn-main: var(--dcc-danger);         --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--white     { --dcc-btn-main: var(--dcc-white);        --dcc-btn-on: var(--dcc-grey-default); }
 
-/* Primario sobre fondo oscuro (color = White) */
-.dcc-btn--primary-white { background: var(--dcc-white); color: var(--dcc-grey-default); }
-.dcc-btn--primary-white:hover { background: var(--dcc-red-default); color: var(--dcc-white); }
-
-/* Secundario sobre fondo claro */
-.dcc-btn--secondary-grey {
-  background: var(--dcc-white);
-  color: var(--dcc-grey-default);
-  border: 2px solid var(--dcc-grey-default);
+/* Variantes. El delineado y el de texto llevan la etiqueta en el color del
+   botón; el delineado resta a su padding los 2px del borde para medir lo mismo
+   que el relleno. */
+.dcc-btn--contained { background: var(--dcc-btn-main); color: var(--dcc-btn-on); }
+.dcc-btn--outlined {
+  background: transparent;
+  color: var(--dcc-btn-main);
+  border: 2px solid var(--dcc-btn-main);
 }
-.dcc-btn--secondary-grey:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }
+.dcc-btn--outlined.dcc-btn--sm { padding: 2px 6px; }
+.dcc-btn--outlined.dcc-btn--md { padding: 6px 10px; }
+.dcc-btn--outlined.dcc-btn--lg { padding: 10px 18px; }
+.dcc-btn--text {
+  background: transparent;
+  color: var(--dcc-btn-main);
+  box-shadow: none;
+}
 
-/* Secundario sobre fondo oscuro. Hover en Red/Default, igual que sobre fondo
-   claro (ver nota de contraste en ASUNCIONES 0.12). */
+/* Un solo comportamiento para todas las combinaciones. Lo que cambia entre
+   ellas es el color; lo que pasa bajo el cursor es siempre lo mismo:
+
+     1. Aparece una capa de estado teñida del color de la etiqueta
+        (`currentColor`): 8% en hover, 12% al presionar o con foco de teclado.
+        Son las opacidades de la capa de estado de Material 3.
+     2. La pieza sube un escalón de sombra, a `--dcc-shadow-button-hover`. El
+        botón de texto no tiene sombra y no la gana: sólo cambia la capa.
+
+   Ni el fondo, ni el borde, ni la etiqueta cambian de color, así que el
+   contraste en hover es el mismo que en reposo. La capa vive en `::before`,
+   detrás del contenido (`isolation` + `z-index: -1`) y recortada por el
+   `overflow` al radio interior del borde. */
+.dcc-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-btn:hover { box-shadow: var(--dcc-shadow-button-hover); }
+.dcc-btn:hover::before { opacity: .08; }
+.dcc-btn:active::before,
+.dcc-btn:focus-visible::before { opacity: .12; }
+.dcc-btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-btn--text:hover { box-shadow: none; }
+
+/* Deshabilitado: igual en todas las variantes. Se apaga la pieza entera en vez
+   de pasarla a gris, para que siga leyéndose de qué color era. */
+.dcc-btn:disabled,
+.dcc-btn[aria-disabled="true"] {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.dcc-btn:disabled::before,
+.dcc-btn[aria-disabled="true"]::before { opacity: 0; }
+
+/* Nombres anteriores a 2.6.0. Siguen funcionando y equivalen a:
+     --primary-grey    = contained + primary
+     --primary-white   = contained + white
+     --secondary-grey  = outlined  + primary, con fondo blanco
+     --secondary-white = outlined  + white
+   "Primario" y "secundario" nombraban ahí la variante, no el color. */
+.dcc-btn--primary-grey  { --dcc-btn-main: var(--dcc-accent); --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--primary-white { --dcc-btn-main: var(--dcc-white); --dcc-btn-on: var(--dcc-grey-default); }
+.dcc-btn--secondary-grey,
 .dcc-btn--secondary-white {
   background: transparent;
-  color: var(--dcc-white);
-  border: 2px solid var(--dcc-white);
+  color: var(--dcc-btn-main);
+  border: 2px solid var(--dcc-btn-main);
 }
-.dcc-btn--secondary-white:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }
+.dcc-btn--secondary-grey { background: var(--dcc-surface); }
+.dcc-btn--secondary-white { --dcc-btn-main: var(--dcc-white); }
 
 /* Links (componente "Frame 248" del kit) */
 .dcc-link {
@@ -373,13 +865,16 @@ body.dcc-root {
   line-height: 1.2;
   border-bottom: 1px solid currentColor;
   cursor: pointer;
-  transition: color .15s ease;
+  transition: color .25s cubic-bezier(.4, 0, .2, 1);
 }
 .dcc-link .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }
-.dcc-link--grey  { color: var(--dcc-grey-default); }
+.dcc-link--grey  { color: var(--dcc-fg-accent); }
 .dcc-link--dcc-white { color: var(--dcc-white); }
-.dcc-link--grey:hover  { color: var(--dcc-red-default); }
-.dcc-link--dcc-white:hover { color: var(--dcc-red-default); }
+/* Mismo cambio de acento que en los botones: el Figma le da Grey/Light a los dos
+   estados de hover del link, y el subrayado lo sigue porque es `currentColor`.
+   El blanco es para fondos oscuros de marca y se queda en la paleta. */
+.dcc-link--grey:hover { color: var(--dcc-fg-muted); }
+.dcc-link--dcc-white:hover { color: var(--dcc-grey-light); }
 
 /* Rejillas de demostración */
 .dcc-demo-grid {
@@ -391,12 +886,6 @@ body.dcc-root {
      medir su ancho natural, que va de 85 a 109px según el tamaño. */
   justify-items: start;
 }
-.dcc-surface-dark {
-  background: var(--dcc-grey-default);
-  border-radius: 8px;
-  padding: 24px;
-}
-.dcc-demo-stack { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
 
 /* --------------------------------------------------------------------------
    8. BADGES / TAGS
@@ -423,7 +912,7 @@ body.dcc-root {
 /* Solid */
 .dcc-badge--solid-default    { background: var(--dcc-grey-default);       color: var(--dcc-white); }
 .dcc-badge--solid-light      { background: var(--dcc-grey-light);         color: var(--dcc-white); }
-.dcc-badge--solid-ultralight { background: var(--dcc-grey-ultralight);    color: var(--dcc-grey-default); }
+.dcc-badge--solid-ultralight { background: var(--dcc-surface-muted);      color: var(--dcc-fg-accent); }
 .dcc-badge--solid-lightblue  { background: var(--dcc-lightblue-default);  color: var(--dcc-white); }
 .dcc-badge--solid-red        { background: var(--dcc-red-default);        color: var(--dcc-white); }
 .dcc-badge--solid-blue       { background: var(--dcc-blue-default);       color: var(--dcc-white); }
@@ -433,7 +922,7 @@ body.dcc-root {
    Los `subtle` que vienen de Figma quedan entre 2,17 y 3,41:1, bajo el mínimo
    AA de 4,5:1 para texto chico. Con fondo Ultralight y texto Dark suben a
    6,07–9,43:1 manteniendo el mismo matiz. */
-.dcc-badge--soft-default   { background: var(--dcc-grey-ultralight);      color: var(--dcc-grey-dark); }
+.dcc-badge--soft-default   { background: var(--dcc-surface-muted);        color: var(--dcc-fg); }
 .dcc-badge--soft-lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-dark); }
 .dcc-badge--soft-red       { background: var(--dcc-red-ultralight);       color: var(--dcc-red-dark); }
 .dcc-badge--soft-blue      { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-dark); }
@@ -449,10 +938,13 @@ body.dcc-root {
 .dcc-badge--subtle-green     { background: var(--dcc-green-ultralight);     color: var(--dcc-green-default); }
 
 /* Stroke */
-.dcc-badge--stroke-lightblue { border-color: var(--dcc-lightblue-default); color: var(--dcc-lightblue-default); }
-.dcc-badge--stroke-red       { border-color: var(--dcc-red-default);       color: var(--dcc-red-default); }
+/* Sin fondo propio, el color se lee contra la superficie de abajo: en oscuro el
+   tono Default se hundía. Por eso siguen los tokens de estado del mismo matiz,
+   que en claro valen lo mismo. Blue no tiene token equivalente y se queda. */
+.dcc-badge--stroke-lightblue { border-color: var(--dcc-info);              color: var(--dcc-info); }
+.dcc-badge--stroke-red       { border-color: var(--dcc-danger);            color: var(--dcc-danger); }
 .dcc-badge--stroke-blue      { border-color: var(--dcc-blue-default);      color: var(--dcc-blue-default); }
-.dcc-badge--stroke-green     { border-color: var(--dcc-green-default);     color: var(--dcc-green-default); }
+.dcc-badge--stroke-green     { border-color: var(--dcc-success);           color: var(--dcc-success); }
 
 .dcc-badge-grid {
   display: grid;
@@ -471,7 +963,7 @@ body.dcc-root {
   gap: 8px;
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   cursor: pointer;
   user-select: none;
 }
@@ -481,30 +973,33 @@ body.dcc-root {
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
-  border: 2px solid var(--dcc-grey-light);
+  border: 2px solid var(--dcc-border);
   border-radius: 3px;
-  background: #fff;
+  background: var(--dcc-surface);
   display: grid;
   place-items: center;
   transition: background-color .12s ease;
 }
+/* El relleno marcado es Grey/Light, no Grey/Default: por eso usa --dcc-border y
+   no --dcc-accent, que en claro lo oscurecería. La marca y el knob siguen en
+   blanco, que sobre el relleno de --dcc-border se lee en los dos temas. */
 .dcc-control .dcc-box svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; opacity: 0; }
 .dcc-control input:checked + .dcc-box,
-.dcc-control input:indeterminate + .dcc-box { background: var(--dcc-grey-light); }
+.dcc-control input:indeterminate + .dcc-box { background: var(--dcc-border); }
 .dcc-control input:checked + .dcc-box svg.dcc-check,
 .dcc-control input:checked + .dcc-box svg.dcc-dash,
 .dcc-control input:indeterminate + .dcc-box svg.dcc-dash { opacity: 1; }
 .dcc-control input:focus-visible + .dcc-box,
 .dcc-control input:focus-visible + .dcc-dot,
-.dcc-control input:focus-visible + .dcc-track { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-control input:focus-visible + .dcc-track { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
 
 .dcc-control .dcc-dot {
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
-  border: 2px solid var(--dcc-grey-light);
+  border: 2px solid var(--dcc-border);
   border-radius: 9999px;
-  background: #fff;
+  background: var(--dcc-surface);
   transition: border-width .12s ease;
 }
 .dcc-control input:checked + .dcc-dot { border-width: 6px; }
@@ -516,9 +1011,9 @@ body.dcc-root {
   width: 36px;
   height: 20px;
   flex: 0 0 36px;
-  border: 2px solid var(--dcc-grey-light);
+  border: 2px solid var(--dcc-border);
   border-radius: 9999px;
-  background: #fff;
+  background: var(--dcc-surface);
   position: relative;
   transition: background-color .22s cubic-bezier(.4, 0, .2, 1),
               border-color   .22s cubic-bezier(.4, 0, .2, 1);
@@ -531,12 +1026,12 @@ body.dcc-root {
   width: 12px;
   height: 12px;
   border-radius: 9999px;
-  background: var(--dcc-grey-light);
+  background: var(--dcc-border);
   /* leve rebote al llegar, para que se lea el desplazamiento */
   transition: transform        .26s cubic-bezier(.34, 1.4, .64, 1),
               background-color .22s cubic-bezier(.4, 0, .2, 1);
 }
-.dcc-control input:checked + .dcc-track { background: var(--dcc-grey-light); border-color: var(--dcc-grey-light); }
+.dcc-control input:checked + .dcc-track { background: var(--dcc-border); border-color: var(--dcc-border); }
 .dcc-control input:checked + .dcc-track::after { transform: translateX(16px); background: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -564,7 +1059,7 @@ body.dcc-root {
      alertas cortas dentro de una columna ancha; si se quiere una más angosta,
      se limita desde fuera con el contenedor. */
   width: 100%;
-  color: var(--dcc-gray-700);
+  color: var(--dcc-fg);
   font-size: 16px;
   line-height: 1.2;
 }
@@ -572,12 +1067,12 @@ body.dcc-root {
 .dcc-alert .dcc-stack { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .dcc-alert .dcc-stack strong { font-weight: 700; }
 
-.dcc-alert--info    { background: var(--dcc-lightblue-ultralight); }
-.dcc-alert--info    .dcc-icon { color: var(--dcc-lightblue-default); }
-.dcc-alert--success { background: var(--dcc-green-ultralight); }
-.dcc-alert--success .dcc-icon { color: var(--dcc-green-default); }
-.dcc-alert--error   { background: var(--dcc-red-ultralight); }
-.dcc-alert--error   .dcc-icon { color: var(--dcc-red-default); }
+.dcc-alert--info    { background: var(--dcc-info-bg); }
+.dcc-alert--info    .dcc-icon { color: var(--dcc-info); }
+.dcc-alert--success { background: var(--dcc-success-bg); }
+.dcc-alert--success .dcc-icon { color: var(--dcc-success); }
+.dcc-alert--error   { background: var(--dcc-danger-bg); }
+.dcc-alert--error   .dcc-icon { color: var(--dcc-danger); }
 
 .dcc-alert-stack { display: flex; flex-direction: column; gap: 36px; }
 
@@ -611,14 +1106,14 @@ body.dcc-root {
   padding: 2px 24px 0;   /* 2px = borde inferior de la cabecera */
   vertical-align: middle;
   text-align: left;
-  background: var(--dcc-grey-ultralight);
-  border-bottom: 2px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-muted);
+  border-bottom: 2px solid var(--dcc-border);
   font-family: var(--dcc-font-display);
   font-weight: 700;
   font-size: 16px;
   line-height: 1.1;
   text-transform: uppercase;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   white-space: nowrap;
 }
 .dcc-table thead th:first-child { border-top-left-radius: 8px; }
@@ -627,12 +1122,12 @@ body.dcc-root {
   height: 52px;
   padding: .5px 24px 0;  /* .5px = borde inferior de la fila */
   vertical-align: middle;
-  background: var(--dcc-white);
-  border-bottom: .5px solid var(--dcc-grey-light);
-  color: var(--dcc-grey-dark);
+  background: var(--dcc-surface);
+  border-bottom: .5px solid var(--dcc-border);
+  color: var(--dcc-fg);
 }
 .dcc-table tbody tr:last-child td {
-  border-bottom: 2px solid var(--dcc-grey-light);
+  border-bottom: 2px solid var(--dcc-border);
   padding-top: 2px;      /* la última fila tiene borde de 2px */
 }
 
@@ -1175,9 +1670,6 @@ body.dcc-root {
 
 /* ---- Tablet: ≤1024px ---- */
 @media (max-width: 1024px) {
-  .dcc-section { padding: 32px 28px; }
-  .dcc-section--bleed { padding-left: 0; padding-right: 0; }
-
   .dcc-swatches      { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dcc-type-grid     { grid-template-columns: 1fr; gap: 40px; }
   .dcc-control-grid  { grid-template-columns: repeat(2, minmax(0, max-content)); gap: 24px 48px; }
@@ -1202,9 +1694,6 @@ body.dcc-root {
 
 /* ---- Móvil: ≤768px ---- */
 @media (max-width: 768px) {
-  .dcc-page { padding: 24px 16px 56px; }
-  .dcc-section { padding: 24px 20px; border-radius: 12px; }
-  .dcc-section--bleed { padding-left: 0; padding-right: 0; border-radius: 0; }
   :root { --dcc-gutter-lg: 20px; --dcc-gutter-md: 20px; }
 
   .dcc-t-display   { font-size: 36px; }
@@ -1382,17 +1871,19 @@ body.dcc-root {
   font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
 }
-.dcc-field__label .dcc-req { color: var(--dcc-red-default); }
+/* El asterisco de obligatorio es texto sobre la superficie del formulario, no
+   un acento de marca: usa el rojo de error para que se lea también en oscuro. */
+.dcc-field__label .dcc-req { color: var(--dcc-danger); }
 
 .dcc-field__help {
   font-size: 12px;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
 }
-.dcc-field__help--error   { color: var(--dcc-red-default); }
-.dcc-field__help--success { color: var(--dcc-green-default); }
+.dcc-field__help--error   { color: var(--dcc-danger); }
+.dcc-field__help--success { color: var(--dcc-success); }
 .dcc-field__help svg { width: 12px; height: 12px; flex: 0 0 12px; }
 .dcc-field__help { display: flex; align-items: center; gap: 4px; }
 
@@ -1404,19 +1895,19 @@ body.dcc-root {
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  color: var(--dcc-fg);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
 }
 textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 
-.dcc-input::placeholder { color: var(--dcc-grey-light); opacity: 1; }
+.dcc-input::placeholder { color: var(--dcc-fg-muted); opacity: 1; }
 /* El foco manda sobre el hover: sin el :not(:focus), esta regla gana por
    especificidad (0,4,0 contra 0,2,0) y mientras el mouse está encima pinta el
    borde de Grey/Default, que a 2px se lee como una línea negra. */
-.dcc-input:hover:not(:disabled):not(:focus) { border-color: var(--dcc-grey-default); }
+.dcc-input:hover:not(:disabled):not(:focus) { border-color: var(--dcc-fg-accent); }
 
 /* Foco: borde REAL de 2px, con 1px menos de padding para que nada se mueva.
    Antes usaba `box-shadow: inset 0 0 0 1px`, pero una hairline pegada al borde
@@ -1438,17 +1929,17 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 }
 .dcc-input-wrap .dcc-input.dcc-has-lead:focus  { padding-left: 35px; }
 .dcc-input-wrap .dcc-input.dcc-has-trail:focus { padding-right: 35px; }
-.dcc-field--error   .dcc-input:focus { border-color: var(--dcc-red-default); }
-.dcc-field--success .dcc-input:focus { border-color: var(--dcc-green-default); }
+.dcc-field--error   .dcc-input:focus { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-input:focus { border-color: var(--dcc-success); }
 .dcc-input:disabled {
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-light);
-  border-color: var(--dcc-grey-light);
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-muted);
+  border-color: var(--dcc-border);
   cursor: not-allowed;
 }
 
-.dcc-field--error   .dcc-input { border-color: var(--dcc-red-default); }
-.dcc-field--success .dcc-input { border-color: var(--dcc-green-default); }
+.dcc-field--error   .dcc-input { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-input { border-color: var(--dcc-success); }
 
 /* Input con adorno a un lado o a ambos */
 .dcc-input-wrap { position: relative; display: flex; align-items: center; }
@@ -1456,12 +1947,12 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   position: absolute;
   width: 16px;
   height: 16px;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   pointer-events: none;   /* el ícono decorativo no debe robar el clic */
 }
 .dcc-input-wrap > .dcc-lead { left: 12px; }
 .dcc-input-wrap > .dcc-trail { right: 12px; }
-.dcc-input-wrap:focus-within > svg { color: var(--dcc-lightblue-default); }
+.dcc-input-wrap:focus-within > svg { color: var(--dcc-focus); }
 .dcc-input-wrap .dcc-input.dcc-has-lead  { padding-left: 36px; }
 .dcc-input-wrap .dcc-input.dcc-has-trail { padding-right: 36px; }
 
@@ -1477,14 +1968,14 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   background: none;
   border: 0;
   border-radius: var(--dcc-radius-sm);
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: pointer;
   pointer-events: auto;
 }
 .dcc-input-wrap > .dcc-input-btn.dcc-trail { right: 8px; }
 .dcc-input-wrap > .dcc-input-btn svg { width: 16px; height: 16px; }
-.dcc-input-btn:hover { color: var(--dcc-grey-default); background: var(--dcc-grey-ultralight); }
-.dcc-input-btn:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 1px; }
+.dcc-input-btn:hover { color: var(--dcc-fg-accent); background: var(--dcc-surface-muted); }
+.dcc-input-btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 1px; }
 
 /* Chrome y Safari dibujan su propia cruz en type="search": la ocultamos para
    no tener dos botones de limpiar. */
@@ -1492,6 +1983,112 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 .dcc-input[type="search"]::-webkit-search-decoration,
 .dcc-input[type="search"]::-webkit-search-results-button { -webkit-appearance: none; appearance: none; display: none; }
 .dcc-input[type="search"] { appearance: none; -webkit-appearance: none; }
+
+/* Campo con adornos: texto, ícono o botón pegados al valor, antes o después
+   —la moneda, la unidad, el dominio, el botón de mostrar la contraseña—. Es el
+   InputAdornment de MUI. A diferencia de `.dcc-input-wrap`, que monta íconos
+   encima del input con posición absoluta, acá los adornos están en el flujo:
+   miden lo que mida su texto y el campo toma el resto. Por eso el borde y el
+   foco pasan al contenedor.
+   El contenedor tiene 1px de padding que desaparece al enfocar, cuando el
+   borde crece a 2px: así nada se corre, igual que en `.dcc-input`. */
+.dcc-adorned {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--dcc-field-h);
+  padding: 1px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-fg);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  overflow: hidden;
+  cursor: text;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.dcc-adorned:hover:not(:focus-within):not(:has(.dcc-adorned__input:disabled)) { border-color: var(--dcc-fg-accent); }
+.dcc-adorned:focus-within {
+  border-width: 2px;
+  border-color: var(--dcc-focus-border);
+  padding: 0;
+  transition: none;
+}
+.dcc-adorned__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0 12px;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.dcc-adorned__input::placeholder { color: var(--dcc-fg-muted); opacity: 1; }
+
+.dcc-adornment {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 4px;
+  height: 100%;
+  color: var(--dcc-fg-muted);
+  white-space: nowrap;
+  user-select: none;
+}
+.dcc-adornment svg { width: 16px; height: 16px; flex: 0 0 16px; }
+/* El adorno se pega al valor: 12px contra el borde, 8px contra el texto. */
+.dcc-adornment:first-child { padding-left: 12px; }
+.dcc-adornment:last-child  { padding-right: 12px; }
+.dcc-adornment + .dcc-adorned__input { padding-left: 8px; }
+.dcc-adorned__input:has(+ .dcc-adornment) { padding-right: 8px; }
+.dcc-adorned:focus-within > .dcc-adornment > svg { color: var(--dcc-focus); }
+
+/* En caja: fondo propio y una línea que lo separa del valor. */
+.dcc-adornment--box {
+  padding: 0 12px;
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-accent);
+}
+.dcc-adornment--box:first-child { border-right: 1px solid var(--dcc-border-subtle); }
+.dcc-adornment--box:last-child  { border-left: 1px solid var(--dcc-border-subtle); }
+.dcc-adornment--box + .dcc-adorned__input { padding-left: 12px; }
+.dcc-adorned__input:has(+ .dcc-adornment--box) { padding-right: 12px; }
+
+/* Botón dentro de un adorno: el mismo `.dcc-input-btn` del campo de búsqueda.
+   Con dos íconos alterna entre ellos según `aria-pressed` —el ojo abierto y
+   el tachado de la contraseña—. */
+.dcc-adornment > .dcc-input-btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: -6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  color: var(--dcc-fg-muted);
+  cursor: pointer;
+}
+.dcc-adornment > .dcc-input-btn svg { width: 18px; height: 18px; }
+.dcc-input-btn:not([aria-pressed="true"]) > svg + svg,
+.dcc-input-btn[aria-pressed="true"] > svg:first-child:not(:only-child) { display: none; }
+
+.dcc-field--error   .dcc-adorned,
+.dcc-field--error   .dcc-adorned:focus-within { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-adorned,
+.dcc-field--success .dcc-adorned:focus-within { border-color: var(--dcc-success); }
+.dcc-adorned:has(.dcc-adorned__input:disabled) {
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-muted);
+  cursor: not-allowed;
+}
+.dcc-adorned__input:disabled { cursor: not-allowed; }
 
 /* Select propio (combobox). El <select> nativo abre la lista del sistema
    operativo, que no se puede estilizar; este la reemplaza por una lista con
@@ -1508,23 +2105,23 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   text-align: left;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   cursor: pointer;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
-.dcc-combo__button svg {
+.dcc-combo__button > svg {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   transition: transform .2s cubic-bezier(.4, 0, .2, 1);
 }
 .dcc-combo__button:hover:not([disabled]):not(:focus-visible):not([aria-expanded="true"]) {
-  border-color: var(--dcc-grey-default);
+  border-color: var(--dcc-fg-accent);
 }
 .dcc-combo__button:focus-visible,
 .dcc-combo__button[aria-expanded="true"] {
@@ -1534,14 +2131,28 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   padding: 7px 11px;
   transition: none;
 }
-.dcc-combo__button[aria-expanded="true"] svg { transform: rotate(180deg); }
+.dcc-combo__button[aria-expanded="true"] > svg { transform: rotate(180deg); }
 .dcc-combo__button[disabled] {
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-light);
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-muted);
   cursor: not-allowed;
 }
-.dcc-combo__button[disabled] svg { color: var(--dcc-grey-light); }
-.dcc-combo__value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dcc-combo__button[disabled] > svg { color: var(--dcc-fg-muted); }
+.dcc-combo__value { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Adorno al principio del select: el mismo `.dcc-adornment` del campo. */
+.dcc-combo__button > .dcc-adornment { gap: 4px; }
+.dcc-combo__button > .dcc-adornment:first-child { padding-left: 0; }
+.dcc-combo__button[aria-expanded="true"] > .dcc-adornment > svg,
+.dcc-combo__button:focus-visible > .dcc-adornment > svg { color: var(--dcc-focus); }
+.dcc-combo__button > .dcc-adornment--box:first-child {
+  align-self: stretch;
+  height: auto;
+  margin: -8px 0 -8px -12px;
+  padding: 0 12px;
+  border-radius: 3px 0 0 3px;
+}
+.dcc-combo__button:focus-visible > .dcc-adornment--box:first-child,
+.dcc-combo__button[aria-expanded="true"] > .dcc-adornment--box:first-child { margin: -7px 0 -7px -11px; }
 
 .dcc-combo__list {
   position: absolute;
@@ -1552,8 +2163,8 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   max-height: 232px;
   overflow-y: auto;
   padding: 4px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   box-shadow: var(--dcc-shadow);
 }
@@ -1567,14 +2178,14 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   border-radius: var(--dcc-radius-sm);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   cursor: pointer;
 }
 /* El check hereda el color del texto de la opción, sin acento propio */
 .dcc-combo__option svg { width: 16px; height: 16px; flex: 0 0 16px; opacity: 0; color: currentColor; }
 .dcc-combo__option:hover,
-.dcc-combo__option.is-active { background: var(--dcc-grey-ultralight); }
-.dcc-combo__option[aria-selected="true"] { font-weight: 700; color: var(--dcc-grey-default); }
+.dcc-combo__option.is-active { background: var(--dcc-surface-muted); }
+.dcc-combo__option[aria-selected="true"] { font-weight: 700; color: var(--dcc-fg-accent); }
 .dcc-combo__option[aria-selected="true"] svg { opacity: 1; }
 
 /* --------------------------------------------------------------------------
@@ -1598,7 +2209,7 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 }
 
 .dcc-menu__trigger:focus-visible {
-  outline: 2px solid var(--dcc-lightblue-default);
+  outline: 2px solid var(--dcc-focus);
   outline-offset: 3px;
   border-radius: var(--dcc-radius-sm);
 }
@@ -1610,8 +2221,8 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   left: 0;
   min-width: 200px;
   padding: 4px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   box-shadow: var(--dcc-shadow);
 }
@@ -1632,7 +2243,7 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 .dcc-menu__group + .dcc-menu__group {
   margin-top: 4px;
   padding-top: 4px;
-  border-top: 1px solid var(--dcc-grey-ultralight);
+  border-top: 1px solid var(--dcc-border-subtle);
 }
 
 .dcc-menu__item {
@@ -1647,18 +2258,18 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   text-align: left;
   cursor: pointer;
 }
 
-.dcc-menu__item svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--dcc-grey-light); }
+.dcc-menu__item svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--dcc-fg-muted); }
 
 .dcc-menu__item:hover,
-.dcc-menu__item.is-active { background: var(--dcc-grey-ultralight); }
+.dcc-menu__item.is-active { background: var(--dcc-surface-muted); }
 
 .dcc-menu__item:focus-visible {
-  outline: 2px solid var(--dcc-lightblue-default);
+  outline: 2px solid var(--dcc-focus);
   outline-offset: -2px;
 }
 
@@ -1666,12 +2277,12 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 
 .dcc-menu__sep {
   border: 0;
-  border-top: 1px solid var(--dcc-grey-ultralight);
+  border-top: 1px solid var(--dcc-border-subtle);
   margin: 4px 0;
 }
 
-.dcc-field--error .dcc-combo__button   { border-color: var(--dcc-red-default); }
-.dcc-field--success .dcc-combo__button { border-color: var(--dcc-green-default); }
+.dcc-field--error .dcc-combo__button   { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-combo__button { border-color: var(--dcc-success); }
 
 /* --------------------------------------------------------------------------
    15.2 AVATAR
@@ -1718,7 +2329,8 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 .dcc-avatar--green     { background: var(--dcc-green-default); }
 .dcc-avatar--light     { background: var(--dcc-grey-ultralight); color: var(--dcc-grey-default); }
 
-/* Punto de estado */
+/* Punto de estado. El relleno de color es propio del avatar y no cambia con
+   el tema; sólo el anillo toma el color de la superficie para despegarlo. */
 .dcc-avatar__dot {
   position: absolute;
   right: 0;
@@ -1726,7 +2338,7 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   width: 12px;
   height: 12px;
   border-radius: 9999px;
-  border: 2px solid #fff;
+  border: 2px solid var(--dcc-surface);
   background: var(--dcc-green-default);
 }
 .dcc-avatar--lg .dcc-avatar__dot, .dcc-avatar--xl .dcc-avatar__dot { width: 14px; height: 14px; }
@@ -1745,7 +2357,7 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   height: 18px;
   padding: 0 4px;
   border-radius: 9999px;
-  border: 2px solid #fff;
+  border: 2px solid var(--dcc-surface);
   background: var(--dcc-red-default);
   color: var(--dcc-white);
   font-size: 10px;
@@ -1755,7 +2367,7 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
 }
 
 .dcc-avatar-group { display: flex; }
-.dcc-avatar-group .dcc-avatar { border: 2px solid #fff; margin-left: -10px; }
+.dcc-avatar-group .dcc-avatar { border: 2px solid var(--dcc-surface); margin-left: -10px; }
 .dcc-avatar-group .dcc-avatar:first-child { margin-left: 0; }
 
 /* --------------------------------------------------------------------------
@@ -1794,10 +2406,10 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
    15.4 LISTA DE ELEMENTOS
    -------------------------------------------------------------------------- */
 .dcc-list {
-  border: 1px solid var(--dcc-grey-light);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-md);
   overflow: hidden;
-  background: var(--dcc-white);
+  background: var(--dcc-surface);
   max-width: 520px;
 }
 .dcc-list__item {
@@ -1805,16 +2417,16 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  border-bottom: .5px solid var(--dcc-grey-light);
-  color: var(--dcc-grey-dark);
+  border-bottom: .5px solid var(--dcc-border);
+  color: var(--dcc-fg);
   transition: background-color .15s ease;
 }
 .dcc-list__item:last-child { border-bottom: 0; }
 a.dcc-list__item:hover,
-button.dcc-list__item:hover { background: var(--dcc-grey-ultralight); }
+button.dcc-list__item:hover { background: var(--dcc-surface-muted); }
 a.dcc-list__item:focus-visible,
-button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
-.dcc-list__item[aria-current="true"] { background: var(--dcc-grey-ultralight); }
+button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-list__item[aria-current="true"] { background: var(--dcc-surface-muted); }
 
 /* Sólo el ícono, sin caja ni color propio: hereda Grey/Default y el color
    se reserva para los badges del extremo derecho. */
@@ -1824,7 +2436,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
 }
 .dcc-list__icon svg { width: 20px; height: 20px; }
 
@@ -1833,13 +2445,13 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 .dcc-list__desc {
   font-size: 12px;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.dcc-list__trail { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: var(--dcc-grey-light); }
+.dcc-list__trail { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: var(--dcc-fg-muted); }
 .dcc-list__trail svg { width: 16px; height: 16px; }
 
 /* --------------------------------------------------------------------------
@@ -1863,7 +2475,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   transition: color .15s ease;
 }
 
-.dcc-th-sort:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-th-sort:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
 /* Tres estados que se distinguen por forma, no sólo por tono:
    sin orden = glifo suelto en Grey/Light;
    hover     = chip blanco con glifo Grey/Default (8,16:1 dentro del chip);
@@ -1876,15 +2488,15 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   height: 22px;
   flex: 0 0 22px;
   border-radius: 9999px;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   transition: background-color .15s ease, color .15s ease;
 }
 .dcc-th-sort svg { width: 16px; height: 16px; flex: 0 0 16px; }
-.dcc-th-sort:hover .dcc-sort-ico { background: var(--dcc-white); color: var(--dcc-grey-default); }
+.dcc-th-sort:hover .dcc-sort-ico { background: var(--dcc-surface); color: var(--dcc-fg-accent); }
 [aria-sort="ascending"]  .dcc-th-sort .dcc-sort-ico,
-[aria-sort="descending"] .dcc-th-sort .dcc-sort-ico { background: var(--dcc-grey-default); color: var(--dcc-white); }
+[aria-sort="descending"] .dcc-th-sort .dcc-sort-ico { background: var(--dcc-accent); color: var(--dcc-on-accent); }
 [aria-sort="ascending"]  .dcc-th-sort,
-[aria-sort="descending"] .dcc-th-sort { color: var(--dcc-grey-dark); }
+[aria-sort="descending"] .dcc-th-sort { color: var(--dcc-fg); }
 .dcc-th-sort .dcc-sort-none,
 .dcc-th-sort .dcc-sort-asc,
 .dcc-th-sort .dcc-sort-desc { display: none; }
@@ -1896,13 +2508,13 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
    15.6 ACORDEÓN
    -------------------------------------------------------------------------- */
 .dcc-accordion {
-  border: 1px solid var(--dcc-grey-light);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-md);
   overflow: hidden;
-  background: var(--dcc-white);
+  background: var(--dcc-surface);
   max-width: 640px;
 }
-.dcc-accordion__item { border-bottom: .5px solid var(--dcc-grey-light); }
+.dcc-accordion__item { border-bottom: .5px solid var(--dcc-border); }
 .dcc-accordion__item:last-child { border-bottom: 0; }
 
 .dcc-accordion__trigger {
@@ -1918,20 +2530,20 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   text-align: left;
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease;
 }
-.dcc-accordion__trigger:hover { background: var(--dcc-grey-ultralight); }
-.dcc-accordion__trigger:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-accordion__trigger:hover { background: var(--dcc-surface-muted); }
+.dcc-accordion__trigger:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
 .dcc-accordion__trigger svg {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
   transition: transform .22s cubic-bezier(.4, 0, .2, 1);
 }
-.dcc-accordion__trigger[aria-expanded="true"] { color: var(--dcc-grey-default); }
+.dcc-accordion__trigger[aria-expanded="true"] { color: var(--dcc-fg-accent); }
 .dcc-accordion__trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
 
 .dcc-accordion__panel {
@@ -1947,7 +2559,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   padding: 8px 16px 20px;
   font-size: 16px;
   line-height: 1.4;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
 }
 .dcc-accordion__trigger[aria-expanded="true"] { padding-bottom: 12px; }
 
@@ -1964,13 +2576,13 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 .dcc-breadcrumb span {
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
 }
 .dcc-breadcrumb a { border-radius: 2px; transition: color .15s ease; }
 .dcc-breadcrumb a:hover { color: var(--dcc-red-default); text-decoration: underline; }
-.dcc-breadcrumb a:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
-.dcc-breadcrumb [aria-current="page"] { color: var(--dcc-grey-default); font-weight: 700; }
-.dcc-breadcrumb .dcc-sep { width: 16px; height: 16px; color: var(--dcc-grey-light); flex: 0 0 16px; }
+.dcc-breadcrumb a:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-breadcrumb [aria-current="page"] { color: var(--dcc-fg-accent); font-weight: 700; }
+.dcc-breadcrumb .dcc-sep { width: 16px; height: 16px; color: var(--dcc-fg-muted); flex: 0 0 16px; }
 .dcc-breadcrumb .dcc-home { width: 16px; height: 16px; flex: 0 0 16px; }
 
 /* --------------------------------------------------------------------------
@@ -1982,7 +2594,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   display: flex;
   flex-wrap: wrap;
   gap: 0;
-  border-bottom: 2px solid var(--dcc-grey-ultralight);
+  border-bottom: 2px solid var(--dcc-border-subtle);
 }
 .dcc-tabs__tab {
   display: flex;
@@ -1997,20 +2609,20 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   font-size: 16px;
   font-weight: 500;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: pointer;
   white-space: nowrap;
   transition: color .15s ease, border-color .15s ease;
 }
 .dcc-tabs__tab svg { width: 16px; height: 16px; flex: 0 0 16px; }
-.dcc-tabs__tab:hover { color: var(--dcc-grey-default); border-bottom-color: var(--dcc-grey-light); }
-.dcc-tabs__tab:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-tabs__tab:hover { color: var(--dcc-fg-accent); border-bottom-color: var(--dcc-border); }
+.dcc-tabs__tab:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
 .dcc-tabs__tab[aria-selected="true"] {
   color: var(--dcc-red-default);
   border-bottom-color: var(--dcc-red-default);
   font-weight: 700;
 }
-.dcc-tabs__tab[disabled] { color: var(--dcc-grey-light); opacity: .5; cursor: not-allowed; }
+.dcc-tabs__tab[disabled] { color: var(--dcc-fg-muted); opacity: .5; cursor: not-allowed; }
 .dcc-tabs__panel { padding: 20px 0; font-size: 16px; line-height: 1.4; }
 .dcc-tabs__panel[hidden] { display: none; }
 
@@ -2030,30 +2642,30 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   cursor: pointer;
   font-variant-numeric: tabular-nums;
   transition: background-color .15s ease, border-color .15s ease, color .15s ease;
 }
 .dcc-pagination__btn svg { width: 16px; height: 16px; }
 .dcc-pagination__btn:hover:not([disabled]):not([aria-current="page"]) {
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-default);
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-accent);
 }
-.dcc-pagination__btn:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-pagination__btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
 .dcc-pagination__btn[aria-current="page"] {
-  background: var(--dcc-grey-default);
-  border-color: var(--dcc-grey-default);
-  color: var(--dcc-white);
+  background: var(--dcc-accent);
+  border-color: var(--dcc-accent);
+  color: var(--dcc-on-accent);
   font-weight: 700;
 }
-.dcc-pagination__btn[disabled] { color: var(--dcc-grey-light); cursor: not-allowed; }
+.dcc-pagination__btn[disabled] { color: var(--dcc-fg-muted); cursor: not-allowed; }
 .dcc-pagination__gap {
   display: grid;
   place-items: center;
   min-width: 24px;
   height: 36px;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
 }
 .dcc-pagination__gap svg { width: 16px; height: 16px; }
 
@@ -2070,7 +2682,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   position: absolute;
   top: 15px;
   height: 2px;
-  background: var(--dcc-grey-ultralight);
+  background: var(--dcc-border-subtle);
 }
 .dcc-stepper__step::before { left: 0;    right: 50%; margin-right: 22px; }
 .dcc-stepper__step::after  { left: 50%;  right: 0;   margin-left: 22px; }
@@ -2078,7 +2690,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 .dcc-stepper__step:last-child::after { display: none; }
 .dcc-stepper__step[data-state="done"]::after,
 .dcc-stepper__step[data-state="done"]::before,
-.dcc-stepper__step[data-state="current"]::before { background: var(--dcc-grey-default); }
+.dcc-stepper__step[data-state="current"]::before { background: var(--dcc-accent); }
 
 .dcc-stepper__bullet {
   display: grid;
@@ -2086,9 +2698,9 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   width: 32px;
   height: 32px;
   border-radius: 9999px;
-  background: var(--dcc-white);
-  border: 2px solid var(--dcc-grey-light);
-  color: var(--dcc-grey-light);
+  background: var(--dcc-surface);
+  border: 2px solid var(--dcc-border);
+  color: var(--dcc-fg-muted);
   font-size: 16px;
   font-weight: 700;
   line-height: 1;
@@ -2098,24 +2710,24 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 }
 .dcc-stepper__bullet svg { width: 16px; height: 16px; }
 .dcc-stepper__step[data-state="done"] .dcc-stepper__bullet {
-  background: var(--dcc-grey-default);
-  border-color: var(--dcc-grey-default);
-  color: var(--dcc-white);
+  background: var(--dcc-accent);
+  border-color: var(--dcc-accent);
+  color: var(--dcc-on-accent);
 }
 .dcc-stepper__step[data-state="current"] .dcc-stepper__bullet {
   background: var(--dcc-red-default);
   border-color: var(--dcc-red-default);
   color: var(--dcc-white);
 }
-.dcc-stepper__label { font-size: 12px; line-height: 1.2; color: var(--dcc-grey-light); max-width: 14ch; }
-.dcc-stepper__step[data-state="current"] .dcc-stepper__label { color: var(--dcc-grey-default); font-weight: 700; }
-.dcc-stepper__step[data-state="done"]    .dcc-stepper__label { color: var(--dcc-grey-dark); }
+.dcc-stepper__label { font-size: 12px; line-height: 1.2; color: var(--dcc-fg-muted); max-width: 14ch; }
+.dcc-stepper__step[data-state="current"] .dcc-stepper__label { color: var(--dcc-fg-accent); font-weight: 700; }
+.dcc-stepper__step[data-state="done"]    .dcc-stepper__label { color: var(--dcc-fg); }
 
 /* Texto secundario opcional bajo el título del paso */
 .dcc-stepper__desc {
   font-size: 12px;
   line-height: 1.3;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   max-width: 18ch;
 }
 .dcc-stepper__body { display: flex; flex-direction: column; gap: 2px; align-items: center; }
@@ -2148,14 +2760,14 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 .dcc-phone {
   width: 375px;
   max-width: 100%;
-  border: 1px solid var(--dcc-grey-light);
+  border: 1px solid var(--dcc-border);
   border-radius: 24px;
   overflow: hidden;
-  background: var(--dcc-grey-ultralight);
+  background: var(--dcc-bg);
   display: flex;
   flex-direction: column;
 }
-.dcc-phone__screen { flex: 1; min-height: 220px; padding: 20px; font-size: 12px; color: var(--dcc-grey-light); }
+.dcc-phone__screen { flex: 1; min-height: 220px; padding: 20px; font-size: 12px; color: var(--dcc-fg-muted); }
 
 .dcc-bottom-nav {
   display: flex;
@@ -2224,8 +2836,8 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   width: 320px;
   max-width: 100%;
   padding: 16px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-md);
   box-shadow: var(--dcc-shadow);
 }
@@ -2236,7 +2848,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   font-weight: 700;
   line-height: 1.1;
   text-transform: uppercase;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
 }
 .dcc-calendar__nav {
   display: grid;
@@ -2246,13 +2858,13 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   background: none;
   border: 1px solid transparent;
   border-radius: var(--dcc-radius-sm);
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   cursor: pointer;
   transition: border-color .15s ease, color .15s ease;
 }
 .dcc-calendar__nav svg { width: 16px; height: 16px; }
 .dcc-calendar__nav:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }
-.dcc-calendar__nav:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-calendar__nav:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
 
 /* minmax(0,1fr) en vez de 1fr: con `1fr` el mínimo automático de cada columna
    es su min-content, y si el contenedor se angosta la grilla desborda la
@@ -2266,7 +2878,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
 }
 .dcc-calendar__day {
   display: grid;
@@ -2282,23 +2894,23 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   cursor: pointer;
   font-variant-numeric: tabular-nums;
   transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 }
-.dcc-calendar__day:hover:not([disabled]) { background: var(--dcc-grey-ultralight); }
-.dcc-calendar__day:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
-.dcc-calendar__day.is-outside { color: var(--dcc-grey-light); }
-.dcc-calendar__day.is-today { border-color: var(--dcc-grey-default); font-weight: 700; }
+.dcc-calendar__day:hover:not([disabled]) { background: var(--dcc-surface-muted); }
+.dcc-calendar__day:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-calendar__day.is-outside { color: var(--dcc-fg-muted); }
+.dcc-calendar__day.is-today { border-color: var(--dcc-fg-accent); font-weight: 700; }
 .dcc-calendar__day.is-selected {
-  background: var(--dcc-grey-default);
-  border-color: var(--dcc-grey-default);
-  color: var(--dcc-white);
+  background: var(--dcc-accent);
+  border-color: var(--dcc-accent);
+  color: var(--dcc-on-accent);
   font-weight: 700;
 }
-.dcc-calendar__day.is-selected:hover { background: var(--dcc-grey-dark); }
-.dcc-calendar__day[disabled] { color: var(--dcc-grey-light); opacity: .45; cursor: not-allowed; }
+.dcc-calendar__day.is-selected:hover { background: var(--dcc-fg); }   /* en claro es Grey/Dark; en oscuro, un tono más claro que el acento */
+.dcc-calendar__day[disabled] { color: var(--dcc-fg-muted); opacity: .45; cursor: not-allowed; }
 
 /* Popover del date picker. No hereda el ancho del campo: si el campo es
    angosto, el calendario mantiene sus 320px y sólo cede ante el viewport. */
@@ -2334,10 +2946,10 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   width: 300px;
   max-width: 100%;
   font-family: var(--dcc-font-body);
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
 }
 .dcc-card__paper {
-  background: var(--dcc-white);
+  background: var(--dcc-surface);
   border-radius: var(--dcc-radius-sm);
   overflow: hidden;   /* recorta la imagen contra el radio, como el <Paper> */
   /* elevation/1 del archivo original */
@@ -2385,7 +2997,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.dcc-card__rule { height: 1px; background: var(--dcc-grey-light); border: 0; margin: 0; }
+.dcc-card__rule { height: 1px; background: var(--dcc-border); border: 0; margin: 0; }
 .dcc-card__meta { font-size: 12px; line-height: 1; font-style: italic; letter-spacing: .15px; }
 
 .dcc-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -2430,6 +3042,8 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   flex-direction: column;
   padding: 8px;
   border-radius: 0 var(--dcc-radius-sm) var(--dcc-radius-sm) 0;
+  /* Va encima de la imagen, no del cuerpo: es una píldora clara con su propio
+     texto y se mantiene igual en ambos temas. */
   background: var(--dcc-white);
   color: var(--dcc-grey-default);
 }
@@ -2448,8 +3062,8 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   width: 100%;
   max-width: 440px;
   padding: 16px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-ultralight);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border-subtle);
   border-radius: var(--dcc-radius-md);
   box-shadow: var(--dcc-shadow);
   font-family: var(--dcc-font-body);
@@ -2461,10 +3075,12 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
    vive en aria-pressed y el CSS sólo cambia `fill`. Los márgenes negativos lo
    pegan a la esquina sin que su caja de 28px agrande la fila. */
 .dcc-ccard__fav {
-  /* estrella amarilla por defecto; .dcc-ccard__fav--heart las cambia a rojo */
-  --dcc-fav-on: var(--dcc-yellow-default);
-  --dcc-fav-on-strong: var(--dcc-yellow-dark);
-  --dcc-fav-on-soft: var(--dcc-yellow-ultralight);
+  /* estrella amarilla por defecto; .dcc-ccard__fav--heart las cambia a rojo.
+     El tono y el halo usan los tokens de advertencia y error, que en claro dan
+     el mismo amarillo y rojo, para que en oscuro el halo no sea una mancha clara. */
+  --dcc-fav-on: var(--dcc-warning);
+  --dcc-fav-on-strong: var(--dcc-warning-strong);
+  --dcc-fav-on-soft: var(--dcc-warning-bg);
   display: grid;
   place-items: center;
   width: 28px;
@@ -2475,7 +3091,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   background: none;
   border: 0;
   border-radius: 9999px;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: pointer;
   transition: color .15s ease, background-color .15s ease;
 }
@@ -2487,8 +3103,8 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   fill: none;
   transition: fill .15s ease, transform .18s cubic-bezier(.34, 1.5, .64, 1);
 }
-.dcc-ccard__fav:hover { background: var(--dcc-grey-ultralight); color: var(--dcc-grey-default); }
-.dcc-ccard__fav:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-ccard__fav:hover { background: var(--dcc-surface-muted); color: var(--dcc-fg-accent); }
+.dcc-ccard__fav:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
 .dcc-ccard__fav:active svg { transform: scale(.85); }
 .dcc-ccard__fav[aria-pressed="true"] { color: var(--dcc-fav-on); }
 .dcc-ccard__fav[aria-pressed="true"] svg { fill: currentColor; transform: scale(1.08); }
@@ -2497,9 +3113,9 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 /* El color del estado activo viaja en tres variables locales, así que una
    variante nueva sólo tiene que redefinirlas: no hay que repetir reglas. */
 .dcc-ccard__fav--heart {
-  --dcc-fav-on: var(--dcc-red-default);
-  --dcc-fav-on-strong: var(--dcc-red-dark);
-  --dcc-fav-on-soft: var(--dcc-red-ultralight);
+  --dcc-fav-on: var(--dcc-danger);
+  --dcc-fav-on-strong: var(--dcc-danger-strong);
+  --dcc-fav-on-soft: var(--dcc-danger-bg);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2516,19 +3132,19 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   height: 24px;
   padding: 4px 8px;
   background: none;
-  border: 1px dashed var(--dcc-grey-light);
+  border: 1px dashed var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   font-family: var(--dcc-font-body);
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   cursor: pointer;
   transition: border-color .15s ease, background-color .15s ease;
 }
 .dcc-ccard__add svg { width: 12px; height: 12px; flex: 0 0 12px; }
-.dcc-ccard__add:hover { border-style: solid; background: var(--dcc-grey-ultralight); }
-.dcc-ccard__add:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-ccard__add:hover { border-style: solid; background: var(--dcc-surface-muted); }
+.dcc-ccard__add:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
 
 .dcc-ccard__title {
   margin: 0;
@@ -2536,7 +3152,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
 }
 
 .dcc-ccard__meta {
@@ -2545,10 +3161,10 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   gap: 6px;
   font-size: 12px;
   line-height: 1.3;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
 }
 .dcc-ccard__meta svg { width: 14px; height: 14px; flex: 0 0 14px; }
-.dcc-ccard__meta b { font-weight: 700; color: var(--dcc-grey-default); }
+.dcc-ccard__meta b { font-weight: 700; color: var(--dcc-fg-accent); }
 
 .dcc-ccard__eyebrow {
   font-size: 12px;
@@ -2558,7 +3174,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
 }
 
 /* Una sola línea, con puntos suspensivos si no alcanza: la tarjeta es
@@ -2567,7 +3183,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 .dcc-ccard__desc {
   font-size: 12px;
   line-height: 1.4;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2586,8 +3202,8 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   flex: 0 0 56px;
   border-radius: var(--dcc-radius-md);
   overflow: hidden;
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-dark);
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg);
 }
 .dcc-ccard__cover svg { width: 24px; height: 24px; }
 .dcc-ccard__cover img { width: 100%; height: 100%; object-fit: cover; }
@@ -2619,7 +3235,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   flex: 0 0 auto;
   font-size: 12px;
   line-height: 1.2;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -2641,14 +3257,14 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
   background: none;
   border: 0;
   border-radius: var(--dcc-radius-sm);
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: grab;
   touch-action: none;
   transition: color .15s ease, background-color .15s ease;
 }
 .dcc-ccard__grip svg { width: 18px; height: 18px; }
-.dcc-ccard__grip:hover { color: var(--dcc-grey-default); background: var(--dcc-grey-ultralight); }
-.dcc-ccard__grip:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }
+.dcc-ccard__grip:hover { color: var(--dcc-fg-accent); background: var(--dcc-surface-muted); }
+.dcc-ccard__grip:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
 .dcc-ccard__grip:active { cursor: grabbing; }
 
 .dcc-ccard--draggable.is-dragging {
@@ -2658,7 +3274,7 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 }
 /* Destino de la soltada */
 .dcc-ccard--draggable.is-over {
-  outline: 2px dashed var(--dcc-lightblue-default);
+  outline: 2px dashed var(--dcc-focus);
   outline-offset: 3px;
 }
 
@@ -2700,6 +3316,5 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-def
 /* ---- Impresión ---- */
 @media print {
   .dcc-root { background: #fff; }
-  .dcc-toc, .dcc-nav-toggle { display: none; }
-  .dcc-section { break-inside: avoid; box-shadow: none; }
+  .dcc-nav-toggle, .dcc-doc-bar, .dcc-doc-nav, .dcc-doc-toc, .dcc-doc-code { display: none; }
 }

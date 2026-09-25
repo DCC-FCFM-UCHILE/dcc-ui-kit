@@ -1,0 +1,31 @@
+<!--
+titulo: Selector de fecha
+grupo: Entradas
+resumen: Un calendario de mes, solo o dentro de un campo de fecha.
+miniatura: .dcc-datepicker .dcc-input-wrap
+escala: 1
+ancho: 240px
+-->
+<h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-table-row">
+        <div>
+          <p class="dcc-sub-label">Vista de mes</p>
+          <div class="dcc-calendar js-calendar" data-selected="2026-08-21"></div>
+        </div>
+        <div>
+          <p class="dcc-sub-label">Dentro de un input de fecha</p>
+          <div class="dcc-field dcc-datepicker js-datepicker">
+            <label class="dcc-field__label" for="in-date">Fecha de inicio</label>
+            <div class="dcc-input-wrap">
+              <input class="dcc-input dcc-has-trail" id="in-date" type="text" readonly="" placeholder="dd/mm/aaaa" value="21/08/2026" autocomplete="off">
+              <button class="dcc-input-btn dcc-trail js-dp-toggle" type="button" aria-label="Abrir calendario" aria-expanded="false">
+                <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"></use></svg>
+              </button>
+            </div>
+            <span class="dcc-field__help">Se abre con clic o con Enter sobre el ícono</span>
+            <div class="dcc-calendar js-calendar" data-selected="2026-08-21" hidden=""></div>
+          </div>
+        </div>
+      </div>
+</div>

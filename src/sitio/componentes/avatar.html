@@ -1,0 +1,73 @@
+<!--
+titulo: Avatar
+grupo: Visualización de datos
+resumen: Iniciales o ícono de una persona, en cinco tamaños, con punto de estado y en grupo.
+miniatura: .dcc-avatar-group
+escala: 1.1
+-->
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p">24, 32, 40, 48 y 64 px.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(70px,max-content))">
+        <span class="dcc-avatar dcc-avatar--xs"><span class="dcc-avatar__label">CS</span></span>
+        <span class="dcc-avatar dcc-avatar--sm"><span class="dcc-avatar__label">CS</span></span>
+        <span class="dcc-avatar"><span class="dcc-avatar__label">CS</span></span>
+        <span class="dcc-avatar dcc-avatar--lg"><span class="dcc-avatar__label">CS</span></span>
+        <span class="dcc-avatar dcc-avatar--xl"><span class="dcc-avatar__label">CS</span></span>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="sin-badge-y-con-badge">Sin badge y con badge</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(90px,max-content))">
+        <span class="dcc-avatar dcc-avatar--lg" title="Sin badge"><span class="dcc-avatar__label">CS</span></span>
+        <span class="dcc-avatar dcc-avatar--lg dcc-avatar--lightblue" title="En línea"><span class="dcc-avatar__label">MP</span><span class="dcc-avatar__dot" role="img" aria-label="En línea"></span></span>
+        <span class="dcc-avatar dcc-avatar--lg dcc-avatar--blue" title="Ocupada"><span class="dcc-avatar__label">AR</span><span class="dcc-avatar__dot dcc-avatar__dot--busy" role="img" aria-label="Ocupada"></span></span>
+        <span class="dcc-avatar dcc-avatar--lg dcc-avatar--green" title="Ausente"><span class="dcc-avatar__label">JG</span><span class="dcc-avatar__dot dcc-avatar__dot--away" role="img" aria-label="Ausente"></span></span>
+        <span class="dcc-avatar dcc-avatar--lg dcc-avatar--light" title="Desconectado"><span class="dcc-avatar__label">LT</span><span class="dcc-avatar__dot dcc-avatar__dot--off" role="img" aria-label="Desconectado"></span></span>
+        <span class="dcc-avatar dcc-avatar--lg dcc-avatar--red" title="12 notificaciones"><span class="dcc-avatar__label">DV</span><span class="dcc-avatar__count">12</span></span>
+        <span class="dcc-avatar dcc-avatar--lg" title="Ícono en vez de iniciales"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><use href="#i-circle-user"></use></svg></span>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="grupo">Grupo</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-avatar-group">
+        <span class="dcc-avatar dcc-avatar--sm"><span class="dcc-avatar__label">CS</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--lightblue"><span class="dcc-avatar__label">MP</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--blue"><span class="dcc-avatar__label">AR</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--green"><span class="dcc-avatar__label">JG</span></span>
+        <span class="dcc-avatar dcc-avatar--sm dcc-avatar--light"><span class="dcc-avatar__label">+7</span></span>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="badges-nuevos">Badges nuevos</h2>
+<div class="dcc-doc-demo">
+  <p class="dcc-sub-label">Con punto de estado</p>
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(110px,max-content))">
+        <span class="dcc-badge dcc-badge--soft-green"><span class="dcc-dot"></span>Activo</span>
+        <span class="dcc-badge dcc-badge--soft-red"><span class="dcc-dot"></span>Vencido</span>
+        <span class="dcc-badge dcc-badge--soft-lightblue"><span class="dcc-dot"></span>En revisión</span>
+        <span class="dcc-badge dcc-badge--soft-blue"><span class="dcc-dot"></span>Borrador</span>
+        <span class="dcc-badge dcc-badge--soft-default"><span class="dcc-dot"></span>Archivado</span>
+      </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="contador-y-removible">Contador y removible</h2>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(110px,max-content))">
+        <span class="dcc-badge dcc-badge--solid-red dcc-badge--count">3</span>
+        <span class="dcc-badge dcc-badge--solid-default dcc-badge--count">24</span>
+        <span class="dcc-badge dcc-badge--solid-green dcc-badge--count">99+</span>
+        <span class="dcc-badge dcc-badge--soft-lightblue">Algoritmos
+          <button class="dcc-badge__close" type="button" aria-label="Quitar Algoritmos">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"></use></svg>
+          </button>
+        </span>
+        <span class="dcc-badge dcc-badge--soft-blue">Bases de datos
+          <button class="dcc-badge__close" type="button" aria-label="Quitar Bases de datos">
+            <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"></use></svg>
+          </button>
+        </span>
+      </div>
+</div>

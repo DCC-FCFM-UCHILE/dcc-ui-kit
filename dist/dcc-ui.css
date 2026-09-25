@@ -1,4 +1,4 @@
-/*! DCC UI Kit 2.5.1 — Departamento de Ciencias de la Computación, U. de Chile
+/*! DCC UI Kit 2.6.0 — Departamento de Ciencias de la Computación, U. de Chile
    Todas las clases van prefijadas con dcc- y las variables con --dcc-, para no
    colisionar con el CSS de la aplicación que lo consume.
    Los íconos requieren la clase .dcc-i en el <svg>. */
@@ -13,8 +13,7 @@
 @font-face{font-family:Poppins;font-style:normal;font-weight:700;font-display:swap;src:url(fonts/poppins-latin-700-normal.woff2) format('woff2')}
 
 /* ==========================================================================
-   UI KIT DCC — Departamento de Ciencias de la Computación,
-Universidad de Chile
+   UI KIT DCC — Departamento de Ciencias de la Computación, Universidad de Chile
    Traducción a HTML/CSS del archivo Figma "UI-KIT-DCC" (página "Design Kit").
    Los valores provienen de las Variables de Figma y del contexto de diseño
    de cada frame. Ver ASUNCIONES.md para lo que tuvo que inferirse.
@@ -67,6 +66,11 @@ Universidad de Chile
   /* Efectos */
   --dcc-shadow:        0 2px 4px -1px #0000000f, 0 4px 6px -1px #0000001a;
   --dcc-shadow-button: 0 4px 3px rgba(0, 0, 0, .1), 0 2px 2px rgba(0, 0, 0, .06);
+  /* Escalón de hover del botón: la misma sombra de dos capas con el
+     desplazamiento y el difuminado ×1,5 y las opacidades un tercio más altas.
+     Es el salto que hace MUI entre sus elevaciones 2 y 4, dicho con la sombra
+     que el kit ya tenía en vez de con la suya. */
+  --dcc-shadow-button-hover: 0 6px 5px rgba(0, 0, 0, .14), 0 3px 3px rgba(0, 0, 0, .08);
   --dcc-inner-shadow:  inset 0 1px 4px 0 #0000001a;
 
   /* Tipografía */
@@ -81,7 +85,7 @@ Universidad de Chile
   --dcc-badge-radius: 26px;
   --dcc-badge-border-width: 1px;
 
-  /* Layout del styleguide */
+  /* Layout de página */
   --dcc-page-max: 1200px;
   --dcc-card-radius: 16px;
 
@@ -99,82 +103,188 @@ Universidad de Chile
      48px de holgura repartidos en 7 huecos = 6,8px cada uno. Con más de 6px el
      menú ya no cabe en una línea y se parte en dos. */
   --dcc-nav-menu-gap: 6px;
-}/* Canaleta fluida (el patrón se repite abajo en cada barra): mantiene la banda
+
+  /* ---- Colores por rol (tema claro) ----
+     Los componentes no piden "Grey/Default" sino "el texto" o "la superficie",
+     y cada tema decide qué color es. En claro son los mismos tokens de Figma de
+     siempre, así que nada cambia para quien no activa el oscuro.
+     Las piezas de marca —la nav, el pie, la barra lateral— siguen usando la
+     paleta directa: son oscuras en los dos temas. */
+  --dcc-bg:             var(--dcc-grey-ultralight);  /* fondo de página */
+  --dcc-surface:        #fff;                        /* tarjetas, campos, paneles */
+  --dcc-surface-raised: #fff;                        /* menús, listas desplegables, calendario */
+  --dcc-surface-muted:  var(--dcc-grey-ultralight);  /* hover de filas, rellenos suaves, deshabilitado */
+  --dcc-fg:             var(--dcc-grey-dark);        /* texto */
+  --dcc-fg-strong:      var(--dcc-gray-800);         /* títulos */
+  --dcc-fg-accent:      var(--dcc-grey-default);     /* texto con acento: links, etiquetas activas */
+  --dcc-fg-muted:       var(--dcc-grey-light);       /* texto secundario, placeholders, íconos */
+  --dcc-border:         var(--dcc-grey-light);       /* borde de campos y controles */
+  --dcc-border-subtle:  var(--dcc-grey-ultralight);  /* divisores */
+  --dcc-accent:         var(--dcc-grey-default);     /* relleno de acento: seleccionado, activo */
+  --dcc-on-accent:      var(--dcc-white);            /* texto sobre ese relleno */
+  --dcc-focus:          var(--dcc-lightblue-default);
+  --dcc-danger:         var(--dcc-red-default);
+  --dcc-danger-bg:      var(--dcc-red-ultralight);
+  --dcc-success:        var(--dcc-green-default);
+  --dcc-success-bg:     var(--dcc-green-ultralight);
+  --dcc-info:           var(--dcc-lightblue-default);
+  --dcc-info-bg:        var(--dcc-lightblue-ultralight);
+  --dcc-warning:        var(--dcc-yellow-default);
+  --dcc-warning-bg:     var(--dcc-yellow-ultralight);
+  /* "Fuerte": el mismo matiz con más contraste contra la superficie —más
+     oscuro en claro, más claro en oscuro—. Para hover de estados y rellenos. */
+  --dcc-danger-strong:  var(--dcc-red-dark);
+  --dcc-success-strong: var(--dcc-green-dark);
+  --dcc-info-strong:    var(--dcc-lightblue-dark);
+  --dcc-warning-strong: var(--dcc-yellow-dark);
+}
+
+/* ---- Tema oscuro ----
+   Se activa con `data-dcc-theme="dark"` en <html> o en cualquier contenedor,
+   o con `data-dcc-theme="auto"` para seguir la preferencia del sistema. Sin el
+   atributo el kit se queda en claro: una aplicación que actualiza no cambia de
+   aspecto sin pedirlo.
+   Contraste sobre --dcc-surface (#19202b): texto 13,4:1, secundario 6,9:1,
+   borde de campo 3,6:1, estados de 6,7 a 8,7:1.
+   Los tokens que se derivan de otros (--dcc-focus-border) se vuelven a
+   declarar acá: una variable se resuelve donde se declara, y si sólo se
+   redefiniera la base, un tema aplicado a un contenedor no la alcanzaría.
+   El bloque está dos veces —fijo y automático— y `npm test` verifica que
+   digan lo mismo. */
+[data-dcc-theme="dark"] {
+  color-scheme: dark;
+  --dcc-bg:             #11161e;
+  --dcc-surface:        #19202b;
+  --dcc-surface-raised: #222b38;
+  --dcc-surface-muted:  #283243;
+  --dcc-fg:             #e2e9f0;
+  --dcc-fg-strong:      #f3f6f9;
+  --dcc-fg-accent:      #c0cfdd;
+  --dcc-fg-muted:       #97abbb;
+  --dcc-border:         #65788e;
+  --dcc-border-subtle:  #2e3949;
+  --dcc-accent:         #c0cfdd;
+  --dcc-on-accent:      #19202b;
+  --dcc-focus:          #5aaee0;
+  --dcc-focus-border:   #5aaee0;
+  --dcc-danger:         #ff8f7a;
+  --dcc-danger-bg:      #3b211d;
+  --dcc-success:        #4cc9d4;
+  --dcc-success-bg:     #173a3f;
+  --dcc-info:           #6bbde8;
+  --dcc-info-bg:        #1a3448;
+  --dcc-warning:        #e4b565;
+  --dcc-warning-bg:     #3a2e18;
+  --dcc-danger-strong:  #ffb3a4;
+  --dcc-success-strong: #7fdce4;
+  --dcc-info-strong:    #9ad2f0;
+  --dcc-warning-strong: #f0cf8f;
+  --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
+}
+@media (prefers-color-scheme: dark) {
+  [data-dcc-theme="auto"] {
+      color-scheme: dark;
+      --dcc-bg:             #11161e;
+      --dcc-surface:        #19202b;
+      --dcc-surface-raised: #222b38;
+      --dcc-surface-muted:  #283243;
+      --dcc-fg:             #e2e9f0;
+      --dcc-fg-strong:      #f3f6f9;
+      --dcc-fg-accent:      #c0cfdd;
+      --dcc-fg-muted:       #97abbb;
+      --dcc-border:         #65788e;
+      --dcc-border-subtle:  #2e3949;
+      --dcc-accent:         #c0cfdd;
+      --dcc-on-accent:      #19202b;
+      --dcc-focus:          #5aaee0;
+      --dcc-focus-border:   #5aaee0;
+      --dcc-danger:         #ff8f7a;
+      --dcc-danger-bg:      #3b211d;
+      --dcc-success:        #4cc9d4;
+      --dcc-success-bg:     #173a3f;
+      --dcc-info:           #6bbde8;
+      --dcc-info-bg:        #1a3448;
+      --dcc-warning:        #e4b565;
+      --dcc-warning-bg:     #3a2e18;
+      --dcc-danger-strong:  #ffb3a4;
+      --dcc-success-strong: #7fdce4;
+      --dcc-info-strong:    #9ad2f0;
+      --dcc-warning-strong: #f0cf8f;
+      --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
+    }
+}
+
+/* Canaleta fluida (el patrón se repite abajo en cada barra): mantiene la banda
    a sangre completa pero centra el contenido y lo topa en --dcc-container-max.
    A 1440px de viewport da exactamente los 60px del diseño.
-     padding-inline: max(<gutter>,
-calc((100% - var(--dcc-container-max)) / 2)); */
+     padding-inline: max(<gutter>, calc((100% - var(--dcc-container-max)) / 2)); */
 
 /* --------------------------------------------------------------------------
-   2. RESET,
-ACOTADO AL KIT
+   2. RESET, ACOTADO AL KIT
 
-   Estas reglas eran globales —`p`,
-`ul`,
-`a`,
-`button`,
-`body`…— y se filtraban
+   Estas reglas eran globales —`p`, `ul`, `a`, `button`, `body`…— y se filtraban
    a la aplicación que consumía el kit: al integrarlo en una app con Bootstrap
-   le cambiaban la tipografía,
-el color de los enlaces,
-las viñetas y los
+   le cambiaban la tipografía, el color de los enlaces, las viñetas y los
    márgenes a toda la página. Ahora sólo alcanzan a los componentes del kit y a
    lo que vive dentro de ellos.
 
-   La forma `[class*="dcc-"] :where(elemento)` deja la especificidad en (0,
-1,
-0):
-   le gana a los resets de elemento de la app —que son (0,
-0,
-1)— y pierde con
-   cualquier regla de componente del kit,
-que se declara más abajo en este mismo
-   archivo. Sin el `:where()` sería (0,
-1,
-1) y le ganaría a los componentes.
+   La forma `[class*="dcc-"] :where(elemento)` deja la especificidad en (0,1,0):
+   le gana a los resets de elemento de la app —que son (0,0,1)— y pierde con
+   cualquier regla de componente del kit, que se declara más abajo en este mismo
+   archivo. Sin el `:where()` sería (0,1,1) y le ganaría a los componentes.
    -------------------------------------------------------------------------- */
 [class*="dcc-"],
 [class*="dcc-"] *,
 [class*="dcc-"] *::before,
-[class*="dcc-"] *::after { box-sizing: border-box; }/* Tipografía y fondo del kit. Es lo único que alcanza a la página entera,
-así
+[class*="dcc-"] *::after { box-sizing: border-box; }
+
+/* Tipografía y fondo del kit. Es lo único que alcanza a la página entera, así
    que es opt-in: se activa poniendo `dcc-root` en el <body> —o en cualquier
-   contenedor—. Una app que sólo quiere componentes sueltos no lo pone,
-y el kit
+   contenedor—. Una app que sólo quiere componentes sueltos no lo pone, y el kit
    no le toca nada de lo que ya tenía. */
 .dcc-root {
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
-  background: var(--dcc-grey-ultralight);
+  color: var(--dcc-fg);
+  background: var(--dcc-bg);
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
-}body.dcc-root {
+}
+
+body.dcc-root {
   margin: 0;
   overflow-x: hidden; /* necesario para las secciones full-bleed */
-}[class*="dcc-"] :where(img,
+}
+
+[class*="dcc-"] :where(img,
 svg),
 :where(img,
-svg)[class*="dcc-"] { display: block; max-width: 100%; }/* Grosor de trazo de los íconos Lucide.
+svg)[class*="dcc-"] { display: block; max-width: 100%; }
+
+/* Grosor de trazo de los íconos Lucide.
    Va por CSS y no como atributo en los <g> de <defs>: un atributo de
    presentación en el <g> gana sobre la herencia y no se podría sobrescribir por
-   instancia. Al heredarse,
-entra al shadow tree que crea cada <use>.
-   La clase va en el propio <svg> y no en un contenedor,
-para que el kit no
+   instancia. Al heredarse, entra al shadow tree que crea cada <use>.
+   La clase va en el propio <svg> y no en un contenedor, para que el kit no
    dependa de ningún envoltorio de la página que lo consume.
-   2 unidades del viewBox de 24 dan 1px a 12px,
-1,
-33px a 16px y 2px a 24px:
+   2 unidades del viewBox de 24 dan 1px a 12px, 1,33px a 16px y 2px a 24px:
    los mismos valores que declara Figma en cada ícono. */
-.dcc-i { stroke-width: 2; }[class*="dcc-"] :where(p),
-:where(p)[class*="dcc-"] { margin: 0; }[class*="dcc-"] :where(ul),
-:where(ul)[class*="dcc-"] { margin: 0; padding: 0; list-style: none; }[class*="dcc-"] :where(hr),
-:where(hr)[class*="dcc-"] { margin: 0; }[class*="dcc-"] :where(a),
-:where(a)[class*="dcc-"] { color: inherit; text-decoration: none; }[class*="dcc-"] :where(button),
-:where(button)[class*="dcc-"] { font: inherit; color: inherit; }[class*="dcc-"] :where(table),
-:where(table)[class*="dcc-"] { border-collapse: collapse; border-spacing: 0; }/* --------------------------------------------------------------------------
+.dcc-i { stroke-width: 2; }
+[class*="dcc-"] :where(p),
+:where(p)[class*="dcc-"] { margin: 0; }
+[class*="dcc-"] :where(ul),
+:where(ul)[class*="dcc-"] { margin: 0; padding: 0; list-style: none; }
+[class*="dcc-"] :where(hr),
+:where(hr)[class*="dcc-"] { margin: 0; }
+[class*="dcc-"] :where(a),
+:where(a)[class*="dcc-"] { color: inherit; text-decoration: none; }
+[class*="dcc-"] :where(button),
+:where(button)[class*="dcc-"] { font: inherit; color: inherit; }
+[class*="dcc-"] :where(table),
+:where(table)[class*="dcc-"] { border-collapse: collapse; border-spacing: 0; }
+
+/* --------------------------------------------------------------------------
    3. ESCALA TIPOGRÁFICA  (estilos de texto de Figma)
    -------------------------------------------------------------------------- */
 .dcc-t-display,
@@ -189,27 +299,56 @@ para que el kit no
   line-height: 1.1;
   letter-spacing: 0;
   text-transform: uppercase;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   margin: 0;
-}.dcc-t-display { font-size: 48px; }.dcc-t-heading-l { font-size: 36px; }.dcc-t-heading-m { font-size: 24px; }.dcc-t-heading-s { font-size: 16px; }.dcc-t-body-l,
+}
+.dcc-t-display { font-size: 48px; }
+.dcc-t-heading-l { font-size: 36px; }
+.dcc-t-heading-m { font-size: 24px; }
+.dcc-t-heading-s { font-size: 16px; }
+
+.dcc-t-body-l,
 .dcc-t-body-m,
 .dcc-t-body-s {
   font-family: var(--dcc-font-body);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: 0;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   margin: 0;
-}.dcc-t-body-l { font-size: 20px; }.dcc-t-body-m { font-size: 16px; }.dcc-t-body-s { font-size: 12px; }.dcc-t-bold { font-weight: 700; }.dcc-t-italic { font-style: italic; }/* Tarjeta blanca = cada frame del kit en Figma (bg blanco {
-  background: #fff;
-  border-radius: var(--dcc-card-radius);
-  padding: 40px 45px;
-  margin-bottom: 32px;
-  overflow: hidden;
-}/* --------------------------------------------------------------------------
+}
+.dcc-t-body-l { font-size: 20px; }
+.dcc-t-body-m { font-size: 16px; }
+.dcc-t-body-s { font-size: 12px; }
+
+.dcc-t-bold { font-weight: 700; }
+.dcc-t-italic { font-style: italic; }
+
+/* --------------------------------------------------------------------------
    7. BOTONES
    -------------------------------------------------------------------------- */
+/* El botón se arma con dos ejes independientes, como en MUI:
+
+     variante  →  --contained (relleno, por omisión) · --outlined · --text
+     color     →  --primary (por omisión) · --secondary · --success · --error
+                  · --white, para fondos oscuros
+
+   El color sólo fija dos variables —`--dcc-btn-main`, el color del botón, y
+   `--dcc-btn-on`, el de la etiqueta sobre ese relleno— y cada variante decide
+   dónde van. Así cualquier variante combina con cualquier color sin reglas
+   cruzadas, y agregar un color son dos líneas.
+
+   Contraste de la etiqueta blanca sobre cada relleno:
+     primary   Grey/Default   8,01:1
+     secondary Grey/Light     4,35:1  (el color del Figma; no llega a 4,5)
+     success   Green/Dark     6,84:1  (Green/Default da 3,25:1 y no sirve)
+     error     Red/Default    4,92:1 */
 .dcc-btn {
+  --dcc-btn-main: var(--dcc-accent);
+  --dcc-btn-on: var(--dcc-on-accent);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -219,27 +358,114 @@ para que el kit no
   font-size: 16px;
   font-weight: 400;
   line-height: 1.2;
+  text-decoration: none;
   cursor: pointer;
+  background: var(--dcc-btn-main);
+  color: var(--dcc-btn-on);
   border: 0 solid transparent;
   box-shadow: var(--dcc-shadow-button);
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  /* 250ms sobre la curva estándar de Material —la que MUI le pone a sus botones
+     en `background-color`, `box-shadow` y `border-color`—. */
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              box-shadow .25s cubic-bezier(.4, 0, .2, 1),
+              border-color .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1);
   white-space: nowrap;
-}.dcc-btn .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }/* Tamaños — padding sólido; las variantes stroke restan el borde de 2px */
-.dcc-btn--sm { padding: 4px 8px; }.dcc-btn--md { padding: 8px 12px; }.dcc-btn--lg { padding: 12px 20px; }/* Primario sobre fondo claro (color = Grey) */
-.dcc-btn--primary-grey { background: var(--dcc-grey-default); color: var(--dcc-white); }.dcc-btn--primary-grey:hover { background: var(--dcc-red-default); }/* Primario sobre fondo oscuro (color = White) */
-.dcc-btn--primary-white { background: var(--dcc-white); color: var(--dcc-grey-default); }.dcc-btn--primary-white:hover { background: var(--dcc-red-default); color: var(--dcc-white); }/* Secundario sobre fondo claro */
-.dcc-btn--secondary-grey {
-  background: var(--dcc-white);
-  color: var(--dcc-grey-default);
-  border: 2px solid var(--dcc-grey-default);
-}.dcc-btn--secondary-grey:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }/* Secundario sobre fondo oscuro. Hover en Red/Default,
-igual que sobre fondo
-   claro (ver nota de contraste en ASUNCIONES 0.12). */
+}
+.dcc-btn .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }
+
+/* Tamaños */
+.dcc-btn--sm { padding: 4px 8px; }
+.dcc-btn--md { padding: 8px 12px; }
+.dcc-btn--lg { padding: 12px 20px; }
+
+/* Colores */
+/* Los colores van por rol, así que en tema oscuro se aclaran solos y la
+   etiqueta pasa a oscura (--dcc-on-accent). --white es de marca: se usa sobre
+   superficies oscuras en los dos temas y no cambia. */
+.dcc-btn--primary { --dcc-btn-main: var(--dcc-accent);         --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--secondary { --dcc-btn-main: var(--dcc-fg-muted);       --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--success { --dcc-btn-main: var(--dcc-success-strong); --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--error { --dcc-btn-main: var(--dcc-danger);         --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--white { --dcc-btn-main: var(--dcc-white);        --dcc-btn-on: var(--dcc-grey-default); }
+
+/* Variantes. El delineado y el de texto llevan la etiqueta en el color del
+   botón; el delineado resta a su padding los 2px del borde para medir lo mismo
+   que el relleno. */
+.dcc-btn--contained { background: var(--dcc-btn-main); color: var(--dcc-btn-on); }
+.dcc-btn--outlined {
+  background: transparent;
+  color: var(--dcc-btn-main);
+  border: 2px solid var(--dcc-btn-main);
+}
+.dcc-btn--outlined.dcc-btn--sm { padding: 2px 6px; }
+.dcc-btn--outlined.dcc-btn--md { padding: 6px 10px; }
+.dcc-btn--outlined.dcc-btn--lg { padding: 10px 18px; }
+.dcc-btn--text {
+  background: transparent;
+  color: var(--dcc-btn-main);
+  box-shadow: none;
+}
+
+/* Un solo comportamiento para todas las combinaciones. Lo que cambia entre
+   ellas es el color; lo que pasa bajo el cursor es siempre lo mismo:
+
+     1. Aparece una capa de estado teñida del color de la etiqueta
+        (`currentColor`): 8% en hover, 12% al presionar o con foco de teclado.
+        Son las opacidades de la capa de estado de Material 3.
+     2. La pieza sube un escalón de sombra, a `--dcc-shadow-button-hover`. El
+        botón de texto no tiene sombra y no la gana: sólo cambia la capa.
+
+   Ni el fondo, ni el borde, ni la etiqueta cambian de color, así que el
+   contraste en hover es el mismo que en reposo. La capa vive en `::before`,
+   detrás del contenido (`isolation` + `z-index: -1`) y recortada por el
+   `overflow` al radio interior del borde. */
+.dcc-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-btn:hover { box-shadow: var(--dcc-shadow-button-hover); }
+.dcc-btn:hover::before { opacity: .08; }
+.dcc-btn:active::before,
+.dcc-btn:focus-visible::before { opacity: .12; }
+.dcc-btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-btn--text:hover { box-shadow: none; }
+
+/* Deshabilitado: igual en todas las variantes. Se apaga la pieza entera en vez
+   de pasarla a gris, para que siga leyéndose de qué color era. */
+.dcc-btn:disabled,
+.dcc-btn[aria-disabled="true"] {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.dcc-btn:disabled::before,
+.dcc-btn[aria-disabled="true"]::before { opacity: 0; }
+
+/* Nombres anteriores a 2.6.0. Siguen funcionando y equivalen a:
+     --primary-grey    = contained + primary
+     --primary-white   = contained + white
+     --secondary-grey  = outlined  + primary, con fondo blanco
+     --secondary-white = outlined  + white
+   "Primario" y "secundario" nombraban ahí la variante, no el color. */
+.dcc-btn--primary-grey { --dcc-btn-main: var(--dcc-accent); --dcc-btn-on: var(--dcc-on-accent); }
+.dcc-btn--primary-white { --dcc-btn-main: var(--dcc-white); --dcc-btn-on: var(--dcc-grey-default); }
+.dcc-btn--secondary-grey,
 .dcc-btn--secondary-white {
   background: transparent;
-  color: var(--dcc-white);
-  border: 2px solid var(--dcc-white);
-}.dcc-btn--secondary-white:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }/* Links (componente "Frame 248" del kit) */
+  color: var(--dcc-btn-main);
+  border: 2px solid var(--dcc-btn-main);
+}
+.dcc-btn--secondary-grey { background: var(--dcc-surface); }
+.dcc-btn--secondary-white { --dcc-btn-main: var(--dcc-white); }
+
+/* Links (componente "Frame 248" del kit) */
 .dcc-link {
   display: inline-flex;
   align-items: center;
@@ -250,8 +476,18 @@ igual que sobre fondo
   line-height: 1.2;
   border-bottom: 1px solid currentColor;
   cursor: pointer;
-  transition: color .15s ease;
-}.dcc-link .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }.dcc-link--grey { color: var(--dcc-grey-default); }.dcc-link--dcc-white { color: var(--dcc-white); }.dcc-link--grey:hover { color: var(--dcc-red-default); }.dcc-link--dcc-white:hover { color: var(--dcc-red-default); }/* --------------------------------------------------------------------------
+  transition: color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-link .dcc-icon { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-link--grey { color: var(--dcc-fg-accent); }
+.dcc-link--dcc-white { color: var(--dcc-white); }
+/* Mismo cambio de acento que en los botones: el Figma le da Grey/Light a los dos
+   estados de hover del link, y el subrayado lo sigue porque es `currentColor`.
+   El blanco es para fondos oscuros de marca y se queda en la paleta. */
+.dcc-link--grey:hover { color: var(--dcc-fg-muted); }
+.dcc-link--dcc-white:hover { color: var(--dcc-grey-light); }
+
+/* --------------------------------------------------------------------------
    8. BADGES / TAGS
    -------------------------------------------------------------------------- */
 .dcc-badge {
@@ -270,36 +506,56 @@ igual que sobre fondo
   overflow: hidden;
   text-overflow: ellipsis;
   border: var(--dcc-badge-border-width) solid transparent;
-}.dcc-badge .dcc-icon { width: 12px; height: 12px; flex: 0 0 12px; }/* Solid */
-.dcc-badge--solid-default { background: var(--dcc-grey-default);       color: var(--dcc-white); }.dcc-badge--solid-light { background: var(--dcc-grey-light);         color: var(--dcc-white); }.dcc-badge--solid-ultralight { background: var(--dcc-grey-ultralight);    color: var(--dcc-grey-default); }.dcc-badge--solid-lightblue { background: var(--dcc-lightblue-default);  color: var(--dcc-white); }.dcc-badge--solid-red { background: var(--dcc-red-default);        color: var(--dcc-white); }.dcc-badge--solid-blue { background: var(--dcc-blue-default);       color: var(--dcc-white); }.dcc-badge--solid-green { background: var(--dcc-green-default);      color: var(--dcc-white); }/* Soft — variante de alto contraste para los componentes nuevos.
-   Los `subtle` que vienen de Figma quedan entre 2,
-17 y 3,
-41:1,
-bajo el mínimo
-   AA de 4,
-5:1 para texto chico. Con fondo Ultralight y texto Dark suben a
-   6,
-07–9,
-43:1 manteniendo el mismo matiz. */
-.dcc-badge--soft-default { background: var(--dcc-grey-ultralight);      color: var(--dcc-grey-dark); }.dcc-badge--soft-lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-dark); }.dcc-badge--soft-red { background: var(--dcc-red-ultralight);       color: var(--dcc-red-dark); }.dcc-badge--soft-blue { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-dark); }.dcc-badge--soft-green { background: var(--dcc-green-ultralight);     color: var(--dcc-green-dark); }/* Subtle */
+}
+.dcc-badge .dcc-icon { width: 12px; height: 12px; flex: 0 0 12px; }
+
+/* Solid */
+.dcc-badge--solid-default { background: var(--dcc-grey-default);       color: var(--dcc-white); }
+.dcc-badge--solid-light { background: var(--dcc-grey-light);         color: var(--dcc-white); }
+.dcc-badge--solid-ultralight { background: var(--dcc-surface-muted);      color: var(--dcc-fg-accent); }
+.dcc-badge--solid-lightblue { background: var(--dcc-lightblue-default);  color: var(--dcc-white); }
+.dcc-badge--solid-red { background: var(--dcc-red-default);        color: var(--dcc-white); }
+.dcc-badge--solid-blue { background: var(--dcc-blue-default);       color: var(--dcc-white); }
+.dcc-badge--solid-green { background: var(--dcc-green-default);      color: var(--dcc-white); }
+
+/* Soft — variante de alto contraste para los componentes nuevos.
+   Los `subtle` que vienen de Figma quedan entre 2,17 y 3,41:1, bajo el mínimo
+   AA de 4,5:1 para texto chico. Con fondo Ultralight y texto Dark suben a
+   6,07–9,43:1 manteniendo el mismo matiz. */
+.dcc-badge--soft-default { background: var(--dcc-surface-muted);        color: var(--dcc-fg); }
+.dcc-badge--soft-lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-dark); }
+.dcc-badge--soft-red { background: var(--dcc-red-ultralight);       color: var(--dcc-red-dark); }
+.dcc-badge--soft-blue { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-dark); }
+.dcc-badge--soft-green { background: var(--dcc-green-ultralight);     color: var(--dcc-green-dark); }
+
+/* Subtle */
 /* Fondo un paso más claro que en Figma (Light -> Ultralight). Sube el
-   contraste de 2,
-17–3,
-41 a 2,
-89–5,
-30:1. Ver nota en ASUNCIONES: lightblue y
+   contraste de 2,17–3,41 a 2,89–5,30:1. Ver nota en ASUNCIONES: lightblue y
    green siguen bajo AA; para texto pequeño está `badge--soft-*`. */
-.dcc-badge--subtle-lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-default); }.dcc-badge--subtle-red { background: var(--dcc-red-ultralight);       color: var(--dcc-red-default); }.dcc-badge--subtle-blue { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-default); }.dcc-badge--subtle-green { background: var(--dcc-green-ultralight);     color: var(--dcc-green-default); }/* Stroke */
-.dcc-badge--stroke-lightblue { border-color: var(--dcc-lightblue-default); color: var(--dcc-lightblue-default); }.dcc-badge--stroke-red { border-color: var(--dcc-red-default);       color: var(--dcc-red-default); }.dcc-badge--stroke-blue { border-color: var(--dcc-blue-default);      color: var(--dcc-blue-default); }.dcc-badge--stroke-green { border-color: var(--dcc-green-default);     color: var(--dcc-green-default); }.dcc-badge-grid {
+.dcc-badge--subtle-lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-default); }
+.dcc-badge--subtle-red { background: var(--dcc-red-ultralight);       color: var(--dcc-red-default); }
+.dcc-badge--subtle-blue { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-default); }
+.dcc-badge--subtle-green { background: var(--dcc-green-ultralight);     color: var(--dcc-green-default); }
+
+/* Stroke */
+/* Sin fondo propio, el color se lee contra la superficie de abajo: en oscuro el
+   tono Default se hundía. Por eso siguen los tokens de estado del mismo matiz,
+   que en claro valen lo mismo. Blue no tiene token equivalente y se queda. */
+.dcc-badge--stroke-lightblue { border-color: var(--dcc-info);              color: var(--dcc-info); }
+.dcc-badge--stroke-red { border-color: var(--dcc-danger);            color: var(--dcc-danger); }
+.dcc-badge--stroke-blue { border-color: var(--dcc-blue-default);      color: var(--dcc-blue-default); }
+.dcc-badge--stroke-green { border-color: var(--dcc-success);           color: var(--dcc-success); }
+
+.dcc-badge-grid {
   display: grid;
   grid-template-columns: repeat(4, max-content);
   gap: 10px 12px;
   align-items: center;
   justify-content: start;
-}/* --------------------------------------------------------------------------
-   9. SELECTION CONTROL — checkbox,
-radio,
-switch
+}
+
+/* --------------------------------------------------------------------------
+   9. SELECTION CONTROL — checkbox, radio, switch
    -------------------------------------------------------------------------- */
 .dcc-control {
   display: inline-flex;
@@ -307,46 +563,62 @@ switch
   gap: 8px;
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   cursor: pointer;
   user-select: none;
-}.dcc-control input { position: absolute; opacity: 0; width: 0; height: 0; }.dcc-control .dcc-box {
+}
+.dcc-control input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.dcc-control .dcc-box {
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
-  border: 2px solid var(--dcc-grey-light);
+  border: 2px solid var(--dcc-border);
   border-radius: 3px;
-  background: #fff;
+  background: var(--dcc-surface);
   display: grid;
   place-items: center;
   transition: background-color .12s ease;
-}.dcc-control .dcc-box svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; opacity: 0; }.dcc-control input:checked + .dcc-box,
-.dcc-control input:indeterminate + .dcc-box { background: var(--dcc-grey-light); }.dcc-control input:checked + .dcc-box svg.dcc-check,
+}
+/* El relleno marcado es Grey/Light, no Grey/Default: por eso usa --dcc-border y
+   no --dcc-accent, que en claro lo oscurecería. La marca y el knob siguen en
+   blanco, que sobre el relleno de --dcc-border se lee en los dos temas. */
+.dcc-control .dcc-box svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; opacity: 0; }
+.dcc-control input:checked + .dcc-box,
+.dcc-control input:indeterminate + .dcc-box { background: var(--dcc-border); }
+.dcc-control input:checked + .dcc-box svg.dcc-check,
 .dcc-control input:checked + .dcc-box svg.dcc-dash,
-.dcc-control input:indeterminate + .dcc-box svg.dcc-dash { opacity: 1; }.dcc-control input:focus-visible + .dcc-box,
+.dcc-control input:indeterminate + .dcc-box svg.dcc-dash { opacity: 1; }
+.dcc-control input:focus-visible + .dcc-box,
 .dcc-control input:focus-visible + .dcc-dot,
-.dcc-control input:focus-visible + .dcc-track { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }.dcc-control .dcc-dot {
+.dcc-control input:focus-visible + .dcc-track { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+.dcc-control .dcc-dot {
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
-  border: 2px solid var(--dcc-grey-light);
+  border: 2px solid var(--dcc-border);
   border-radius: 9999px;
-  background: #fff;
+  background: var(--dcc-surface);
   transition: border-width .12s ease;
-}.dcc-control input:checked + .dcc-dot { border-width: 6px; }/* Switch: un solo elemento que transiciona. El knob recorre los 16px de la
+}
+.dcc-control input:checked + .dcc-dot { border-width: 6px; }
+
+/* Switch: un solo elemento que transiciona. El knob recorre los 16px de la
    pista (32px interiores − 12px del knob − 2px de holgura a cada lado) mientras
    pista y knob intercambian color. Nada aparece ni desaparece. */
 .dcc-control .dcc-track {
   width: 36px;
   height: 20px;
   flex: 0 0 36px;
-  border: 2px solid var(--dcc-grey-light);
+  border: 2px solid var(--dcc-border);
   border-radius: 9999px;
-  background: #fff;
+  background: var(--dcc-surface);
   position: relative;
   transition: background-color .22s cubic-bezier(.4, 0, .2, 1),
               border-color   .22s cubic-bezier(.4, 0, .2, 1);
-}.dcc-control .dcc-track::after {
+}
+.dcc-control .dcc-track::after {
   content: "";
   position: absolute;
   top: 2px;
@@ -354,22 +626,28 @@ switch
   width: 12px;
   height: 12px;
   border-radius: 9999px;
-  background: var(--dcc-grey-light);
+  background: var(--dcc-border);
   /* leve rebote al llegar, para que se lea el desplazamiento */
   transition: transform        .26s cubic-bezier(.34, 1.4, .64, 1),
               background-color .22s cubic-bezier(.4, 0, .2, 1);
-}.dcc-control input:checked + .dcc-track { background: var(--dcc-grey-light); border-color: var(--dcc-grey-light); }.dcc-control input:checked + .dcc-track::after { transform: translateX(16px); background: #fff; }
+}
+.dcc-control input:checked + .dcc-track { background: var(--dcc-border); border-color: var(--dcc-border); }
+.dcc-control input:checked + .dcc-track::after { transform: translateX(16px); background: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
   .dcc-control .dcc-track,
   .dcc-control .dcc-track::after { transition: none; }
 }
+
 .dcc-control-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, max-content));
   gap: 12px 64px;
   align-items: start;
-}.dcc-control-col { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }/* --------------------------------------------------------------------------
+}
+.dcc-control-col { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+
+/* --------------------------------------------------------------------------
    10. ALERT
    -------------------------------------------------------------------------- */
 .dcc-alert {
@@ -381,13 +659,29 @@ switch
      alertas cortas dentro de una columna ancha; si se quiere una más angosta,
      se limita desde fuera con el contenedor. */
   width: 100%;
-  color: var(--dcc-gray-700);
+  color: var(--dcc-fg);
   font-size: 16px;
   line-height: 1.2;
-}.dcc-alert .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; }.dcc-alert .dcc-stack { display: flex; flex-direction: column; min-width: 0; flex: 1; }.dcc-alert .dcc-stack strong { font-weight: 700; }.dcc-alert--info { background: var(--dcc-lightblue-ultralight); }.dcc-alert--info    .dcc-icon { color: var(--dcc-lightblue-default); }.dcc-alert--success { background: var(--dcc-green-ultralight); }.dcc-alert--success .dcc-icon { color: var(--dcc-green-default); }.dcc-alert--error { background: var(--dcc-red-ultralight); }.dcc-alert--error   .dcc-icon { color: var(--dcc-red-default); }.dcc-alert-stack { display: flex; flex-direction: column; gap: 36px; }/* --------------------------------------------------------------------------
+}
+.dcc-alert .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; }
+.dcc-alert .dcc-stack { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.dcc-alert .dcc-stack strong { font-weight: 700; }
+
+.dcc-alert--info { background: var(--dcc-info-bg); }
+.dcc-alert--info    .dcc-icon { color: var(--dcc-info); }
+.dcc-alert--success { background: var(--dcc-success-bg); }
+.dcc-alert--success .dcc-icon { color: var(--dcc-success); }
+.dcc-alert--error { background: var(--dcc-danger-bg); }
+.dcc-alert--error   .dcc-icon { color: var(--dcc-danger); }
+
+.dcc-alert-stack { display: flex; flex-direction: column; gap: 36px; }
+
+/* --------------------------------------------------------------------------
    11. TABLE
    -------------------------------------------------------------------------- */
-.dcc-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }.dcc-table {
+.dcc-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.dcc-table {
   width: 100%;
   min-width: 520px;
   font-size: 16px;
@@ -398,46 +692,54 @@ switch
      así que nada se duplica. */
   border-collapse: separate;
   border-spacing: 0;
-}/* Centrado vertical del texto en las celdas.
-   `vertical-align: middle` centra la caja de línea en el ÁREA DE CONTENIDO,
-que
-   es la celda menos el borde inferior. Eso subía el texto medio borde: 1,
-04px en
-   la cabecera. Con padding-top = grosor del borde,
-el área de contenido vuelve a
+}
+
+/* Centrado vertical del texto en las celdas.
+   `vertical-align: middle` centra la caja de línea en el ÁREA DE CONTENIDO, que
+   es la celda menos el borde inferior. Eso subía el texto medio borde: 1,04px en
+   la cabecera. Con padding-top = grosor del borde, el área de contenido vuelve a
    quedar simétrica y la caja de línea se centra en la celda completa.
    Verificado con las métricas reales de Poppins e Inter: el centro óptico de las
-   mayúsculas queda a menos de 0,
-05px del centro de la celda. */
+   mayúsculas queda a menos de 0,05px del centro de la celda. */
 .dcc-table th {
   height: 40px;
   padding: 2px 24px 0;   /* 2px = borde inferior de la cabecera */
   vertical-align: middle;
   text-align: left;
-  background: var(--dcc-grey-ultralight);
-  border-bottom: 2px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-muted);
+  border-bottom: 2px solid var(--dcc-border);
   font-family: var(--dcc-font-display);
   font-weight: 700;
   font-size: 16px;
   line-height: 1.1;
   text-transform: uppercase;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   white-space: nowrap;
-}.dcc-table thead th:first-child { border-top-left-radius: 8px; }.dcc-table thead th:last-child { border-top-right-radius: 8px; }.dcc-table td {
+}
+.dcc-table thead th:first-child { border-top-left-radius: 8px; }
+.dcc-table thead th:last-child { border-top-right-radius: 8px; }
+.dcc-table td {
   height: 52px;
   padding: .5px 24px 0;  /* .5px = borde inferior de la fila */
   vertical-align: middle;
-  background: var(--dcc-white);
-  border-bottom: .5px solid var(--dcc-grey-light);
-  color: var(--dcc-grey-dark);
-}.dcc-table tbody tr:last-child td {
-  border-bottom: 2px solid var(--dcc-grey-light);
+  background: var(--dcc-surface);
+  border-bottom: .5px solid var(--dcc-border);
+  color: var(--dcc-fg);
+}
+.dcc-table tbody tr:last-child td {
+  border-bottom: 2px solid var(--dcc-border);
   padding-top: 2px;      /* la última fila tiene borde de 2px */
-}.dcc-table--single { min-width: 260px; max-width: 260px; }.dcc-logo-dcc { width: 160px; height: 79px; flex: 0 0 160px; }/* Versión horizontal del logotipo (405×75). Es la que va en la barra de
+}
+
+.dcc-table--single { min-width: 260px; max-width: 260px; }
+
+.dcc-logo-dcc { width: 160px; height: 79px; flex: 0 0 160px; }
+/* Versión horizontal del logotipo (405×75). Es la que va en la barra de
    aplicación y en el sidebar: el vertical obligaba a una barra de 119px de
-   alto,
-y éste la deja en 92 con la misma legibilidad. */
-.dcc-logo-dcc-h { width: 240px; height: auto; flex: 0 0 240px; }/* --- 12a. Nav institucional --------------------------------------------- */
+   alto, y éste la deja en 92 con la misma legibilidad. */
+.dcc-logo-dcc-h { width: 240px; height: auto; flex: 0 0 240px; }
+
+/* --- 12a. Nav institucional --------------------------------------------- */
 .dcc-nav-inst {
   background: var(--dcc-grey-default);
   padding-block: 32px;
@@ -446,15 +748,16 @@ y éste la deja en 92 con la misma legibilidad. */
   align-items: flex-start;
   gap: 32px;
   width: 100%;
-}.dcc-nav-inst__main {
+}
+.dcc-nav-inst__main {
   flex: 1 1 auto;
   min-width: 0;
   padding-top: 32px;
   display: flex;
   flex-direction: column;
-}/* Componente "Menú Principal" (128:774) — h 27,
-px 8 / py 4,
-radio 4px arriba */
+}
+
+/* Componente "Menú Principal" (128:774) — h 27, px 8 / py 4, radio 4px arriba */
 .dcc-nav-inst__menu {
   display: flex;
   flex-wrap: wrap;
@@ -465,7 +768,9 @@ radio 4px arriba */
   column-gap: var(--dcc-nav-menu-gap);
   row-gap: 4px;
   border-bottom: 2px solid var(--dcc-red-default);
-}.dcc-nav-inst__menu > li { display: flex; }.dcc-nav-inst__menu > li > a {
+}
+.dcc-nav-inst__menu > li { display: flex; }
+.dcc-nav-inst__menu > li > a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -481,23 +786,26 @@ radio 4px arriba */
   color: #fff;
   white-space: nowrap;
   transition: background-color .15s ease, border-color .15s ease;
-}.dcc-nav-inst__menu > li > a:hover,
+}
+.dcc-nav-inst__menu > li > a:hover,
 .dcc-nav-inst__menu > li > a:focus-visible {         /* Status = Hover: sólo contorno rojo */
   border-color: var(--dcc-red-default);
   outline: none;
-}.dcc-nav-inst__menu > li > a[aria-current="page"] {  /* Status = Active: relleno rojo */
+}
+.dcc-nav-inst__menu > li > a[aria-current="page"] {  /* Status = Active: relleno rojo */
   background: var(--dcc-red-default);
   border-color: var(--dcc-red-default);
-}/* Componente "Menú Secundario" (128:1005) — h 30,
-px 8 / py 4,
-radio 4px,
-gap 20 */
+}
+
+/* Componente "Menú Secundario" (128:1005) — h 30, px 8 / py 4, radio 4px, gap 20 */
 .dcc-nav-inst__submenu {
   display: flex;
   flex-wrap: wrap;
   gap: 12px 20px;
   padding-top: 12px;
-}.dcc-nav-inst__submenu > li { display: flex; }.dcc-nav-inst__submenu a {
+}
+.dcc-nav-inst__submenu > li { display: flex; }
+.dcc-nav-inst__submenu a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -511,26 +819,35 @@ gap 20 */
   color: #fff;
   white-space: nowrap;
   transition: border-color .15s ease;
-}.dcc-nav-inst__submenu a:hover,
+}
+.dcc-nav-inst__submenu a:hover,
 .dcc-nav-inst__submenu a:focus-visible {             /* Status = Hover: borde Grey/Light */
   border-color: var(--dcc-grey-light);
   outline: none;
-}.dcc-nav-inst__submenu a[aria-current="page"] {      /* Status = Active: borde blanco */
+}
+.dcc-nav-inst__submenu a[aria-current="page"] {      /* Status = Active: borde blanco */
   border-color: var(--dcc-white);
-}.dcc-social {
+}
+
+.dcc-social {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   padding-top: 32px;
   flex: 0 0 auto;
-}.dcc-social a { color: #fff; transition: opacity .15s ease; }.dcc-social a:hover { opacity: .7; }/* sin acento rojo en las marcas sociales */
-.dcc-social a:focus-visible { outline: 2px solid var(--dcc-lightblue-light); outline-offset: 3px; border-radius: 2px; }.dcc-social svg { width: 24px; height: 24px; }/* Botón hamburguesa: no existe en Figma,
-se añade para <768px */
+}
+.dcc-social a { color: #fff; transition: opacity .15s ease; }
+.dcc-social a:hover { opacity: .7; }   /* sin acento rojo en las marcas sociales */
+.dcc-social a:focus-visible { outline: 2px solid var(--dcc-lightblue-light); outline-offset: 3px; border-radius: 2px; }
+.dcc-social svg { width: 24px; height: 24px; }
+
+/* Botón hamburguesa: no existe en Figma, se añade para <768px */
 .dcc-nav-toggle { display: none; }
 
 /* --- 12b. Nav de aplicación --------------------------------------------- */
-.dcc-nav-app {background: var(--dcc-grey-default);
+.dcc-nav-app {
+  background: var(--dcc-grey-default);
   /* Altura declarada,
 no heredada del logo: como el logo horizontal ya no
      aporta altura (ver `.dcc-nav-app__brand .dcc-logo-dcc-h`),
@@ -551,26 +868,23 @@ un botón— hereda blanco. Con el color sólo
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-}/* `baseline` y no `center`: el baseline de una imagen es su borde inferior,
-así
+}
+/* `baseline` y no `center`: el baseline de una imagen es su borde inferior, así
    que el nombre de la aplicación se asienta justo sobre la línea en que termina
-   el logo. El SVG llena su viewBox —0,
-5px de aire abajo—,
-así que el borde de
+   el logo. El SVG llena su viewBox —0,5px de aire abajo—, así que el borde de
    la caja y el del dibujo son el mismo sitio. */
-.dcc-nav-app__brand { display: flex; align-items: baseline; gap: 32px; min-width: 0; }/* El título manda y el logo lo sigue. Con un margen superior negativo mayor que
-   su alto,
-el logo deja de contar por encima del baseline: la altura del bloque
-   de marca pasa a ser la del título,
-y el `align-items: center` de la barra
-   centra el título,
-no el par. El logo sigue colgado del baseline y sube 8,
-7px
-   sobre el padding,
-sin salirse de los 92px.
+.dcc-nav-app__brand { display: flex; align-items: baseline; gap: 32px; min-width: 0; }
+
+/* El título manda y el logo lo sigue. Con un margen superior negativo mayor que
+   su alto, el logo deja de contar por encima del baseline: la altura del bloque
+   de marca pasa a ser la del título, y el `align-items: center` de la barra
+   centra el título, no el par. El logo sigue colgado del baseline y sube 8,7px
+   sobre el padding, sin salirse de los 92px.
    No hay ninguna constante de la fuente: basta con que el margen supere los
    44px que mide el logo horizontal a 240 de ancho. */
-.dcc-nav-app__brand .dcc-logo-dcc-h { margin-top: -100px; }.dcc-nav-app__title {
+.dcc-nav-app__brand .dcc-logo-dcc-h { margin-top: -100px; }
+
+.dcc-nav-app__title {
   font-family: var(--dcc-font-display);
   font-weight: 700;
   font-size: 30px;
@@ -579,25 +893,22 @@ sin salirse de los 92px.
   color: var(--dcc-white);
   margin: 0;
   white-space: nowrap;
-}.dcc-nav-app__user { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 16px; white-space: nowrap; }/* circle-user reducido de 40 a 32px (Figma lo tenía en 40). El trazo se
-   mantiene en 2px absolutos,
-así que las unidades del viewBox cambian:
-   2 × 24/32 = 1,
-5. */
+}
+.dcc-nav-app__user { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 16px; white-space: nowrap; }
+/* circle-user reducido de 40 a 32px (Figma lo tenía en 40). El trazo se
+   mantiene en 2px absolutos, así que las unidades del viewBox cambian:
+   2 × 24/32 = 1,5. */
 .dcc-nav-app__user svg,
-.dcc-sidebar__user svg { stroke-width: 1.5; width: 32px; height: 32px; flex: 0 0 32px; }/* --- 12c. Sidebar -------------------------------------------------------- */
+.dcc-sidebar__user svg { stroke-width: 1.5; width: 32px; height: 32px; flex: 0 0 32px; }
+
+/* --- 12c. Sidebar -------------------------------------------------------- */
 /* Reescrita en la 2.5.0 tomando la disposición de Faro y la forma de marcar el
    ítem seleccionado de Titulación. En la 2.5.1 se ajustó la sangría para que
    coincida con la de Faro medida en pantalla: la caja de cada bloque se pega
-   más al borde a medida que baja —24px la marca,
-16px el botón y el pie,
-8px
-   los ítems—,
-y el ítem seleccionado pasa de 192 a 213px de ancho. El eje de
-   los íconos queda en 28px,
-y ahí caen los tres: el del botón (16 de margen +
-   12 de relleno),
-los de la lista (8 + 20) y el avatar del pie (16 + 12). */
+   más al borde a medida que baja —24px la marca, 16px el botón y el pie, 8px
+   los ítems—, y el ítem seleccionado pasa de 192 a 213px de ancho. El eje de
+   los íconos queda en 28px, y ahí caen los tres: el del botón (16 de margen +
+   12 de relleno), los de la lista (8 + 20) y el avatar del pie (16 + 12). */
 .dcc-sidebar {
   background: var(--dcc-grey-default);
   border-radius: 5px;
@@ -608,10 +919,13 @@ los de la lista (8 + 20) y el avatar del pie (16 + 12). */
   display: flex;
   flex-direction: column;
   color: var(--dcc-white);
-}/* Marca: logotipo horizontal,
-separador y nombre de la aplicación. Sin esto la
+}
+
+/* Marca: logotipo horizontal, separador y nombre de la aplicación. Sin esto la
    barra se veía igual en las cinco apps del departamento. */
-.dcc-sidebar__brand { padding: 0 24px 20px; display: flex; flex-direction: column; gap: 18px; }.dcc-sidebar__brand .dcc-logo-dcc-h { width: 192px; flex: 0 0 auto; }.dcc-sidebar__app {
+.dcc-sidebar__brand { padding: 0 24px 20px; display: flex; flex-direction: column; gap: 18px; }
+.dcc-sidebar__brand .dcc-logo-dcc-h { width: 192px; flex: 0 0 auto; }
+.dcc-sidebar__app {
   font-family: var(--dcc-font-display);
   font-weight: 600;
   font-size: 18px;
@@ -621,9 +935,14 @@ separador y nombre de la aplicación. Sin esto la
   color: var(--dcc-white);
   margin: 0;
   text-wrap: balance;
-}/* Envoltura del botón de acción. Lleva también `dcc-menu js-menu` cuando la
+}
+
+/* Envoltura del botón de acción. Lleva también `dcc-menu js-menu` cuando la
    acción tiene destinos: el desplegable se cuelga de acá. */
-.dcc-sidebar__action { position: relative; display: block; margin: 0 16px 12px; }.dcc-sidebar__action .dcc-menu__list { left: 0; right: 0; min-width: 0; }.dcc-sidebar__cta {
+.dcc-sidebar__action { position: relative; display: block; margin: 0 16px 12px; }
+.dcc-sidebar__action .dcc-menu__list { left: 0; right: 0; min-width: 0; }
+
+.dcc-sidebar__cta {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -640,15 +959,15 @@ separador y nombre de la aplicación. Sin esto la
   cursor: pointer;
   border: 0;
   width: 100%;
-}.dcc-sidebar__cta svg { width: 18px; height: 18px; flex: 0 0 18px; }.dcc-sidebar__cta .dcc-sidebar__caret { margin-left: auto; }/* Cuando el botón es además el disparador del menú lleva las dos clases,
-y
+}
+.dcc-sidebar__cta svg { width: 18px; height: 18px; flex: 0 0 18px; }
+.dcc-sidebar__cta .dcc-sidebar__caret { margin-left: auto; }
+
+/* Cuando el botón es además el disparador del menú lleva las dos clases, y
    `.dcc-menu__trigger` —que vive más abajo en este archivo y pesa lo mismo— le
-   gana por orden: lo dejaba sin fondo,
-sin relleno y con el color heredado,
-o
+   gana por orden: lo dejaba sin fondo, sin relleno y con el color heredado, o
    sea un botón blanco invisible sobre la barra oscura. Se restablece con el
-   contenedor por delante,
-que pesa una clase más.
+   contenedor por delante, que pesa una clase más.
    Sólo las cuatro que el disparador pisa; el resto no hace falta repetirlo. */
 .dcc-sidebar__action .dcc-sidebar__cta {
   display: flex;
@@ -656,9 +975,10 @@ que pesa una clase más.
   color: var(--dcc-grey-dark);
   padding: 0 12px;
   gap: 10px;
-}/* Lista navegable. `scrollbar-gutter: stable` reserva el hueco de la barra de
-   desplazamiento esté o no visible,
-así que el relleno puede ser parejo a los
+}
+
+/* Lista navegable. `scrollbar-gutter: stable` reserva el hueco de la barra de
+   desplazamiento esté o no visible, así que el relleno puede ser parejo a los
    cuatro lados sin que la lista se corra al aparecer la barra. */
 .dcc-sidebar__nav {
   flex: 1;
@@ -671,25 +991,32 @@ así que el relleno puede ser parejo a los
   gap: 4px;
   scrollbar-width: thin;
   scrollbar-color: rgba(252, 253, 254, .22) transparent;
-}/* Se estiran al ancho de la lista en vez del 192 fijo que llevaban hasta la
+}
+/* Se estiran al ancho de la lista en vez del 192 fijo que llevaban hasta la
    2.5.0: 213px sobre el riel de 240 donde el sistema dibuja barras clásicas
    —que se llevan 11 en el hueco reservado— y 224 donde las dibuja flotantes.
    Aquel ancho fijo estaba para que los ítems no se encogieran al aparecer la
-   barra; ahora eso lo resuelve el `scrollbar-gutter` de arriba,
-que reserva el
-   hueco siempre. `flex: none` sí se queda: sin él,
-en una columna flex los
-   hijos se aplastan a lo alto cuando sobran,
-así que con veinte ítems se
+   barra; ahora eso lo resuelve el `scrollbar-gutter` de arriba, que reserva el
+   hueco siempre. `flex: none` sí se queda: sin él, en una columna flex los
+   hijos se aplastan a lo alto cuando sobran, así que con veinte ítems se
    comprimían en vez de desplazarse. */
-.dcc-sidebar__nav > * { flex: none; }/* `display: flex` le gana al hidden nativo si no se dice lo contrario. */
-.dcc-sidebar__nav > [hidden] { display: none; }.dcc-sidebar__nav::-webkit-scrollbar { width: 8px; }.dcc-sidebar__nav::-webkit-scrollbar-track { background: transparent; }.dcc-sidebar__nav::-webkit-scrollbar-thumb {
+.dcc-sidebar__nav > * { flex: none; }
+/* `display: flex` le gana al hidden nativo si no se dice lo contrario. */
+.dcc-sidebar__nav > [hidden] { display: none; }
+
+.dcc-sidebar__nav::-webkit-scrollbar { width: 8px; }
+.dcc-sidebar__nav::-webkit-scrollbar-track { background: transparent; }
+.dcc-sidebar__nav::-webkit-scrollbar-thumb {
   background: rgba(252, 253, 254, .22);
   border-radius: var(--dcc-radius-sm);
-}.dcc-sidebar__nav::-webkit-scrollbar-thumb:hover { background: rgba(252, 253, 254, .35); }/* Grey/Light: es la única variable del subárbol del sidebar que no consume
-   ningún otro elemento,
-y el trazo del separador es de 1px (inset -0.5px). */
-.dcc-sidebar__sep { height: 1px; background: rgba(252, 253, 254, .14); border: 0; margin: 4px 0; }.dcc-sidebar__item {
+}
+.dcc-sidebar__nav::-webkit-scrollbar-thumb:hover { background: rgba(252, 253, 254, .35); }
+
+/* Grey/Light: es la única variable del subárbol del sidebar que no consume
+   ningún otro elemento, y el trazo del separador es de 1px (inset -0.5px). */
+.dcc-sidebar__sep { height: 1px; background: rgba(252, 253, 254, .14); border: 0; margin: 4px 0; }
+
+.dcc-sidebar__item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -706,24 +1033,31 @@ y el trazo del separador es de 1px (inset -0.5px). */
   line-height: 1.25;
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease;
-}.dcc-sidebar__item svg {
+}
+.dcc-sidebar__item svg {
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
   color: rgba(252, 253, 254, .55);
   transition: color .15s ease;
-}.dcc-sidebar__item > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }/* Hover y seleccionado son el mismo blanco a dos intensidades,
-como en
+}
+.dcc-sidebar__item > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Hover y seleccionado son el mismo blanco a dos intensidades, como en
    Titulación: uno insinúa lo que el otro confirma. Con el borde de 1px que se
-   usaba antes,
-hover y activo eran el mismo trazo y no se distinguían. */
+   usaba antes, hover y activo eran el mismo trazo y no se distinguían. */
 .dcc-sidebar__item:hover,
-.dcc-sidebar__item.is-hover { background: rgba(252, 253, 254, .07); color: var(--dcc-white); }.dcc-sidebar__item:hover svg,
-.dcc-sidebar__item.is-hover svg { color: var(--dcc-white); }.dcc-sidebar__item[aria-current="page"] {
+.dcc-sidebar__item.is-hover { background: rgba(252, 253, 254, .07); color: var(--dcc-white); }
+.dcc-sidebar__item:hover svg,
+.dcc-sidebar__item.is-hover svg { color: var(--dcc-white); }
+.dcc-sidebar__item[aria-current="page"] {
   background: rgba(252, 253, 254, .18);
   color: var(--dcc-white);
   font-weight: 600;
-}.dcc-sidebar__item[aria-current="page"] svg { color: var(--dcc-white); }/* Contador al final del ítem. La variante de aviso es para lo que no se ha
+}
+.dcc-sidebar__item[aria-current="page"] svg { color: var(--dcc-white); }
+
+/* Contador al final del ítem. La variante de aviso es para lo que no se ha
    visto; el resto es sólo cuántos hay. */
 .dcc-sidebar__count {
   margin-left: auto;
@@ -735,11 +1069,19 @@ hover y activo eran el mismo trazo y no se distinguían. */
   background: rgba(252, 253, 254, .14);
   padding: 1px 7px;
   border-radius: 10px;
-}.dcc-sidebar__count--alert { color: var(--dcc-white); background: var(--dcc-red-default); }.dcc-sidebar__item[aria-current="page"] .dcc-sidebar__count {
+}
+.dcc-sidebar__count--alert { color: var(--dcc-white); background: var(--dcc-red-default); }
+.dcc-sidebar__item[aria-current="page"] .dcc-sidebar__count {
   background: rgba(252, 253, 254, .22);
   color: var(--dcc-white);
-}/* Grupo desplegable */
-.dcc-sidebar__caret { width: 16px; height: 16px; flex: 0 0 16px; margin-left: auto; opacity: .5; transition: transform .18s ease; }.dcc-sidebar__item[aria-expanded="true"] .dcc-sidebar__caret { transform: rotate(180deg); }.dcc-sidebar__sub { display: flex; flex-direction: column; gap: 2px; }.dcc-sidebar__sub[hidden] { display: none; }.dcc-sidebar__subitem {
+}
+
+/* Grupo desplegable */
+.dcc-sidebar__caret { width: 16px; height: 16px; flex: 0 0 16px; margin-left: auto; opacity: .5; transition: transform .18s ease; }
+.dcc-sidebar__item[aria-expanded="true"] .dcc-sidebar__caret { transform: rotate(180deg); }
+.dcc-sidebar__sub { display: flex; flex-direction: column; gap: 2px; }
+.dcc-sidebar__sub[hidden] { display: none; }
+.dcc-sidebar__subitem {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -748,16 +1090,21 @@ hover y activo eran el mismo trazo y no se distinguían. */
   color: rgba(252, 253, 254, .6);
   font-size: 14px;
   transition: background-color .15s ease, color .15s ease;
-}.dcc-sidebar__subitem:hover { background: rgba(252, 253, 254, .07); color: var(--dcc-white); }.dcc-sidebar__subitem[aria-current="page"] {
+}
+.dcc-sidebar__subitem:hover { background: rgba(252, 253, 254, .07); color: var(--dcc-white); }
+.dcc-sidebar__subitem[aria-current="page"] {
   background: rgba(252, 253, 254, .14);
   color: var(--dcc-white);
   font-weight: 600;
-}.dcc-sidebar__subitem .dcc-sidebar__count { font-size: 11px; padding: 0 6px; }/* Pie. El bloque de usuario comparte la caja del botón de acción —16px de
-   margen,
-12px adentro—,
-así el avatar cae en el eje de los íconos y el
+}
+.dcc-sidebar__subitem .dcc-sidebar__count { font-size: 11px; padding: 0 6px; }
+
+/* Pie. El bloque de usuario comparte la caja del botón de acción —16px de
+   margen, 12px adentro—, así el avatar cae en el eje de los íconos y el
    engranaje en el de los contadores. */
-.dcc-sidebar__foot { padding: 8px 16px 0; display: flex; flex-direction: column; gap: 8px; }.dcc-sidebar__user { position: relative; display: flex; align-items: center; gap: 12px; padding: 4px 12px; }.dcc-sidebar__avatar {
+.dcc-sidebar__foot { padding: 8px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.dcc-sidebar__user { position: relative; display: flex; align-items: center; gap: 12px; padding: 4px 12px; }
+.dcc-sidebar__avatar {
   width: 32px;
   height: 32px;
   flex: 0 0 32px;
@@ -768,8 +1115,13 @@ así el avatar cae en el eje de los íconos y el
   place-items: center;
   font-size: 12px;
   font-weight: 600;
-}.dcc-sidebar__who { min-width: 0; display: flex; flex-direction: column; }.dcc-sidebar__who b { font-size: 14px; font-weight: 500; }.dcc-sidebar__who small { font-size: 12px; color: rgba(252, 253, 254, .62); }.dcc-sidebar__who b,
-.dcc-sidebar__who small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }.dcc-sidebar__gear {
+}
+.dcc-sidebar__who { min-width: 0; display: flex; flex-direction: column; }
+.dcc-sidebar__who b { font-size: 14px; font-weight: 500; }
+.dcc-sidebar__who small { font-size: 12px; color: rgba(252, 253, 254, .62); }
+.dcc-sidebar__who b,
+.dcc-sidebar__who small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dcc-sidebar__gear {
   margin-left: auto;
   width: 32px;
   height: 32px;
@@ -782,17 +1134,22 @@ así el avatar cae en el eje de los íconos y el
   color: rgba(252, 253, 254, .6);
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease;
-}.dcc-sidebar__gear svg { width: 18px; height: 18px; }.dcc-sidebar__gear:hover,
-.dcc-sidebar__gear[aria-expanded="true"] { background: rgba(252, 253, 254, .1); color: var(--dcc-white); }/* Heredadas de la 2.4.0: el markup anterior sigue renderizando. No las uses en
-   páginas nuevas — `__top` y `__bottom` los reemplazan `__brand`,
-`__nav` y
-   `__foot`,
-y los grupos ahora se separan con `__sep` dentro de `__nav`. */
-.dcc-sidebar__top { display: flex; flex-direction: column; gap: 40px; }.dcc-sidebar__group { display: flex; flex-direction: column; gap: 8px; }.dcc-sidebar__bottom { display: flex; flex-direction: column; gap: 8px; }/* --------------------------------------------------------------------------
+}
+.dcc-sidebar__gear svg { width: 18px; height: 18px; }
+.dcc-sidebar__gear:hover,
+.dcc-sidebar__gear[aria-expanded="true"] { background: rgba(252, 253, 254, .1); color: var(--dcc-white); }
+
+/* Heredadas de la 2.4.0: el markup anterior sigue renderizando. No las uses en
+   páginas nuevas — `__top` y `__bottom` los reemplazan `__brand`, `__nav` y
+   `__foot`, y los grupos ahora se separan con `__sep` dentro de `__nav`. */
+.dcc-sidebar__top { display: flex; flex-direction: column; gap: 40px; }
+.dcc-sidebar__group { display: flex; flex-direction: column; gap: 8px; }
+.dcc-sidebar__bottom { display: flex; flex-direction: column; gap: 8px; }
+
+/* --------------------------------------------------------------------------
    13. FOOTER
    -------------------------------------------------------------------------- */
-/* Mismo comportamiento que la nav: banda a sangre completa,
-contenido topado
+/* Mismo comportamiento que la nav: banda a sangre completa, contenido topado
    en --dcc-container-max y centrado. A 1440px reproduce los 60px del frame. */
 .dcc-footer {
   background: var(--dcc-grey-default);
@@ -803,12 +1160,18 @@ contenido topado
   flex-direction: column;
   gap: 60px;
   color: var(--dcc-white);
-}.dcc-footer__top {
+}
+.dcc-footer__top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 40px;
-}.dcc-footer__links { display: flex; flex-direction: column; gap: 8px; width: 169px; flex: 0 0 auto; }.dcc-footer__links a { font-size: 16px; line-height: 1.2; }.dcc-footer__links a:hover { text-decoration: underline; }.dcc-footer__contact {
+}
+.dcc-footer__links { display: flex; flex-direction: column; gap: 8px; width: 169px; flex: 0 0 auto; }
+.dcc-footer__links a { font-size: 16px; line-height: 1.2; }
+.dcc-footer__links a:hover { text-decoration: underline; }
+
+.dcc-footer__contact {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -817,28 +1180,39 @@ contenido topado
   max-width: 100%;
   flex: 0 0 auto;
   text-align: right;
-}.dcc-footer__contact .dcc-social { padding-top: 0; gap: 20px; }.dcc-footer__info { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; width: 100%; }.dcc-footer__info .dcc-org { font-size: 20px; font-weight: 700; line-height: 1.2; }.dcc-footer__info .dcc-faculty { font-style: italic; font-size: 16px; line-height: 1.2; }.dcc-footer__info .dcc-address { font-size: 16px; line-height: 1.2; }.dcc-footer__info .dcc-contact-line { display: flex; align-items: center; justify-content: flex-end; gap: 8px; font-size: 16px; }.dcc-footer__info .dcc-contact-line svg { width: 16px; height: 16px; flex: 0 0 16px; }.dcc-footer__logos {
+}
+.dcc-footer__contact .dcc-social { padding-top: 0; gap: 20px; }
+.dcc-footer__info { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; width: 100%; }
+.dcc-footer__info .dcc-org { font-size: 20px; font-weight: 700; line-height: 1.2; }
+.dcc-footer__info .dcc-faculty { font-style: italic; font-size: 16px; line-height: 1.2; }
+.dcc-footer__info .dcc-address { font-size: 16px; line-height: 1.2; }
+.dcc-footer__info .dcc-contact-line { display: flex; align-items: center; justify-content: flex-end; gap: 8px; font-size: 16px; }
+.dcc-footer__info .dcc-contact-line svg { width: 16px; height: 16px; flex: 0 0 16px; }
+
+.dcc-footer__logos {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 32px;
   flex-wrap: wrap;
-}.dcc-footer__logos img { flex: 0 0 auto; }/* --- 13b. Pie plano ------------------------------------------------------ */
-/* Una sola línea de texto. Venía del Portal,
-que necesitaba el pie del kit sin
+}
+.dcc-footer__logos img { flex: 0 0 auto; }
+
+/* --- 13b. Pie plano ------------------------------------------------------ */
+/* Una sola línea de texto. Venía del Portal, que necesitaba el pie del kit sin
    enlaces ni logotipos y se lo hizo aparte; acá entra como variante para que no
    tenga que rehacerlo cada aplicación.
-   Conserva el fondo y las canaletas de `.dcc-footer`,
-pero sin bloques que
+   Conserva el fondo y las canaletas de `.dcc-footer`, pero sin bloques que
    separar el gap de 60px y el padding de 32px sobran. */
-.dcc-footer--plano { gap: 0; padding-block: 12px; }.dcc-footer__linea {
+.dcc-footer--plano { gap: 0; padding-block: 12px; }
+.dcc-footer__linea {
   margin: 0;
   text-align: center;
   font-size: 14px;
   line-height: 1.5;
-}/* El separador es un <span aria-hidden> y no un ::after: así el lector de
-   pantalla no lee «punto» entre cada parte,
-y se puede esconder en angosto. */
+}
+/* El separador es un <span aria-hidden> y no un ::after: así el lector de
+   pantalla no lee «punto» entre cada parte, y se puede esconder en angosto. */
 .dcc-footer__sep { padding-inline: 4px; }
 
 /* 560px y no los 768 del kit: acá el corte lo pone el texto, no el layout. A
@@ -849,7 +1223,8 @@ y se puede esconder en angosto. */
    el de la clase queda más liviano, `display: block` gana y los separadores
    reaparecen, cada uno en su propio renglón. */
 @media (max-width: 560px) {
-  .dcc-footer__linea > span { display: block; }.dcc-footer__linea > .dcc-footer__sep { display: none; }
+  .dcc-footer__linea > span { display: block; }
+    .dcc-footer__linea > .dcc-footer__sep { display: none; }
 }
 
 /* --------------------------------------------------------------------------
@@ -859,18 +1234,49 @@ y se puede esconder en angosto. */
 
 /* ---- Tablet: ≤1024px ---- */
 @media (max-width: 1024px) {
-  .dcc-control-grid { grid-template-columns: repeat(2, minmax(0, max-content)); gap: 24px 48px; }:root { --dcc-gutter-lg: 32px; --dcc-gutter-md: 24px; }.dcc-nav-inst { padding-block: 24px; flex-wrap: wrap; }.dcc-nav-inst__main { padding-top: 16px; }.dcc-nav-inst__menu { justify-content: flex-start; column-gap: 12px; row-gap: 4px; padding-bottom: 6px; }.dcc-social { padding-top: 16px; }.dcc-nav-app { padding-block: 20px; min-height: 80px; }.dcc-nav-app__brand { gap: 24px; }.dcc-nav-app__brand .dcc-logo-dcc-h { width: 200px; flex: 0 0 200px; }.dcc-nav-app__title { font-size: 26px; white-space: normal; }.dcc-footer { padding-block: 32px; gap: 40px; }.dcc-footer__top { gap: 32px; }.dcc-footer__contact { width: auto; flex: 1 1 320px; }.dcc-footer__logos { justify-content: flex-start; gap: 24px 40px; }
+  .dcc-control-grid { grid-template-columns: repeat(2, minmax(0, max-content)); gap: 24px 48px; }
+  
+    :root { --dcc-gutter-lg: 32px; --dcc-gutter-md: 24px; }
+  
+    .dcc-nav-inst { padding-block: 24px; flex-wrap: wrap; }
+    .dcc-nav-inst__main { padding-top: 16px; }
+    .dcc-nav-inst__menu { justify-content: flex-start; column-gap: 12px; row-gap: 4px; padding-bottom: 6px; }
+    .dcc-social { padding-top: 16px; }
+  
+    .dcc-nav-app { padding-block: 20px; min-height: 80px; }
+    .dcc-nav-app__brand { gap: 24px; }
+    .dcc-nav-app__brand .dcc-logo-dcc-h { width: 200px; flex: 0 0 200px; }
+    .dcc-nav-app__title { font-size: 26px; white-space: normal; }
+  
+    .dcc-footer { padding-block: 32px; gap: 40px; }
+    .dcc-footer__top { gap: 32px; }
+    .dcc-footer__contact { width: auto; flex: 1 1 320px; }
+    .dcc-footer__logos { justify-content: flex-start; gap: 24px 40px; }
 }
 
 /* ---- Móvil: ≤768px ---- */
 @media (max-width: 768px) {
-  :root { --dcc-gutter-lg: 20px; --dcc-gutter-md: 20px; }.dcc-t-display { font-size: 36px; }.dcc-t-heading-l { font-size: 28px; }.dcc-t-heading-m { font-size: 20px; }.dcc-badge-grid { grid-template-columns: repeat(2, max-content); }.dcc-control-grid { grid-template-columns: 1fr; gap: 20px; }.dcc-alert-stack { gap: 24px; }/* Nav institucional → hamburguesa */
+  :root { --dcc-gutter-lg: 20px; --dcc-gutter-md: 20px; }
+  
+    .dcc-t-display { font-size: 36px; }
+    .dcc-t-heading-l { font-size: 28px; }
+    .dcc-t-heading-m { font-size: 20px; }
+  
+    .dcc-badge-grid { grid-template-columns: repeat(2, max-content); }
+    .dcc-control-grid { grid-template-columns: 1fr; gap: 20px; }
+  
+    .dcc-alert-stack { gap: 24px; }
+  
+    /* Nav institucional → hamburguesa */
     .dcc-nav-inst {
       flex-wrap: wrap;
       align-items: center;
       padding-block: 16px;
       gap: 16px;
-    }.dcc-logo-dcc { width: 120px; height: 59px; flex: 0 0 120px; }.dcc-nav-toggle {
+    }
+    .dcc-logo-dcc { width: 120px; height: 59px; flex: 0 0 120px; }
+  
+    .dcc-nav-toggle {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -882,22 +1288,32 @@ y se puede esconder en angosto. */
       border-radius: 4px;
       color: #fff;
       cursor: pointer;
-    }.dcc-nav-toggle svg { width: 24px; height: 24px; }/* Cerrado se retira del flujo: con max-height:0 seguía siendo un ítem flex y
-       aportaba dos gaps de 16px,
-  dejando un hueco vacío bajo el logo. */
+    }
+    .dcc-nav-toggle svg { width: 24px; height: 24px; }
+  
+    /* Cerrado se retira del flujo: con max-height:0 seguía siendo un ítem flex y
+       aportaba dos gaps de 16px, dejando un hueco vacío bajo el logo. */
     .dcc-nav-inst__main {
       flex: 0 0 100%;
       padding-top: 0;
       display: none;
-    }.dcc-nav-inst.is-open .dcc-nav-inst__main { display: flex; }.dcc-nav-inst__menu {
+    }
+    .dcc-nav-inst.is-open .dcc-nav-inst__main { display: flex; }
+  
+    .dcc-nav-inst__menu {
       flex-direction: column;
       align-items: stretch;
       column-gap: 0;
       row-gap: 4px;
       padding-bottom: 8px;
-    }.dcc-nav-inst__menu > li,
-  .dcc-nav-inst__submenu > li { display: block; }.dcc-nav-inst__menu > li > a { justify-content: flex-start; height: auto; padding: 10px 8px; border-radius: 4px; }.dcc-nav-inst__submenu { flex-direction: column; align-items: stretch; gap: 8px; padding-top: 12px; }.dcc-nav-inst__submenu a { justify-content: flex-start; height: auto; padding: 8px; }/* Las redes acompañan al menú: cerrado,
-  la barra es sólo logo + hamburguesa */
+    }
+    .dcc-nav-inst__menu > li,
+  .dcc-nav-inst__submenu > li { display: block; }
+    .dcc-nav-inst__menu > li > a { justify-content: flex-start; height: auto; padding: 10px 8px; border-radius: 4px; }
+    .dcc-nav-inst__submenu { flex-direction: column; align-items: stretch; gap: 8px; padding-top: 12px; }
+    .dcc-nav-inst__submenu a { justify-content: flex-start; height: auto; padding: 8px; }
+  
+    /* Las redes acompañan al menú: cerrado, la barra es sólo logo + hamburguesa */
     .dcc-nav-inst .dcc-social {
       display: none;
       flex: 0 0 100%;
@@ -905,71 +1321,97 @@ y se puede esconder en angosto. */
       gap: 20px;
       padding-top: 12px;
       border-top: 1px solid var(--dcc-grey-light);
-    }.dcc-nav-inst.is-open .dcc-social { display: flex; }/* Nav de aplicación: todo en una sola línea.
-       Antes envolvía —la marca ocupaba el 100% y el usuario caía debajo—,
-  lo que
+    }
+    .dcc-nav-inst.is-open .dcc-social { display: flex; }
+  
+    /* Nav de aplicación: todo en una sola línea.
+       Antes envolvía —la marca ocupaba el 100% y el usuario caía debajo—, lo que
        gastaba dos franjas de alto en una pantalla donde el alto es lo escaso.
-       Para que quepa: logo más chico,
-  título más chico y el nombre de la persona
-       se oculta,
-  quedando sólo su avatar o ícono. */
-    .dcc-nav-app { flex-wrap: nowrap; padding-block: 12px; gap: 12px; }.dcc-nav-app__brand { flex: 0 1 auto; gap: 12px; min-width: 0; }.dcc-nav-app__title {
+       Para que quepa: logo más chico, título más chico y el nombre de la persona
+       se oculta, quedando sólo su avatar o ícono. */
+    .dcc-nav-app { flex-wrap: nowrap; padding-block: 12px; gap: 12px; }
+    .dcc-nav-app__brand { flex: 0 1 auto; gap: 12px; min-width: 0; }
+    .dcc-nav-app__title {
       font-size: 18px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }/* `flex` y no sólo `width`: en un contenedor flex manda el flex-basis,
-  y la
-       regla general del logo trae `flex: 0 0 …`. Con width solo,
-  no pasaba nada. */
-    .dcc-nav-app__brand .dcc-logo-dcc { flex: 0 0 88px; width: 88px; height: auto; }/* El horizontal cabe mejor que el vertical en un teléfono: a 150px son 28px
+    }
+    /* `flex` y no sólo `width`: en un contenedor flex manda el flex-basis, y la
+       regla general del logo trae `flex: 0 0 …`. Con width solo, no pasaba nada. */
+    .dcc-nav-app__brand .dcc-logo-dcc { flex: 0 0 88px; width: 88px; height: auto; }
+    /* El horizontal cabe mejor que el vertical en un teléfono: a 150px son 28px
        de alto. Y el título vuelve al centro: con el logo de 28 y el texto de 18,
-  colgarlo del baseline lo dejaba pegado al borde de abajo. */
-    .dcc-nav-app__brand .dcc-logo-dcc-h { flex: 0 0 150px; width: 150px; }.dcc-nav-app__brand { align-items: center; }.dcc-nav-app__brand .dcc-logo-dcc-h { margin-top: 0; }.dcc-nav-app__user { margin-left: auto; flex: 0 0 auto; }/* El nombre se va; el avatar o el ícono se queda. Se contempla la clase
-       explícita y también el <span> sin clase del markup anterior,
-  para no
+       colgarlo del baseline lo dejaba pegado al borde de abajo. */
+    .dcc-nav-app__brand .dcc-logo-dcc-h { flex: 0 0 150px; width: 150px; }
+    .dcc-nav-app__brand { align-items: center; }
+    .dcc-nav-app__brand .dcc-logo-dcc-h { margin-top: 0; }
+    .dcc-nav-app__user { margin-left: auto; flex: 0 0 auto; }
+  
+    /* El nombre se va; el avatar o el ícono se queda. Se contempla la clase
+       explícita y también el <span> sin clase del markup anterior, para no
        obligar a tocar las páginas que ya existen. */
     .dcc-nav-app__user-name,
-  .dcc-nav-app__user > span:not([class]) { display: none; }/* Sidebar → ancho completo. Los ítems ya se estiran solos desde la 2.5.1,
-  así
+  .dcc-nav-app__user > span:not([class]) { display: none; }
+  
+    /* Sidebar → ancho completo. Los ítems ya se estiran solos desde la 2.5.1, así
        que acá alcanza con soltar el ancho del riel; el logotipo sí se achica. */
-    .dcc-sidebar { width: 100%; min-height: 0; height: auto; }.dcc-sidebar__brand .dcc-logo-dcc-h { width: 176px; }/* Footer: los enlaces pasan a dos columnas para no volverse una tira de 8
-       filas,
-  el bloque de contacto se alinea a la izquierda y los logos se
+    .dcc-sidebar { width: 100%; min-height: 0; height: auto; }
+    .dcc-sidebar__brand .dcc-logo-dcc-h { width: 176px; }
+  
+    /* Footer: los enlaces pasan a dos columnas para no volverse una tira de 8
+       filas, el bloque de contacto se alinea a la izquierda y los logos se
        centran con una altura pareja. */
     /* Footer angosto: se ocultan los enlaces de navegación —ya están en la nav—
-       y todo queda centrado: textos,
-  redes y logos. */
-    .dcc-footer { padding-block: 24px; gap: 28px; }.dcc-footer__top { flex-direction: column; align-items: center; gap: 24px; text-align: center; }.dcc-footer__links { display: none; }.dcc-footer__contact {
+       y todo queda centrado: textos, redes y logos. */
+    .dcc-footer { padding-block: 24px; gap: 28px; }
+    .dcc-footer__top { flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+    .dcc-footer__links { display: none; }
+    .dcc-footer__contact {
       width: 100%;
       min-width: 0;
       align-items: center;
       text-align: center;
       gap: 24px;
-    }.dcc-footer__contact .dcc-social { order: 2; justify-content: center; gap: 20px; }.dcc-footer__info { order: 1; align-items: center; min-width: 0; text-align: center; }.dcc-footer__info .dcc-org { font-size: 18px; }.dcc-footer__info .dcc-faculty,
-  .dcc-footer__info .dcc-address { text-align: center; }.dcc-footer__info .dcc-contact-line { justify-content: center; }.dcc-footer__info .dcc-address,
-  .dcc-footer__info .dcc-contact-line a { overflow-wrap: anywhere; }.dcc-footer__logos {
+    }
+    .dcc-footer__contact .dcc-social { order: 2; justify-content: center; gap: 20px; }
+    .dcc-footer__info { order: 1; align-items: center; min-width: 0; text-align: center; }
+    .dcc-footer__info .dcc-org { font-size: 18px; }
+    .dcc-footer__info .dcc-faculty,
+  .dcc-footer__info .dcc-address { text-align: center; }
+    .dcc-footer__info .dcc-contact-line { justify-content: center; }
+    .dcc-footer__info .dcc-address,
+  .dcc-footer__info .dcc-contact-line a { overflow-wrap: anywhere; }
+    .dcc-footer__logos {
       justify-content: center;
       align-items: center;
       gap: 24px 28px;
       padding-top: 8px;
       border-top: 1px solid var(--dcc-grey-light);
-    }.dcc-footer__logos img { max-height: 56px; width: auto; }
+    }
+    .dcc-footer__logos img { max-height: 56px; width: auto; }
 }
 
 /* ---- Móvil chico: ≤480px ---- */
 @media (max-width: 480px) {
-  .dcc-badge-grid { grid-template-columns: max-content; }.dcc-alert { width: 100%; }.dcc-t-display { font-size: 30px; }.dcc-footer__links { grid-template-columns: 1fr; gap: 10px; }.dcc-footer__logos { gap: 20px 24px; }.dcc-footer__logos img { max-height: 44px; }.dcc-footer__info .dcc-org { font-size: 16px; }.dcc-logo-dcc { width: 104px; height: 51px; flex: 0 0 104px; }.dcc-bottom-nav__item { font-size: 11px; padding: 8px 2px; }
+  .dcc-badge-grid { grid-template-columns: max-content; }
+    .dcc-alert { width: 100%; }
+    .dcc-t-display { font-size: 30px; }
+  
+    .dcc-footer__links { grid-template-columns: 1fr; gap: 10px; }
+    .dcc-footer__logos { gap: 20px 24px; }
+    .dcc-footer__logos img { max-height: 44px; }
+    .dcc-footer__info .dcc-org { font-size: 16px; }
+  
+    .dcc-logo-dcc { width: 104px; height: 51px; flex: 0 0 104px; }
+    .dcc-bottom-nav__item { font-size: 11px; padding: 8px 2px; }
 }
+
 /* ==========================================================================
    15. COMPONENTES EXTENDIDOS
    No existen en el archivo de Figma. Están derivados de los tokens del kit:
-   paleta,
-escala Poppins/Inter,
-radios 4/8/24/26,
-bordes de 1 y 2px,
-sombras,
-y el mismo lenguaje de estados de la nav (rojo = activo/hover).
+   paleta, escala Poppins/Inter, radios 4/8/24/26, bordes de 1 y 2px, sombras,
+   y el mismo lenguaje de estados de la nav (rojo = activo/hover).
    ========================================================================== */
 :root {
   --dcc-field-h: 40px;          /* mismo alto que la cabecera de tabla */
@@ -977,20 +1419,35 @@ y el mismo lenguaje de estados de la nav (rojo = activo/hover).
   --dcc-radius-md: 8px;         /* tarjetas, tabla, acordeón */
   /* El foco se marca sólo con el borde, sin halo. */
   --dcc-focus-border: var(--dcc-lightblue-default);
-}/* --------------------------------------------------------------------------
+}
+
+/* --------------------------------------------------------------------------
    15.1 CAMPOS DE FORMULARIO
    -------------------------------------------------------------------------- */
-.dcc-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; }.dcc-field--wide { max-width: 100%; }.dcc-field__label {
+.dcc-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; }
+.dcc-field--wide { max-width: 100%; }
+
+.dcc-field__label {
   font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
-}.dcc-field__label .dcc-req { color: var(--dcc-red-default); }.dcc-field__help {
+  color: var(--dcc-fg);
+}
+/* El asterisco de obligatorio es texto sobre la superficie del formulario, no
+   un acento de marca: usa el rojo de error para que se lea también en oscuro. */
+.dcc-field__label .dcc-req { color: var(--dcc-danger); }
+
+.dcc-field__help {
   font-size: 12px;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
-}.dcc-field__help--error { color: var(--dcc-red-default); }.dcc-field__help--success { color: var(--dcc-green-default); }.dcc-field__help svg { width: 12px; height: 12px; flex: 0 0 12px; }.dcc-field__help { display: flex; align-items: center; gap: 4px; }/* Caja compartida por input,
-select y textarea */
+  color: var(--dcc-fg-muted);
+}
+.dcc-field__help--error { color: var(--dcc-danger); }
+.dcc-field__help--success { color: var(--dcc-success); }
+.dcc-field__help svg { width: 12px; height: 12px; flex: 0 0 12px; }
+.dcc-field__help { display: flex; align-items: center; gap: 4px; }
+
+/* Caja compartida por input, select y textarea */
 .dcc-input {
   width: 100%;
   height: var(--dcc-field-h);
@@ -998,28 +1455,25 @@ select y textarea */
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  color: var(--dcc-fg);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
-}textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }.dcc-input::placeholder { color: var(--dcc-grey-light); opacity: 1; }/* El foco manda sobre el hover: sin el :not(:focus),
-esta regla gana por
-   especificidad (0,
-4,
-0 contra 0,
-2,
-0) y mientras el mouse está encima pinta el
-   borde de Grey/Default,
-que a 2px se lee como una línea negra. */
-.dcc-input:hover:not(:disabled):not(:focus) { border-color: var(--dcc-grey-default); }/* Foco: borde REAL de 2px,
-con 1px menos de padding para que nada se mueva.
-   Antes usaba `box-shadow: inset 0 0 0 1px`,
-pero una hairline pegada al borde
+}
+textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
+
+.dcc-input::placeholder { color: var(--dcc-fg-muted); opacity: 1; }
+/* El foco manda sobre el hover: sin el :not(:focus), esta regla gana por
+   especificidad (0,4,0 contra 0,2,0) y mientras el mouse está encima pinta el
+   borde de Grey/Default, que a 2px se lee como una línea negra. */
+.dcc-input:hover:not(:disabled):not(:focus) { border-color: var(--dcc-fg-accent); }
+
+/* Foco: borde REAL de 2px, con 1px menos de padding para que nada se mueva.
+   Antes usaba `box-shadow: inset 0 0 0 1px`, pero una hairline pegada al borde
    se compone con antialiasing y en pantallas con DPR fraccionario deja una
    costura oscura — la línea negra. Con un borde de verdad no existe.
-   El cambio de color por sí solo da 1,
-31:1 entre estados y WCAG pide 3:1; es el
+   El cambio de color por sí solo da 1,31:1 entre estados y WCAG pide 3:1; es el
    grosor lo que hace válido el indicador. */
 .dcc-input:focus,
 .dcc-input:focus-visible {
@@ -1032,22 +1486,38 @@ pero una hairline pegada al borde
      de 2px pase por tonos de más de 6:1 contra el blanco — el parpadeo negro.
      Al entrar de golpe, el borde nunca pasa por un tono oscuro. */
   transition: none;
-}.dcc-input-wrap .dcc-input.dcc-has-lead:focus { padding-left: 35px; }.dcc-input-wrap .dcc-input.dcc-has-trail:focus { padding-right: 35px; }.dcc-field--error   .dcc-input:focus { border-color: var(--dcc-red-default); }.dcc-field--success .dcc-input:focus { border-color: var(--dcc-green-default); }.dcc-input:disabled {
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-light);
-  border-color: var(--dcc-grey-light);
+}
+.dcc-input-wrap .dcc-input.dcc-has-lead:focus { padding-left: 35px; }
+.dcc-input-wrap .dcc-input.dcc-has-trail:focus { padding-right: 35px; }
+.dcc-field--error   .dcc-input:focus { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-input:focus { border-color: var(--dcc-success); }
+.dcc-input:disabled {
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-muted);
+  border-color: var(--dcc-border);
   cursor: not-allowed;
-}.dcc-field--error   .dcc-input { border-color: var(--dcc-red-default); }.dcc-field--success .dcc-input { border-color: var(--dcc-green-default); }/* Input con adorno a un lado o a ambos */
-.dcc-input-wrap { position: relative; display: flex; align-items: center; }.dcc-input-wrap > svg {
+}
+
+.dcc-field--error   .dcc-input { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-input { border-color: var(--dcc-success); }
+
+/* Input con adorno a un lado o a ambos */
+.dcc-input-wrap { position: relative; display: flex; align-items: center; }
+.dcc-input-wrap > svg {
   position: absolute;
   width: 16px;
   height: 16px;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   pointer-events: none;   /* el ícono decorativo no debe robar el clic */
-}.dcc-input-wrap > .dcc-lead { left: 12px; }.dcc-input-wrap > .dcc-trail { right: 12px; }.dcc-input-wrap:focus-within > svg { color: var(--dcc-lightblue-default); }.dcc-input-wrap .dcc-input.dcc-has-lead { padding-left: 36px; }.dcc-input-wrap .dcc-input.dcc-has-trail { padding-right: 36px; }/* El botón sí debe recibir clics: va en su propia regla,
-con la misma
-   especificidad que la de arriba,
-para que no herede pointer-events:none. */
+}
+.dcc-input-wrap > .dcc-lead { left: 12px; }
+.dcc-input-wrap > .dcc-trail { right: 12px; }
+.dcc-input-wrap:focus-within > svg { color: var(--dcc-focus); }
+.dcc-input-wrap .dcc-input.dcc-has-lead { padding-left: 36px; }
+.dcc-input-wrap .dcc-input.dcc-has-trail { padding-right: 36px; }
+
+/* El botón sí debe recibir clics: va en su propia regla, con la misma
+   especificidad que la de arriba, para que no herede pointer-events:none. */
 .dcc-input-wrap > .dcc-input-btn {
   position: absolute;
   display: grid;
@@ -1058,18 +1528,133 @@ para que no herede pointer-events:none. */
   background: none;
   border: 0;
   border-radius: var(--dcc-radius-sm);
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: pointer;
   pointer-events: auto;
-}.dcc-input-wrap > .dcc-input-btn.dcc-trail { right: 8px; }.dcc-input-wrap > .dcc-input-btn svg { width: 16px; height: 16px; }.dcc-input-btn:hover { color: var(--dcc-grey-default); background: var(--dcc-grey-ultralight); }.dcc-input-btn:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 1px; }/* Chrome y Safari dibujan su propia cruz en type="search": la ocultamos para
+}
+.dcc-input-wrap > .dcc-input-btn.dcc-trail { right: 8px; }
+.dcc-input-wrap > .dcc-input-btn svg { width: 16px; height: 16px; }
+.dcc-input-btn:hover { color: var(--dcc-fg-accent); background: var(--dcc-surface-muted); }
+.dcc-input-btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 1px; }
+
+/* Chrome y Safari dibujan su propia cruz en type="search": la ocultamos para
    no tener dos botones de limpiar. */
 .dcc-input[type="search"]::-webkit-search-cancel-button,
 .dcc-input[type="search"]::-webkit-search-decoration,
-.dcc-input[type="search"]::-webkit-search-results-button { -webkit-appearance: none; appearance: none; display: none; }.dcc-input[type="search"] { appearance: none; -webkit-appearance: none; }/* Select propio (combobox). El <select> nativo abre la lista del sistema
-   operativo,
-que no se puede estilizar; este la reemplaza por una lista con
+.dcc-input[type="search"]::-webkit-search-results-button { -webkit-appearance: none; appearance: none; display: none; }
+.dcc-input[type="search"] { appearance: none; -webkit-appearance: none; }
+
+/* Campo con adornos: texto, ícono o botón pegados al valor, antes o después
+   —la moneda, la unidad, el dominio, el botón de mostrar la contraseña—. Es el
+   InputAdornment de MUI. A diferencia de `.dcc-input-wrap`, que monta íconos
+   encima del input con posición absoluta, acá los adornos están en el flujo:
+   miden lo que mida su texto y el campo toma el resto. Por eso el borde y el
+   foco pasan al contenedor.
+   El contenedor tiene 1px de padding que desaparece al enfocar, cuando el
+   borde crece a 2px: así nada se corre, igual que en `.dcc-input`. */
+.dcc-adorned {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--dcc-field-h);
+  padding: 1px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-fg);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  overflow: hidden;
+  cursor: text;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.dcc-adorned:hover:not(:focus-within):not(:has(.dcc-adorned__input:disabled)) { border-color: var(--dcc-fg-accent); }
+.dcc-adorned:focus-within {
+  border-width: 2px;
+  border-color: var(--dcc-focus-border);
+  padding: 0;
+  transition: none;
+}
+.dcc-adorned__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0 12px;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.dcc-adorned__input::placeholder { color: var(--dcc-fg-muted); opacity: 1; }
+
+.dcc-adornment {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 4px;
+  height: 100%;
+  color: var(--dcc-fg-muted);
+  white-space: nowrap;
+  user-select: none;
+}
+.dcc-adornment svg { width: 16px; height: 16px; flex: 0 0 16px; }
+/* El adorno se pega al valor: 12px contra el borde, 8px contra el texto. */
+.dcc-adornment:first-child { padding-left: 12px; }
+.dcc-adornment:last-child { padding-right: 12px; }
+.dcc-adornment + .dcc-adorned__input { padding-left: 8px; }
+.dcc-adorned__input:has(+ .dcc-adornment) { padding-right: 8px; }
+.dcc-adorned:focus-within > .dcc-adornment > svg { color: var(--dcc-focus); }
+
+/* En caja: fondo propio y una línea que lo separa del valor. */
+.dcc-adornment--box {
+  padding: 0 12px;
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-accent);
+}
+.dcc-adornment--box:first-child { border-right: 1px solid var(--dcc-border-subtle); }
+.dcc-adornment--box:last-child { border-left: 1px solid var(--dcc-border-subtle); }
+.dcc-adornment--box + .dcc-adorned__input { padding-left: 12px; }
+.dcc-adorned__input:has(+ .dcc-adornment--box) { padding-right: 12px; }
+
+/* Botón dentro de un adorno: el mismo `.dcc-input-btn` del campo de búsqueda.
+   Con dos íconos alterna entre ellos según `aria-pressed` —el ojo abierto y
+   el tachado de la contraseña—. */
+.dcc-adornment > .dcc-input-btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: -6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  color: var(--dcc-fg-muted);
+  cursor: pointer;
+}
+.dcc-adornment > .dcc-input-btn svg { width: 18px; height: 18px; }
+.dcc-input-btn:not([aria-pressed="true"]) > svg + svg,
+.dcc-input-btn[aria-pressed="true"] > svg:first-child:not(:only-child) { display: none; }
+
+.dcc-field--error   .dcc-adorned,
+.dcc-field--error   .dcc-adorned:focus-within { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-adorned,
+.dcc-field--success .dcc-adorned:focus-within { border-color: var(--dcc-success); }
+.dcc-adorned:has(.dcc-adorned__input:disabled) {
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-muted);
+  cursor: not-allowed;
+}
+.dcc-adorned__input:disabled { cursor: not-allowed; }
+
+/* Select propio (combobox). El <select> nativo abre la lista del sistema
+   operativo, que no se puede estilizar; este la reemplaza por una lista con
    los tokens del kit y el patrón ARIA de combobox. */
-.dcc-combo { position: relative; }.dcc-combo__button {
+.dcc-combo { position: relative; }
+.dcc-combo__button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1080,33 +1665,56 @@ que no se puede estilizar; este la reemplaza por una lista con
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   text-align: left;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   cursor: pointer;
   transition: border-color .15s ease, box-shadow .15s ease;
-}.dcc-combo__button svg {
+}
+.dcc-combo__button > svg {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   transition: transform .2s cubic-bezier(.4, 0, .2, 1);
-}.dcc-combo__button:hover:not([disabled]):not(:focus-visible):not([aria-expanded="true"]) {
-  border-color: var(--dcc-grey-default);
-}.dcc-combo__button:focus-visible,
+}
+.dcc-combo__button:hover:not([disabled]):not(:focus-visible):not([aria-expanded="true"]) {
+  border-color: var(--dcc-fg-accent);
+}
+.dcc-combo__button:focus-visible,
 .dcc-combo__button[aria-expanded="true"] {
   outline: none;
   border-width: 2px;
   border-color: var(--dcc-focus-border);
   padding: 7px 11px;
   transition: none;
-}.dcc-combo__button[aria-expanded="true"] svg { transform: rotate(180deg); }.dcc-combo__button[disabled] {
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-light);
+}
+.dcc-combo__button[aria-expanded="true"] > svg { transform: rotate(180deg); }
+.dcc-combo__button[disabled] {
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-muted);
   cursor: not-allowed;
-}.dcc-combo__button[disabled] svg { color: var(--dcc-grey-light); }.dcc-combo__value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.dcc-combo__list {
+}
+.dcc-combo__button[disabled] > svg { color: var(--dcc-fg-muted); }
+.dcc-combo__value { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Adorno al principio del select: el mismo `.dcc-adornment` del campo. */
+.dcc-combo__button > .dcc-adornment { gap: 4px; }
+.dcc-combo__button > .dcc-adornment:first-child { padding-left: 0; }
+.dcc-combo__button[aria-expanded="true"] > .dcc-adornment > svg,
+.dcc-combo__button:focus-visible > .dcc-adornment > svg { color: var(--dcc-focus); }
+.dcc-combo__button > .dcc-adornment--box:first-child {
+  align-self: stretch;
+  height: auto;
+  margin: -8px 0 -8px -12px;
+  padding: 0 12px;
+  border-radius: 3px 0 0 3px;
+}
+.dcc-combo__button:focus-visible > .dcc-adornment--box:first-child,
+.dcc-combo__button[aria-expanded="true"] > .dcc-adornment--box:first-child { margin: -7px 0 -7px -11px; }
+
+.dcc-combo__list {
   position: absolute;
   z-index: 20;
   top: calc(100% + 4px);
@@ -1115,11 +1723,13 @@ que no se puede estilizar; este la reemplaza por una lista con
   max-height: 232px;
   overflow-y: auto;
   padding: 4px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   box-shadow: var(--dcc-shadow);
-}.dcc-combo__list[hidden] { display: none; }.dcc-combo__option {
+}
+.dcc-combo__list[hidden] { display: none; }
+.dcc-combo__option {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1128,19 +1738,25 @@ que no se puede estilizar; este la reemplaza por una lista con
   border-radius: var(--dcc-radius-sm);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   cursor: pointer;
-}/* El check hereda el color del texto de la opción,
-sin acento propio */
-.dcc-combo__option svg { width: 16px; height: 16px; flex: 0 0 16px; opacity: 0; color: currentColor; }.dcc-combo__option:hover,
-.dcc-combo__option.is-active { background: var(--dcc-grey-ultralight); }.dcc-combo__option[aria-selected="true"] { font-weight: 700; color: var(--dcc-grey-default); }.dcc-combo__option[aria-selected="true"] svg { opacity: 1; }/* --------------------------------------------------------------------------
+}
+/* El check hereda el color del texto de la opción, sin acento propio */
+.dcc-combo__option svg { width: 16px; height: 16px; flex: 0 0 16px; opacity: 0; color: currentColor; }
+.dcc-combo__option:hover,
+.dcc-combo__option.is-active { background: var(--dcc-surface-muted); }
+.dcc-combo__option[aria-selected="true"] { font-weight: 700; color: var(--dcc-fg-accent); }
+.dcc-combo__option[aria-selected="true"] svg { opacity: 1; }
+
+/* --------------------------------------------------------------------------
    Menú desplegable
    Para menús de acciones colgados de un botón —el de usuario en la barra de
    aplicación es el caso típico—. No es un <select>: sus elementos navegan o
-   ejecutan,
-no eligen un valor. Para elegir un valor está el combobox.
+   ejecutan, no eligen un valor. Para elegir un valor está el combobox.
    -------------------------------------------------------------------------- */
-.dcc-menu { position: relative; display: inline-flex; }.dcc-menu__trigger {
+.dcc-menu { position: relative; display: inline-flex; }
+
+.dcc-menu__trigger {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1150,36 +1766,47 @@ no eligen un valor. Para elegir un valor está el combobox.
   cursor: pointer;
   color: inherit;
   font-family: var(--dcc-font-body);
-}.dcc-menu__trigger:focus-visible {
-  outline: 2px solid var(--dcc-lightblue-default);
+}
+
+.dcc-menu__trigger:focus-visible {
+  outline: 2px solid var(--dcc-focus);
   outline-offset: 3px;
   border-radius: var(--dcc-radius-sm);
-}.dcc-menu__list {
+}
+
+.dcc-menu__list {
   position: absolute;
   z-index: 30;
   top: calc(100% + 8px);
   left: 0;
   min-width: 200px;
   padding: 4px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   box-shadow: var(--dcc-shadow);
-}/* Colgado del borde derecho: es lo que se necesita cuando el disparador vive
+}
+
+/* Colgado del borde derecho: es lo que se necesita cuando el disparador vive
    en la esquina de la barra y el menú se saldría de la pantalla. */
-.dcc-menu--end .dcc-menu__list { left: auto; right: 0; }/* Desplegado hacia arriba. La regla general abre siempre bajo el disparador
-   —se decidió así para el avatar de la barra de aplicación,
-que tiene que
-   seguir visible—,
-pero en el pie de una barra lateral eso lo manda fuera de
+.dcc-menu--end .dcc-menu__list { left: auto; right: 0; }
+
+/* Desplegado hacia arriba. La regla general abre siempre bajo el disparador
+   —se decidió así para el avatar de la barra de aplicación, que tiene que
+   seguir visible—, pero en el pie de una barra lateral eso lo manda fuera de
    la pantalla. */
-.dcc-menu--up .dcc-menu__list { top: auto; bottom: calc(100% + 8px); }.dcc-menu__list[hidden] { display: none; }/* Grupo de opciones,
-para separar bloques sin una regla por cada uno. */
+.dcc-menu--up .dcc-menu__list { top: auto; bottom: calc(100% + 8px); }
+
+.dcc-menu__list[hidden] { display: none; }
+
+/* Grupo de opciones, para separar bloques sin una regla por cada uno. */
 .dcc-menu__group + .dcc-menu__group {
   margin-top: 4px;
   padding-top: 4px;
-  border-top: 1px solid var(--dcc-grey-ultralight);
-}.dcc-menu__item {
+  border-top: 1px solid var(--dcc-border-subtle);
+}
+
+.dcc-menu__item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1191,23 +1818,37 @@ para separar bloques sin una regla por cada uno. */
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   text-align: left;
   cursor: pointer;
-}.dcc-menu__item svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--dcc-grey-light); }.dcc-menu__item:hover,
-.dcc-menu__item.is-active { background: var(--dcc-grey-ultralight); }.dcc-menu__item:focus-visible {
-  outline: 2px solid var(--dcc-lightblue-default);
+}
+
+.dcc-menu__item svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--dcc-fg-muted); }
+
+.dcc-menu__item:hover,
+.dcc-menu__item.is-active { background: var(--dcc-surface-muted); }
+
+.dcc-menu__item:focus-visible {
+  outline: 2px solid var(--dcc-focus);
   outline-offset: -2px;
-}.dcc-menu__item[aria-disabled="true"] { opacity: .5; pointer-events: none; }.dcc-menu__sep {
+}
+
+.dcc-menu__item[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+
+.dcc-menu__sep {
   border: 0;
-  border-top: 1px solid var(--dcc-grey-ultralight);
+  border-top: 1px solid var(--dcc-border-subtle);
   margin: 4px 0;
-}.dcc-field--error .dcc-combo__button { border-color: var(--dcc-red-default); }.dcc-field--success .dcc-combo__button { border-color: var(--dcc-green-default); }/* --------------------------------------------------------------------------
+}
+
+.dcc-field--error .dcc-combo__button { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-combo__button { border-color: var(--dcc-success); }
+
+/* --------------------------------------------------------------------------
    15.2 AVATAR
    -------------------------------------------------------------------------- */
 /* Las iniciales van SIEMPRE dentro de .dcc-avatar__label. Si se dejan como texto
-   suelto junto al badge,
-el salto de línea del markup se convierte en un ítem
+   suelto junto al badge, el salto de línea del markup se convierte en un ítem
    anónimo con espacio en blanco y el texto se descoloca. */
 .dcc-avatar {
   position: relative;
@@ -1225,16 +1866,31 @@ el salto de línea del markup se convierte en un ítem
   font-weight: 700;
   line-height: 1;
   user-select: none;
-}.dcc-avatar__label {
+}
+.dcc-avatar__label {
   display: block;
   line-height: 1;
   white-space: nowrap;
-}.dcc-avatar img {
+}
+.dcc-avatar img {
   width: 100%;
   height: 100%;
   border-radius: 9999px;
   object-fit: cover;
-}.dcc-avatar--xs { width: 24px; height: 24px; font-size: 10px; }.dcc-avatar--sm { width: 32px; height: 32px; font-size: 12px; }.dcc-avatar--lg { width: 48px; height: 48px; font-size: 18px; }.dcc-avatar--xl { width: 64px; height: 64px; font-size: 24px; }.dcc-avatar--lightblue { background: var(--dcc-lightblue-default); }.dcc-avatar--red { background: var(--dcc-red-default); }.dcc-avatar--blue { background: var(--dcc-blue-default); }.dcc-avatar--green { background: var(--dcc-green-default); }.dcc-avatar--light { background: var(--dcc-grey-ultralight); color: var(--dcc-grey-default); }/* Punto de estado */
+}
+.dcc-avatar--xs { width: 24px; height: 24px; font-size: 10px; }
+.dcc-avatar--sm { width: 32px; height: 32px; font-size: 12px; }
+.dcc-avatar--lg { width: 48px; height: 48px; font-size: 18px; }
+.dcc-avatar--xl { width: 64px; height: 64px; font-size: 24px; }
+
+.dcc-avatar--lightblue { background: var(--dcc-lightblue-default); }
+.dcc-avatar--red { background: var(--dcc-red-default); }
+.dcc-avatar--blue { background: var(--dcc-blue-default); }
+.dcc-avatar--green { background: var(--dcc-green-default); }
+.dcc-avatar--light { background: var(--dcc-grey-ultralight); color: var(--dcc-grey-default); }
+
+/* Punto de estado. El relleno de color es propio del avatar y no cambia con
+   el tema; sólo el anillo toma el color de la superficie para despegarlo. */
 .dcc-avatar__dot {
   position: absolute;
   right: 0;
@@ -1242,10 +1898,16 @@ el salto de línea del markup se convierte en un ítem
   width: 12px;
   height: 12px;
   border-radius: 9999px;
-  border: 2px solid #fff;
+  border: 2px solid var(--dcc-surface);
   background: var(--dcc-green-default);
-}.dcc-avatar--lg .dcc-avatar__dot,
-.dcc-avatar--xl .dcc-avatar__dot { width: 14px; height: 14px; }.dcc-avatar__dot--busy { background: var(--dcc-red-default); }.dcc-avatar__dot--away { background: var(--dcc-lightblue-default); }.dcc-avatar__dot--off { background: var(--dcc-grey-light); }/* Contador */
+}
+.dcc-avatar--lg .dcc-avatar__dot,
+.dcc-avatar--xl .dcc-avatar__dot { width: 14px; height: 14px; }
+.dcc-avatar__dot--busy { background: var(--dcc-red-default); }
+.dcc-avatar__dot--away { background: var(--dcc-lightblue-default); }
+.dcc-avatar__dot--off { background: var(--dcc-grey-light); }
+
+/* Contador */
 .dcc-avatar__count {
   position: absolute;
   top: -4px;
@@ -1256,14 +1918,20 @@ el salto de línea del markup se convierte en un ítem
   height: 18px;
   padding: 0 4px;
   border-radius: 9999px;
-  border: 2px solid #fff;
+  border: 2px solid var(--dcc-surface);
   background: var(--dcc-red-default);
   color: var(--dcc-white);
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-}.dcc-avatar-group { display: flex; }.dcc-avatar-group .dcc-avatar { border: 2px solid #fff; margin-left: -10px; }.dcc-avatar-group .dcc-avatar:first-child { margin-left: 0; }/* --------------------------------------------------------------------------
+}
+
+.dcc-avatar-group { display: flex; }
+.dcc-avatar-group .dcc-avatar { border: 2px solid var(--dcc-surface); margin-left: -10px; }
+.dcc-avatar-group .dcc-avatar:first-child { margin-left: 0; }
+
+/* --------------------------------------------------------------------------
    15.3 BADGES ADICIONALES
    -------------------------------------------------------------------------- */
 .dcc-badge .dcc-dot {
@@ -1272,7 +1940,8 @@ el salto de línea del markup se convierte en un ítem
   flex: 0 0 6px;
   border-radius: 9999px;
   background: currentColor;
-}.dcc-badge__close {
+}
+.dcc-badge__close {
   display: grid;
   place-items: center;
   width: 12px;
@@ -1285,31 +1954,42 @@ el salto de línea del markup se convierte en un ítem
   cursor: pointer;
   border-radius: 9999px;
   opacity: .75;
-}.dcc-badge__close:hover { opacity: 1; }.dcc-badge__close svg { width: 10px; height: 10px; }.dcc-badge--count {
+}
+.dcc-badge__close:hover { opacity: 1; }
+.dcc-badge__close svg { width: 10px; height: 10px; }
+.dcc-badge--count {
   min-width: 20px;
   padding: var(--dcc-badge-py) 6px;
   font-variant-numeric: tabular-nums;
-}/* --------------------------------------------------------------------------
+}
+
+/* --------------------------------------------------------------------------
    15.4 LISTA DE ELEMENTOS
    -------------------------------------------------------------------------- */
 .dcc-list {
-  border: 1px solid var(--dcc-grey-light);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-md);
   overflow: hidden;
-  background: var(--dcc-white);
+  background: var(--dcc-surface);
   max-width: 520px;
-}.dcc-list__item {
+}
+.dcc-list__item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  border-bottom: .5px solid var(--dcc-grey-light);
-  color: var(--dcc-grey-dark);
+  border-bottom: .5px solid var(--dcc-border);
+  color: var(--dcc-fg);
   transition: background-color .15s ease;
-}.dcc-list__item:last-child { border-bottom: 0; }a.dcc-list__item:hover,
-button.dcc-list__item:hover { background: var(--dcc-grey-ultralight); }a.dcc-list__item:focus-visible,
-button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }.dcc-list__item[aria-current="true"] { background: var(--dcc-grey-ultralight); }/* Sólo el ícono,
-sin caja ni color propio: hereda Grey/Default y el color
+}
+.dcc-list__item:last-child { border-bottom: 0; }
+a.dcc-list__item:hover,
+button.dcc-list__item:hover { background: var(--dcc-surface-muted); }
+a.dcc-list__item:focus-visible,
+button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-list__item[aria-current="true"] { background: var(--dcc-surface-muted); }
+
+/* Sólo el ícono, sin caja ni color propio: hereda Grey/Default y el color
    se reserva para los badges del extremo derecho. */
 .dcc-list__icon {
   display: grid;
@@ -1317,19 +1997,29 @@ sin caja ni color propio: hereda Grey/Default y el color
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
-  color: var(--dcc-grey-default);
-}.dcc-list__icon svg { width: 20px; height: 20px; }.dcc-list__body { flex: 1; min-width: 0; }.dcc-list__title { font-size: 16px; font-weight: 700; line-height: 1.2; }.dcc-list__desc {
+  color: var(--dcc-fg-accent);
+}
+.dcc-list__icon svg { width: 20px; height: 20px; }
+
+.dcc-list__body { flex: 1; min-width: 0; }
+.dcc-list__title { font-size: 16px; font-weight: 700; line-height: 1.2; }
+.dcc-list__desc {
   font-size: 12px;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}.dcc-list__trail { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: var(--dcc-grey-light); }.dcc-list__trail svg { width: 16px; height: 16px; }/* --------------------------------------------------------------------------
+}
+.dcc-list__trail { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: var(--dcc-fg-muted); }
+.dcc-list__trail svg { width: 16px; height: 16px; }
+
+/* --------------------------------------------------------------------------
    15.5 CABECERA DE TABLA ORDENABLE
    -------------------------------------------------------------------------- */
-.dcc-table th.is-sortable { padding: 0; }.dcc-th-sort {
+.dcc-table th.is-sortable { padding: 0; }
+.dcc-th-sort {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1344,17 +2034,14 @@ sin caja ni color propio: hereda Grey/Default y el color
   text-transform: inherit;
   cursor: pointer;
   transition: color .15s ease;
-}.dcc-th-sort:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }/* Tres estados que se distinguen por forma,
-no sólo por tono:
+}
+
+.dcc-th-sort:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+/* Tres estados que se distinguen por forma, no sólo por tono:
    sin orden = glifo suelto en Grey/Light;
-   hover     = chip blanco con glifo Grey/Default (8,
-16:1 dentro del chip);
-   ordenada  = chip Grey/Default relleno con glifo blanco (8,
-01:1),
-y el chip
-               contra la cabecera da 6,
-81:1,
-que es el salto que faltaba. */
+   hover     = chip blanco con glifo Grey/Default (8,16:1 dentro del chip);
+   ordenada  = chip Grey/Default relleno con glifo blanco (8,01:1), y el chip
+               contra la cabecera da 6,81:1, que es el salto que faltaba. */
 .dcc-th-sort .dcc-sort-ico {
   display: grid;
   place-items: center;
@@ -1362,22 +2049,36 @@ que es el salto que faltaba. */
   height: 22px;
   flex: 0 0 22px;
   border-radius: 9999px;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   transition: background-color .15s ease, color .15s ease;
-}.dcc-th-sort svg { width: 16px; height: 16px; flex: 0 0 16px; }.dcc-th-sort:hover .dcc-sort-ico { background: var(--dcc-white); color: var(--dcc-grey-default); }[aria-sort="ascending"]  .dcc-th-sort .dcc-sort-ico,
-[aria-sort="descending"] .dcc-th-sort .dcc-sort-ico { background: var(--dcc-grey-default); color: var(--dcc-white); }[aria-sort="ascending"]  .dcc-th-sort,
-[aria-sort="descending"] .dcc-th-sort { color: var(--dcc-grey-dark); }.dcc-th-sort .dcc-sort-none,
+}
+.dcc-th-sort svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-th-sort:hover .dcc-sort-ico { background: var(--dcc-surface); color: var(--dcc-fg-accent); }
+[aria-sort="ascending"]  .dcc-th-sort .dcc-sort-ico,
+[aria-sort="descending"] .dcc-th-sort .dcc-sort-ico { background: var(--dcc-accent); color: var(--dcc-on-accent); }
+[aria-sort="ascending"]  .dcc-th-sort,
+[aria-sort="descending"] .dcc-th-sort { color: var(--dcc-fg); }
+.dcc-th-sort .dcc-sort-none,
 .dcc-th-sort .dcc-sort-asc,
-.dcc-th-sort .dcc-sort-desc { display: none; }[aria-sort="none"]       .dcc-th-sort .dcc-sort-none { display: block; }[aria-sort="ascending"]  .dcc-th-sort .dcc-sort-asc { display: block; }[aria-sort="descending"] .dcc-th-sort .dcc-sort-desc { display: block; }/* --------------------------------------------------------------------------
+.dcc-th-sort .dcc-sort-desc { display: none; }
+[aria-sort="none"]       .dcc-th-sort .dcc-sort-none { display: block; }
+[aria-sort="ascending"]  .dcc-th-sort .dcc-sort-asc { display: block; }
+[aria-sort="descending"] .dcc-th-sort .dcc-sort-desc { display: block; }
+
+/* --------------------------------------------------------------------------
    15.6 ACORDEÓN
    -------------------------------------------------------------------------- */
 .dcc-accordion {
-  border: 1px solid var(--dcc-grey-light);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-md);
   overflow: hidden;
-  background: var(--dcc-white);
+  background: var(--dcc-surface);
   max-width: 640px;
-}.dcc-accordion__item { border-bottom: .5px solid var(--dcc-grey-light); }.dcc-accordion__item:last-child { border-bottom: 0; }.dcc-accordion__trigger {
+}
+.dcc-accordion__item { border-bottom: .5px solid var(--dcc-border); }
+.dcc-accordion__item:last-child { border-bottom: 0; }
+
+.dcc-accordion__trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1390,52 +2091,74 @@ que es el salto que faltaba. */
   font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   text-align: left;
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease;
-}.dcc-accordion__trigger:hover { background: var(--dcc-grey-ultralight); }.dcc-accordion__trigger:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }.dcc-accordion__trigger svg {
+}
+.dcc-accordion__trigger:hover { background: var(--dcc-surface-muted); }
+.dcc-accordion__trigger:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-accordion__trigger svg {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
   transition: transform .22s cubic-bezier(.4, 0, .2, 1);
-}.dcc-accordion__trigger[aria-expanded="true"] { color: var(--dcc-grey-default); }.dcc-accordion__trigger[aria-expanded="true"] svg { transform: rotate(180deg); }.dcc-accordion__panel {
+}
+.dcc-accordion__trigger[aria-expanded="true"] { color: var(--dcc-fg-accent); }
+.dcc-accordion__trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+.dcc-accordion__panel {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows .26s cubic-bezier(.4, 0, .2, 1);
-}.dcc-accordion__panel[data-open="true"] { grid-template-rows: 1fr; }.dcc-accordion__panel > div { overflow: hidden; }/* 8px extra sobre los 16px del padding inferior del título = 24px de aire
+}
+.dcc-accordion__panel[data-open="true"] { grid-template-rows: 1fr; }
+.dcc-accordion__panel > div { overflow: hidden; }
+/* 8px extra sobre los 16px del padding inferior del título = 24px de aire
    entre el encabezado y el texto. */
 .dcc-accordion__panel p {
   padding: 8px 16px 20px;
   font-size: 16px;
   line-height: 1.4;
-  color: var(--dcc-grey-dark);
-}.dcc-accordion__trigger[aria-expanded="true"] { padding-bottom: 12px; }
+  color: var(--dcc-fg);
+}
+.dcc-accordion__trigger[aria-expanded="true"] { padding-bottom: 12px; }
 
 @media (prefers-reduced-motion: reduce) {
   .dcc-accordion__panel,
   .dcc-accordion__trigger svg { transition: none; }
 }
+
 /* --------------------------------------------------------------------------
    15.7 BREADCRUMB
    -------------------------------------------------------------------------- */
-.dcc-breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }.dcc-breadcrumb li { display: flex; align-items: center; gap: 8px; }.dcc-breadcrumb a,
+.dcc-breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.dcc-breadcrumb li { display: flex; align-items: center; gap: 8px; }
+.dcc-breadcrumb a,
 .dcc-breadcrumb span {
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
-}.dcc-breadcrumb a { border-radius: 2px; transition: color .15s ease; }.dcc-breadcrumb a:hover { color: var(--dcc-red-default); text-decoration: underline; }.dcc-breadcrumb a:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }.dcc-breadcrumb [aria-current="page"] { color: var(--dcc-grey-default); font-weight: 700; }.dcc-breadcrumb .dcc-sep { width: 16px; height: 16px; color: var(--dcc-grey-light); flex: 0 0 16px; }.dcc-breadcrumb .dcc-home { width: 16px; height: 16px; flex: 0 0 16px; }/* --------------------------------------------------------------------------
+  color: var(--dcc-fg-muted);
+}
+.dcc-breadcrumb a { border-radius: 2px; transition: color .15s ease; }
+.dcc-breadcrumb a:hover { color: var(--dcc-red-default); text-decoration: underline; }
+.dcc-breadcrumb a:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-breadcrumb [aria-current="page"] { color: var(--dcc-fg-accent); font-weight: 700; }
+.dcc-breadcrumb .dcc-sep { width: 16px; height: 16px; color: var(--dcc-fg-muted); flex: 0 0 16px; }
+.dcc-breadcrumb .dcc-home { width: 16px; height: 16px; flex: 0 0 16px; }
+
+/* --------------------------------------------------------------------------
    15.8 TABS  (mismo lenguaje que la nav institucional: subrayado rojo)
    -------------------------------------------------------------------------- */
 /* Sin gap: los 2px del borde inferior de cada pestaña tienen que formar una
-   línea continua con la del contenedor,
-sin cortes entre pestañas. */
+   línea continua con la del contenedor, sin cortes entre pestañas. */
 .dcc-tabs__list {
   display: flex;
   flex-wrap: wrap;
   gap: 0;
-  border-bottom: 2px solid var(--dcc-grey-ultralight);
-}.dcc-tabs__tab {
+  border-bottom: 2px solid var(--dcc-border-subtle);
+}
+.dcc-tabs__tab {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1448,18 +2171,28 @@ sin cortes entre pestañas. */
   font-size: 16px;
   font-weight: 500;
   line-height: 1.2;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: pointer;
   white-space: nowrap;
   transition: color .15s ease, border-color .15s ease;
-}.dcc-tabs__tab svg { width: 16px; height: 16px; flex: 0 0 16px; }.dcc-tabs__tab:hover { color: var(--dcc-grey-default); border-bottom-color: var(--dcc-grey-light); }.dcc-tabs__tab:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }.dcc-tabs__tab[aria-selected="true"] {
+}
+.dcc-tabs__tab svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.dcc-tabs__tab:hover { color: var(--dcc-fg-accent); border-bottom-color: var(--dcc-border); }
+.dcc-tabs__tab:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-tabs__tab[aria-selected="true"] {
   color: var(--dcc-red-default);
   border-bottom-color: var(--dcc-red-default);
   font-weight: 700;
-}.dcc-tabs__tab[disabled] { color: var(--dcc-grey-light); opacity: .5; cursor: not-allowed; }.dcc-tabs__panel { padding: 20px 0; font-size: 16px; line-height: 1.4; }.dcc-tabs__panel[hidden] { display: none; }/* --------------------------------------------------------------------------
+}
+.dcc-tabs__tab[disabled] { color: var(--dcc-fg-muted); opacity: .5; cursor: not-allowed; }
+.dcc-tabs__panel { padding: 20px 0; font-size: 16px; line-height: 1.4; }
+.dcc-tabs__panel[hidden] { display: none; }
+
+/* --------------------------------------------------------------------------
    15.9 PAGINATION
    -------------------------------------------------------------------------- */
-.dcc-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }.dcc-pagination__btn {
+.dcc-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.dcc-pagination__btn {
   display: grid;
   place-items: center;
   min-width: 36px;
@@ -1471,83 +2204,122 @@ sin cortes entre pestañas. */
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   cursor: pointer;
   font-variant-numeric: tabular-nums;
   transition: background-color .15s ease, border-color .15s ease, color .15s ease;
-}.dcc-pagination__btn svg { width: 16px; height: 16px; }.dcc-pagination__btn:hover:not([disabled]):not([aria-current="page"]) {
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-default);
-}.dcc-pagination__btn:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }.dcc-pagination__btn[aria-current="page"] {
-  background: var(--dcc-grey-default);
-  border-color: var(--dcc-grey-default);
-  color: var(--dcc-white);
+}
+.dcc-pagination__btn svg { width: 16px; height: 16px; }
+.dcc-pagination__btn:hover:not([disabled]):not([aria-current="page"]) {
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg-accent);
+}
+.dcc-pagination__btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-pagination__btn[aria-current="page"] {
+  background: var(--dcc-accent);
+  border-color: var(--dcc-accent);
+  color: var(--dcc-on-accent);
   font-weight: 700;
-}.dcc-pagination__btn[disabled] { color: var(--dcc-grey-light); cursor: not-allowed; }.dcc-pagination__gap {
+}
+.dcc-pagination__btn[disabled] { color: var(--dcc-fg-muted); cursor: not-allowed; }
+.dcc-pagination__gap {
   display: grid;
   place-items: center;
   min-width: 24px;
   height: 36px;
-  color: var(--dcc-grey-light);
-}.dcc-pagination__gap svg { width: 16px; height: 16px; }/* --------------------------------------------------------------------------
+  color: var(--dcc-fg-muted);
+}
+.dcc-pagination__gap svg { width: 16px; height: 16px; }
+
+/* --------------------------------------------------------------------------
    15.10 STEPPER
    -------------------------------------------------------------------------- */
-.dcc-stepper { display: flex; align-items: flex-start; }.dcc-stepper__step { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; text-align: center; position: relative; }.dcc-stepper__step::before,
+.dcc-stepper { display: flex; align-items: flex-start; }
+.dcc-stepper__step { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; text-align: center; position: relative; }
+.dcc-stepper__step::before,
 .dcc-stepper__step::after {
   content: "";
   position: absolute;
   top: 15px;
   height: 2px;
-  background: var(--dcc-grey-ultralight);
-}.dcc-stepper__step::before { left: 0;    right: 50%; margin-right: 22px; }.dcc-stepper__step::after { left: 50%;  right: 0;   margin-left: 22px; }.dcc-stepper__step:first-child::before,
-.dcc-stepper__step:last-child::after { display: none; }.dcc-stepper__step[data-state="done"]::after,
+  background: var(--dcc-border-subtle);
+}
+.dcc-stepper__step::before { left: 0;    right: 50%; margin-right: 22px; }
+.dcc-stepper__step::after { left: 50%;  right: 0;   margin-left: 22px; }
+.dcc-stepper__step:first-child::before,
+.dcc-stepper__step:last-child::after { display: none; }
+.dcc-stepper__step[data-state="done"]::after,
 .dcc-stepper__step[data-state="done"]::before,
-.dcc-stepper__step[data-state="current"]::before { background: var(--dcc-grey-default); }.dcc-stepper__bullet {
+.dcc-stepper__step[data-state="current"]::before { background: var(--dcc-accent); }
+
+.dcc-stepper__bullet {
   display: grid;
   place-items: center;
   width: 32px;
   height: 32px;
   border-radius: 9999px;
-  background: var(--dcc-white);
-  border: 2px solid var(--dcc-grey-light);
-  color: var(--dcc-grey-light);
+  background: var(--dcc-surface);
+  border: 2px solid var(--dcc-border);
+  color: var(--dcc-fg-muted);
   font-size: 16px;
   font-weight: 700;
   line-height: 1;
   position: relative;
   z-index: 1;
   font-variant-numeric: tabular-nums;
-}.dcc-stepper__bullet svg { width: 16px; height: 16px; }.dcc-stepper__step[data-state="done"] .dcc-stepper__bullet {
-  background: var(--dcc-grey-default);
-  border-color: var(--dcc-grey-default);
-  color: var(--dcc-white);
-}.dcc-stepper__step[data-state="current"] .dcc-stepper__bullet {
+}
+.dcc-stepper__bullet svg { width: 16px; height: 16px; }
+.dcc-stepper__step[data-state="done"] .dcc-stepper__bullet {
+  background: var(--dcc-accent);
+  border-color: var(--dcc-accent);
+  color: var(--dcc-on-accent);
+}
+.dcc-stepper__step[data-state="current"] .dcc-stepper__bullet {
   background: var(--dcc-red-default);
   border-color: var(--dcc-red-default);
   color: var(--dcc-white);
-}.dcc-stepper__label { font-size: 12px; line-height: 1.2; color: var(--dcc-grey-light); max-width: 14ch; }.dcc-stepper__step[data-state="current"] .dcc-stepper__label { color: var(--dcc-grey-default); font-weight: 700; }.dcc-stepper__step[data-state="done"]    .dcc-stepper__label { color: var(--dcc-grey-dark); }/* Texto secundario opcional bajo el título del paso */
+}
+.dcc-stepper__label { font-size: 12px; line-height: 1.2; color: var(--dcc-fg-muted); max-width: 14ch; }
+.dcc-stepper__step[data-state="current"] .dcc-stepper__label { color: var(--dcc-fg-accent); font-weight: 700; }
+.dcc-stepper__step[data-state="done"]    .dcc-stepper__label { color: var(--dcc-fg); }
+
+/* Texto secundario opcional bajo el título del paso */
 .dcc-stepper__desc {
   font-size: 12px;
   line-height: 1.3;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   max-width: 18ch;
-}.dcc-stepper__body { display: flex; flex-direction: column; gap: 2px; align-items: center; }/* Vertical */
-.dcc-stepper--vertical { flex-direction: column; align-items: stretch; gap: 0; }.dcc-stepper--vertical .dcc-stepper__step { flex-direction: row; align-items: flex-start; gap: 12px; text-align: left; flex: none; padding-bottom: 24px; }.dcc-stepper--vertical .dcc-stepper__step::before { display: none; }.dcc-stepper--vertical .dcc-stepper__step::after {
+}
+.dcc-stepper__body { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+
+/* Vertical */
+.dcc-stepper--vertical { flex-direction: column; align-items: stretch; gap: 0; }
+.dcc-stepper--vertical .dcc-stepper__step { flex-direction: row; align-items: flex-start; gap: 12px; text-align: left; flex: none; padding-bottom: 24px; }
+.dcc-stepper--vertical .dcc-stepper__step::before { display: none; }
+.dcc-stepper--vertical .dcc-stepper__step::after {
   top: 32px; bottom: 0; left: 15px; right: auto;
   width: 2px; height: auto; margin: 0;
-}.dcc-stepper--vertical .dcc-stepper__step:last-child { padding-bottom: 0; }.dcc-stepper--vertical .dcc-stepper__body { align-items: flex-start; gap: 4px; flex: 1; min-width: 0; }/* El título ocupa exactamente el alto de la pelotita y centra su línea dentro,
-así ambos quedan alineados por su centro y no por el borde superior. */
+}
+.dcc-stepper--vertical .dcc-stepper__step:last-child { padding-bottom: 0; }
+.dcc-stepper--vertical .dcc-stepper__body { align-items: flex-start; gap: 4px; flex: 1; min-width: 0; }
+/* El título ocupa exactamente el alto de la pelotita y centra su línea dentro,
+   así ambos quedan alineados por su centro y no por el borde superior. */
 .dcc-stepper--vertical .dcc-stepper__label {
   max-width: none;
   min-height: 32px;
   display: flex;
   align-items: center;
   font-size: 16px;
-}.dcc-stepper--vertical .dcc-stepper__desc { max-width: none; }.dcc-stepper__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }.dcc-bottom-nav {
+}
+.dcc-stepper--vertical .dcc-stepper__desc { max-width: none; }
+.dcc-stepper__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+
+.dcc-bottom-nav {
   display: flex;
   background: var(--dcc-grey-default);
   padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px));
-}/* El ítem activo se resalta COMPLETO —ícono y etiqueta— con una pastilla
+}
+/* El ítem activo se resalta COMPLETO —ícono y etiqueta— con una pastilla
    Grey/Dark. Nada de línea roja: ese recurso es de la nav institucional. */
 .dcc-bottom-nav__item {
   flex: 1;
@@ -1565,11 +2337,18 @@ así ambos quedan alineados por su centro y no por el borde superior. */
   line-height: 1.2;
   cursor: pointer;
   transition: color .15s ease, background-color .2s cubic-bezier(.4, 0, .2, 1);
-}.dcc-bottom-nav__ico { display: grid; place-items: center; position: relative; }.dcc-bottom-nav__ico svg { width: 24px; height: 24px; }.dcc-bottom-nav__item:hover { color: #fff; background: rgba(255, 255, 255, .08); }.dcc-bottom-nav__item:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }.dcc-bottom-nav__item[aria-current="page"] {
+}
+.dcc-bottom-nav__ico { display: grid; place-items: center; position: relative; }
+.dcc-bottom-nav__ico svg { width: 24px; height: 24px; }
+.dcc-bottom-nav__item:hover { color: #fff; background: rgba(255, 255, 255, .08); }
+.dcc-bottom-nav__item:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }
+.dcc-bottom-nav__item[aria-current="page"] {
   background: var(--dcc-grey-dark);
   color: #fff;
   font-weight: 700;
-}.dcc-bottom-nav__ico--badge::after {
+}
+
+.dcc-bottom-nav__ico--badge::after {
   content: "";
   position: absolute;
   top: -1px;
@@ -1579,8 +2358,10 @@ así ambos quedan alineados por su centro y no por el borde superior. */
   border-radius: 9999px;
   background: var(--dcc-red-default);
   border: 1.5px solid var(--dcc-grey-default);
-}.dcc-bottom-nav__item[aria-current="page"] .dcc-bottom-nav__ico--badge::after { border-color: var(--dcc-grey-dark); }/* Variante flotante: despegada de los bordes,
-redondeada y con sombra */
+}
+.dcc-bottom-nav__item[aria-current="page"] .dcc-bottom-nav__ico--badge::after { border-color: var(--dcc-grey-dark); }
+
+/* Variante flotante: despegada de los bordes, redondeada y con sombra */
 .dcc-bottom-nav--floating {
   margin: 0 12px 12px;
   border-radius: 24px;
@@ -1591,6 +2372,7 @@ redondeada y con sombra */
 @media (prefers-reduced-motion: reduce) {
   .dcc-bottom-nav__ico { transition: none; }
 }
+
 /* --------------------------------------------------------------------------
    15.12 CALENDARIO
    -------------------------------------------------------------------------- */
@@ -1598,18 +2380,21 @@ redondeada y con sombra */
   width: 320px;
   max-width: 100%;
   padding: 16px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-light);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
   border-radius: var(--dcc-radius-md);
   box-shadow: var(--dcc-shadow);
-}.dcc-calendar__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }.dcc-calendar__title {
+}
+.dcc-calendar__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.dcc-calendar__title {
   font-family: var(--dcc-font-display);
   font-size: 16px;
   font-weight: 700;
   line-height: 1.1;
   text-transform: uppercase;
-  color: var(--dcc-grey-default);
-}.dcc-calendar__nav {
+  color: var(--dcc-fg-accent);
+}
+.dcc-calendar__nav {
   display: grid;
   place-items: center;
   width: 32px;
@@ -1617,15 +2402,19 @@ redondeada y con sombra */
   background: none;
   border: 1px solid transparent;
   border-radius: var(--dcc-radius-sm);
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   cursor: pointer;
   transition: border-color .15s ease, color .15s ease;
-}.dcc-calendar__nav svg { width: 16px; height: 16px; }.dcc-calendar__nav:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }.dcc-calendar__nav:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }/* minmax(0,
-1fr) en vez de 1fr: con `1fr` el mínimo automático de cada columna
-   es su min-content,
-y si el contenedor se angosta la grilla desborda la
+}
+.dcc-calendar__nav svg { width: 16px; height: 16px; }
+.dcc-calendar__nav:hover { border-color: var(--dcc-red-default); color: var(--dcc-red-default); }
+.dcc-calendar__nav:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+/* minmax(0,1fr) en vez de 1fr: con `1fr` el mínimo automático de cada columna
+   es su min-content, y si el contenedor se angosta la grilla desborda la
    tarjeta en vez de encogerse. */
-.dcc-calendar__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }.dcc-calendar__dow {
+.dcc-calendar__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.dcc-calendar__dow {
   display: grid;
   place-items: center;
   min-width: 0;
@@ -1633,8 +2422,9 @@ y si el contenedor se angosta la grilla desborda la
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--dcc-grey-light);
-}.dcc-calendar__day {
+  color: var(--dcc-fg-muted);
+}
+.dcc-calendar__day {
   display: grid;
   place-items: center;
   min-width: 0;
@@ -1648,31 +2438,41 @@ y si el contenedor se angosta la grilla desborda la
   font-family: var(--dcc-font-body);
   font-size: 16px;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
+  color: var(--dcc-fg);
   cursor: pointer;
   font-variant-numeric: tabular-nums;
   transition: background-color .15s ease, color .15s ease, border-color .15s ease;
-}.dcc-calendar__day:hover:not([disabled]) { background: var(--dcc-grey-ultralight); }.dcc-calendar__day:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: -2px; }.dcc-calendar__day.is-outside { color: var(--dcc-grey-light); }.dcc-calendar__day.is-today { border-color: var(--dcc-grey-default); font-weight: 700; }.dcc-calendar__day.is-selected {
-  background: var(--dcc-grey-default);
-  border-color: var(--dcc-grey-default);
-  color: var(--dcc-white);
+}
+.dcc-calendar__day:hover:not([disabled]) { background: var(--dcc-surface-muted); }
+.dcc-calendar__day:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-calendar__day.is-outside { color: var(--dcc-fg-muted); }
+.dcc-calendar__day.is-today { border-color: var(--dcc-fg-accent); font-weight: 700; }
+.dcc-calendar__day.is-selected {
+  background: var(--dcc-accent);
+  border-color: var(--dcc-accent);
+  color: var(--dcc-on-accent);
   font-weight: 700;
-}.dcc-calendar__day.is-selected:hover { background: var(--dcc-grey-dark); }.dcc-calendar__day[disabled] { color: var(--dcc-grey-light); opacity: .45; cursor: not-allowed; }/* Popover del date picker. No hereda el ancho del campo: si el campo es
-   angosto,
-el calendario mantiene sus 320px y sólo cede ante el viewport. */
-.dcc-datepicker { position: relative; max-width: 320px; }.dcc-datepicker .dcc-calendar {
+}
+.dcc-calendar__day.is-selected:hover { background: var(--dcc-fg); }   /* en claro es Grey/Dark; en oscuro, un tono más claro que el acento */
+.dcc-calendar__day[disabled] { color: var(--dcc-fg-muted); opacity: .45; cursor: not-allowed; }
+
+/* Popover del date picker. No hereda el ancho del campo: si el campo es
+   angosto, el calendario mantiene sus 320px y sólo cede ante el viewport. */
+.dcc-datepicker { position: relative; max-width: 320px; }
+.dcc-datepicker .dcc-calendar {
   position: absolute;
   z-index: 20;
   top: calc(100% + 6px);
   left: 0;
   width: 320px;
   max-width: calc(100vw - 32px);
-}.dcc-datepicker .dcc-calendar[hidden] { display: none; }/* --------------------------------------------------------------------------
+}
+.dcc-datepicker .dcc-calendar[hidden] { display: none; }
+
+/* --------------------------------------------------------------------------
    15.13 TARJETA DE PROGRAMA
-   Traída del archivo «Educación Continua» (XRlMGrAb...),
-nodo 275:9776.
-   Medidas y tipografías tal cual el original; el texto usa #40506A,
-que es
+   Traída del archivo «Educación Continua» (XRlMGrAb...), nodo 275:9776.
+   Medidas y tipografías tal cual el original; el texto usa #40506A, que es
    exactamente el Grey/Default de este kit.
    -------------------------------------------------------------------------- */
 :root {
@@ -1683,41 +2483,50 @@ que es
      claramente distinto (rojo / índigo / verde azulado). */
   --dcc-tag-magister: var(--dcc-blue-default);
   --dcc-tag-bootcamp: var(--dcc-green-dark);
-}.dcc-card {
+}
+
+.dcc-card {
   position: relative;
   width: 300px;
   max-width: 100%;
   font-family: var(--dcc-font-body);
-  color: var(--dcc-grey-default);
-}.dcc-card__paper {
-  background: var(--dcc-white);
+  color: var(--dcc-fg-accent);
+}
+.dcc-card__paper {
+  background: var(--dcc-surface);
   border-radius: var(--dcc-radius-sm);
   overflow: hidden;   /* recorta la imagen contra el radio, como el <Paper> */
   /* elevation/1 del archivo original */
   box-shadow: 0 1px 3px rgba(0, 0, 0, .12),
               0 1px 1px rgba(0, 0, 0, .14),
               0 2px 1px -1px rgba(0, 0, 0, .2);
-}.dcc-card__media {
+}
+
+.dcc-card__media {
   position: relative;
   height: var(--dcc-card-media-h);
   background: var(--dcc-grey-dark);
-}.dcc-card__media img {
+}
+.dcc-card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: .8;        /* el <CardMedia> del original va al 80% */
-}.dcc-card__media::after {
+}
+.dcc-card__media::after {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, .1);
   pointer-events: none;
-}.dcc-card__content { display: flex; flex-direction: column; gap: 16px; padding: 16px; }.dcc-card__head { display: flex; flex-direction: column; gap: 8px; }.dcc-card__eyebrow { font-size: 16px; line-height: 1; letter-spacing: .15px; }/* Reserva siempre el alto de dos líneas,
-así todas las tarjetas de una fila
-   alinean la regla,
-la duración y el pie aunque los títulos midan distinto.
-   line-height es 1,
-de modo que 2em = exactamente dos líneas. */
+}
+
+.dcc-card__content { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
+.dcc-card__head { display: flex; flex-direction: column; gap: 8px; }
+.dcc-card__eyebrow { font-size: 16px; line-height: 1; letter-spacing: .15px; }
+/* Reserva siempre el alto de dos líneas, así todas las tarjetas de una fila
+   alinean la regla, la duración y el pie aunque los títulos midan distinto.
+   line-height es 1, de modo que 2em = exactamente dos líneas. */
 .dcc-card__title {
   margin: 0;
   font-family: var(--dcc-font-display);
@@ -1731,14 +2540,22 @@ de modo que 2em = exactamente dos líneas. */
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}.dcc-card__rule { height: 1px; background: var(--dcc-grey-light); border: 0; margin: 0; }.dcc-card__meta { font-size: 12px; line-height: 1; font-style: italic; letter-spacing: .15px; }.dcc-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }.dcc-card__date { display: flex; align-items: center; gap: 8px; }.dcc-card__date svg { width: 24px; height: 24px; flex: 0 0 24px; }.dcc-card__date span { display: flex; flex-direction: column; font-size: 14px; line-height: 1; }.dcc-card__date b { font-weight: 700; }/* El pie usa el botón del kit (.dcc-btn),
-no un botón propio. El <Fab> del archivo
-   original mide 34px de alto; .dcc-btn--md mide 35,
-2px,
-así que la sustitución es
+}
+.dcc-card__rule { height: 1px; background: var(--dcc-border); border: 0; margin: 0; }
+.dcc-card__meta { font-size: 12px; line-height: 1; font-style: italic; letter-spacing: .15px; }
+
+.dcc-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.dcc-card__date { display: flex; align-items: center; gap: 8px; }
+.dcc-card__date svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.dcc-card__date span { display: flex; flex-direction: column; font-size: 14px; line-height: 1; }
+.dcc-card__date b { font-weight: 700; }
+
+/* El pie usa el botón del kit (.dcc-btn), no un botón propio. El <Fab> del archivo
+   original mide 34px de alto; .dcc-btn--md mide 35,2px, así que la sustitución es
    casi exacta. */
-.dcc-card__foot .dcc-btn { flex: 0 0 auto; }/* Etiqueta y descuento son hermanos de la tarjeta,
-no de la imagen: sangran
+.dcc-card__foot .dcc-btn { flex: 0 0 auto; }
+
+/* Etiqueta y descuento son hermanos de la tarjeta, no de la imagen: sangran
    hasta el borde y por eso no pueden ir dentro del contenedor recortado. */
 .dcc-card__tag {
   position: absolute;
@@ -1756,7 +2573,12 @@ no de la imagen: sangran
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
-}.dcc-card__tag--magister { background: var(--dcc-tag-magister); }.dcc-card__tag--bootcamp { background: var(--dcc-tag-bootcamp); }.dcc-card__tag--diploma { background: var(--dcc-red-default); }.dcc-card__discount {
+}
+.dcc-card__tag--magister { background: var(--dcc-tag-magister); }
+.dcc-card__tag--bootcamp { background: var(--dcc-tag-bootcamp); }
+.dcc-card__tag--diploma { background: var(--dcc-red-default); }
+
+.dcc-card__discount {
   position: absolute;
   left: 0;
   top: 28px;
@@ -1764,9 +2586,15 @@ no de la imagen: sangran
   flex-direction: column;
   padding: 8px;
   border-radius: 0 var(--dcc-radius-sm) var(--dcc-radius-sm) 0;
+  /* Va encima de la imagen, no del cuerpo: es una píldora clara con su propio
+     texto y se mantiene igual en ambos temas. */
   background: var(--dcc-white);
   color: var(--dcc-grey-default);
-}.dcc-card__discount b { font-size: 24px; font-weight: 700; line-height: 1.1; }.dcc-card__discount span { font-size: 10px; line-height: 1.2; }/* --------------------------------------------------------------------------
+}
+.dcc-card__discount b { font-size: 24px; font-weight: 700; line-height: 1.1; }
+.dcc-card__discount span { font-size: 10px; line-height: 1.2; }
+
+/* --------------------------------------------------------------------------
    TARJETA COMPRIMIDA
    Dos propuestas sobre la misma base: A para estado de tarea (chips arriba y
    metadatos con ícono) y B para ficha de sistema (barra lateral de color).
@@ -1778,19 +2606,25 @@ no de la imagen: sangran
   width: 100%;
   max-width: 440px;
   padding: 16px;
-  background: var(--dcc-white);
-  border: 1px solid var(--dcc-grey-ultralight);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border-subtle);
   border-radius: var(--dcc-radius-md);
   box-shadow: var(--dcc-shadow);
   font-family: var(--dcc-font-body);
-}.dcc-ccard__chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }/* Favorito. La misma ruta de Lucide sirve en contorno y rellena: el estado
+}
+
+.dcc-ccard__chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* Favorito. La misma ruta de Lucide sirve en contorno y rellena: el estado
    vive en aria-pressed y el CSS sólo cambia `fill`. Los márgenes negativos lo
    pegan a la esquina sin que su caja de 28px agrande la fila. */
 .dcc-ccard__fav {
-  /* estrella amarilla por defecto; .dcc-ccard__fav--heart las cambia a rojo */
-  --dcc-fav-on: var(--dcc-yellow-default);
-  --dcc-fav-on-strong: var(--dcc-yellow-dark);
-  --dcc-fav-on-soft: var(--dcc-yellow-ultralight);
+  /* estrella amarilla por defecto; .dcc-ccard__fav--heart las cambia a rojo.
+     El tono y el halo usan los tokens de advertencia y error, que en claro dan
+     el mismo amarillo y rojo, para que en oscuro el halo no sea una mancha clara. */
+  --dcc-fav-on: var(--dcc-warning);
+  --dcc-fav-on-strong: var(--dcc-warning-strong);
+  --dcc-fav-on-soft: var(--dcc-warning-bg);
   display: grid;
   place-items: center;
   width: 28px;
@@ -1801,29 +2635,39 @@ no de la imagen: sangran
   background: none;
   border: 0;
   border-radius: 9999px;
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: pointer;
   transition: color .15s ease, background-color .15s ease;
-}.dcc-ccard__fav svg {
+}
+.dcc-ccard__fav svg {
   width: 18px;
   height: 18px;
   /* El <g> de <defs> ya no fija `fill`, así que este valor se hereda hasta el
      shadow tree que crea <use> y la estrella puede rellenarse. */
   fill: none;
   transition: fill .15s ease, transform .18s cubic-bezier(.34, 1.5, .64, 1);
-}.dcc-ccard__fav:hover { background: var(--dcc-grey-ultralight); color: var(--dcc-grey-default); }.dcc-ccard__fav:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }.dcc-ccard__fav:active svg { transform: scale(.85); }.dcc-ccard__fav[aria-pressed="true"] { color: var(--dcc-fav-on); }.dcc-ccard__fav[aria-pressed="true"] svg { fill: currentColor; transform: scale(1.08); }.dcc-ccard__fav[aria-pressed="true"]:hover { color: var(--dcc-fav-on-strong); background: var(--dcc-fav-on-soft); }/* El color del estado activo viaja en tres variables locales,
-así que una
+}
+.dcc-ccard__fav:hover { background: var(--dcc-surface-muted); color: var(--dcc-fg-accent); }
+.dcc-ccard__fav:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-ccard__fav:active svg { transform: scale(.85); }
+.dcc-ccard__fav[aria-pressed="true"] { color: var(--dcc-fav-on); }
+.dcc-ccard__fav[aria-pressed="true"] svg { fill: currentColor; transform: scale(1.08); }
+.dcc-ccard__fav[aria-pressed="true"]:hover { color: var(--dcc-fav-on-strong); background: var(--dcc-fav-on-soft); }
+
+/* El color del estado activo viaja en tres variables locales, así que una
    variante nueva sólo tiene que redefinirlas: no hay que repetir reglas. */
 .dcc-ccard__fav--heart {
-  --dcc-fav-on: var(--dcc-red-default);
-  --dcc-fav-on-strong: var(--dcc-red-dark);
-  --dcc-fav-on-soft: var(--dcc-red-ultralight);
+  --dcc-fav-on: var(--dcc-danger);
+  --dcc-fav-on-strong: var(--dcc-danger-strong);
+  --dcc-fav-on-soft: var(--dcc-danger-bg);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dcc-ccard__fav svg { transition: fill .15s ease; }.dcc-ccard__fav:active svg,
+  .dcc-ccard__fav svg { transition: fill .15s ease; }
+    .dcc-ccard__fav:active svg,
   .dcc-ccard__fav[aria-pressed="true"] svg { transform: none; }
 }
+
 /* Chip punteado para añadir metadatos */
 .dcc-ccard__add {
   display: inline-flex;
@@ -1832,30 +2676,41 @@ así que una
   height: 24px;
   padding: 4px 8px;
   background: none;
-  border: 1px dashed var(--dcc-grey-light);
+  border: 1px dashed var(--dcc-border);
   border-radius: var(--dcc-radius-sm);
   font-family: var(--dcc-font-body);
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   cursor: pointer;
   transition: border-color .15s ease, background-color .15s ease;
-}.dcc-ccard__add svg { width: 12px; height: 12px; flex: 0 0 12px; }.dcc-ccard__add:hover { border-style: solid; background: var(--dcc-grey-ultralight); }.dcc-ccard__add:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }.dcc-ccard__title {
+}
+.dcc-ccard__add svg { width: 12px; height: 12px; flex: 0 0 12px; }
+.dcc-ccard__add:hover { border-style: solid; background: var(--dcc-surface-muted); }
+.dcc-ccard__add:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+.dcc-ccard__title {
   margin: 0;
   font-family: var(--dcc-font-body);
   font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dcc-grey-dark);
-}.dcc-ccard__meta {
+  color: var(--dcc-fg);
+}
+
+.dcc-ccard__meta {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 12px;
   line-height: 1.3;
-  color: var(--dcc-grey-light);
-}.dcc-ccard__meta svg { width: 14px; height: 14px; flex: 0 0 14px; }.dcc-ccard__meta b { font-weight: 700; color: var(--dcc-grey-default); }.dcc-ccard__eyebrow {
+  color: var(--dcc-fg-muted);
+}
+.dcc-ccard__meta svg { width: 14px; height: 14px; flex: 0 0 14px; }
+.dcc-ccard__meta b { font-weight: 700; color: var(--dcc-fg-accent); }
+
+.dcc-ccard__eyebrow {
   font-size: 12px;
   /* 12px ya es el mínimo de la escala del kit, así que el peso es lo único que
      se puede bajar: 500 (Inter Medium) ya se usa en el menú y en los tabs. */
@@ -1863,22 +2718,27 @@ así que una
   line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--dcc-grey-light);
-}/* Una sola línea,
-con puntos suspensivos si no alcanza: la tarjeta es
+  color: var(--dcc-fg-muted);
+}
+
+/* Una sola línea, con puntos suspensivos si no alcanza: la tarjeta es
    "comprimida" justamente porque su alto no depende del largo del texto. Así
    todas las tarjetas de una fila miden lo mismo. */
 .dcc-ccard__desc {
   font-size: 12px;
   line-height: 1.4;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}/* Propuesta B: portada cuadrada a la izquierda y versión arriba a la derecha. */
+}
+
+/* Propuesta B: portada cuadrada a la izquierda y versión arriba a la derecha. */
 /* La portada va centrada respecto del cuerpo: con flex-start quedaba pegada
    arriba y dejaba un hueco visiblemente mayor abajo. */
-.dcc-ccard--media { flex-direction: row; align-items: center; gap: 12px; }.dcc-ccard__cover {
+.dcc-ccard--media { flex-direction: row; align-items: center; gap: 12px; }
+
+.dcc-ccard__cover {
   display: grid;
   place-items: center;
   width: 56px;
@@ -1886,35 +2746,49 @@ con puntos suspensivos si no alcanza: la tarjeta es
   flex: 0 0 56px;
   border-radius: var(--dcc-radius-md);
   overflow: hidden;
-  background: var(--dcc-grey-ultralight);
-  color: var(--dcc-grey-dark);
-}.dcc-ccard__cover svg { width: 24px; height: 24px; }.dcc-ccard__cover img { width: 100%; height: 100%; object-fit: cover; }.dcc-ccard__cover--green { background: var(--dcc-green-ultralight);     color: var(--dcc-green-dark); }.dcc-ccard__cover--blue { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-dark); }.dcc-ccard__cover--red { background: var(--dcc-red-ultralight);       color: var(--dcc-red-dark); }.dcc-ccard__cover--lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-dark); }.dcc-ccard__body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }/* La descripción sí conserva aire; lo que se aprieta es categoría → título. */
-.dcc-ccard__body .dcc-ccard__desc { margin-top: 4px; }/* La categoría a la izquierda y la versión a la derecha comparten la primera
-   línea,
-así la versión queda en la esquina sin recurrir a posición absoluta
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg);
+}
+.dcc-ccard__cover svg { width: 24px; height: 24px; }
+.dcc-ccard__cover img { width: 100%; height: 100%; object-fit: cover; }
+.dcc-ccard__cover--green { background: var(--dcc-green-ultralight);     color: var(--dcc-green-dark); }
+.dcc-ccard__cover--blue { background: var(--dcc-blue-ultralight);      color: var(--dcc-blue-dark); }
+.dcc-ccard__cover--red { background: var(--dcc-red-ultralight);       color: var(--dcc-red-dark); }
+.dcc-ccard__cover--lightblue { background: var(--dcc-lightblue-ultralight); color: var(--dcc-lightblue-dark); }
+
+.dcc-ccard__body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+/* La descripción sí conserva aire; lo que se aprieta es categoría → título. */
+.dcc-ccard__body .dcc-ccard__desc { margin-top: 4px; }
+
+/* La categoría a la izquierda y la versión a la derecha comparten la primera
+   línea, así la versión queda en la esquina sin recurrir a posición absoluta
    ni a reservar padding a mano. */
-.dcc-ccard__top { display: flex; align-items: center; gap: 8px; }.dcc-ccard__top .dcc-ccard__eyebrow {
+.dcc-ccard__top { display: flex; align-items: center; gap: 8px; }
+.dcc-ccard__top .dcc-ccard__eyebrow {
   flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}/* El botón mide 28px y estiraba la fila de la categoría,
-que sólo necesita
-   14,
-4px. Con -7px arriba y abajo aporta 14px,
-así que deja de mandar en el
+}
+/* El botón mide 28px y estiraba la fila de la categoría, que sólo necesita
+   14,4px. Con -7px arriba y abajo aporta 14px, así que deja de mandar en el
    alto: la separación hasta el título queda igual con estrella y sin ella. */
-.dcc-ccard__top .dcc-ccard__fav { margin: -7px -4px -7px 0; }.dcc-ccard__ver {
+.dcc-ccard__top .dcc-ccard__fav { margin: -7px -4px -7px 0; }
+.dcc-ccard__ver {
   flex: 0 0 auto;
   font-size: 12px;
   line-height: 1.2;
-  color: var(--dcc-grey-default);
+  color: var(--dcc-fg-accent);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}/* Variante arrastrable. El asa es lo único que inicia el arrastre: así se puede
+}
+
+/* Variante arrastrable. El asa es lo único que inicia el arrastre: así se puede
    seleccionar texto dentro de la tarjeta sin dispararlo sin querer. */
-.dcc-ccard--draggable { position: relative; padding-left: 40px; }.dcc-ccard__grip {
+.dcc-ccard--draggable { position: relative; padding-left: 40px; }
+
+.dcc-ccard__grip {
   position: absolute;
   left: 6px;
   top: 50%;
@@ -1927,29 +2801,39 @@ así que deja de mandar en el
   background: none;
   border: 0;
   border-radius: var(--dcc-radius-sm);
-  color: var(--dcc-grey-light);
+  color: var(--dcc-fg-muted);
   cursor: grab;
   touch-action: none;
   transition: color .15s ease, background-color .15s ease;
-}.dcc-ccard__grip svg { width: 18px; height: 18px; }.dcc-ccard__grip:hover { color: var(--dcc-grey-default); background: var(--dcc-grey-ultralight); }.dcc-ccard__grip:focus-visible { outline: 2px solid var(--dcc-lightblue-default); outline-offset: 2px; }.dcc-ccard__grip:active { cursor: grabbing; }.dcc-ccard--draggable.is-dragging {
+}
+.dcc-ccard__grip svg { width: 18px; height: 18px; }
+.dcc-ccard__grip:hover { color: var(--dcc-fg-accent); background: var(--dcc-surface-muted); }
+.dcc-ccard__grip:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+.dcc-ccard__grip:active { cursor: grabbing; }
+
+.dcc-ccard--draggable.is-dragging {
   opacity: .55;
   cursor: grabbing;
   box-shadow: 0 10px 24px -6px rgba(0, 0, 0, .3);
-}/* Destino de la soltada */
+}
+/* Destino de la soltada */
 .dcc-ccard--draggable.is-over {
-  outline: 2px dashed var(--dcc-lightblue-default);
+  outline: 2px dashed var(--dcc-focus);
   outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .dcc-ccard__grip { transition: none; }
 }
+
 .dcc-ccard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 440px));
   gap: 20px;
   justify-content: start;
-}.dcc-card-grid {
+}
+
+.dcc-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 300px));
   gap: 30px;
@@ -1960,14 +2844,22 @@ así que deja de mandar en el
    15.14 RESPONSIVE DE LOS COMPONENTES NUEVOS
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-  .dcc-field { max-width: 100%; }.dcc-stepper { flex-direction: column; align-items: stretch; }.dcc-stepper .dcc-stepper__step { flex-direction: row; align-items: flex-start; gap: 12px; text-align: left; flex: none; padding-bottom: 24px; }.dcc-stepper .dcc-stepper__step::before { display: none; }.dcc-stepper .dcc-stepper__step::after {
+  .dcc-field { max-width: 100%; }
+    .dcc-stepper { flex-direction: column; align-items: stretch; }
+    .dcc-stepper .dcc-stepper__step { flex-direction: row; align-items: flex-start; gap: 12px; text-align: left; flex: none; padding-bottom: 24px; }
+    .dcc-stepper .dcc-stepper__step::before { display: none; }
+    .dcc-stepper .dcc-stepper__step::after {
       top: 32px; bottom: 0; left: 15px; right: auto;
       width: 2px; height: auto; margin: 0;
-    }.dcc-stepper .dcc-stepper__step:last-child { padding-bottom: 0; }.dcc-stepper .dcc-stepper__label { max-width: none; padding-top: 6px; }.dcc-calendar { width: 100%; }
+    }
+    .dcc-stepper .dcc-stepper__step:last-child { padding-bottom: 0; }
+    .dcc-stepper .dcc-stepper__label { max-width: none; padding-top: 6px; }
+      .dcc-calendar { width: 100%; }
 }
 
 /* ---- Impresión ---- */
 @media print {
-  .dcc-root { background: #fff; }.dcc-nav-toggle { display: none; }
+  .dcc-root { background: #fff; }
+    .dcc-nav-toggle { display: none; }
 }
 

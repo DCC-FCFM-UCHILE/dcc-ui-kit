@@ -1,4 +1,4 @@
-/*! DCC UI Kit 2.5.1 — tokens de diseño */
+/*! DCC UI Kit 2.6.0 — tokens de diseño */
 
 :root {
   /* Paleta — nombre en Figma: Grupo/Tono */
@@ -44,6 +44,11 @@
   /* Efectos */
   --dcc-shadow:        0 2px 4px -1px #0000000f, 0 4px 6px -1px #0000001a;
   --dcc-shadow-button: 0 4px 3px rgba(0, 0, 0, .1), 0 2px 2px rgba(0, 0, 0, .06);
+  /* Escalón de hover del botón: la misma sombra de dos capas con el
+     desplazamiento y el difuminado ×1,5 y las opacidades un tercio más altas.
+     Es el salto que hace MUI entre sus elevaciones 2 y 4, dicho con la sombra
+     que el kit ya tenía en vez de con la suya. */
+  --dcc-shadow-button-hover: 0 6px 5px rgba(0, 0, 0, .14), 0 3px 3px rgba(0, 0, 0, .08);
   --dcc-inner-shadow:  inset 0 1px 4px 0 #0000001a;
 
   /* Tipografía */
@@ -58,7 +63,7 @@
   --dcc-badge-radius: 26px;
   --dcc-badge-border-width: 1px;
 
-  /* Layout del styleguide */
+  /* Layout de página */
   --dcc-page-max: 1200px;
   --dcc-card-radius: 16px;
 
@@ -76,6 +81,40 @@
      48px de holgura repartidos en 7 huecos = 6,8px cada uno. Con más de 6px el
      menú ya no cabe en una línea y se parte en dos. */
   --dcc-nav-menu-gap: 6px;
+
+  /* ---- Colores por rol (tema claro) ----
+     Los componentes no piden "Grey/Default" sino "el texto" o "la superficie",
+     y cada tema decide qué color es. En claro son los mismos tokens de Figma de
+     siempre, así que nada cambia para quien no activa el oscuro.
+     Las piezas de marca —la nav, el pie, la barra lateral— siguen usando la
+     paleta directa: son oscuras en los dos temas. */
+  --dcc-bg:             var(--dcc-grey-ultralight);  /* fondo de página */
+  --dcc-surface:        #fff;                        /* tarjetas, campos, paneles */
+  --dcc-surface-raised: #fff;                        /* menús, listas desplegables, calendario */
+  --dcc-surface-muted:  var(--dcc-grey-ultralight);  /* hover de filas, rellenos suaves, deshabilitado */
+  --dcc-fg:             var(--dcc-grey-dark);        /* texto */
+  --dcc-fg-strong:      var(--dcc-gray-800);         /* títulos */
+  --dcc-fg-accent:      var(--dcc-grey-default);     /* texto con acento: links, etiquetas activas */
+  --dcc-fg-muted:       var(--dcc-grey-light);       /* texto secundario, placeholders, íconos */
+  --dcc-border:         var(--dcc-grey-light);       /* borde de campos y controles */
+  --dcc-border-subtle:  var(--dcc-grey-ultralight);  /* divisores */
+  --dcc-accent:         var(--dcc-grey-default);     /* relleno de acento: seleccionado, activo */
+  --dcc-on-accent:      var(--dcc-white);            /* texto sobre ese relleno */
+  --dcc-focus:          var(--dcc-lightblue-default);
+  --dcc-danger:         var(--dcc-red-default);
+  --dcc-danger-bg:      var(--dcc-red-ultralight);
+  --dcc-success:        var(--dcc-green-default);
+  --dcc-success-bg:     var(--dcc-green-ultralight);
+  --dcc-info:           var(--dcc-lightblue-default);
+  --dcc-info-bg:        var(--dcc-lightblue-ultralight);
+  --dcc-warning:        var(--dcc-yellow-default);
+  --dcc-warning-bg:     var(--dcc-yellow-ultralight);
+  /* "Fuerte": el mismo matiz con más contraste contra la superficie —más
+     oscuro en claro, más claro en oscuro—. Para hover de estados y rellenos. */
+  --dcc-danger-strong:  var(--dcc-red-dark);
+  --dcc-success-strong: var(--dcc-green-dark);
+  --dcc-info-strong:    var(--dcc-lightblue-dark);
+  --dcc-warning-strong: var(--dcc-yellow-dark);
 }
 
 :root { --dcc-gutter-lg: 32px; --dcc-gutter-md: 24px; }
