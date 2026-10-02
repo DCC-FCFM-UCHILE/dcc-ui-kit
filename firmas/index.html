@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firmas de correo — DCC</title>
+<link rel="stylesheet" href="../dist/dcc-ui.css">
+<style>
+  /* Sólo el armado de esta página; los controles son del UI Kit. */
+  .firmas { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+  .firmas__lead { max-width: 70ch; margin: 8px 0 32px; font-size: 17px; line-height: 1.55; color: var(--dcc-fg-accent); }
+  .firmas__grid { display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); gap: 32px; align-items: start; }
+  .firmas__panel { background: var(--dcc-surface); border: 1px solid var(--dcc-border-subtle); border-radius: 12px; padding: 24px; }
+  .firmas__form { display: grid; gap: 16px; }
+  .firmas__form .dcc-field { max-width: none; }
+  .firmas__h2 { margin: 0 0 16px; font-size: 18px; color: var(--dcc-fg-strong); }
+  .firmas__barra { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .firmas__lienzo { background: #fff; border: 1px dashed var(--dcc-border); border-radius: 8px; padding: 24px 16px; overflow-x: auto; }
+  .firmas__tamanos { display: inline-flex; gap: 4px; padding: 3px; border-radius: 24px; background: var(--dcc-surface-muted); }
+  .firmas__tamanos button { border: 0; background: none; padding: 6px 14px; border-radius: 20px; font: inherit; font-size: 14px; color: var(--dcc-fg-accent); cursor: pointer; }
+  .firmas__tamanos button[aria-pressed="true"] { background: var(--dcc-surface); color: var(--dcc-fg-strong); font-weight: 700; box-shadow: var(--dcc-shadow); }
+  .firmas__marco { margin: 0 auto; transition: max-width .25s cubic-bezier(.4, 0, .2, 1); }
+  .firmas__acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .firmas__nota { margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: var(--dcc-fg-muted); }
+  .firmas__codigo { margin-top: 16px; }
+  .firmas__codigo pre { max-height: 320px; overflow: auto; padding: 16px; border-radius: 8px; background: var(--dcc-grey-dark); color: #e6edf5; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-all; }
+  .firmas__pasos { margin: 0; padding-left: 20px; line-height: 1.6; color: var(--dcc-fg); }
+  .firmas__pasos li + li { margin-top: 6px; }
+  .firmas__estado { min-height: 20px; font-size: 14px; color: var(--dcc-success); }
+  @media (max-width: 900px) { .firmas__grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body class="dcc-root">
+
+<main class="firmas">
+  <h1 class="dcc-t-display" style="font-size:40px">Firmas de correo</h1>
+  <p class="firmas__lead">Completa tus datos, revisa cómo se ve en escritorio y en el teléfono, y copia la firma
+    para pegarla en Gmail, Outlook o Apple Mail. La firma está hecha con tablas y estilos en línea, que es lo único
+    que los clientes de correo respetan.</p>
+
+  <div class="firmas__grid">
+    <section class="firmas__panel" aria-labelledby="t-datos">
+      <h2 class="firmas__h2" id="t-datos">Tus datos</h2>
+      <form class="firmas__form" id="form" autocomplete="off">
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="f-nombre">Nombre</label>
+          <input class="dcc-input" id="f-nombre" name="nombre" value="Tavata Salazar Vallejos">
+        </div>
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="f-cargo">Cargo</label>
+          <input class="dcc-input" id="f-cargo" name="cargo" value="Encargada de Estudios">
+        </div>
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="f-telefono">Teléfono</label>
+          <input class="dcc-input" id="f-telefono" name="telefono" value="+56 229784891" inputmode="tel">
+        </div>
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="f-dir1">Dirección</label>
+          <input class="dcc-input" id="f-dir1" name="direccion1" value="Beauchef #851, Edificio Poniente,">
+        </div>
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="f-dir2">Oficina</label>
+          <input class="dcc-input" id="f-dir2" name="direccion2" value="Piso 2 Of. 205">
+        </div>
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="f-base">Dirección de las imágenes</label>
+          <input class="dcc-input" id="f-base" name="base" value="https://cdn.dcc.uchile.cl/firmas/img/">
+          <span class="dcc-field__help"><span>Donde están publicados los PNG de la carpeta firmas/img/. Las
+            firmas copiadas apuntan acá; la vista previa usa los archivos locales.</span></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="firmas__panel" aria-labelledby="t-vista">
+      <div class="firmas__barra">
+        <h2 class="firmas__h2" id="t-vista" style="margin:0">Vista previa</h2>
+        <div class="firmas__tamanos" role="group" aria-label="Ancho de la vista previa">
+          <button type="button" data-ancho="672" aria-pressed="true">Escritorio</button>
+          <button type="button" data-ancho="360" aria-pressed="false">Teléfono</button>
+        </div>
+      </div>
+      <div class="firmas__lienzo">
+        <div class="firmas__marco" id="marco" style="max-width:672px"></div>
+      </div>
+
+      <div class="firmas__acciones">
+        <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" id="copiar">
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg> Copiar firma
+        </button>
+        <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" id="descargar">
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg> Descargar HTML
+        </button>
+      </div>
+      <p class="firmas__estado" id="estado" role="status"></p>
+
+      <details class="firmas__codigo">
+        <summary>Ver el HTML</summary>
+        <pre><code id="codigo"></code></pre>
+      </details>
+
+      <h2 class="firmas__h2" style="margin-top:32px">Cómo instalarla</h2>
+      <ol class="firmas__pasos">
+        <li><strong>Gmail:</strong> Configuración → Ver todos los ajustes → General → Firma → Crear nueva. Pega con
+          <kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>V</kbd> y guarda al final de la página.</li>
+        <li><strong>Outlook en la web:</strong> Configuración → Correo → Redactar y responder → Firma de correo. Pega
+          y guarda.</li>
+        <li><strong>Apple Mail:</strong> Ajustes → Firmas → <kbd>+</kbd>. Desmarca “Usar siempre mi tipo de letra
+          predeterminado” y pega.</li>
+      </ol>
+      <p class="firmas__nota">Las imágenes se cargan desde la dirección configurada arriba: tienen que estar
+        publicadas ahí antes de usar la firma, o el destinatario verá los recuadros vacíos.</p>
+    </section>
+  </div>
+</main>
+
+<script src="../dist/dcc-ui.bundle.js" defer></script>
+<script src="plantilla.js"></script>
+<script>
+  (function () {
+    var form = document.getElementById("form");
+    var marco = document.getElementById("marco");
+    var codigo = document.getElementById("codigo");
+    var estado = document.getElementById("estado");
+
+    function datos() {
+      var f = new FormData(form);
+      return {
+        nombre: f.get("nombre"),
+        cargo: f.get("cargo"),
+        telefono: f.get("telefono"),
+        direccion1: f.get("direccion1"),
+        direccion2: f.get("direccion2")
+      };
+    }
+    function base() { return String(new FormData(form).get("base") || "img/").trim(); }
+
+    function pintar() {
+      var d = datos();
+      marco.innerHTML = firmaDCC(d, { base: "img/" });
+      codigo.textContent = firmaDCC(d, { base: base() });
+    }
+    form.addEventListener("input", pintar);
+    form.addEventListener("change", pintar);
+    pintar();
+
+
+    document.querySelectorAll("[data-ancho]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        document.querySelectorAll("[data-ancho]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+        marco.style.maxWidth = b.getAttribute("data-ancho") + "px";
+      });
+    });
+
+    function avisar(texto) {
+      estado.textContent = texto;
+      setTimeout(function () { estado.textContent = ""; }, 3000);
+    }
+
+    // Se copia como HTML enriquecido, que es lo que entienden los editores de
+    // firma. Si el navegador no tiene ClipboardItem, se selecciona una copia
+    // oculta —con las URL públicas, no las locales— y se copia la selección.
+    document.getElementById("copiar").addEventListener("click", function () {
+      var html = firmaDCC(datos(), { base: base() });
+      var texto = marco.innerText;
+      if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+        navigator.clipboard.write([new ClipboardItem({
+          "text/html": new Blob([html], { type: "text/html" }),
+          "text/plain": new Blob([texto], { type: "text/plain" })
+        })]).then(function () { avisar("Firma copiada. Pégala en la configuración de tu correo."); },
+                  function () { copiarSeleccion(html); });
+      } else {
+        copiarSeleccion(html);
+      }
+    });
+    function copiarSeleccion(html) {
+      var oculto = document.createElement("div");
+      oculto.style.cssText = "position:fixed;left:-9999px;top:0;background:#fff";
+      oculto.innerHTML = html;
+      document.body.appendChild(oculto);
+      var rango = document.createRange();
+      rango.selectNodeContents(oculto);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(rango);
+      var ok = document.execCommand("copy");
+      sel.removeAllRanges();
+      oculto.remove();
+      avisar(ok ? "Firma copiada. Pégala en la configuración de tu correo." : "No se pudo copiar; usa “Descargar HTML”.");
+    }
+
+    document.getElementById("descargar").addEventListener("click", function () {
+      var d = datos();
+      var blob = new Blob([documentoFirma(d, { base: base() })], { type: "text/html" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "firma-" + String(d.nombre || "dcc").toLowerCase()
+        .normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".html";
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+  })();
+</script>
+</body>
+</html>

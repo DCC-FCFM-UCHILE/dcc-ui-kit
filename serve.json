@@ -14,6 +14,14 @@
     {
       "source": "/site/",
       "destination": "/site/index.html"
+    },
+    {
+      "source": "/firmas",
+      "destination": "/firmas/index.html"
+    },
+    {
+      "source": "/firmas/",
+      "destination": "/firmas/index.html"
     }
   ]
 }
