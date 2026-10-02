@@ -219,6 +219,24 @@ if (existsSync(ASSETS)) {
 }
 
 /* --------------------------------------------------------------------------
+   5b. Imágenes de la firma de correo (firmas/img/*.png)
+       Las firmas que se copian desde el generador —y las que arman las apps,
+       como Faro— cargan el logotipo y los íconos por URL. Publicarlos con cada
+       versión los deja en una dirección fija que no se rompe:
+       /ui-kit/<versión>/firmas/img/. Sólo los PNG: el SVG del logotipo es la
+       fuente para regenerarlos, y los clientes de correo no muestran SVG.
+       Como los assets, van como salidas para que `--check` los cubra.
+   -------------------------------------------------------------------------- */
+const FIRMAS_IMG = join(raiz, "firmas", "img");
+const firmas = {};
+if (existsSync(FIRMAS_IMG)) {
+  for (const archivo of readdirSync(FIRMAS_IMG).sort()) {
+    if (!archivo.endsWith(".png")) continue;
+    firmas[`firmas/img/${archivo}`] = readFileSync(join(FIRMAS_IMG, archivo));
+  }
+}
+
+/* --------------------------------------------------------------------------
    6. Escritura y verificación
    -------------------------------------------------------------------------- */
 const salidas = {
@@ -232,6 +250,7 @@ const salidas = {
   "dcc-ui.bundle.js": bundleJs,
   "dcc-ui.bundle.min.js": await minificar(bundleJs, "dcc-ui.bundle.js"),
   ...assets,
+  ...firmas,
 };
 
 const sri = (txt) => "sha384-" + createHash("sha384").update(txt).digest("base64");

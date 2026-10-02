@@ -9,6 +9,14 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [Sin publicar]
+
+### Agrega
+
+- **Firma de correo del DCC** (`firmas/`): plantilla, generador y ejemplo. Sus imágenes (logotipo,
+  íconos de contacto y redes) se publican con cada versión en `dist/firmas/img/`, para que las firmas
+  y las apps que las arman (Faro) las carguen desde `/ui-kit/<versión>/firmas/img/`.
+
 ## [2.6.0] — 2026-09-25
 
 ### Agrega

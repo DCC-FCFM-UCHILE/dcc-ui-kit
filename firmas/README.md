@@ -9,7 +9,8 @@ La firma institucional en HTML, lista para Gmail, Outlook y Apple Mail.
   generador y `generar-ejemplo.mjs`.
 - **`ejemplo.html`** — una firma completa de muestra. Se regenera con
   `node firmas/generar-ejemplo.mjs`.
-- **`img/`** — logotipo e íconos en PNG, más el logotipo original en SVG.
+- **`img/`** — logotipo e íconos en PNG, más el logotipo original en SVG. Los PNG se publican con
+  cada versión del kit en `dist/firmas/img/` (ver abajo).
 
 En escritorio la firma tiene dos columnas: a la izquierda el logotipo gris del DCC y las redes;
 a la derecha nombre, cargo, teléfono y dirección, separados de las redes por una línea roja. En el
@@ -34,10 +35,11 @@ Un correo no es una página web, y cada decisión sale de lo que los clientes de
 
 ## Antes de usarla
 
-1. **Publicar las imágenes.** Las firmas copiadas cargan los PNG desde la dirección del campo
-   "Dirección de las imágenes" (por omisión `https://cdn.dcc.uchile.cl/firmas/img/`). Hay que subir
-   el contenido de `img/` a esa dirección; mientras no esté publicado, el destinatario verá recuadros
-   vacíos en lugar del logotipo y los íconos.
+1. **Las imágenes ya viajan con el kit.** El build copia los PNG de `img/` a `dist/firmas/img/`, y
+   cada versión queda publicada en `https://apps.dcc.uchile.cl/ui-kit/<versión>/firmas/img/`. Las
+   firmas copiadas cargan los PNG desde el campo "Dirección de las imágenes", que apunta ahí por
+   omisión. La dirección lleva la versión a propósito: una firma ya enviada sigue viéndose aunque
+   después cambie el logotipo. Al publicar una versión nueva, actualiza ese valor en `index.html`.
 2. **Confirmar las redes.** Los enlaces de TikTok, Facebook, Instagram y LinkedIn suponen la cuenta
    `dccuchile` en todas (`REDES` en `plantilla.js`). Conviene verificar cada URL, en particular la de
    LinkedIn.
