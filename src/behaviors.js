@@ -355,6 +355,50 @@
     });
 
     /* ---------- Tabla ordenable ---------- */
+    /* ---------- Seleccionar todas las filas ----------
+       La casilla de la cabecera (`.js-select-all`) marca o desmarca todas las
+       de las filas —las de `td.dcc-cell--check` del cuerpo—, y al revés: queda
+       marcada si están todas, vacía si no hay ninguna e indeterminada si hay
+       algunas. Las filas se buscan cada vez, así que sirve también si la tabla
+       se reordena o le llegan filas nuevas. */
+    cada(raiz, ".js-select-all", "select-all", function (todas) {
+      var tabla = todas.closest("table");
+      if (!tabla) return;
+      function filas() {
+        var lista = [];
+        for (var i = 0; i < tabla.tBodies.length; i++) {
+          var ins = tabla.tBodies[i].querySelectorAll("td.dcc-cell--check input[type=\"checkbox\"]");
+          for (var j = 0; j < ins.length; j++) if (!ins[j].disabled) lista.push(ins[j]);
+        }
+        return lista;
+      }
+      function sincronizar() {
+        var lista = filas();
+        var marcadas = lista.filter(function (c) { return c.checked; }).length;
+        todas.checked = lista.length > 0 && marcadas === lista.length;
+        todas.indeterminate = marcadas > 0 && marcadas < lista.length;
+      }
+      todas.addEventListener("change", function () {
+        filas().forEach(function (c) { c.checked = todas.checked; });
+        todas.indeterminate = false;
+      });
+      tabla.addEventListener("change", function (e) {
+        if (e.target !== todas && e.target.closest && e.target.closest("td.dcc-cell--check")) sincronizar();
+      });
+      sincronizar();
+    });
+
+    /* Lee un número escrito a la chilena: coma decimal y punto de miles
+       ("6,2", "4.250.000", "$ 1.500"). parseFloat se detenía en la coma y
+       ordenaba 6,2 y 6,8 como si fueran iguales. Sin coma, un punto seguido de
+       grupos de tres cifras se toma como separador de miles. */
+    function numero(texto) {
+      var t = String(texto).replace(/[^\d,.\-]/g, "");
+      if (t.indexOf(",") >= 0) t = t.replace(/\./g, "").replace(",", ".");
+      else if (/^-?\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, "");
+      return parseFloat(t);
+    }
+
     cada(raiz, ".js-sortable", "sortable", function (table) {
       var body = table.tBodies[0];
       table.querySelectorAll("th.is-sortable").forEach(function (th, colIndex) {
@@ -370,8 +414,15 @@
           rows.sort(function (a, b) {
             var x = a.cells[index].textContent.trim();
             var y = b.cells[index].textContent.trim();
-            var r = numeric ? (parseFloat(x) - parseFloat(y))
-                            : x.localeCompare(y, "es", { sensitivity: "base" });
+            var r;
+            if (numeric) {
+              var nx = numero(x), ny = numero(y);
+              // Las celdas sin número (un guion, "sin nota") van siempre al final.
+              if (isNaN(nx) || isNaN(ny)) return isNaN(nx) - isNaN(ny);
+              r = nx - ny;
+            } else {
+              r = x.localeCompare(y, "es", { sensitivity: "base" });
+            }
             return asc ? r : -r;
           });
           rows.forEach(function (r) { body.appendChild(r); });

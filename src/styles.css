@@ -983,12 +983,18 @@ body.dcc-root {
 /* El relleno marcado es Grey/Light, no Grey/Default: por eso usa --dcc-border y
    no --dcc-accent, que en claro lo oscurecería. La marca y el knob siguen en
    blanco, que sobre el relleno de --dcc-border se lee en los dos temas. */
-.dcc-control .dcc-box svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; opacity: 0; }
+/* Los íconos se apilan en la misma celda de la grilla: una casilla puede traer
+   el ✓ y la raya —la de "seleccionar todas"— y sin `grid-area` la raya caía
+   en una segunda fila, bajo la caja. */
+.dcc-control .dcc-box svg { grid-area: 1 / 1; width: 14px; height: 14px; stroke: #fff; stroke-width: 3; opacity: 0; }
 .dcc-control input:checked + .dcc-box,
 .dcc-control input:indeterminate + .dcc-box { background: var(--dcc-border); }
+/* Marcada muestra el ✓; la raya sólo cuando la casilla no trae otro ícono. Si
+   no, una casilla con los dos mostraba ambos superpuestos al marcarla. */
 .dcc-control input:checked + .dcc-box svg.dcc-check,
-.dcc-control input:checked + .dcc-box svg.dcc-dash,
+.dcc-control input:checked + .dcc-box svg.dcc-dash:only-child,
 .dcc-control input:indeterminate + .dcc-box svg.dcc-dash { opacity: 1; }
+.dcc-control input:indeterminate + .dcc-box svg.dcc-check { opacity: 0; }
 .dcc-control input:focus-visible + .dcc-box,
 .dcc-control input:focus-visible + .dcc-dot,
 .dcc-control input:focus-visible + .dcc-track { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
@@ -2402,6 +2408,18 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   font-variant-numeric: tabular-nums;
 }
 
+/* Badges de estado, por rol. En claro son los mismos `soft-*` de arriba
+   (fondo Ultralight, texto Dark: de 6 a 9:1), pero como piden "el éxito" y no
+   "el verde" siguen al tema: en oscuro pasan a fondo tenue oscuro con texto
+   luminoso, en vez de quedar como islas claras. Warning no tenía `soft`: es el
+   amarillo del favorito, 6,5:1 en claro. Pensados para las columnas de estado
+   de una tabla ("En revisión", "Aprobada", "Pendiente"…). */
+.dcc-badge--success { background: var(--dcc-success-bg);    color: var(--dcc-success-strong); }
+.dcc-badge--info    { background: var(--dcc-info-bg);       color: var(--dcc-info-strong); }
+.dcc-badge--warning { background: var(--dcc-warning-bg);    color: var(--dcc-warning-strong); }
+.dcc-badge--error   { background: var(--dcc-danger-bg);     color: var(--dcc-danger-strong); }
+.dcc-badge--neutral { background: var(--dcc-surface-muted); color: var(--dcc-fg); }
+
 /* --------------------------------------------------------------------------
    15.4 LISTA DE ELEMENTOS
    -------------------------------------------------------------------------- */
@@ -3311,6 +3329,256 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-focus); outli
   .dcc-stepper .dcc-stepper__step:last-child { padding-bottom: 0; }
   .dcc-stepper .dcc-stepper__label { max-width: none; padding-top: 6px; }
     .dcc-calendar { width: 100%; }
+}
+
+/* --------------------------------------------------------------------------
+   15.15 TABLA DE LÍNEAS (MUI)
+   -------------------------------------------------------------------------- */
+/* La tabla de Figma (sección 11) se dibuja con bordes de 2px arriba y abajo,
+   cabecera rellena en Poppins Bold mayúscula y filas de 52px: al lado de lo que
+   hoy hacen MUI o las aplicaciones del DCC se lee pesada. `--lineas` es la
+   alternativa, elegida entre tres propuestas: la Table de Material, sin
+   relleno en la cabecera, texto en peso 500 y tono secundario, divisores de
+   1px entre filas y hover suave. Se suma a `.dcc-table`, así que la tabla de
+   siempre no cambia para quien no lo pone. Admite `--densa` (el size="small"
+   de MUI) y `--sticky` (su stickyHeader), y se arma con el contenedor
+   `.dcc-table-card`, los ayudantes de celda (`.dcc-cell--num`, `--check`,
+   `--nowrap`, `.dcc-cell-clamp`) y los badges de estado por rol
+   (`.dcc-badge--success`, etc., en 15.3). Usa sólo colores por rol, así que
+   funciona igual en el tema oscuro.
+
+   Va al final de la hoja a propósito: pisa reglas de la sección 11 y de la
+   cabecera ordenable (15.5) con la misma especificidad, y gana la que va
+   después. */
+.dcc-table--lineas {
+  /* Relleno de celda. `--densa` sólo cambia el vertical. */
+  --dcc-table-py: 16px;
+  --dcc-table-px: 16px;
+  --dcc-table-th-py: 12px;
+  /* Hover: la mitad del relleno suave, como el 4% de negro de MUI. */
+  --dcc-table-hover: color-mix(in srgb, var(--dcc-surface-muted) 55%, var(--dcc-surface));
+  /* Fila seleccionada: el acento al 9%, el "primary 8%" de MUI. */
+  --dcc-table-selected: color-mix(in srgb, var(--dcc-accent) 9%, var(--dcc-surface));
+  /* Texto secundario. --dcc-fg-muted da 4,4:1 sobre blanco y no llega a AA en
+     12-14px; el texto mezclado al 75% con la superficie da 5,3:1 (4,8:1 sobre
+     el hover) y en oscuro sigue sobre 7:1. */
+  --dcc-table-fg-soft: color-mix(in srgb, var(--dcc-fg) 75%, var(--dcc-surface));
+  min-width: 640px;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.43;
+  color: var(--dcc-fg);
+}
+
+/* Lo que le quita a la base: alturas fijas, el padding de centrado
+   por borde, los bordes de 2px y las esquinas redondeadas de la cabecera. */
+.dcc-table--lineas th,
+.dcc-table--lineas td {
+  height: auto;
+  border: 0;
+  vertical-align: middle;
+}
+.dcc-table--lineas th {
+  padding: var(--dcc-table-th-py) var(--dcc-cell-pr, var(--dcc-table-px)) var(--dcc-table-th-py) var(--dcc-table-px);
+  background: transparent;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.43;
+  text-transform: none;
+  color: var(--dcc-table-fg-soft);
+}
+.dcc-table--lineas td,
+.dcc-table--lineas tbody tr:last-child td {
+  /* El lateral derecho pasa por --dcc-cell-pr para que una columna pueda
+     ajustarlo (la de casillas) sin pelear con la
+     especificidad de esta regla. */
+  padding: var(--dcc-table-py) var(--dcc-cell-pr, var(--dcc-table-px)) var(--dcc-table-py) var(--dcc-table-px);
+  border-bottom: 0;
+  color: var(--dcc-fg);
+}
+.dcc-table--lineas thead th:first-child,
+.dcc-table--lineas thead th:last-child { border-radius: 0; }
+
+/* Cabecera ordenable: el botón ocupa toda la celda y se lleva su relleno. */
+.dcc-table--lineas .dcc-th-sort {
+  height: auto;
+  padding: var(--dcc-table-th-py) var(--dcc-table-px);
+  gap: 6px;
+  letter-spacing: inherit;
+}
+.dcc-table--lineas .dcc-th-sort .dcc-sort-ico {
+  width: 20px;
+  height: 20px;
+  flex-basis: 20px;
+}
+.dcc-table--lineas .dcc-th-sort svg { width: 14px; height: 14px; flex-basis: 14px; }
+
+/* Hover y selección. La selección también se lee del checkbox marcado, así que
+   no hace falta JS para pintarla. */
+.dcc-table--lineas tbody tr > td {
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.dcc-table--lineas tbody tr:hover > td { background: var(--dcc-table-hover); }
+.dcc-table--lineas tbody tr:is(.is-selected, [aria-selected="true"], :has(.dcc-cell--check input:checked)) > td {
+  background: var(--dcc-table-selected);
+}
+/* Fila que se abre con el teclado (lleva tabindex="0"). */
+.dcc-table--lineas tbody tr[tabindex] { cursor: pointer; }
+.dcc-table--lineas tbody tr[tabindex]:focus-visible {
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: -2px;
+}
+
+/* ---- Ayudantes de celda (sirven también en la tabla base) ---- */
+/* Números a la derecha y con cifras de igual ancho, como `align="right"` en
+   MUI. En una cabecera ordenable el rótulo y la flecha se cargan a la derecha,
+   pero la flecha sigue pegada al lado derecho del rótulo, como en el resto de
+   las columnas: así se lee igual en toda la cabecera. */
+.dcc-table .dcc-cell--num { text-align: right; font-variant-numeric: tabular-nums; }
+.dcc-table .dcc-cell--num .dcc-th-sort { justify-content: flex-end; }
+/* Texto corto que no debe partirse (nombres, fechas, códigos), y texto largo
+   recortado a dos líneas con "…" —el `lineas` de CeldaKit—. El recorte va en
+   un span interno: cambiarle el `display` al <td> rompería la tabla. */
+.dcc-table .dcc-cell--nowrap { white-space: nowrap; }
+.dcc-cell-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-width: 18ch;
+  max-width: 42ch;
+}
+/* Columna de casilla: sin aire de columna de texto. */
+.dcc-table .dcc-cell--check {
+  --dcc-cell-pr: 0px;
+  width: 1%;
+}
+.dcc-table .dcc-cell--check .dcc-control { vertical-align: middle; }
+/* Leyenda sólo para lectores de pantalla, cuando el título de la tabla ya está
+   a la vista en la barra de la tarjeta. */
+.dcc-table-caption--hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Contenedor: el Paper de MUI ----
+   Superficie con borde de 1px y radio 8. La tabla va en `__scroll`, que se
+   desplaza en horizontal en pantallas angostas: lleva tabindex="0" y un
+   aria-label para que se pueda desplazar con el teclado (las últimas columnas,
+   donde suelen ir las acciones, quedan fuera de vista). Sin overflow en la
+   tarjeta misma: así el select del pie puede abrirse por fuera. */
+.dcc-table-card {
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.43;
+  color: var(--dcc-fg);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border-subtle);
+  border-radius: var(--dcc-radius-md);
+  /* El mismo texto secundario de la tabla, para la barra y el pie. */
+  --dcc-table-fg-soft: color-mix(in srgb, var(--dcc-fg) 75%, var(--dcc-surface));
+}
+.dcc-table-card__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.dcc-table-card__scroll:first-child { border-radius: 7px 7px 0 0; }
+.dcc-table-card__scroll:last-child  { border-radius: 0 0 7px 7px; }
+.dcc-table-card__scroll:only-child  { border-radius: 7px; }
+.dcc-table-card__scroll:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+/* Alto tope para la cabecera fija (`.dcc-table--sticky`). Se cambia con un
+   `max-height` en línea si la lista pide otro. */
+.dcc-table-card__scroll--limit { max-height: 360px; overflow-y: auto; }
+
+.dcc-table-card__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 16px;
+}
+.dcc-table-card__heading { flex: 1 1 220px; min-width: 0; }
+.dcc-table-card__title {
+  margin: 0;
+  font-family: var(--dcc-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--dcc-fg-strong);
+}
+.dcc-table-card__subtitle { margin: 2px 0 0; font-size: 13px; color: var(--dcc-table-fg-soft, var(--dcc-fg-muted)); }
+.dcc-table-card__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+.dcc-table-card__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 24px;
+  min-height: 52px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--dcc-border-subtle);
+  color: var(--dcc-table-fg-soft, var(--dcc-fg-muted));
+}
+.dcc-table-card__foot .dcc-pagination__btn { min-width: 32px; height: 32px; font-size: 14px; }
+
+/* Pie de paginación de MUI (TablePagination):
+   "Filas por página [5 ▾]   1–5 de 13   ‹ ›". El select es el combobox del
+   kit en chico y sin borde en reposo; su lista se abre hacia arriba porque el
+   pie es lo último de la tarjeta. */
+.dcc-table-pager { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+.dcc-table-pager__rows { display: inline-flex; align-items: center; gap: 8px; }
+.dcc-table-pager__rows .dcc-combo { width: 68px; }
+.dcc-table-pager__rows .dcc-combo__button {
+  height: 32px;
+  padding: 4px 6px 4px 8px;
+  gap: 4px;
+  font-size: 14px;
+  border-color: transparent;
+}
+.dcc-table-pager__rows .dcc-combo__button:focus-visible,
+.dcc-table-pager__rows .dcc-combo__button[aria-expanded="true"] { padding: 3px 5px 3px 7px; }
+.dcc-table-pager__rows .dcc-combo__list { top: auto; bottom: calc(100% + 4px); }
+.dcc-table-pager__rows .dcc-combo__option { font-size: 14px; padding: 6px 8px; }
+.dcc-table-pager__range { font-variant-numeric: tabular-nums; color: var(--dcc-fg); }
+.dcc-table-pager .dcc-pagination { gap: 2px; }
+
+/* ---- A · Líneas (MUI estándar) ---- */
+.dcc-table--lineas th {
+  background: var(--dcc-surface);
+  border-bottom: 1px solid var(--dcc-border-subtle);
+}
+.dcc-table--lineas td {
+  background: var(--dcc-surface);
+  border-bottom: 1px solid var(--dcc-border-subtle);
+}
+.dcc-table--lineas tbody tr:last-child td { border-bottom: 1px solid var(--dcc-border-subtle); }
+/* Dentro de la tarjeta el pie ya pone su línea: no se duplica. */
+.dcc-table-card .dcc-table--lineas tbody tr:last-child td { border-bottom: 0; }
+/* El hover pinta el círculo sólo en una columna sin ordenar. En la ordenada el
+   círculo ya está relleno con el acento; si el hover lo pisara, el relleno se
+   aclararía y la flecha blanca quedaría sobre gris claro. */
+.dcc-table--lineas th[aria-sort="none"] .dcc-th-sort:hover .dcc-sort-ico { background: var(--dcc-surface-muted); }
+
+/* Densa: el size="small" de MUI, filas de 33px. */
+.dcc-table--densa {
+  --dcc-table-py: 6px;
+  --dcc-table-th-py: 8px;
+}
+/* Cabecera fija mientras se desplaza el cuerpo: el stickyHeader de MUI. Va en
+   un `__scroll--limit`. El fondo opaco de la cabecera tapa las filas que pasan
+   por debajo; el borde sigue porque la tabla no colapsa bordes. */
+.dcc-table--sticky thead th { position: sticky; top: 0; z-index: 2; }
+
+@media (max-width: 600px) {
+  .dcc-table-card__toolbar { padding: 12px; }
+  .dcc-table-card__tools { width: 100%; }
+  .dcc-table-card__foot { justify-content: center; padding: 8px 12px; }
 }
 
 /* ---- Impresión ---- */
