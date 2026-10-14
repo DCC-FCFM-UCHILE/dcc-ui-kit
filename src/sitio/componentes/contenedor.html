@@ -1,0 +1,73 @@
+<!--
+titulo: Container
+grupo: Diseño
+resumen: Centra el contenido de la página, lo topa en un ancho máximo y le deja una canaleta a cada lado. Sin modificador se alinea con la barra de navegación y el pie.
+miniatura: .dcc-container
+escala: .5
+ancho: 640px
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p"><code>.dcc-container</code> ocupa todo el ancho disponible hasta un tope y se centra. Sin
+  modificador, el tope es el de las barras: el contenido mide <code>--dcc-container-max</code> (1320px) y a cada lado
+  queda la canaleta <code>--dcc-gutter-lg</code>, la misma de la navegación institucional y del pie. Así, el texto de
+  la página empieza justo bajo el logo de la barra, en cualquier ancho de pantalla.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-container dcc-doc-frame">
+    <div class="dcc-doc-cell">Contenido de la página: noticias del DCC, calendario académico, avisos</div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="barras">Relación con las barras</h2>
+<p class="dcc-doc-p">Las barras y el pie son bandas a sangre completa: su fondo llega al borde de la pantalla, así
+  que centran el contenido con un relleno que crece, <code>max(gutter, (100% − 1320px) / 2)</code>. El contenedor no
+  necesita fondo a sangre y llega al mismo lugar con <code>max-width</code> y <code>margin: auto</code>. Las dos
+  fórmulas dejan el contenido en <code>min(100% − 2 × gutter, 1320px)</code>, por eso los bordes coinciden al píxel.
+  A 1440px de pantalla son los 60px del diseño en Figma; las canaletas bajan solas a 32px (≤1024px) y a 20px (≤768px).</p>
+<p class="dcc-doc-p">Una aplicación interna con <code>.dcc-nav-app</code> usa una canaleta más angosta, de 40px
+  (<code>--dcc-gutter-md</code>). Para alinearse con ella va <code>.dcc-container--app</code>. Si cambias
+  <code>--dcc-container-max</code> en <code>:root</code>, se mueven a la vez las barras, el pie y los contenedores.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--gap-2">
+    <div class="dcc-container dcc-doc-frame">
+      <div class="dcc-doc-cell">.dcc-container — canaleta de la barra institucional y el pie</div>
+    </div>
+    <div class="dcc-container dcc-container--app dcc-doc-frame">
+      <div class="dcc-doc-cell">.dcc-container--app — canaleta de la barra de aplicación</div>
+    </div>
+    <div class="dcc-container dcc-container--flush dcc-doc-frame">
+      <div class="dcc-doc-cell">.dcc-container--flush — sin canaletas</div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Anchos máximos</h2>
+<p class="dcc-doc-p">Los tamaños de MUI: <code>--xs</code> (444px), <code>--sm</code> (600px), <code>--md</code>
+  (900px), <code>--lg</code> (1200px) y <code>--xl</code> (1536px). Como en MUI, el ancho cuenta la caja entera con sus
+  canaletas: un <code>--sm</code> nunca pasa de 600px. Sirven para páginas de lectura —un formulario de postulación,
+  el texto de una noticia— que se leen mal a lo ancho de toda la pantalla.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--gap-2">
+    <div class="dcc-container dcc-container--xs dcc-doc-frame"><div class="dcc-doc-cell">--xs · 444px</div></div>
+    <div class="dcc-container dcc-container--sm dcc-doc-frame"><div class="dcc-doc-cell">--sm · 600px</div></div>
+    <div class="dcc-container dcc-container--md dcc-doc-frame"><div class="dcc-doc-cell">--md · 900px</div></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="fluido-fijo">Fluido y fijo</h2>
+<p class="dcc-doc-p"><code>--fluid</code> quita el tope (<code>maxWidth={false}</code> en MUI): el contenedor ocupa
+  todo el ancho y sólo conserva las canaletas, útil para tablas anchas o un tablero. <code>--fixed</code> hace lo
+  contrario: en vez de crecer de forma continua, salta al ancho mínimo de cada breakpoint (600, 900, 1200 y 1536px),
+  así el diseño cambia en pocos puntos conocidos. Se combina con un tamaño, que sigue siendo el tope:
+  <code>--fixed --md</code> salta a 600 y a 900 y ahí se queda. Achica la ventana para verlo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--gap-2">
+    <div class="dcc-container dcc-container--fluid dcc-doc-frame"><div class="dcc-doc-cell">--fluid</div></div>
+    <div class="dcc-container dcc-container--fixed dcc-container--md dcc-doc-frame"><div class="dcc-doc-cell">--fixed --md</div></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="variables">Variables</h2>
+<p class="dcc-doc-p">Para un caso que las clases no cubren, cada contenedor lee tres variables propias:
+  <code>--dcc-container-gutter</code> (la canaleta), <code>--dcc-container-width</code> (el tope, con canaletas) y
+  <code>--dcc-container-step</code> (el escalón de <code>--fixed</code>). Por ejemplo,
+  <code>style="--dcc-container-width: 720px"</code> deja un contenedor de 720px.</p>

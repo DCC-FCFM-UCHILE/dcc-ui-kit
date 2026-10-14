@@ -1,0 +1,219 @@
+<!--
+titulo: Línea de tiempo
+grupo: Visualización de datos
+resumen: Hitos en orden, unidos por una línea: las etapas de una memoria, el historial de una solicitud.
+miniatura: #tl-basica
+escala: .7
+-->
+<h2 class="dcc-doc-h2" id="basica">Básica</h2>
+<p class="dcc-doc-p">Una lista ordenada, <code>&lt;ol class="dcc-timeline"&gt;</code>: cada hito es un
+  <code>.dcc-timeline__item</code> con su separador (punto y conector) y su contenido. El conector del último hito
+  no se dibuja aunque esté en el markup. Los puntos son decoración (<code>aria-hidden</code>): lo que importa del
+  hito tiene que estar escrito en el contenido.</p>
+<div class="dcc-doc-demo">
+  <ol class="dcc-timeline" id="tl-basica" aria-label="Etapas de la memoria">
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--primary" aria-hidden="true"></span>
+        <span class="dcc-timeline__connector dcc-timeline__connector--primary" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Inscripción</p>
+        <p class="dcc-timeline__text">Tema y profesor guía aprobados por la comisión.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--primary" aria-hidden="true"></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Informe de avance</p>
+        <p class="dcc-timeline__text">Entregado; en revisión por la profesora co-guía.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot" aria-hidden="true"></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Defensa</p>
+        <p class="dcc-timeline__text">Pendiente. Se agenda cuando el avance esté aprobado.</p>
+      </div>
+    </li>
+  </ol>
+</div>
+
+<h2 class="dcc-doc-h2" id="alternada">Alternada, con contenido opuesto</h2>
+<p class="dcc-doc-p"><code>.dcc-timeline--alternate</code> pone la línea al centro y reparte los hitos a uno y otro
+  lado; <code>--alternate-reverse</code> empieza por el otro. El <code>.dcc-timeline__opposite</code> va al otro lado
+  de la línea: casi siempre, la fecha.</p>
+<div class="dcc-doc-demo">
+  <ol class="dcc-timeline dcc-timeline--alternate" aria-label="Calendario de la memoria 2026">
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite"><time datetime="2026-03-09">9 de marzo</time></div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--success" aria-hidden="true"></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Inscripción de CC6908</p>
+        <p class="dcc-timeline__text">Completada.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite"><time datetime="2026-05-04">4 de mayo</time></div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--success" aria-hidden="true"></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Primer informe de avance</p>
+        <p class="dcc-timeline__text">Aprobado con observaciones.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite"><time datetime="2026-06-29">29 de junio</time></div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--warning" aria-hidden="true"></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Entrega del documento final</p>
+        <p class="dcc-timeline__text">En curso: quedan 12 días.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite"><time datetime="2026-07-16">16 de julio</time></div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--outlined" aria-hidden="true"></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Defensa</p>
+        <p class="dcc-timeline__text">Auditorio del DCC, Beauchef 851.</p>
+      </div>
+    </li>
+  </ol>
+</div>
+
+<h2 class="dcc-doc-h2" id="posicion">Izquierda y derecha</h2>
+<p class="dcc-doc-p">Por omisión el contenido va a la derecha de la línea; <code>.dcc-timeline--left</code> lo pasa
+  a la izquierda. A diferencia de MUI, sin contenido opuesto la línea se pega al borde y el contenido usa todo el
+  ancho; la columna opuesta, cuando está, mide <code>--dcc-timeline-opposite-width</code> (30%).</p>
+<div class="dcc-doc-demo">
+  <div style="display:grid;gap:32px">
+    <ol class="dcc-timeline" aria-label="Horario del lunes">
+      <li class="dcc-timeline__item">
+        <div class="dcc-timeline__opposite">08:30</div>
+        <div class="dcc-timeline__separator">
+          <span class="dcc-timeline__dot" aria-hidden="true"></span>
+          <span class="dcc-timeline__connector" aria-hidden="true"></span>
+        </div>
+        <div class="dcc-timeline__content">Cátedra CC3001</div>
+      </li>
+      <li class="dcc-timeline__item">
+        <div class="dcc-timeline__opposite">10:15</div>
+        <div class="dcc-timeline__separator">
+          <span class="dcc-timeline__dot" aria-hidden="true"></span>
+          <span class="dcc-timeline__connector" aria-hidden="true"></span>
+        </div>
+        <div class="dcc-timeline__content">Auxiliar CC3001</div>
+      </li>
+      <li class="dcc-timeline__item">
+        <div class="dcc-timeline__opposite">14:30</div>
+        <div class="dcc-timeline__separator">
+          <span class="dcc-timeline__dot" aria-hidden="true"></span>
+          <span class="dcc-timeline__connector" aria-hidden="true"></span>
+        </div>
+        <div class="dcc-timeline__content">Laboratorio CC4102</div>
+      </li>
+    </ol>
+    <ol class="dcc-timeline dcc-timeline--left" aria-label="Horario del martes">
+      <li class="dcc-timeline__item">
+        <div class="dcc-timeline__opposite">08:30</div>
+        <div class="dcc-timeline__separator">
+          <span class="dcc-timeline__dot" aria-hidden="true"></span>
+          <span class="dcc-timeline__connector" aria-hidden="true"></span>
+        </div>
+        <div class="dcc-timeline__content">Cátedra CC3101</div>
+      </li>
+      <li class="dcc-timeline__item">
+        <div class="dcc-timeline__opposite">12:00</div>
+        <div class="dcc-timeline__separator">
+          <span class="dcc-timeline__dot" aria-hidden="true"></span>
+          <span class="dcc-timeline__connector" aria-hidden="true"></span>
+        </div>
+        <div class="dcc-timeline__content">Seminario del DCC</div>
+      </li>
+      <li class="dcc-timeline__item">
+        <div class="dcc-timeline__opposite">16:00</div>
+        <div class="dcc-timeline__separator">
+          <span class="dcc-timeline__dot" aria-hidden="true"></span>
+          <span class="dcc-timeline__connector" aria-hidden="true"></span>
+        </div>
+        <div class="dcc-timeline__content">Reunión de memoria</div>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="iconos">Puntos con ícono y delineados</h2>
+<p class="dcc-doc-p"><code>.dcc-timeline__dot--icon</code> agranda el punto para llevar un ícono;
+  <code>--outlined</code> deja solo el anillo. Los colores son los de siempre: <code>--primary</code>,
+  <code>--secondary</code>, <code>--success</code>, <code>--error</code>, <code>--info</code> y
+  <code>--warning</code>, y valen también para el conector.</p>
+<div class="dcc-doc-demo">
+  <ol class="dcc-timeline dcc-timeline--alternate" aria-label="Historial de la solicitud de convalidación 2026-0142">
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite"><time datetime="2026-04-02T10:12">2 abr · 10:12</time></div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--icon dcc-timeline__dot--primary" aria-hidden="true"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-send"/></svg></span>
+        <span class="dcc-timeline__connector dcc-timeline__connector--primary" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Solicitud enviada</p>
+        <p class="dcc-timeline__text">Convalidación de CC3001 por un curso de intercambio.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite"><time datetime="2026-04-05T16:40">5 abr · 16:40</time></div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--icon dcc-timeline__dot--info" aria-hidden="true"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-paperclip"/></svg></span>
+        <span class="dcc-timeline__connector dcc-timeline__connector--primary" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Se pidió el programa del curso</p>
+        <p class="dcc-timeline__text">Secretaría docente.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite"><time datetime="2026-04-11T09:03">11 abr · 09:03</time></div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--icon dcc-timeline__dot--success" aria-hidden="true"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-check"/></svg></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Aprobada</p>
+        <p class="dcc-timeline__text">Por la jefatura docente.</p>
+      </div>
+    </li>
+    <li class="dcc-timeline__item">
+      <div class="dcc-timeline__opposite">Pendiente</div>
+      <div class="dcc-timeline__separator">
+        <span class="dcc-timeline__dot dcc-timeline__dot--icon dcc-timeline__dot--outlined dcc-timeline__dot--secondary" aria-hidden="true"><svg class="dcc-i" viewBox="0 0 24 24"><use href="#i-graduation-cap"/></svg></span>
+        <span class="dcc-timeline__connector" aria-hidden="true"></span>
+      </div>
+      <div class="dcc-timeline__content">
+        <p class="dcc-timeline__title">Registro en U-Campus</p>
+        <p class="dcc-timeline__text">Se hace al cierre del semestre.</p>
+      </div>
+    </li>
+  </ol>
+</div>
+
+<h2 class="dcc-doc-h2" id="responsive">En pantallas angostas</h2>
+<p class="dcc-doc-p">Bajo 560px de ancho —el de la propia línea de tiempo, no el de la ventana, así que también
+  funciona dentro de una tarjeta o una columna— todo pasa a un lado: la línea a la izquierda y la fecha sobre el
+  contenido. Achica la ventana para verlo en las demos de arriba.</p>

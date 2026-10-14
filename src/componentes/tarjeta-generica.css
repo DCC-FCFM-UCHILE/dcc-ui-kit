@@ -1,0 +1,177 @@
+/* --------------------------------------------------------------------------
+   CARD (MUI Card) — tarjeta genérica
+   Una tarjeta sin contenido fijo, para armar lo que haga falta: una noticia,
+   un curso, una persona, un recurso. Se apoya en `.dcc-paper`, que pone el
+   fondo, el radio, la sombra y el tema; esta hoja sólo ordena las piezas:
+
+     __header       avatar, título, subtítulo y un botón de acción (CardHeader)
+     __media        imagen de alto fijo (CardMedia)
+     __content      el cuerpo, con 16px de relleno (CardContent)
+     __actions      fila de botones de texto (CardActions)
+     __action-area  vuelve clicable un bloque entero (CardActionArea)
+     __collapse     contenido que se despliega con el botón __expand (Collapse)
+
+   Elevada o delineada se elige en el Paper: `.dcc-paper` o
+   `.dcc-paper dcc-paper--outlined`.
+
+   No tiene nada que ver con `.dcc-card` (la tarjeta de programa académico,
+   con etiqueta y descuento) ni con `.dcc-ccard` (la tarjeta comprimida de los
+   listados): esas tienen un contenido y un diseño fijos del Figma.
+
+   La tarjeta no recorta su contenido (`overflow` visible) para que el menú del
+   botón de acción de la cabecera pueda salirse de ella. A cambio, la imagen y
+   el área clicable redondean ellas mismas las esquinas que tocan.
+   -------------------------------------------------------------------------- */
+.dcc-surface-card {
+  --dcc-surface-card-pad: 16px;
+  --dcc-surface-card-media-h: 194px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Cabecera */
+.dcc-surface-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: var(--dcc-surface-card-pad);
+}
+.dcc-surface-card__heading { flex: 1; min-width: 0; }
+.dcc-surface-card__title {
+  margin: 0;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dcc-fg-strong);
+}
+.dcc-surface-card__subheader {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--dcc-fg-muted);
+}
+/* El botón de acción se corre hacia la esquina, como en MUI, para que su
+   borde visual —no su caja de 40px— quede alineado con el relleno. */
+.dcc-surface-card__header > .dcc-surface-card__icon-btn,
+.dcc-surface-card__header > .dcc-menu { align-self: flex-start; margin: -4px -8px 0 0; }
+
+/* Los botones de la cabecera y el de expandir son `.dcc-icon-btn`. `fill: none`
+   porque el corazón y la estrella del sprite no lo fijan: se dejan rellenables
+   para marcar favoritos. La flecha de expandir gira. */
+.dcc-surface-card__icon-btn .dcc-icon {
+  fill: none;
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Medios */
+.dcc-surface-card__media {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: var(--dcc-surface-card-media-h);
+  object-fit: cover;
+  background: var(--dcc-surface-muted);
+}
+.dcc-surface-card > .dcc-surface-card__media:first-child,
+.dcc-surface-card__action-area:first-child > .dcc-surface-card__media:first-child {
+  border-radius: var(--dcc-paper-radius) var(--dcc-paper-radius) 0 0;
+}
+
+/* Contenido */
+.dcc-surface-card__content { padding: var(--dcc-surface-card-pad); }
+.dcc-surface-card__content:last-child { padding-bottom: 24px; }
+.dcc-surface-card__overline {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--dcc-fg-muted);
+}
+.dcc-surface-card__headline {
+  margin: 0 0 8px;
+  font-family: var(--dcc-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--dcc-fg-strong);
+}
+.dcc-surface-card__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--dcc-fg-muted);
+}
+.dcc-surface-card__text + .dcc-surface-card__text { margin-top: 12px; }
+
+/* Acciones */
+.dcc-surface-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+.dcc-surface-card__expand { margin-left: auto; }
+.dcc-surface-card__expand[aria-expanded="true"] .dcc-icon { transform: rotate(180deg); }
+
+/* Área clicable. Va como <a> o <button> y envuelve medios y contenido; el
+   hover es la capa de estado del kit sobre todo el bloque. Las acciones de la
+   tarjeta quedan fuera: un control interactivo no puede ir dentro de otro. */
+.dcc-surface-card__action-area {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.dcc-surface-card__action-area:first-child { border-radius: var(--dcc-paper-radius) var(--dcc-paper-radius) 0 0; }
+.dcc-surface-card__action-area:only-child { border-radius: var(--dcc-paper-radius); }
+.dcc-surface-card__action-area::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-surface-card__action-area:hover::after { opacity: .06; }
+.dcc-surface-card__action-area:active::after,
+.dcc-surface-card__action-area:focus-visible::after { opacity: .12; }
+.dcc-surface-card__action-area:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+/* Contenido expandible. La altura se anima con la fila de la rejilla (0fr →
+   1fr), que no necesita medir el contenido. Cerrado queda `visibility:
+   hidden` —al final de la transición— para que su contenido no se pueda
+   enfocar ni lo lea un lector de pantalla. */
+.dcc-surface-card__collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows .25s cubic-bezier(.4, 0, .2, 1),
+              visibility 0s linear .25s;
+}
+.dcc-surface-card__collapse.is-open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.dcc-surface-card__collapse > * { min-height: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-surface-card__icon-btn .dcc-icon,
+  .dcc-surface-card__icon-btn::before,
+  .dcc-surface-card__action-area::after,
+  .dcc-surface-card__collapse,
+  .dcc-surface-card__collapse.is-open { transition: none; }
+}

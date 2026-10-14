@@ -37,17 +37,23 @@ servidor.
 
 ## Qué incluye
 
-**23 familias de componentes.** Color, tipografía, botones, badges, controles de selección, alerts,
-tablas (con orden), navegación institucional y de aplicación, sidebar, footer, inputs, switch,
-avatares, listas, acordeón, breadcrumb, tabs, paginación, stepper, bottom navigation, calendario con
-date picker, tarjeta de programa y tarjeta comprimida.
+**Todos los componentes de Material UI**, en una versión con los tokens del DCC: botones (con
+grupo, alternables, de ícono y flotante), campos con adornos, select, autocompletar, checkbox,
+radio, switch, deslizador, calificación, lista de transferencia, chips, badges e indicadores,
+avatar, lista, tablas (con orden, selección y paginación), tooltip, popover, divisor, línea de
+tiempo, alertas, diálogo, snackbar, progreso, esqueleto, acordeón, paper, tarjetas, barras de
+navegación institucional y de aplicación, barra lateral, cajón, speed dial, breadcrumb, tabs,
+paginación, stepper, navegación inferior, pie, calendario con selector de fecha, y para el diseño
+contenedor, grilla de 12 columnas, stack, lista de imágenes y masonry. La documentación los muestra
+todos, con su HTML listo para copiar.
 
-**41 íconos** de [Lucide](https://lucide.dev) 0.544.0, en sprite.
+**86 íconos** de [Lucide](https://lucide.dev) 0.544.0, en sprite.
 
-**51 tokens** de diseño como variables CSS.
+**Tokens** de diseño como variables CSS: la paleta del Figma y los colores por rol que cambian con
+el tema.
 
-**El comportamiento incluido.** Acordeón, tabs, combobox, tabla ordenable, calendario y el resto
-vienen en un bundle que se auto-inicializa. Dos etiquetas y funciona; no hay JavaScript que copiar
+**El comportamiento incluido.** Diálogos, menús, autocompletar, tooltips, snackbars, tabla
+ordenable, calendario y el resto vienen en un bundle que se auto-inicializa. Dos etiquetas y funciona; no hay JavaScript que copiar
 a cada app.
 
 **Tema oscuro.** Opcional: `data-dcc-theme="dark"` en `<html>` (o en cualquier contenedor), o
@@ -61,8 +67,9 @@ Todo con teclado y ARIA donde corresponde, y respetando `prefers-reduced-motion`
 
 ```
 src/
-  styles.css          la fuente de verdad del CSS
-  behaviors.js        la fuente de verdad del comportamiento
+  styles.css          el CSS de los componentes originales, los tokens y la base
+  behaviors.js        el comportamiento de esos componentes, y DCCUI.registrar
+  componentes/        un .css (y un .js si lo necesita) por cada componente nuevo
   icons.svg           los íconos Lucide del kit
   assets/             logotipos y placeholders
   sitio/              la documentación: plantilla y un fragmento por componente

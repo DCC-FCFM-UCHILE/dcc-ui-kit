@@ -1,0 +1,122 @@
+/* --------------------------------------------------------------------------
+   SPEED DIAL (MUI SpeedDial)
+   Un botón flotante que despliega de tres a seis acciones relacionadas, cada
+   una en un FAB pequeño con su etiqueta. Se arma con `.dcc-fab` (el botón
+   principal y las acciones son FAB) y el comportamiento vive en
+   src/componentes/marcacion-rapida.js.
+
+     dirección  →  --up (por omisión) · --down · --left · --right
+     etiquetas  →  aparecen al pasar sobre una acción o enfocarla; con
+                   --labels quedan todas a la vista mientras está abierto
+                   (el `tooltipOpen` de MUI, mejor en pantallas táctiles)
+
+   El estado abierto es `.is-open` en la raíz más `aria-expanded` en el botón.
+   La raíz no recibe el puntero (`pointer-events: none`): sólo el botón y, con
+   el dial abierto, la tira de acciones. Así la zona donde aparecerán las
+   acciones no tapa lo que hay detrás mientras está cerrado, y al pasar del
+   botón a una acción el puntero nunca sale del componente —la tira incluye
+   los huecos entre acciones—, que es lo que mantiene abierto el dial por hover.
+   -------------------------------------------------------------------------- */
+.dcc-speed-dial {
+  --dcc-speed-dial-gap: 12px;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  pointer-events: none;
+}
+.dcc-speed-dial__fab { pointer-events: auto; }
+
+/* El ícono gira 45°: el "+" se vuelve "×", como el SpeedDialIcon de MUI. */
+.dcc-speed-dial__icon { transition: transform .25s cubic-bezier(.4, 0, .2, 1); }
+.dcc-speed-dial.is-open .dcc-speed-dial__icon { transform: rotate(45deg); }
+
+.dcc-speed-dial__actions {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--dcc-speed-dial-gap);
+  padding-bottom: var(--dcc-speed-dial-gap);
+  visibility: hidden;
+  /* La visibilidad cambia al final del cierre, para que las acciones alcancen
+     a encogerse antes de desaparecer. */
+  transition: visibility 0s linear .25s;
+}
+.dcc-speed-dial.is-open .dcc-speed-dial__actions {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+/* Direcciones. El botón va primero en el HTML, así que "arriba" y "a la
+   izquierda" invierten el eje; la primera acción queda siempre junto al botón. */
+.dcc-speed-dial--up,
+.dcc-speed-dial--up .dcc-speed-dial__actions { flex-direction: column-reverse; }
+.dcc-speed-dial--down,
+.dcc-speed-dial--down .dcc-speed-dial__actions { flex-direction: column; }
+.dcc-speed-dial--left,
+.dcc-speed-dial--left .dcc-speed-dial__actions { flex-direction: row-reverse; }
+.dcc-speed-dial--right,
+.dcc-speed-dial--right .dcc-speed-dial__actions { flex-direction: row; }
+.dcc-speed-dial--down .dcc-speed-dial__actions { padding: var(--dcc-speed-dial-gap) 0 0; }
+.dcc-speed-dial--left .dcc-speed-dial__actions { padding: 0 var(--dcc-speed-dial-gap) 0 0; }
+.dcc-speed-dial--right .dcc-speed-dial__actions { padding: 0 0 0 var(--dcc-speed-dial-gap); }
+
+.dcc-speed-dial__action {
+  position: relative;
+  display: flex;
+  opacity: 0;
+  transform: scale(.4);
+  transition: opacity .2s cubic-bezier(.4, 0, .2, 1),
+              transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-speed-dial.is-open .dcc-speed-dial__action { opacity: 1; transform: none; }
+/* Escalonadas al abrir, como en MUI: cada acción sale 30ms después de la
+   anterior, de la más cercana al botón a la más lejana. */
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(2) { transition-delay: 30ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(3) { transition-delay: 60ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(4) { transition-delay: 90ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(5) { transition-delay: 120ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(6) { transition-delay: 150ms; }
+
+/* Etiqueta: un rótulo sobre Paper. Al costado izquierdo de la acción cuando
+   el dial abre en vertical, encima cuando abre en horizontal. Es sólo visual
+   (`aria-hidden`): el nombre accesible está en el `aria-label` del botón. */
+.dcc-speed-dial__label {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 12px);
+  padding: 4px 10px;
+  border-radius: var(--dcc-radius-sm);
+  background: var(--dcc-surface-raised);
+  color: var(--dcc-fg);
+  box-shadow: var(--dcc-shadow);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity .15s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-speed-dial--left .dcc-speed-dial__label,
+.dcc-speed-dial--right .dcc-speed-dial__label {
+  top: auto;
+  right: auto;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.dcc-speed-dial.is-open .dcc-speed-dial__action:hover .dcc-speed-dial__label,
+.dcc-speed-dial.is-open .dcc-speed-dial__btn:focus-visible + .dcc-speed-dial__label,
+.dcc-speed-dial--labels.is-open .dcc-speed-dial__label { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-speed-dial__icon,
+  .dcc-speed-dial__actions,
+  .dcc-speed-dial.is-open .dcc-speed-dial__actions,
+  .dcc-speed-dial__action,
+  .dcc-speed-dial__label { transition: none; }
+  .dcc-speed-dial__action { transform: none; }
+}

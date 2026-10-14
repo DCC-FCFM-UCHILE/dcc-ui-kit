@@ -1,0 +1,101 @@
+/* ==========================================================================
+   STACK  (MUI Stack)
+   Apila a sus hijos en una columna o en una fila, con un espacio parejo entre
+   ellos y, si se pide, un divisor en cada hueco. Es lo que más se usa para
+   ordenar una página por dentro: un formulario, una botonera, una lista de
+   tarjetas.
+
+   `.dcc-stack` ya existía dentro de la alerta (`.dcc-alert .dcc-stack`, en
+   styles.css), donde apila el título y la descripción: es una columna flex sin
+   espacio. Esta regla dice lo mismo —columna, sin gap— y le agrega
+   modificadores, así que la alerta no cambia. Lo suyo, además, pesa más
+   (dos clases contra una) y se mantiene.
+
+   Divisores: en vez de intercalar un elemento entre cada par de hijos —que es
+   lo que hace MUI con la prop `divider`—, `.dcc-stack--divided` dibuja un borde
+   en el lado de cada hijo que mira al anterior y lo separa con un relleno
+   igual al gap: la línea queda centrada en el hueco. De qué lado va el borde
+   lo deciden cuatro interruptores (0 o 1) que fija cada dirección; por eso el
+   divisor gira solo cuando la pila pasa de columna a fila en un breakpoint.
+   ========================================================================== */
+.dcc-stack {
+  --dcc-stack-gap: 0px;
+  --dcc-stack-divider: var(--dcc-border-subtle);
+  /* Interruptores del divisor: inicio y fin en el eje de bloque y en el de
+     línea. La columna parte con el borde arriba. */
+  --dcc-stack-bs: 1;
+  --dcc-stack-be: 0;
+  --dcc-stack-is: 0;
+  --dcc-stack-ie: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--dcc-stack-gap);
+}
+
+/* Dirección (direction). */
+.dcc-stack--row,
+.dcc-stack--row-reverse,
+.dcc-stack--column-reverse { --dcc-stack-bs: 0; }
+.dcc-stack--row { flex-direction: row; --dcc-stack-is: 1; }
+.dcc-stack--row-reverse { flex-direction: row-reverse; --dcc-stack-ie: 1; }
+.dcc-stack--column-reverse { flex-direction: column-reverse; --dcc-stack-be: 1; }
+
+/* Espaciado (spacing), en unidades de 8px como el `theme.spacing` de MUI. */
+.dcc-stack--gap-0 { --dcc-stack-gap: 0px; }
+.dcc-stack--gap-1 { --dcc-stack-gap: 8px; }
+.dcc-stack--gap-2 { --dcc-stack-gap: 16px; }
+.dcc-stack--gap-3 { --dcc-stack-gap: 24px; }
+.dcc-stack--gap-4 { --dcc-stack-gap: 32px; }
+.dcc-stack--gap-5 { --dcc-stack-gap: 40px; }
+.dcc-stack--gap-6 { --dcc-stack-gap: 48px; }
+
+/* Alineación en el eje cruzado (alignItems) y en el principal (justifyContent). */
+.dcc-stack--align-start    { align-items: flex-start; }
+.dcc-stack--align-center   { align-items: center; }
+.dcc-stack--align-end      { align-items: flex-end; }
+.dcc-stack--align-baseline { align-items: baseline; }
+.dcc-stack--align-stretch  { align-items: stretch; }
+.dcc-stack--justify-start   { justify-content: flex-start; }
+.dcc-stack--justify-center  { justify-content: center; }
+.dcc-stack--justify-end     { justify-content: flex-end; }
+.dcc-stack--justify-between { justify-content: space-between; }
+.dcc-stack--justify-around  { justify-content: space-around; }
+.dcc-stack--justify-evenly  { justify-content: space-evenly; }
+
+/* Que los hijos pasen a la línea siguiente cuando no caben (flexWrap). El gap
+   separa también las líneas. */
+.dcc-stack--wrap { flex-wrap: wrap; }
+
+/* Divisores entre hijos. Con `--wrap` el borde sale también al comienzo de
+   cada línea nueva, igual que en MUI: conviene no mezclarlos. */
+.dcc-stack--divided > * + * {
+  border: 0 solid var(--dcc-stack-divider);
+  border-block-start-width: calc(1px * var(--dcc-stack-bs));
+  border-block-end-width: calc(1px * var(--dcc-stack-be));
+  border-inline-start-width: calc(1px * var(--dcc-stack-is));
+  border-inline-end-width: calc(1px * var(--dcc-stack-ie));
+  padding-block-start: calc(var(--dcc-stack-gap) * var(--dcc-stack-bs));
+  padding-block-end: calc(var(--dcc-stack-gap) * var(--dcc-stack-be));
+  padding-inline-start: calc(var(--dcc-stack-gap) * var(--dcc-stack-is));
+  padding-inline-end: calc(var(--dcc-stack-gap) * var(--dcc-stack-ie));
+}
+.dcc-stack--divider-strong { --dcc-stack-divider: var(--dcc-border); }
+
+/* Dirección por breakpoint (direction={{ xs: 'column', sm: 'row' }}), con los
+   cortes de MUI. Cada clase vuelve a fijar los cuatro interruptores. */
+@media (min-width: 600px) {
+  .dcc-stack--sm-row    { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+  .dcc-stack--sm-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}
+@media (min-width: 900px) {
+  .dcc-stack--md-row    { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+  .dcc-stack--md-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}
+@media (min-width: 1200px) {
+  .dcc-stack--lg-row    { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+  .dcc-stack--lg-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}
+@media (min-width: 1536px) {
+  .dcc-stack--xl-row    { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+  .dcc-stack--xl-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}

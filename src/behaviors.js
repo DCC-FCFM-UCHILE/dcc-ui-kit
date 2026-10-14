@@ -269,7 +269,9 @@
       // Al activar una opción el menú se cierra: son acciones, no un valor que
       // se quede seleccionado.
       list.addEventListener("click", function (e) {
-        if (e.target.closest(".dcc-menu__item")) cerrar(false);
+        // Elegir una opción devuelve el foco al disparador, como en MUI: si no,
+        // queda en un ítem que acaba de esconderse y el teclado se pierde.
+        if (e.target.closest(".dcc-menu__item")) cerrar(true);
       });
 
       document.addEventListener("click", function (e) {
@@ -559,15 +561,34 @@
     });
   }
 
-  global.DCCUI = { init: init };
+  /* Componentes en archivos aparte (src/componentes/*.js). Cada uno se
+     registra con DCCUI.registrar(function (raiz, cada) { … }): su función
+     corre en cada init() —también con htmx y DCCUI.init(elemento)— y, si el
+     documento ya se enlazó, corre de inmediato sobre él. Así el orden en que
+     se cargan los archivos no importa. */
+  var registrados = [];
+  var enlazado = false;
+  function registrar(fn) {
+    registrados.push(fn);
+    if (enlazado) fn(doc, cada);
+  }
+
+  function initCompleto(raiz) {
+    raiz = raiz || doc;
+    init(raiz);
+    for (var i = 0; i < registrados.length; i++) registrados[i](raiz, cada);
+    if (raiz === doc) enlazado = true;
+  }
+
+  global.DCCUI = { init: initCompleto, registrar: registrar };
 
   if (doc.readyState === "loading") {
-    doc.addEventListener("DOMContentLoaded", function () { init(doc); });
+    doc.addEventListener("DOMContentLoaded", function () { initCompleto(doc); });
   } else {
-    init(doc);
+    initCompleto(doc);
   }
 
   /* htmx reemplaza trozos de página sin recargar: hay que enlazar lo que llegó.
      Si no usas htmx, este listener no hace nada. */
-  doc.addEventListener("htmx:afterSwap", function (e) { init(e.target || doc); });
+  doc.addEventListener("htmx:afterSwap", function (e) { initCompleto(e.target || doc); });
 })(window);

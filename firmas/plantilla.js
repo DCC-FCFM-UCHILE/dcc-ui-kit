@@ -47,15 +47,18 @@
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  /** Una fila de contacto: ícono rojo a la izquierda, texto a la derecha. */
-  function filaContacto(base, icono, alt, html) {
+  /** Una fila de contacto: ícono rojo a la izquierda, texto a la derecha. La
+      última no lleva aire debajo, para que el bloque quede centrado de verdad
+      contra la línea roja. */
+  function filaContacto(base, icono, alt, html, ultima) {
+    var aire = ultima ? "0" : "10px";
     return (
       '<tr>' +
-        '<td width="30" valign="top" style="width:30px;padding:0 0 10px 0;vertical-align:top;">' +
+        '<td width="30" valign="top" style="width:30px;padding:0 0 ' + aire + ' 0;vertical-align:top;">' +
           '<img src="' + base + icono + '" width="20" height="20" alt="' + alt + '" ' +
             'style="display:block;width:20px;height:20px;border:0;">' +
         '</td>' +
-        '<td valign="top" style="padding:0 0 10px 0;vertical-align:top;font-family:' + LETRA + ';' +
+        '<td valign="top" style="padding:0 0 ' + aire + ' 0;vertical-align:top;font-family:' + LETRA + ';' +
           'font-size:15px;line-height:21px;color:' + OSCURO + ';">' + html + '</td>' +
       '</tr>'
     );
@@ -79,11 +82,12 @@
     var mapa = "https://www.google.com/maps/search/?api=1&query=" +
       encodeURIComponent([d.direccion1, d.direccion2, "Santiago, Chile"].filter(Boolean).join(", "));
 
-    var contacto = "";
-    if (d.telefono) contacto += filaContacto(base, "icono-telefono-rojo.png", "Teléfono",
-      enlace("tel:" + tel, esc(d.telefono)));
-    if (direccion) contacto += filaContacto(base, "icono-ubicacion-rojo.png", "Dirección",
-      enlace(mapa, direccion));
+    var filas = [];
+    if (d.telefono) filas.push(["icono-telefono-rojo.png", "Teléfono", enlace("tel:" + tel, esc(d.telefono))]);
+    if (direccion) filas.push(["icono-ubicacion-rojo.png", "Dirección", enlace(mapa, direccion)]);
+    var contacto = filas.map(function (f, i) {
+      return filaContacto(base, f[0], f[1], f[2], i === filas.length - 1);
+    }).join("");
 
     var redes = REDES.map(function (r) {
       return '<td style="padding:0 9px 0 0;">' +
@@ -126,17 +130,18 @@
             // Columna derecha: nombre, cargo y contacto. La línea roja la
             // separa de las redes y mide lo mismo que el bloque del logo y las
             // redes (ALTO_MARCA): el `height` de una celda funciona como mínimo,
-            // así que sólo crece si el nombre ocupa dos líneas. Al apilarse en el
+            // así que sólo crece si el nombre ocupa dos líneas. El contenido va
+            // centrado en vertical respecto de la línea. Al apilarse en el
             // teléfono la línea queda a la izquierda del nombre.
             '<div style="display:inline-block;width:100%;max-width:364px;vertical-align:top;">' +
               '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">' +
                 '<tr><td style="padding:' + AIRE + 'px 0 0 0;">' +
                 '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">' +
-                '<tr><td height="' + ALTO_MARCA + '" valign="top" style="height:' + ALTO_MARCA + 'px;vertical-align:top;' +
+                '<tr><td height="' + ALTO_MARCA + '" valign="middle" style="height:' + ALTO_MARCA + 'px;vertical-align:middle;' +
                   'border-left:3px solid ' + ROJO + ';padding:0 8px 0 22px;">' +
                   '<p style="margin:0;font-family:' + TITULO + ';font-size:22px;line-height:27px;' +
                     'font-weight:bold;color:' + OSCURO + ';">' + esc(d.nombre) + '</p>' +
-                  (d.cargo ? '<p style="margin:2px 0 16px 0;font-family:' + LETRA + ';font-size:15px;' +
+                  (d.cargo ? '<p style="margin:2px 0 ' + (contacto ? "16px" : "0") + ' 0;font-family:' + LETRA + ';font-size:15px;' +
                     'line-height:21px;font-style:italic;color:' + SECUNDARIO + ';">' + esc(d.cargo) + '</p>' : "") +
                   (contacto ? '<table role="presentation" cellpadding="0" cellspacing="0" border="0">' + contacto + '</table>' : "") +
                 '</td></tr>' +

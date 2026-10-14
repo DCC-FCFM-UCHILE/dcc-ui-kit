@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+  <!-- Ilustración propia del DCC UI Kit (licencia MIT del kit): ondas de una señal. -->
+  <rect width="400" height="600" fill="#802913"/>
+  <g fill="none" stroke-width="6" stroke-linecap="round">
+    <path stroke="#ffe6da" d="M0 150c50-60 100-60 150 0s100 60 150 0 100-60 150 0"/>
+    <path stroke="#eeb397" d="M0 250c50-80 100-80 150 0s100 80 150 0 100-80 150 0"/>
+    <path stroke="#d23118" d="M0 350c50-100 100-100 150 0s100 100 150 0 100-100 150 0"/>
+    <path stroke="#eeb397" d="M0 450c50-80 100-80 150 0s100 80 150 0 100-80 150 0"/>
+  </g>
+</svg>

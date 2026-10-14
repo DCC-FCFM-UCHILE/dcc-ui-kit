@@ -115,6 +115,8 @@
   --dcc-success-strong: var(--dcc-green-dark);
   --dcc-info-strong:    var(--dcc-lightblue-dark);
   --dcc-warning-strong: var(--dcc-yellow-dark);
+  /* Velo que oscurece la página detrás de un diálogo o un cajón. */
+  --dcc-scrim:          rgba(26, 32, 44, .5);
 }
 
 :root { --dcc-gutter-lg: 32px; --dcc-gutter-md: 24px; }
@@ -137,4 +139,15 @@
      claramente distinto (rojo / índigo / verde azulado). */
   --dcc-tag-magister: var(--dcc-blue-default);
   --dcc-tag-bootcamp: var(--dcc-green-dark);
+}
+
+:root {
+  --dcc-grid-gap: 16px;
+}
+
+:root {
+  --dcc-paper-tint-1: 0%;
+  --dcc-paper-tint-2: 0%;
+  --dcc-paper-tint-3: 0%;
+  --dcc-paper-tint-4: 0%;
 }

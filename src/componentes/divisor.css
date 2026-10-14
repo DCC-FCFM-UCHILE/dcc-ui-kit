@@ -1,0 +1,88 @@
+/* ==========================================================================
+   DIVISOR  (MUI Divider)
+   Una línea fina que separa contenido: entre párrafos, entre ítems de una
+   lista, entre botones de una fila. Sirve sobre <hr> —que ya es un separador
+   para los lectores de pantalla— o sobre cualquier elemento con
+   role="separator".
+
+   El color por defecto es --dcc-border-subtle, el que el kit reserva para
+   divisores: separa sin competir con el contenido. Sobre --dcc-bg (el fondo de
+   página) ese gris se pierde, porque en claro es el mismo color; ahí va
+   `--strong`, que usa el borde de los campos.
+   ========================================================================== */
+.dcc-divider {
+  --dcc-divider-color: var(--dcc-border-subtle);
+  --dcc-divider-inset: 72px;
+  flex-shrink: 0;
+  height: auto;
+  margin: 0;
+  border: 0;
+  border-block-end: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider--strong { --dcc-divider-color: var(--dcc-border); }
+
+/* Variantes de MUI. `inset` deja libre el ancho del ícono o avatar de una
+   lista; `middle` deja un margen igual a ambos lados. */
+.dcc-divider--inset { margin-inline-start: var(--dcc-divider-inset); }
+.dcc-divider--middle { margin-inline: 16px; }
+
+/* Dentro de `.dcc-list` el inset es el de su ítem: 16px de relleno, 20 del
+   ícono y 12 de separación. Con un avatar de 40px serían 68: se ajusta con
+   la variable. */
+.dcc-list .dcc-divider--inset { --dcc-divider-inset: 48px; }
+/* El ítem de la lista ya dibuja su propio borde inferior; cuando le sigue un
+   divisor, el divisor lo reemplaza para no duplicar la línea. */
+.dcc-list__item:has(+ .dcc-divider),
+.dcc-list > :has(+ .dcc-divider) > .dcc-list__item { border-block-end: 0; }
+
+/* Vertical: para una fila flex (barra de herramientas, botonera, datos en
+   línea). Se estira a la altura de la fila como el `flexItem` de MUI; fuera de
+   un flex no tiene alto que tomar, así que tiene uno mínimo de una línea. Con
+   <hr> o role="separator" conviene agregar aria-orientation="vertical". */
+.dcc-divider--vertical {
+  align-self: stretch;
+  min-height: 1.2em;
+  border-block-end: 0;
+  border-inline-end: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider--vertical.dcc-divider--middle { margin-inline: 0; margin-block: 8px; }
+
+/* Con texto: el texto va en un `__text` y las dos líneas son seudoelementos
+   que se reparten lo que sobra. `--start` y `--end` corren el texto hacia un
+   lado (textAlign="left"/"right" de MUI): la línea de ese lado queda en 10%.
+   Ojo: los hijos de un role="separator" son presentacionales y un lector de
+   pantalla puede no leerlos; si el texto importa, repítelo en aria-label. */
+.dcc-divider--text {
+  display: flex;
+  align-items: center;
+  border: 0;
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-align: center;
+}
+.dcc-divider--text::before,
+.dcc-divider--text::after {
+  content: "";
+  flex: 1 1 0;
+  border-block-start: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider__text { padding-inline: 10px; }
+.dcc-divider--start::before { flex: 0 0 10%; }
+.dcc-divider--end::after { flex: 0 0 10%; }
+
+.dcc-divider--text.dcc-divider--vertical {
+  flex-direction: column;
+  /* El texto se come casi todo el alto de una fila de botones: sin un mínimo
+     las líneas desaparecen. */
+  min-height: 72px;
+  border: 0;
+}
+.dcc-divider--text.dcc-divider--vertical::before,
+.dcc-divider--text.dcc-divider--vertical::after {
+  border-block-start: 0;
+  border-inline-start: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider--vertical .dcc-divider__text { padding-inline: 0; padding-block: 6px; }

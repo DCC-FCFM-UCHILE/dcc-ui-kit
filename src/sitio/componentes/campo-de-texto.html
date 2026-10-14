@@ -231,3 +231,23 @@ escala: .9
         <span class="dcc-field__help">Máximo 500 caracteres</span>
       </div>
 </div>
+
+<h2 class="dcc-doc-h2" id="area-que-crece">Área de texto que crece</h2>
+<p class="dcc-doc-p">Con <code>.dcc-input--autosize</code> y el gancho <code>.js-autosize</code>, el área de texto
+  toma el alto de lo escrito: no aparece barra mientras se escribe ni sobra espacio vacío. Los límites van en filas,
+  con <code>data-min-filas</code> (1 por omisión) y <code>data-max-filas</code>; pasado el máximo vuelve la barra.
+  Si el valor se cambia por código, <code>DCCUI.autoajustar(textarea)</code> vuelve a medirlo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-demo-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,320px));gap:24px;justify-items:stretch;align-items:start">
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ta-auto-1">Resumen de la memoria</label>
+      <textarea class="dcc-input dcc-input--autosize js-autosize" id="ta-auto-1" rows="2" data-min-filas="2" placeholder="Escribe el resumen; el campo crece contigo"></textarea>
+      <span class="dcc-field__help">Mínimo 2 filas, sin máximo</span>
+    </div>
+    <div class="dcc-field">
+      <label class="dcc-field__label" for="ta-auto-2">Comentario para el profesor guía</label>
+      <textarea class="dcc-input dcc-input--autosize js-autosize" id="ta-auto-2" rows="1" data-max-filas="4">Adjunto el avance del capítulo 3. Quedaron pendientes los experimentos con el conjunto de datos de Beauchef 851, que corro esta semana en el clúster del DCC. ¿Podemos revisarlo el jueves?</textarea>
+      <span class="dcc-field__help">De 1 a 4 filas; después aparece la barra</span>
+    </div>
+  </div>
+</div>

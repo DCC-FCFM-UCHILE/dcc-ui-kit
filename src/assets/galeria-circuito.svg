@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <!-- Ilustración propia del DCC UI Kit (licencia MIT del kit): pistas de un circuito. -->
+  <rect width="600" height="400" fill="#0e9ca8"/>
+  <rect x="240" y="140" width="120" height="120" rx="10" fill="#20626a"/>
+  <g fill="none" stroke="#dff3f7" stroke-opacity=".7" stroke-width="4">
+    <path d="M260 140V80H140V40M300 140V30M340 140V90h120V50M360 170h100l40-40h70M360 230h140v100M340 260v70h-60v50M260 260v40H120v-60H30M240 200H80"/>
+  </g>
+  <g fill="#dff3f7">
+    <circle cx="140" cy="40" r="8"/><circle cx="300" cy="30" r="8"/><circle cx="460" cy="50" r="8"/><circle cx="570" cy="130" r="8"/>
+    <circle cx="500" cy="330" r="8"/><circle cx="280" cy="380" r="8"/><circle cx="30" cy="240" r="8"/><circle cx="80" cy="200" r="8"/>
+  </g>
+</svg>

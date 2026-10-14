@@ -1,0 +1,190 @@
+<!--
+titulo: Indicador (Badge)
+grupo: Visualización de datos
+resumen: El contador o punto en la esquina de un ícono, un botón o un avatar: notificaciones, mensajes, pendientes.
+miniatura: .dcc-indicator
+escala: 1.6
+-->
+<h2 class="dcc-doc-h2" id="diferencia">Indicador y badge</h2>
+<p class="dcc-doc-p">Es el <em>Badge</em> de MUI. En este kit el nombre <code>.dcc-badge</code> ya lo tiene otra pieza:
+  la <a href="badge.html">etiqueta</a> que nombra un estado o una categoría y vive sola, en el flujo del texto. El
+  indicador, <code>.dcc-indicator</code>, no tiene sentido solo: se monta sobre la esquina de otro elemento para
+  contar algo que lo concierne —4 notificaciones, 12 mensajes— o para avisar con un punto que hay algo nuevo.</p>
+<div class="dcc-doc-demo" data-codigo="no">
+  <div class="dcc-doc-row">
+    <span class="dcc-badge dcc-badge--subtle-green">Aprobada</span>
+    <span class="dcc-indicator">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Mensajes, 3 nuevos"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message-circle"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">3</span>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">Un envoltorio <code>.dcc-indicator</code> con el elemento y, después, el
+  <code>.dcc-indicator__badge</code>. El número visible lleva <code>aria-hidden</code> y va repetido en el nombre del
+  control (“Notificaciones, 4 nuevas”), que es lo que anuncia el lector de pantalla al llegar a él. En un botón, el
+  indicador va al lado del botón y no adentro, porque <code>.dcc-btn</code> recorta lo que sobresale; el envoltorio
+  los junta.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:32px">
+    <span class="dcc-indicator">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Notificaciones, 4 nuevas"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bell"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">4</span>
+    </span>
+    <span class="dcc-indicator">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Correo, 12 sin leer"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">12</span>
+    </span>
+    <span class="dcc-indicator">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Solicitudes, 2 pendientes">Solicitudes</button>
+      <span class="dcc-indicator__badge" aria-hidden="true">2</span>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores</h2>
+<p class="dcc-doc-p">Rojo por omisión (<code>--error</code>), porque el caso típico es algo pendiente. Además:
+  <code>--primary</code>, <code>--secondary</code>, <code>--success</code>, <code>--info</code> y
+  <code>--warning</code>, con los mismos rellenos que el botón de cada color. Aquí sobre un ícono suelto, como en las
+  demos de MUI: el ícono lleva <code>role="img"</code> y el nombre con el número.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:32px">
+    <span class="dcc-indicator dcc-indicator--primary">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 4 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">4</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--secondary">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 4 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">4</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--success">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 4 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">4</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--error">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 4 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">4</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--info">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 4 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">4</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--warning">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 4 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">4</span>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="maximo">Máximo y cero</h2>
+<p class="dcc-doc-p">Con <code>.js-indicator</code> y <code>data-valor</code>, el script escribe el número: sobre
+  <code>data-max</code> (99 por omisión) muestra “99+”, y con 0 oculta el indicador salvo que esté
+  <code>data-mostrar-cero</code>. Si no usas el script, escribe tú el número y pon <code>.is-invisible</code> en el
+  <code>.dcc-indicator__badge</code> para ocultarlo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:32px">
+    <span class="dcc-indicator js-indicator" data-valor="99">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 99 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">99</span>
+    </span>
+    <span class="dcc-indicator js-indicator" data-valor="100">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, más de 99 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">99+</span>
+    </span>
+    <span class="dcc-indicator js-indicator" data-valor="1000" data-max="999">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, más de 999 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">999+</span>
+    </span>
+    <span class="dcc-indicator js-indicator" data-valor="0">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge is-invisible" aria-hidden="true">0</span>
+    </span>
+    <span class="dcc-indicator js-indicator" data-valor="0" data-mostrar-cero>
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Correo, 0 sin leer" style="width:24px;height:24px"><use href="#i-mail"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true">0</span>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="dinamico">Valor que cambia</h2>
+<p class="dcc-doc-p"><code>DCCUI.indicador.fijar(envoltorio, n)</code> cambia el valor. Con
+  <code>data-etiqueta</code> el script también reescribe el nombre accesible del control: <code>{n}</code> marca el
+  número, y tres formas separadas por <code>|</code> cubren el cero, el singular y el plural. El indicador aparece y
+  desaparece con una escala, como en MUI.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:24px">
+    <span class="dcc-indicator js-indicator" id="ind-demo" data-valor="1"
+          data-etiqueta="Notificaciones|Notificaciones, 1 nueva|Notificaciones, {n} nuevas">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Notificaciones, 1 nueva"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bell"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">1</span>
+    </span>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" aria-label="Una notificación menos"
+            data-dcc-indicador="ind-demo" data-paso="-1"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-minus"/></svg></button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" aria-label="Una notificación más"
+            data-dcc-indicador="ind-demo" data-paso="1"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="punto">Punto</h2>
+<p class="dcc-doc-p"><code>.dcc-indicator--dot</code>: avisa que hay algo nuevo sin decir cuánto. Igual que con el
+  número, el aviso va en el nombre del control.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:32px">
+    <span class="dcc-indicator dcc-indicator--dot">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Notificaciones, hay nuevas" style="width:24px;height:24px"><use href="#i-bell"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true"></span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--dot dcc-indicator--info">
+      <svg class="dcc-i" viewBox="0 0 24 24" role="img" aria-label="Calendario, hay eventos nuevos" style="width:24px;height:24px"><use href="#i-calendar"/></svg>
+      <span class="dcc-indicator__badge" aria-hidden="true"></span>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="posicion">Posición</h2>
+<p class="dcc-doc-p">Arriba a la derecha por omisión; también <code>--top-left</code>, <code>--bottom-right</code> y
+  <code>--bottom-left</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:32px">
+    <span class="dcc-indicator">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Correo, 1 sin leer"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">1</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--top-left">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Correo, 1 sin leer"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">1</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--bottom-right">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Correo, 1 sin leer"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">1</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--bottom-left">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Correo, 1 sin leer"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></button>
+      <span class="dcc-indicator__badge" aria-hidden="true">1</span>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="avatar">Sobre un avatar</h2>
+<p class="dcc-doc-p">Sobre algo redondo, <code>.dcc-indicator--circular</code> acerca el indicador al centro para que
+  quede sobre el borde del círculo y no flotando en la esquina de su caja (el <code>overlap="circular"</code> de MUI).
+  Generaliza el <code>.dcc-avatar__count</code> del avatar con colores, punto y posiciones.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:32px">
+    <span class="dcc-indicator dcc-indicator--circular">
+      <span class="dcc-avatar dcc-avatar--lg dcc-avatar--blue" role="img" aria-label="María Pérez, 3 mensajes nuevos"><span class="dcc-avatar__label">MP</span></span>
+      <span class="dcc-indicator__badge" aria-hidden="true">3</span>
+    </span>
+    <span class="dcc-indicator dcc-indicator--circular dcc-indicator--dot dcc-indicator--success dcc-indicator--bottom-right">
+      <span class="dcc-avatar dcc-avatar--lg dcc-avatar--green" role="img" aria-label="Javier González, en línea"><span class="dcc-avatar__label">JG</span></span>
+      <span class="dcc-indicator__badge" aria-hidden="true"></span>
+    </span>
+    <span class="dcc-indicator">
+      <span class="dcc-avatar dcc-avatar--lg dcc-avatar--light" role="img" aria-label="Ana Rojas, 3 mensajes nuevos" style="border-radius:8px"><span class="dcc-avatar__label">AR</span></span>
+      <span class="dcc-indicator__badge" aria-hidden="true">3</span>
+    </span>
+  </div>
+  <p class="dcc-doc-p" style="margin:16px 0 0">El tercero es cuadrado: con el ancla rectangular, la de omisión, el
+    indicador va justo en la esquina.</p>
+</div>

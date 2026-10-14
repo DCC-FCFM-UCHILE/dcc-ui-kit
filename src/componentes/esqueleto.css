@@ -1,0 +1,85 @@
+/* --------------------------------------------------------------------------
+   ESQUELETO  (MUI Skeleton)
+
+   Un bloque gris con la forma del contenido que todavía no llega. Sirve para
+   que la página no salte cuando el contenido aparece y para que se entienda,
+   antes de leer nada, qué tipo de cosa va a haber ahí.
+
+   Formas:    --text (por omisión) · --circular · --rectangular · --rounded
+   Animación: pulso (por omisión) · --wave · --static (sin animación)
+
+   El tamaño se da desde fuera, con `width`/`height` en línea o con la clase de
+   quien lo contiene. El de texto toma el alto de la línea de su contenedor, así
+   que mide lo mismo que el texto que reemplaza. Con hijos dentro, el esqueleto
+   toma el tamaño de ellos y los esconde: es la forma de «calcar» un avatar o
+   un botón sin escribir sus medidas.
+
+   Accesibilidad: los esqueletos no dicen nada útil, así que llevan
+   `aria-hidden="true"`, y el contenedor que está cargando, `aria-busy="true"`
+   —que se pasa a "false" cuando llega el contenido—.
+   -------------------------------------------------------------------------- */
+.dcc-skeleton {
+  /* El color del texto al 12%, translúcido como el de MUI: se lee sobre
+     cualquier superficie —una tarjeta, el fondo de la página, una imagen— y
+     en oscuro aclara en vez de oscurecer. */
+  --dcc-skeleton-color: color-mix(in srgb, var(--dcc-fg) 12%, transparent);
+  /* El brillo de la onda sale del color del texto, para que en oscuro aclare
+     en vez de oscurecer. */
+  --dcc-skeleton-onda: color-mix(in srgb, var(--dcc-fg) 9%, transparent);
+  display: block;
+  background: var(--dcc-skeleton-color);
+}
+
+/* Texto (la forma por omisión): una línea con el alto del texto real,
+   achicada al 60% en vertical para dejar el interlineado, igual que MUI. El
+   espacio duro le da el alto de una línea aunque esté vacía. */
+.dcc-skeleton,
+.dcc-skeleton--text {
+  border-radius: 4px;
+  transform: scale(1, .6);
+  transform-origin: 0 55%;
+}
+.dcc-skeleton:empty::before { content: "\00a0"; }
+
+/* Las demás formas no se achican: miden lo que se les da. */
+.dcc-skeleton--circular,
+.dcc-skeleton--rectangular,
+.dcc-skeleton--rounded { transform: none; flex-shrink: 0; }
+.dcc-skeleton--circular { border-radius: 50%; }
+.dcc-skeleton--rectangular { border-radius: 0; }
+.dcc-skeleton--rounded { border-radius: var(--dcc-radius-md); }
+
+/* Con hijos: calca su tamaño y los esconde. */
+.dcc-skeleton:not(:empty) { width: fit-content; height: auto; }
+.dcc-skeleton > * { visibility: hidden; }
+
+/* ---- Animaciones ----
+   Pulso: 2s de ida y vuelta entre opaco y 40%, como MUI.
+   Onda: un brillo que cruza de izquierda a derecha cada 2s.
+   Con movimiento reducido no hay ninguna de las dos: el bloque queda quieto. */
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-skeleton:not(.dcc-skeleton--wave):not(.dcc-skeleton--static) {
+    animation: dcc-skeleton-pulso 2s ease-in-out .5s infinite;
+  }
+  .dcc-skeleton--wave {
+    position: relative;
+    overflow: hidden;
+    /* Safari no recorta un hijo animado contra el radio sin esto. */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+  .dcc-skeleton--wave::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, var(--dcc-skeleton-onda), transparent);
+    transform: translateX(-100%);
+    animation: dcc-skeleton-onda 2s linear .5s infinite;
+  }
+}
+@keyframes dcc-skeleton-pulso { 50% { opacity: .4; } }
+@keyframes dcc-skeleton-onda { 60%, 100% { transform: translateX(100%); } }
+
+/* Para las demos: cajas que ordenan las piezas como lo haría el contenido real. */
+.dcc-skeleton-media { display: flex; align-items: center; gap: 16px; }
+.dcc-skeleton-media__body { flex: 1 1 auto; min-width: 0; }
+.dcc-skeleton-col { display: flex; flex-direction: column; gap: 8px; width: 240px; max-width: 100%; }

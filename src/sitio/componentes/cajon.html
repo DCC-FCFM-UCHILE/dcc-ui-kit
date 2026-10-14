@@ -1,0 +1,164 @@
+<!--
+titulo: Drawer
+grupo: Navegación
+resumen: Un panel que entra desde un borde de la pantalla con navegación o contenido secundario. Temporal, sobre la página, o persistente, empujando el contenido.
+miniatura: .dcc-drawer-layout
+escala: .4
+ancho: 640px
+-->
+<h2 class="dcc-doc-h2" id="temporal">Temporal</h2>
+<p class="dcc-doc-p">El cajón temporal se abre sobre la página y la oscurece. Es un <code>&lt;dialog&gt;</code>
+  nativo con <code>.dcc-drawer</code>: atrapa el foco mientras está abierto, se cierra con Escape, con un clic en
+  el fondo o con cualquier botón <code>data-dcc-cerrar</code> de adentro, y al cerrarse devuelve el foco al botón
+  que lo abrió. El botón que abre lleva <code>data-dcc-abrir</code> con el id del cajón. El lado se elige con
+  <code>--right</code>, <code>--top</code> o <code>--bottom</code>; sin modificador entra por la izquierda.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="cajon-left" aria-haspopup="dialog" aria-controls="cajon-left">Izquierda</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="cajon-right" aria-haspopup="dialog" aria-controls="cajon-right">Derecha</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="cajon-top" aria-haspopup="dialog" aria-controls="cajon-top">Arriba</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="cajon-bottom" aria-haspopup="dialog" aria-controls="cajon-bottom">Abajo</button>
+  </div>
+  <dialog class="dcc-drawer" id="cajon-left" aria-labelledby="cajon-left-titulo">
+    <div class="dcc-drawer__panel dcc-paper dcc-paper--elevation-4 dcc-paper--square">
+      <div class="dcc-drawer__header">
+        <h2 class="dcc-drawer__title" id="cajon-left-titulo">Portal docente</h2>
+        <button class="dcc-icon-btn dcc-drawer__close" type="button" data-dcc-cerrar aria-label="Cerrar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <nav class="dcc-drawer__body" aria-label="Portal docente">
+        <ul class="dcc-drawer__nav">
+          <li><a class="dcc-drawer__link" href="#temporal" aria-current="page"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg>Inicio</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book-open"/></svg>Mis cursos</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar-days"/></svg>Calendario</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-graduation-cap"/></svg>Memoria de título</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-inbox"/></svg>Mensajes</a></li>
+        </ul>
+        <hr class="dcc-drawer__divider">
+        <p class="dcc-drawer__subheader">Cuenta</p>
+        <ul class="dcc-drawer__nav">
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"/></svg>Preferencias</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-log-out"/></svg>Cerrar sesión</a></li>
+        </ul>
+      </nav>
+      <p class="dcc-drawer__footer">Beauchef 851, Santiago</p>
+    </div>
+  </dialog>
+  <dialog class="dcc-drawer dcc-drawer--right" id="cajon-right" aria-labelledby="cajon-right-titulo">
+    <div class="dcc-drawer__panel dcc-paper dcc-paper--elevation-4 dcc-paper--square">
+      <div class="dcc-drawer__header">
+        <h2 class="dcc-drawer__title" id="cajon-right-titulo">Portal docente</h2>
+        <button class="dcc-icon-btn dcc-drawer__close" type="button" data-dcc-cerrar aria-label="Cerrar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <nav class="dcc-drawer__body" aria-label="Portal docente">
+        <ul class="dcc-drawer__nav">
+          <li><a class="dcc-drawer__link" href="#temporal" aria-current="page"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg>Inicio</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book-open"/></svg>Mis cursos</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar-days"/></svg>Calendario</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-graduation-cap"/></svg>Memoria de título</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-inbox"/></svg>Mensajes</a></li>
+        </ul>
+        <hr class="dcc-drawer__divider">
+        <p class="dcc-drawer__subheader">Cuenta</p>
+        <ul class="dcc-drawer__nav">
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"/></svg>Preferencias</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-log-out"/></svg>Cerrar sesión</a></li>
+        </ul>
+      </nav>
+    </div>
+  </dialog>
+  <dialog class="dcc-drawer dcc-drawer--top" id="cajon-top" aria-labelledby="cajon-top-titulo">
+    <div class="dcc-drawer__panel dcc-paper dcc-paper--elevation-4 dcc-paper--square">
+      <div class="dcc-drawer__header">
+        <h2 class="dcc-drawer__title" id="cajon-top-titulo">Programas</h2>
+        <button class="dcc-icon-btn dcc-drawer__close" type="button" data-dcc-cerrar aria-label="Cerrar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <nav class="dcc-drawer__body" aria-label="Programas">
+        <ul class="dcc-drawer__nav">
+          <li><a class="dcc-drawer__link" href="#temporal" aria-current="page"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layout-grid"/></svg>Todos los cursos</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book-open"/></svg>Pregrado</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-graduation-cap"/></svg>Magíster</a></li>
+          <li><a class="dcc-drawer__link" href="#temporal"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-award"/></svg>Doctorado</a></li>
+        </ul>
+      </nav>
+    </div>
+  </dialog>
+  <dialog class="dcc-drawer dcc-drawer--bottom" id="cajon-bottom" aria-labelledby="cajon-bottom-titulo">
+    <div class="dcc-drawer__panel dcc-paper dcc-paper--elevation-4 dcc-paper--square">
+      <div class="dcc-drawer__header">
+        <h2 class="dcc-drawer__title" id="cajon-bottom-titulo">Compartir programa</h2>
+        <button class="dcc-icon-btn dcc-drawer__close" type="button" data-dcc-cerrar aria-label="Cerrar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <nav class="dcc-drawer__body" aria-label="Compartir programa">
+        <ul class="dcc-drawer__nav">
+          <li><button class="dcc-drawer__link" type="button" data-dcc-cerrar><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg>Correo</button></li>
+          <li><button class="dcc-drawer__link" type="button" data-dcc-cerrar><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"/></svg>Copiar enlace</button></li>
+          <li><button class="dcc-drawer__link" type="button" data-dcc-cerrar><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message-circle"/></svg>Mensaje</button></li>
+          <li><button class="dcc-drawer__link" type="button" data-dcc-cerrar><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg>Descargar PDF</button></li>
+        </ul>
+      </nav>
+    </div>
+  </dialog>
+</div>
+<p class="dcc-doc-p">La superficie va en <code>.dcc-drawer__panel</code> y es un <a href="papel.html">Paper</a>
+  cuadrado en la elevación 4. Adentro hay piezas para lo habitual: <code>__header</code> con
+  <code>__title</code> y <code>__close</code>, <code>__body</code> con scroll propio, la lista
+  <code>__nav</code> de <code>__link</code> (el actual con <code>aria-current="page"</code>),
+  <code>__divider</code>, <code>__subheader</code> y <code>__footer</code>. El ancho de los laterales es
+  <code>--dcc-drawer-width</code> (280px), sin pasar nunca del ancho de la pantalla menos 56px, para que siempre
+  quede fondo donde tocar.</p>
+
+<h2 class="dcc-doc-h2" id="persistente">Persistente</h2>
+<p class="dcc-doc-p">El persistente vive en la página: al abrirse empuja el contenido en vez de taparlo, y no
+  bloquea nada. Va dentro de <code>.dcc-drawer-layout</code>, junto a <code>.dcc-drawer-layout__main</code>,
+  y abre y cierra con la clase <code>.is-open</code>. Aquí el contenedor es una caja de altura fija; en una
+  aplicación sería el cuerpo de la página. El botón con <code>data-dcc-abrir</code> alterna y mantiene su
+  <code>aria-expanded</code>; el de adentro, con <code>data-dcc-cerrar</code>, cierra y devuelve el foco a él.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-drawer-layout dcc-paper dcc-paper--outlined" style="height:380px">
+    <aside class="dcc-drawer dcc-drawer--persistent is-open" id="cajon-persistente" aria-labelledby="cajon-persistente-titulo">
+      <div class="dcc-drawer__panel dcc-paper dcc-paper--elevation-0 dcc-paper--square">
+        <div class="dcc-drawer__header">
+          <h2 class="dcc-drawer__title" id="cajon-persistente-titulo">CC3001</h2>
+          <button class="dcc-icon-btn dcc-drawer__close" type="button" data-dcc-cerrar aria-label="Cerrar navegación"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+        </div>
+        <nav class="dcc-drawer__body" aria-label="Secciones del curso">
+          <ul class="dcc-drawer__nav">
+            <li><a class="dcc-drawer__link" href="#persistente" aria-current="page"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg>Resumen</a></li>
+            <li><a class="dcc-drawer__link" href="#persistente"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"/></svg>Programa</a></li>
+            <li><a class="dcc-drawer__link" href="#persistente"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"/></svg>Material</a></li>
+            <li><a class="dcc-drawer__link" href="#persistente"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"/></svg>Equipo docente</a></li>
+            <li><a class="dcc-drawer__link" href="#persistente"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chart-column"/></svg>Notas</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    <div class="dcc-drawer-layout__main">
+      <div class="dcc-drawer-layout__bar">
+        <button class="dcc-icon-btn dcc-drawer__toggle" type="button" data-dcc-abrir="cajon-persistente" aria-controls="cajon-persistente" aria-expanded="true" aria-label="Navegación del curso"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-panel-left"/></svg></button>
+        <p class="dcc-t-heading-s">Resumen</p>
+      </div>
+      <div class="dcc-drawer-layout__content">
+        <p class="dcc-t-body-m">Algoritmos y Estructuras de Datos. Clases martes y jueves de 10:15 a 11:45 en la sala
+          B-212 de Beauchef 851. La Tarea 2 se entrega el viernes a las 23:59 por U-Cursos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="dcc-doc-p">Para pantallas angostas conviene el temporal: un persistente de 240px deja muy poco para el
+  contenido en un teléfono.</p>
+
+<h2 class="dcc-doc-h2" id="barra-lateral">Cajón o barra lateral</h2>
+<p class="dcc-doc-p">La <a href="barra-de-navegacion.html">barra lateral</a> (<code>.dcc-sidebar</code>) es la
+  navegación principal de las aplicaciones del DCC: de marca, oscura en los dos temas, siempre visible —el
+  "permanente" de MUI— y con la estructura fija del Figma (logo, nombre de la app, botón de acción, lista y
+  usuario). Si tu aplicación tiene una navegación principal, usa esa. El cajón es para lo demás: la misma
+  navegación en un teléfono, donde la barra no cabe; filtros o detalles que se abren a pedido; un panel
+  secundario que se puede esconder. Puedes poner una <code>.dcc-sidebar</code> dentro del panel de un cajón
+  temporal para mostrar la navegación principal en pantallas chicas.</p>
+
+<h2 class="dcc-doc-h2" id="codigo">Desde código</h2>
+<p class="dcc-doc-p">El comportamiento está en <code>src/componentes/cajon.js</code>. Para abrir o cerrar sin
+  botones: <code>DCCUI.cajon.abrir(el)</code>, <code>DCCUI.cajon.cerrar(el)</code> y
+  <code>DCCUI.cajon.alternar(el)</code>, con el elemento o su id. Los atributos
+  <code>data-dcc-abrir</code> y <code>data-dcc-cerrar</code> los comparte con el diálogo: este archivo sólo
+  actúa cuando el destino es un <code>.dcc-drawer</code>.</p>

@@ -1,0 +1,235 @@
+/* --------------------------------------------------------------------------
+   DRAWER — cajón (MUI Drawer)
+   Un panel que entra desde un borde con navegación o contenido secundario.
+   Dos variantes, como en MUI:
+
+     temporal     →  `<dialog class="dcc-drawer">`, modal. Se abre sobre la
+                     página con un fondo que la oscurece, atrapa el foco, se
+                     cierra con Escape, con un clic en el fondo o con un botón
+                     `data-dcc-cerrar`. Lado: --left (por omisión) · --right ·
+                     --top · --bottom.
+     persistente  →  `.dcc-drawer--persistent` dentro de `.dcc-drawer-layout`:
+                     vive en la página y, al abrirse, empuja el contenido en
+                     vez de taparlo.
+
+   La superficie es un Paper (`.dcc-paper`) en `.dcc-drawer__panel`, así que el
+   fondo, la sombra y el tinte del tema oscuro salen de ahí. El comportamiento
+   está en src/componentes/cajon.js.
+
+   El temporal usa el <dialog> nativo porque ya resuelve lo difícil: la capa
+   superior (nada le queda encima, sin pelear con z-index), el resto de la
+   página inerte —el foco no puede salir— y Escape. La entrada y la salida se
+   animan con `@starting-style` y `allow-discrete`; donde no existen, el cajón
+   aparece y desaparece sin animación, que también está bien.
+   -------------------------------------------------------------------------- */
+.dcc-drawer {
+  --dcc-drawer-width: 280px;
+  --dcc-drawer-hidden: translateX(-100%);
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: min(var(--dcc-drawer-width), calc(100% - 56px));
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  overflow: visible;
+  transform: var(--dcc-drawer-hidden);
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1),
+              overlay .25s allow-discrete,
+              display .25s allow-discrete;
+}
+.dcc-drawer[open] { transform: none; }
+@starting-style {
+  .dcc-drawer[open] { transform: var(--dcc-drawer-hidden); }
+}
+
+/* El fondo. No hay token para un velo: es Gray 800 al 50%, que oscurece lo
+   mismo en los dos temas. */
+.dcc-drawer::backdrop {
+  background: var(--dcc-scrim, rgba(26, 32, 44, .5));
+  opacity: 0;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1),
+              overlay .25s allow-discrete,
+              display .25s allow-discrete;
+}
+.dcc-drawer[open]::backdrop { opacity: 1; }
+@starting-style {
+  .dcc-drawer[open]::backdrop { opacity: 0; }
+}
+
+/* Con un cajón modal abierto la página de atrás no scrollea. */
+:root:has(.dcc-drawer:modal) { overflow: hidden; }
+
+.dcc-drawer--right {
+  --dcc-drawer-hidden: translateX(100%);
+  inset: 0 0 0 auto;
+}
+.dcc-drawer--top,
+.dcc-drawer--bottom {
+  width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 56px);
+}
+.dcc-drawer--top    { --dcc-drawer-hidden: translateY(-100%); inset: 0 0 auto 0; }
+.dcc-drawer--bottom { --dcc-drawer-hidden: translateY(100%);  inset: auto 0 0 0; }
+
+/* El panel llena el diálogo entero: así un clic que cae en el propio <dialog>
+   sólo puede venir del fondo, y el JS lo usa para cerrar. Va con el cajón por
+   delante para ganarle al `display: block` de `.dcc-paper`. */
+.dcc-drawer > .dcc-drawer__panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: inherit;
+  overflow: hidden;
+}
+
+/* ---- Persistente ---- */
+.dcc-drawer-layout {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+/* El contenido nunca baja de 320px (o del ancho entero, si el contenedor es
+   más angosto): en una pantalla chica el cajón lo empuja hacia afuera, como en
+   MUI, en vez de estrujarlo a una columna de dos palabras. */
+.dcc-drawer-layout__main {
+  flex: 1 0 0;
+  min-width: min(100%, 320px);
+  overflow-y: auto;
+}
+.dcc-drawer-layout__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 8px 16px 8px 8px;
+  border-bottom: 1px solid var(--dcc-border-subtle);
+}
+.dcc-drawer-layout__content { padding: 16px; }
+
+/* Cerrado mide 0 y queda `visibility: hidden` al terminar de encogerse, para
+   que sus enlaces no reciban foco. El panel tiene siempre el ancho final: se
+   destapa en vez de reacomodarse a cada paso de la animación. */
+.dcc-drawer.dcc-drawer--persistent {
+  --dcc-drawer-width: 240px;
+  position: relative;
+  inset: auto;
+  flex: 0 0 auto;
+  width: 0;
+  height: auto;
+  overflow: hidden;
+  transform: none;
+  visibility: hidden;
+  transition: width .25s cubic-bezier(.4, 0, .2, 1),
+              visibility 0s linear .25s;
+}
+.dcc-drawer.dcc-drawer--persistent.is-open {
+  width: var(--dcc-drawer-width);
+  visibility: visible;
+  transition-delay: 0s;
+}
+.dcc-drawer--persistent > .dcc-drawer__panel {
+  width: var(--dcc-drawer-width);
+  border-right: 1px solid var(--dcc-border-subtle);
+}
+
+/* ---- Contenido ---- */
+.dcc-drawer__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid var(--dcc-border-subtle);
+  flex: 0 0 auto;
+}
+.dcc-drawer__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--dcc-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--dcc-fg-strong);
+}
+
+/* El botón de cerrar y __toggle —el que abre un persistente desde la barra—
+   son `.dcc-icon-btn`; no necesitan reglas propias. */
+
+.dcc-drawer__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px;
+}
+.dcc-drawer__footer {
+  flex: 0 0 auto;
+  padding: 12px 16px;
+  border-top: 1px solid var(--dcc-border-subtle);
+  font-size: 14px;
+  color: var(--dcc-fg-muted);
+}
+
+/* Lista de navegación: el ListItemButton de MUI con los colores del kit. */
+.dcc-drawer__nav { display: flex; flex-direction: column; gap: 2px; }
+.dcc-drawer__link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  background: none;
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  font-size: 15px;
+  line-height: 1.3;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-drawer__link .dcc-icon { width: 20px; height: 20px; flex: 0 0 20px; color: var(--dcc-fg-muted); }
+.dcc-drawer__link:hover { background: var(--dcc-surface-muted); }
+.dcc-drawer__link:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-drawer__link[aria-current="page"] {
+  background: color-mix(in srgb, var(--dcc-accent) 12%, transparent);
+  color: var(--dcc-fg-accent);
+  font-weight: 600;
+}
+.dcc-drawer__link[aria-current="page"] .dcc-icon { color: inherit; }
+
+.dcc-drawer__divider {
+  height: 0;
+  margin: 8px 0;
+  border: 0;
+  border-top: 1px solid var(--dcc-border-subtle);
+}
+.dcc-drawer__subheader {
+  margin: 0;
+  padding: 8px 12px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--dcc-fg-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-drawer,
+  .dcc-drawer::backdrop,
+  .dcc-drawer.dcc-drawer--persistent,
+  .dcc-drawer.dcc-drawer--persistent.is-open,
+  .dcc-drawer__close::before,
+  .dcc-drawer__toggle::before,
+  .dcc-drawer__link { transition: none; }
+}

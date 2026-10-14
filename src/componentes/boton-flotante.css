@@ -1,0 +1,129 @@
+/* --------------------------------------------------------------------------
+   BOTÓN FLOTANTE — FAB (MUI Fab)
+   La acción principal de una pantalla, flotando sobre el contenido. Es un
+   botón del kit con otra forma: los mismos colores por rol, la misma capa de
+   estado y el mismo escalón de sombra en hover (ver la sección 7 de
+   styles.css). Lo que cambia es la geometría:
+
+     forma    →  circular (por omisión) · --extended, con texto
+     tamaño   →  --sm (40px) · --md (48px, por omisión) · --lg (56px)
+     color    →  --primary (por omisión) · --secondary · --success · --error
+                 · --white, para fondos oscuros · --surface, el "default" de MUI
+
+   El extendido mide de alto lo que MUI: 34, 40 y 48px.
+   Para ubicarlo en una esquina está `.dcc-fab-anchor`, que lo cuelga del
+   contenedor posicionado más cercano —`.dcc-fab-area` lo es— o de la ventana
+   con `--fixed`.
+   -------------------------------------------------------------------------- */
+.dcc-fab {
+  --dcc-fab-main: var(--dcc-accent);
+  --dcc-fab-on: var(--dcc-on-accent);
+  --dcc-fab-size: 48px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  width: var(--dcc-fab-size);
+  height: var(--dcc-fab-size);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--dcc-fab-main);
+  color: var(--dcc-fab-on);
+  font-family: var(--dcc-font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: var(--dcc-shadow-button);
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              box-shadow .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1),
+              transform .25s cubic-bezier(.4, 0, .2, 1),
+              opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+/* `fill: none` porque el corazón y la estrella del sprite no lo fijan. */
+.dcc-fab .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; fill: none; }
+
+/* Tamaños */
+.dcc-fab--sm { --dcc-fab-size: 40px; }
+.dcc-fab--md { --dcc-fab-size: 48px; }
+.dcc-fab--lg { --dcc-fab-size: 56px; }
+.dcc-fab--sm .dcc-icon { width: 20px; height: 20px; flex-basis: 20px; }
+
+/* Extendido: la píldora con ícono y etiqueta. El ícono va con un margen
+   negativo para que el texto quede centrado a ojo y no por cálculo. */
+.dcc-fab--extended {
+  width: auto;
+  padding: 0 20px 0 16px;
+  height: 40px;
+}
+.dcc-fab--extended.dcc-fab--sm { height: 34px; padding: 0 14px 0 10px; font-size: 14px; }
+.dcc-fab--extended.dcc-fab--md { height: 40px; }
+.dcc-fab--extended.dcc-fab--lg { height: 48px; padding: 0 24px 0 18px; }
+.dcc-fab--extended .dcc-icon { width: 20px; height: 20px; flex-basis: 20px; }
+/* Sin ícono, el relleno vuelve a ser simétrico. */
+.dcc-fab--extended:not(:has(.dcc-icon)) { padding-inline: 20px; }
+
+/* Colores: los del botón, uno por uno. */
+.dcc-fab--primary   { --dcc-fab-main: var(--dcc-accent);         --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--secondary { --dcc-fab-main: var(--dcc-fg-muted);       --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--success   { --dcc-fab-main: var(--dcc-success-strong); --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--error     { --dcc-fab-main: var(--dcc-danger);         --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--white     { --dcc-fab-main: var(--dcc-white);          --dcc-fab-on: var(--dcc-grey-default); }
+/* El "default" de MUI: superficie elevada con el ícono en el color del texto.
+   Es el que llevan las acciones del Speed Dial. */
+.dcc-fab--surface   { --dcc-fab-main: var(--dcc-surface-raised); --dcc-fab-on: var(--dcc-fg-accent); }
+
+/* Estados: idénticos a los del botón. */
+.dcc-fab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-fab:hover { box-shadow: var(--dcc-shadow-button-hover); }
+.dcc-fab:hover::before { opacity: .08; }
+.dcc-fab:active::before,
+.dcc-fab:focus-visible::before { opacity: .12; }
+.dcc-fab:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+.dcc-fab:disabled,
+.dcc-fab[aria-disabled="true"] {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.dcc-fab:disabled::before,
+.dcc-fab[aria-disabled="true"]::before { opacity: 0; }
+
+/* Esquina. El área es cualquier contenedor que tenga que hacer de referencia
+   —una tarjeta, una caja de demo, el contenido de una página con scroll
+   propio—. Con `--fixed` el ancla se cuelga de la ventana, que es lo normal en
+   una aplicación. 16px es el margen que usa Material en pantallas angostas. */
+.dcc-fab-area { position: relative; }
+.dcc-fab-anchor {
+  position: absolute;
+  z-index: 10;
+  right: 16px;
+  bottom: 16px;
+}
+.dcc-fab-anchor--fixed { position: fixed; }
+.dcc-fab-anchor--start { right: auto; left: 16px; }
+.dcc-fab-anchor--top   { bottom: auto; top: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-fab,
+  .dcc-fab::before { transition: none; }
+}

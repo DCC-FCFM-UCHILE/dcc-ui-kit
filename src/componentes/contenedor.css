@@ -1,0 +1,54 @@
+/* ==========================================================================
+   CONTENEDOR  (MUI Container)
+   Centra el contenido de la página y lo topa en un ancho máximo, con una
+   canaleta a cada lado para que el texto no toque el borde de la pantalla.
+
+   Sin modificador, el contenido mide lo mismo que el de las barras y el pie:
+   --dcc-container-max (1320px) más una canaleta --dcc-gutter-lg a cada lado.
+   Las barras llegan al mismo resultado por otro camino —son bandas a sangre
+   completa, así que la caja ocupa todo el ancho y el relleno crece:
+     padding-inline: max(gutter, (100% − 1320px) / 2)
+   El contenedor no necesita fondo a sangre, así que se topa con max-width y
+   se centra con margin. Los bordes izquierdos coinciden al píxel en cualquier
+   ancho, porque las dos fórmulas dan el mismo contenido:
+     min(100% − 2 × gutter, 1320px)
+   A 1440px de viewport eso son los 60px del frame de Figma. Las canaletas
+   bajan solas en los cortes del kit (32px a ≤1024 y 20px a ≤768), porque se
+   redefinen en :root.
+
+   Los tamaños --xs…--xl son los de MUI y, como en MUI, cuentan la caja entera
+   con sus canaletas (box-sizing: border-box): `--sm` nunca pasa de 600px.
+   ========================================================================== */
+.dcc-container {
+  --dcc-container-gutter: var(--dcc-gutter-lg);
+  --dcc-container-width: calc(var(--dcc-container-max) + 2 * var(--dcc-container-gutter));
+  --dcc-container-step: 100%;
+  display: block;
+  width: 100%;
+  max-width: min(var(--dcc-container-step), var(--dcc-container-width));
+  margin-inline: auto;
+  padding-inline: var(--dcc-container-gutter);
+}
+
+/* Canaleta de la barra de aplicación (40px), para alinear el contenido de una
+   app interna con su `.dcc-nav-app`. */
+.dcc-container--app { --dcc-container-gutter: var(--dcc-gutter-md); }
+/* Sin canaletas (disableGutters): para anidar o cuando el hijo ya trae las suyas. */
+.dcc-container--flush { --dcc-container-gutter: 0px; }
+
+/* Anchos máximos de MUI (maxWidth). */
+.dcc-container--xs { --dcc-container-width: 444px; }
+.dcc-container--sm { --dcc-container-width: 600px; }
+.dcc-container--md { --dcc-container-width: 900px; }
+.dcc-container--lg { --dcc-container-width: 1200px; }
+.dcc-container--xl { --dcc-container-width: 1536px; }
+/* Fluido (maxWidth={false}): ocupa todo el ancho, sólo con las canaletas. */
+.dcc-container--fluid { --dcc-container-width: 100%; }
+
+/* Fijo (fixed): en vez de crecer de manera continua, salta al ancho mínimo de
+   cada breakpoint. El tope del tamaño, si hay uno, sigue mandando: con
+   `--fixed --md` el contenedor salta a 600 y a 900 y ahí se queda. */
+@media (min-width: 600px)  { .dcc-container--fixed { --dcc-container-step: 600px; } }
+@media (min-width: 900px)  { .dcc-container--fixed { --dcc-container-step: 900px; } }
+@media (min-width: 1200px) { .dcc-container--fixed { --dcc-container-step: 1200px; } }
+@media (min-width: 1536px) { .dcc-container--fixed { --dcc-container-step: 1536px; } }

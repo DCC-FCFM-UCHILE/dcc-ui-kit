@@ -137,6 +137,8 @@
   --dcc-success-strong: var(--dcc-green-dark);
   --dcc-info-strong:    var(--dcc-lightblue-dark);
   --dcc-warning-strong: var(--dcc-yellow-dark);
+  /* Velo que oscurece la página detrás de un diálogo o un cajón. */
+  --dcc-scrim:          rgba(26, 32, 44, .5);
 }
 
 /* ---- Tema oscuro ----
@@ -179,6 +181,7 @@
   --dcc-success-strong: #7fdce4;
   --dcc-info-strong:    #9ad2f0;
   --dcc-warning-strong: #f0cf8f;
+  --dcc-scrim:          rgba(0, 0, 0, .6);
   --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
 }
 @media (prefers-color-scheme: dark) {
@@ -210,6 +213,7 @@
       --dcc-success-strong: #7fdce4;
       --dcc-info-strong:    #9ad2f0;
       --dcc-warning-strong: #f0cf8f;
+      --dcc-scrim:          rgba(0, 0, 0, .6);
       --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
     }
 }
@@ -465,6 +469,86 @@ svg)[class*="dcc-"] { display: block; max-width: 100%; }
 .dcc-btn--secondary-grey { background: var(--dcc-surface); }
 .dcc-btn--secondary-white { --dcc-btn-main: var(--dcc-white); }
 
+/* Botón de ícono (el IconButton de MUI): redondo, sin relleno ni sombra, con
+   la misma capa de estado que `.dcc-btn` —8% en hover, 12% al presionar o con
+   foco de teclado—. Es la pieza de los botones de cerrar, de los menús de
+   acción y de expandir. Siempre necesita un nombre accesible (`aria-label`),
+   porque no tiene texto.
+     tamaño  →  --sm (32px) · 40px por omisión · --lg (48px)
+     color   →  gris secundario por omisión · --primary · --error ·
+                --inherit, que toma el color del texto que lo rodea (para
+                fondos de color: snackbar, alerta rellena)                    */
+.dcc-icon-btn {
+  --dcc-icon-btn-size: 40px;
+  --dcc-icon-btn-icon: 20px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-grid;
+  place-items: center;
+  width: var(--dcc-icon-btn-size);
+  height: var(--dcc-icon-btn-size);
+  flex: 0 0 var(--dcc-icon-btn-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  --dcc-icon-btn-color: var(--dcc-fg-muted);
+  color: var(--dcc-icon-btn-color);
+  font: inherit;
+  cursor: pointer;
+  transition: color .25s cubic-bezier(.4, 0, .2, 1);
+}
+/* `fill: none` porque el corazón y la estrella del sprite no lo fijan —quedan
+   rellenables para marcar favoritos— y sin esto salían rellenos. */
+.dcc-icon-btn svg {
+  width: var(--dcc-icon-btn-icon);
+  height: var(--dcc-icon-btn-icon);
+  flex: none;
+  fill: none;
+}
+.dcc-icon-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-icon-btn:hover::before { opacity: .08; }
+.dcc-icon-btn:active::before,
+.dcc-icon-btn:focus-visible::before { opacity: .12; }
+.dcc-icon-btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 0; }
+.dcc-icon-btn--sm { --dcc-icon-btn-size: 32px; --dcc-icon-btn-icon: 18px; }
+.dcc-icon-btn--lg { --dcc-icon-btn-size: 48px; --dcc-icon-btn-icon: 24px; }
+/* El color va por variable para que un botón de ícono que además sea otra
+   pieza —el disparador de un menú, que fija su propio color— lo recupere. */
+.dcc-icon-btn--primary { --dcc-icon-btn-color: var(--dcc-fg-accent); }
+.dcc-icon-btn--error { --dcc-icon-btn-color: var(--dcc-danger); }
+.dcc-icon-btn--inherit { --dcc-icon-btn-color: currentColor; }
+/* Sobre un fondo de color el azul de foco puede no verse: va en el color del texto. */
+.dcc-icon-btn--inherit:focus-visible { outline-color: currentColor; }
+.dcc-icon-btn:disabled,
+.dcc-icon-btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.dcc-icon-btn:disabled::before,
+.dcc-icon-btn[aria-disabled="true"]::before { opacity: 0; }
+
+/* Texto sólo para lectores de pantalla: el nombre de una tabla cuyo título ya
+   está a la vista, la cifra de un contador, un aviso de región viva. */
+.dcc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Links (componente "Frame 248" del kit) */
 .dcc-link {
   display: inline-flex;
@@ -669,16 +753,16 @@ svg)[class*="dcc-"] { display: block; max-width: 100%; }
   font-size: 16px;
   line-height: 1.2;
 }
-.dcc-alert .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; }
+.dcc-alert > .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; }
 .dcc-alert .dcc-stack { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .dcc-alert .dcc-stack strong { font-weight: 700; }
 
 .dcc-alert--info { background: var(--dcc-info-bg); }
-.dcc-alert--info    .dcc-icon { color: var(--dcc-info); }
+.dcc-alert--info > .dcc-icon { color: var(--dcc-info); }
 .dcc-alert--success { background: var(--dcc-success-bg); }
-.dcc-alert--success .dcc-icon { color: var(--dcc-success); }
+.dcc-alert--success > .dcc-icon { color: var(--dcc-success); }
 .dcc-alert--error { background: var(--dcc-danger-bg); }
-.dcc-alert--error   .dcc-icon { color: var(--dcc-danger); }
+.dcc-alert--error > .dcc-icon { color: var(--dcc-danger); }
 
 .dcc-alert-stack { display: flex; flex-direction: column; gap: 36px; }
 
@@ -1780,6 +1864,15 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   border-radius: var(--dcc-radius-sm);
 }
 
+/* Un botón de ícono que abre un menú: el disparador le quita el centrado, el
+   color y la forma redonda del foco, y aquí se los devuelve. */
+.dcc-menu__trigger.dcc-icon-btn {
+  display: inline-grid;
+  gap: 0;
+  color: var(--dcc-icon-btn-color);
+}
+.dcc-menu__trigger.dcc-icon-btn:focus-visible { outline-offset: 0; border-radius: 50%; }
+
 .dcc-menu__list {
   position: absolute;
   z-index: 30;
@@ -2000,7 +2093,11 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   color: var(--dcc-fg);
   transition: background-color .15s ease;
 }
-.dcc-list__item:last-child { border-bottom: 0; }
+/* El último ítem no lleva línea. Los ítems pueden ir sueltos en la lista o
+   dentro de un <li> —que es lo correcto en una <ul>—; con `:last-child` a secas
+   cada ítem era el último de su <li> y la lista perdía todos los separadores. */
+.dcc-list > .dcc-list__item:last-child,
+.dcc-list > li:last-child > .dcc-list__item { border-bottom: 0; }
 a.dcc-list__item:hover,
 button.dcc-list__item:hover { background: var(--dcc-surface-muted); }
 a.dcc-list__item:focus-visible,
@@ -2020,8 +2117,11 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-focus); outli
 .dcc-list__icon svg { width: 20px; height: 20px; }
 
 .dcc-list__body { flex: 1; min-width: 0; }
-.dcc-list__title { font-size: 16px; font-weight: 700; line-height: 1.2; }
+/* En bloque: suelen ser <span> (dentro de un <a> no puede ir un <div>), y en
+   línea el título y la descripción quedaban uno al lado del otro. */
+.dcc-list__title { display: block; font-size: 16px; font-weight: 700; line-height: 1.2; }
 .dcc-list__desc {
+  display: block;
   font-size: 12px;
   line-height: 1.2;
   color: var(--dcc-fg-muted);
@@ -3131,5 +3231,4383 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-focus); outli
 @media print {
   .dcc-root { background: #fff; }
     .dcc-nav-toggle { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   ALERTA — lo que le falta respecto de MUI Alert
+
+   La alerta base vive en styles.css (sección 10) y su marcado sigue igual:
+   `.dcc-alert.dcc-alert--info` con el ícono y un `.dcc-stack` para el texto.
+   Este archivo agrega, sin tocarla:
+
+     color      --warning, que no existía (también hay --info, --success, --error)
+     variante   la de siempre es la «standard» de MUI (fondo suave);
+                --outlined (borde del color, sin fondo) y --filled (relleno fuerte)
+     partes     __message y __title (el AlertTitle), __action a la derecha y
+                __close, el botón de cerrar
+
+   Cada color fija dos variables —`--dcc-alert-color`, el del estado, y
+   `--dcc-alert-strong`, el relleno de la variante filled— y las variantes
+   deciden dónde van, como en el botón.
+
+   Contraste del texto en filled (--dcc-on-accent sobre el relleno), en claro:
+   info Lightblue/Dark 7,1:1 · success Green/Dark 6,8:1 · error Red/Default
+   4,9:1 · warning Yellow/Dark 7,0:1. El ícono de --warning sobre su fondo
+   suave da 3,2:1 en claro y 7,0:1 en oscuro. En oscuro el relleno es el tono claro y
+   el texto, oscuro.
+   -------------------------------------------------------------------------- */
+.dcc-alert {
+  --dcc-alert-color: var(--dcc-info);
+  --dcc-alert-strong: var(--dcc-info-strong);
+}
+.dcc-alert--info { --dcc-alert-color: var(--dcc-info);    --dcc-alert-strong: var(--dcc-info-strong); }
+.dcc-alert--success { --dcc-alert-color: var(--dcc-success); --dcc-alert-strong: var(--dcc-success-strong); }
+.dcc-alert--error { --dcc-alert-color: var(--dcc-danger);  --dcc-alert-strong: var(--dcc-danger); }
+.dcc-alert--warning { --dcc-alert-color: var(--dcc-warning); --dcc-alert-strong: var(--dcc-warning-strong); }
+
+/* El color que faltaba, en la variante de siempre. */
+.dcc-alert--warning { background: var(--dcc-warning-bg); }
+.dcc-alert--warning > .dcc-icon { color: var(--dcc-warning); }
+
+/* ---- Variantes ---- */
+.dcc-alert--outlined {
+  background: transparent;
+  border: 1px solid var(--dcc-alert-color);
+}
+.dcc-alert--outlined > .dcc-icon { color: var(--dcc-alert-color); }
+
+.dcc-alert--filled {
+  background: var(--dcc-alert-strong);
+  color: var(--dcc-on-accent);
+}
+.dcc-alert--filled > .dcc-icon { color: inherit; }
+
+/* ---- Partes ---- */
+/* El texto: ocupa lo que queda entre el ícono y las acciones. */
+.dcc-alert__message { flex: 1 1 auto; min-width: 0; }
+/* AlertTitle: el título en negrita sobre la descripción. */
+.dcc-alert__title {
+  display: block;
+  margin: 0 0 2px;
+  font-weight: 700;
+}
+/* Con título, el ícono se alinea con la primera línea y no con el centro. */
+.dcc-alert:has(.dcc-alert__title) { align-items: flex-start; }
+
+/* La acción va pegada a la derecha; si el texto es largo, no se aplasta. */
+.dcc-alert__action {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  margin: -6px -8px -6px auto;
+}
+.dcc-alert:has(.dcc-alert__title) .dcc-alert__action { margin-top: -4px; }
+
+/* Botón de cerrar: `.dcc-icon-btn --sm --inherit`, en el color del texto de la
+   alerta, así sirve igual en las tres variantes. */
+.dcc-alert__close { flex: none; }
+
+/* Un botón de texto del kit dentro de la acción toma el color del texto de la
+   alerta: así se lee igual sobre el fondo suave, sin fondo o sobre el relleno. */
+.dcc-alert__action .dcc-btn--text { --dcc-btn-main: currentColor; }
+/* La regla del ícono de la alerta (24px, color del estado) alcanzaría también
+   al ícono de ese botón: se le devuelve el suyo. */
+
+/* Para las demos: alertas una bajo otra, más juntas que `.dcc-alert-stack`. */
+.dcc-alert-list { display: flex; flex-direction: column; gap: 12px; }
+.dcc-alert-list + .dcc-alert-list { margin-top: 24px; }
+
+/* --------------------------------------------------------------------------
+   ÁREA DE TEXTO QUE CRECE (TextareaAutosize de MUI)
+
+   Un `textarea.dcc-input` con `.dcc-input--autosize` y el gancho
+   `.js-autosize`: el JS (src/componentes/area-autoajustable.js) le fija el
+   alto al del texto, entre un mínimo y un máximo de filas. Acá sólo se
+   desactiva lo que estorba: el asa para estirarlo a mano —el alto ya no es
+   del usuario— y el alto mínimo de 96px del área de texto común, porque el
+   mínimo ahora lo dan las filas.
+
+   Sin JS queda un área de texto normal, del alto de su atributo `rows`.
+   -------------------------------------------------------------------------- */
+textarea.dcc-input--autosize {
+  min-height: 0;
+  resize: none;
+  overflow-y: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   AUTOCOMPLETAR  (Autocomplete de MUI)
+   Un campo de texto con una lista que se filtra mientras se escribe. Sirve
+   cuando las opciones son demasiadas para un select —los cursos del
+   departamento, los profesores, las salas— y la persona sabe más o menos lo
+   que busca.
+
+   Se arma con piezas que ya existen:
+     - la caja imita a `.dcc-input` y a `.dcc-adorned`: el mismo alto, el
+       mismo borde y el mismo foco de 2px sin halo;
+     - la lista ES la del select propio (`.dcc-combo__list` con opciones
+       `.dcc-combo__option`), así que las dos se ven y se comportan igual;
+     - en el múltiple, cada valor es un `.dcc-chip--sm`.
+   Lo propio es la caja con chips, los botones de borrar y abrir, los títulos
+   de grupo y el aviso de "Sin resultados".
+
+   Patrón ARIA 1.2 de combobox con lista: el <input> lleva role="combobox",
+   aria-expanded y aria-activedescendant; el foco nunca sale del campo mientras
+   se recorre la lista.
+   -------------------------------------------------------------------------- */
+.dcc-autocomplete {
+  position: relative;
+  width: 100%;
+}
+/* El campo que lo contiene toma su ancho máximo (320px, o todo con
+   `--wide`) aunque esté en una fila flexible: si no, se encoge al mínimo del
+   input y la lista sale angosta. */
+.dcc-field:has(> .dcc-autocomplete) { width: 100%; }
+
+/* La caja. Como `.dcc-adorned`, tiene 1px de padding de más que desaparece
+   cuando el borde crece a 2px al enfocar, para que nada se corra. A la derecha
+   deja lugar a los dos botones, que van encima en posición absoluta y quedan
+   centrados aunque los chips ocupen varias líneas. */
+.dcc-autocomplete__control {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-height: var(--dcc-field-h);
+  padding: 4px 68px 4px 12px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-fg);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  cursor: text;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+/* Sin flecha (texto libre) basta lugar para la cruz. */
+.dcc-autocomplete[data-libre] .dcc-autocomplete__control { padding-right: 40px; }
+/* Con chips, el primero se arrima al borde como el ícono de un adorno. */
+.dcc-autocomplete__control:has(> .dcc-chip) { padding-left: 4px; }
+
+.dcc-autocomplete__control:hover:not(:focus-within) { border-color: var(--dcc-fg-accent); }
+.dcc-autocomplete__control:focus-within {
+  border-width: 2px;
+  border-color: var(--dcc-focus-border);
+  padding: 3px 67px 3px 11px;
+  transition: none;
+}
+.dcc-autocomplete[data-libre] .dcc-autocomplete__control:focus-within { padding-right: 39px; }
+.dcc-autocomplete__control:focus-within:has(> .dcc-chip) { padding-left: 3px; }
+
+.dcc-autocomplete__input {
+  flex: 1 1 80px;
+  min-width: 80px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.dcc-autocomplete__input::placeholder { color: var(--dcc-fg-muted); opacity: 1; }
+.dcc-autocomplete__control > .dcc-chip + .dcc-autocomplete__input { padding-left: 4px; }
+
+/* Botones de borrar y de abrir. Fuera del orden de tabulación, como en MUI:
+   con teclado se borra con Retroceso y se abre con la flecha abajo. */
+.dcc-autocomplete__actions {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: flex;
+  gap: 2px;
+  transform: translateY(-50%);
+}
+.dcc-autocomplete__control:focus-within > .dcc-autocomplete__actions { right: 5px; }
+.dcc-autocomplete__btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--dcc-fg-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  cursor: pointer;
+}
+.dcc-autocomplete__btn[hidden] { display: none; }
+.dcc-autocomplete__btn > svg {
+  width: 18px;
+  height: 18px;
+  transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-autocomplete__btn:hover { color: var(--dcc-fg-accent); background: var(--dcc-surface-muted); }
+.dcc-autocomplete__clear > svg { width: 16px; height: 16px; }
+.dcc-autocomplete.is-open .dcc-autocomplete__toggle > svg { transform: rotate(180deg); }
+.dcc-autocomplete__control:focus-within .dcc-autocomplete__toggle { color: var(--dcc-focus); }
+
+/* ---- Lista ----
+   `.dcc-combo__list` y `.dcc-combo__option` ponen la caja, el hover, la opción
+   activa y el check de la elegida. Acá sólo lo que el select no tiene: las
+   opciones filtradas se esconden con `hidden` (la regla del select les da
+   `display: flex`, que le gana al atributo) y los grupos. */
+.dcc-autocomplete .dcc-combo__option[hidden],
+.dcc-autocomplete__group[hidden] { display: none; }
+.dcc-autocomplete .dcc-combo__list { max-height: 280px; }
+.dcc-autocomplete .dcc-combo__option[aria-disabled="true"] {
+  opacity: .5;
+  cursor: not-allowed;
+  background: none;
+}
+
+.dcc-autocomplete__group + .dcc-autocomplete__group { margin-top: 4px; }
+/* El título del grupo queda pegado arriba mientras se recorren sus opciones,
+   como el ListSubheader de MUI. El -4px compensa el padding de la lista. */
+.dcc-autocomplete__group-label {
+  position: sticky;
+  top: -4px;
+  z-index: 1;
+  display: block;
+  margin: 0 -4px;
+  padding: 8px 14px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--dcc-fg-muted);
+  background: var(--dcc-surface-raised);
+}
+
+/* La parte del texto que coincide con lo escrito. */
+.dcc-autocomplete__match { font-weight: 700; }
+.dcc-combo__option[aria-selected="true"] .dcc-autocomplete__match { font-weight: inherit; }
+
+/* "Sin resultados": la misma caja flotante que la lista, con el texto en el
+   gris secundario. No va dentro del listbox porque no es una opción. */
+.dcc-autocomplete__empty {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  padding: 12px 14px;
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-fg-muted);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  box-shadow: var(--dcc-shadow);
+}
+.dcc-autocomplete__empty[hidden] { display: none; }
+
+/* Región viva para lectores de pantalla: cuenta los resultados y avisa lo que
+   se agrega o se quita. Fuera de la vista pero no fuera del árbol. */
+.dcc-autocomplete__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Estados ---- */
+.dcc-field--error   .dcc-autocomplete__control,
+.dcc-field--error   .dcc-autocomplete__control:focus-within { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-autocomplete__control,
+.dcc-field--success .dcc-autocomplete__control:focus-within { border-color: var(--dcc-success); }
+
+.dcc-autocomplete__control:has(.dcc-autocomplete__input:disabled) {
+  color: var(--dcc-fg-muted);
+  background: var(--dcc-surface-muted);
+  cursor: not-allowed;
+}
+.dcc-autocomplete__control:has(.dcc-autocomplete__input:disabled):hover { border-color: var(--dcc-border); }
+.dcc-autocomplete__input:disabled { cursor: not-allowed; }
+/* La caja deshabilitada toma el mismo gris que el relleno del chip: el chip
+   pasa a la superficie para seguir viéndose como pieza. */
+.dcc-autocomplete__control:has(.dcc-autocomplete__input:disabled) > .dcc-chip { --dcc-chip-fill: var(--dcc-surface); }
+.dcc-autocomplete__btn:disabled { cursor: not-allowed; background: none; color: var(--dcc-fg-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-autocomplete__btn > svg { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   BOTÓN ALTERNABLE  (ToggleButton y ToggleButtonGroup de MUI)
+   Un botón que se queda presionado: negrita en un editor, la vista en lista o
+   en grilla, la alineación de un párrafo. El estado va en `aria-pressed`, que
+   es lo que anuncia un lector de pantalla ("negrita, botón, presionado") y lo
+   que pinta el CSS, así que no hay una clase de estado que pueda quedar
+   desincronizada.
+
+   En grupo los botones se pegan en una sola pieza con un borde de 1px entre
+   ellos, como en MUI. El grupo puede ser exclusivo —sólo uno presionado, como
+   la alineación— o múltiple —cualquiera, como negrita y cursiva—; eso lo
+   decide el JS (`data-exclusivo`), el aspecto es el mismo.
+
+   El radio es el de los campos (4px) y no la píldora del botón: es un control
+   que guarda un valor, igual que un select, y se arma en filas y columnas
+   donde la píldora no cierra bien.
+
+   Color: lo presionado se pinta en el color del grupo —primario por
+   omisión— con texto de ese color sobre un velo del 16%. El borde no cambia,
+   para que la pieza no salte de tamaño ni de forma al presionarla.
+   -------------------------------------------------------------------------- */
+.dcc-toggle {
+  --dcc-toggle-main: var(--dcc-accent);
+  --dcc-toggle-size: 40px;
+  --dcc-toggle-icon: 20px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: var(--dcc-toggle-size);
+  height: var(--dcc-toggle-size);
+  margin: 0;
+  padding: 0 11px;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  /* Sin presionar va en el tono de acento y no en el secundario: este último
+     da 4,43:1 sobre la superficie, apenas bajo el 4,5:1 que pide el texto. */
+  color: var(--dcc-fg-accent);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  cursor: pointer;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-toggle > svg {
+  width: var(--dcc-toggle-icon);
+  height: var(--dcc-toggle-icon);
+  flex: 0 0 var(--dcc-toggle-icon);
+}
+
+/* Capa de estado: la misma del botón del kit, del color del texto. */
+.dcc-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-toggle:hover::before { opacity: .08; }
+.dcc-toggle:active::before { opacity: .12; }
+.dcc-toggle:hover { color: var(--dcc-fg); }
+
+.dcc-toggle[aria-pressed="true"] {
+  color: var(--dcc-toggle-main);
+  background: color-mix(in srgb, var(--dcc-toggle-main) 16%, var(--dcc-surface));
+}
+
+.dcc-toggle:focus-visible {
+  z-index: 2;
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 2px;
+}
+
+/* Tamaños: 32, 40 (omisión) y 48px. Son los altos del botón pequeño, del
+   campo y del botón grande. Van en el botón o en el grupo, que los reparte a
+   todos sus botones. */
+:is(.dcc-toggle--sm,
+.dcc-toggle-group--sm > .dcc-toggle) {
+  --dcc-toggle-size: 32px; --dcc-toggle-icon: 18px; padding: 0 7px; font-size: 13px;
+}
+:is(.dcc-toggle--lg,
+.dcc-toggle-group--lg > .dcc-toggle) {
+  --dcc-toggle-size: 48px; --dcc-toggle-icon: 24px; padding: 0 15px; font-size: 15px;
+}
+
+/* Colores, por rol, como el botón. También en el botón o en el grupo; la
+   regla del grupo apunta a sus botones porque cada `.dcc-toggle` declara su
+   propio primario por omisión, y eso le ganaría a lo heredado. */
+:is(.dcc-toggle--primary,
+.dcc-toggle-group--primary > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-accent);
+}
+:is(.dcc-toggle--secondary,
+.dcc-toggle-group--secondary > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-fg-muted);
+}
+:is(.dcc-toggle--success,
+.dcc-toggle-group--success > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-success-strong);
+}
+:is(.dcc-toggle--error,
+.dcc-toggle-group--error > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-danger);
+}
+:is(.dcc-toggle--info,
+.dcc-toggle-group--info > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-info-strong);
+}
+:is(.dcc-toggle--warning,
+.dcc-toggle-group--warning > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-warning-strong);
+}
+
+/* Deshabilitado: igual que el botón, la pieza entera se apaga. */
+.dcc-toggle:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.dcc-toggle:disabled::before { opacity: 0; }
+.dcc-toggle:disabled:hover { color: var(--dcc-fg-muted); }
+.dcc-toggle[aria-pressed="true"]:disabled:hover { color: var(--dcc-toggle-main); }
+
+/* ---- Grupo ----
+   Los botones se montan 1px sobre el anterior para compartir el borde. El
+   que está bajo el cursor o con foco sube encima, para que su borde y su
+   anillo no queden tapados por el vecino. */
+.dcc-toggle-group {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+.dcc-toggle-group > .dcc-toggle:not(:first-child) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.dcc-toggle-group > .dcc-toggle:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.dcc-toggle-group > .dcc-toggle:hover { z-index: 1; }
+
+/* Vertical */
+.dcc-toggle-group--vertical { flex-direction: column; }
+.dcc-toggle-group--vertical > .dcc-toggle:not(:first-child) {
+  margin-left: 0;
+  margin-top: -1px;
+  border-radius: 0;
+}
+.dcc-toggle-group--vertical > .dcc-toggle:first-child:not(:last-child) {
+  border-radius: var(--dcc-radius-sm) var(--dcc-radius-sm) 0 0;
+}
+.dcc-toggle-group--vertical > .dcc-toggle:last-child:not(:first-child) {
+  border-radius: 0 0 var(--dcc-radius-sm) var(--dcc-radius-sm);
+}
+
+/* A todo el ancho: los botones se reparten el espacio. */
+.dcc-toggle-group--full { display: flex; width: 100%; }
+.dcc-toggle-group--full > .dcc-toggle { flex: 1 1 0; min-width: 0; }
+
+/* Separación entre grupos de una barra de herramientas. */
+.dcc-toggle-toolbar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-toggle,
+  .dcc-toggle::before { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   BOTÓN FLOTANTE — FAB (MUI Fab)
+   La acción principal de una pantalla, flotando sobre el contenido. Es un
+   botón del kit con otra forma: los mismos colores por rol, la misma capa de
+   estado y el mismo escalón de sombra en hover (ver la sección 7 de
+   styles.css). Lo que cambia es la geometría:
+
+     forma    →  circular (por omisión) · --extended, con texto
+     tamaño   →  --sm (40px) · --md (48px, por omisión) · --lg (56px)
+     color    →  --primary (por omisión) · --secondary · --success · --error
+                 · --white, para fondos oscuros · --surface, el "default" de MUI
+
+   El extendido mide de alto lo que MUI: 34, 40 y 48px.
+   Para ubicarlo en una esquina está `.dcc-fab-anchor`, que lo cuelga del
+   contenedor posicionado más cercano —`.dcc-fab-area` lo es— o de la ventana
+   con `--fixed`.
+   -------------------------------------------------------------------------- */
+.dcc-fab {
+  --dcc-fab-main: var(--dcc-accent);
+  --dcc-fab-on: var(--dcc-on-accent);
+  --dcc-fab-size: 48px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  width: var(--dcc-fab-size);
+  height: var(--dcc-fab-size);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--dcc-fab-main);
+  color: var(--dcc-fab-on);
+  font-family: var(--dcc-font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: var(--dcc-shadow-button);
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              box-shadow .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1),
+              transform .25s cubic-bezier(.4, 0, .2, 1),
+              opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+/* `fill: none` porque el corazón y la estrella del sprite no lo fijan. */
+.dcc-fab .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; fill: none; }
+
+/* Tamaños */
+.dcc-fab--sm { --dcc-fab-size: 40px; }
+.dcc-fab--md { --dcc-fab-size: 48px; }
+.dcc-fab--lg { --dcc-fab-size: 56px; }
+.dcc-fab--sm .dcc-icon { width: 20px; height: 20px; flex-basis: 20px; }
+
+/* Extendido: la píldora con ícono y etiqueta. El ícono va con un margen
+   negativo para que el texto quede centrado a ojo y no por cálculo. */
+.dcc-fab--extended {
+  width: auto;
+  padding: 0 20px 0 16px;
+  height: 40px;
+}
+.dcc-fab--extended.dcc-fab--sm { height: 34px; padding: 0 14px 0 10px; font-size: 14px; }
+.dcc-fab--extended.dcc-fab--md { height: 40px; }
+.dcc-fab--extended.dcc-fab--lg { height: 48px; padding: 0 24px 0 18px; }
+.dcc-fab--extended .dcc-icon { width: 20px; height: 20px; flex-basis: 20px; }
+/* Sin ícono, el relleno vuelve a ser simétrico. */
+.dcc-fab--extended:not(:has(.dcc-icon)) { padding-inline: 20px; }
+
+/* Colores: los del botón, uno por uno. */
+.dcc-fab--primary { --dcc-fab-main: var(--dcc-accent);         --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--secondary { --dcc-fab-main: var(--dcc-fg-muted);       --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--success { --dcc-fab-main: var(--dcc-success-strong); --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--error { --dcc-fab-main: var(--dcc-danger);         --dcc-fab-on: var(--dcc-on-accent); }
+.dcc-fab--white { --dcc-fab-main: var(--dcc-white);          --dcc-fab-on: var(--dcc-grey-default); }
+/* El "default" de MUI: superficie elevada con el ícono en el color del texto.
+   Es el que llevan las acciones del Speed Dial. */
+.dcc-fab--surface { --dcc-fab-main: var(--dcc-surface-raised); --dcc-fab-on: var(--dcc-fg-accent); }
+
+/* Estados: idénticos a los del botón. */
+.dcc-fab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-fab:hover { box-shadow: var(--dcc-shadow-button-hover); }
+.dcc-fab:hover::before { opacity: .08; }
+.dcc-fab:active::before,
+.dcc-fab:focus-visible::before { opacity: .12; }
+.dcc-fab:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+.dcc-fab:disabled,
+.dcc-fab[aria-disabled="true"] {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.dcc-fab:disabled::before,
+.dcc-fab[aria-disabled="true"]::before { opacity: 0; }
+
+/* Esquina. El área es cualquier contenedor que tenga que hacer de referencia
+   —una tarjeta, una caja de demo, el contenido de una página con scroll
+   propio—. Con `--fixed` el ancla se cuelga de la ventana, que es lo normal en
+   una aplicación. 16px es el margen que usa Material en pantallas angostas. */
+.dcc-fab-area { position: relative; }
+.dcc-fab-anchor {
+  position: absolute;
+  z-index: 10;
+  right: 16px;
+  bottom: 16px;
+}
+.dcc-fab-anchor--fixed { position: fixed; }
+.dcc-fab-anchor--start { right: auto; left: 16px; }
+.dcc-fab-anchor--top { bottom: auto; top: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-fab,
+  .dcc-fab::before { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   DRAWER — cajón (MUI Drawer)
+   Un panel que entra desde un borde con navegación o contenido secundario.
+   Dos variantes, como en MUI:
+
+     temporal     →  `<dialog class="dcc-drawer">`, modal. Se abre sobre la
+                     página con un fondo que la oscurece, atrapa el foco, se
+                     cierra con Escape, con un clic en el fondo o con un botón
+                     `data-dcc-cerrar`. Lado: --left (por omisión) · --right ·
+                     --top · --bottom.
+     persistente  →  `.dcc-drawer--persistent` dentro de `.dcc-drawer-layout`:
+                     vive en la página y, al abrirse, empuja el contenido en
+                     vez de taparlo.
+
+   La superficie es un Paper (`.dcc-paper`) en `.dcc-drawer__panel`, así que el
+   fondo, la sombra y el tinte del tema oscuro salen de ahí. El comportamiento
+   está en src/componentes/cajon.js.
+
+   El temporal usa el <dialog> nativo porque ya resuelve lo difícil: la capa
+   superior (nada le queda encima, sin pelear con z-index), el resto de la
+   página inerte —el foco no puede salir— y Escape. La entrada y la salida se
+   animan con `@starting-style` y `allow-discrete`; donde no existen, el cajón
+   aparece y desaparece sin animación, que también está bien.
+   -------------------------------------------------------------------------- */
+.dcc-drawer {
+  --dcc-drawer-width: 280px;
+  --dcc-drawer-hidden: translateX(-100%);
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: min(var(--dcc-drawer-width), calc(100% - 56px));
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  overflow: visible;
+  transform: var(--dcc-drawer-hidden);
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1),
+              overlay .25s allow-discrete,
+              display .25s allow-discrete;
+}
+.dcc-drawer[open] { transform: none; }
+@starting-style {
+  .dcc-drawer[open] { transform: var(--dcc-drawer-hidden); }
+}
+
+/* El fondo. No hay token para un velo: es Gray 800 al 50%, que oscurece lo
+   mismo en los dos temas. */
+.dcc-drawer::backdrop {
+  background: var(--dcc-scrim, rgba(26, 32, 44, .5));
+  opacity: 0;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1),
+              overlay .25s allow-discrete,
+              display .25s allow-discrete;
+}
+.dcc-drawer[open]::backdrop { opacity: 1; }
+@starting-style {
+  .dcc-drawer[open]::backdrop { opacity: 0; }
+}
+
+/* Con un cajón modal abierto la página de atrás no scrollea. */
+:root:has(.dcc-drawer:modal) { overflow: hidden; }
+
+.dcc-drawer--right {
+  --dcc-drawer-hidden: translateX(100%);
+  inset: 0 0 0 auto;
+}
+.dcc-drawer--top,
+.dcc-drawer--bottom {
+  width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 56px);
+}
+.dcc-drawer--top { --dcc-drawer-hidden: translateY(-100%); inset: 0 0 auto 0; }
+.dcc-drawer--bottom { --dcc-drawer-hidden: translateY(100%);  inset: auto 0 0 0; }
+
+/* El panel llena el diálogo entero: así un clic que cae en el propio <dialog>
+   sólo puede venir del fondo, y el JS lo usa para cerrar. Va con el cajón por
+   delante para ganarle al `display: block` de `.dcc-paper`. */
+.dcc-drawer > .dcc-drawer__panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: inherit;
+  overflow: hidden;
+}
+
+/* ---- Persistente ---- */
+.dcc-drawer-layout {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+/* El contenido nunca baja de 320px (o del ancho entero, si el contenedor es
+   más angosto): en una pantalla chica el cajón lo empuja hacia afuera, como en
+   MUI, en vez de estrujarlo a una columna de dos palabras. */
+.dcc-drawer-layout__main {
+  flex: 1 0 0;
+  min-width: min(100%, 320px);
+  overflow-y: auto;
+}
+.dcc-drawer-layout__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 8px 16px 8px 8px;
+  border-bottom: 1px solid var(--dcc-border-subtle);
+}
+.dcc-drawer-layout__content { padding: 16px; }
+
+/* Cerrado mide 0 y queda `visibility: hidden` al terminar de encogerse, para
+   que sus enlaces no reciban foco. El panel tiene siempre el ancho final: se
+   destapa en vez de reacomodarse a cada paso de la animación. */
+.dcc-drawer.dcc-drawer--persistent {
+  --dcc-drawer-width: 240px;
+  position: relative;
+  inset: auto;
+  flex: 0 0 auto;
+  width: 0;
+  height: auto;
+  overflow: hidden;
+  transform: none;
+  visibility: hidden;
+  transition: width .25s cubic-bezier(.4, 0, .2, 1),
+              visibility 0s linear .25s;
+}
+.dcc-drawer.dcc-drawer--persistent.is-open {
+  width: var(--dcc-drawer-width);
+  visibility: visible;
+  transition-delay: 0s;
+}
+.dcc-drawer--persistent > .dcc-drawer__panel {
+  width: var(--dcc-drawer-width);
+  border-right: 1px solid var(--dcc-border-subtle);
+}
+
+/* ---- Contenido ---- */
+.dcc-drawer__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid var(--dcc-border-subtle);
+  flex: 0 0 auto;
+}
+.dcc-drawer__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--dcc-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--dcc-fg-strong);
+}
+
+/* El botón de cerrar y __toggle —el que abre un persistente desde la barra—
+   son `.dcc-icon-btn`; no necesitan reglas propias. */
+
+.dcc-drawer__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px;
+}
+.dcc-drawer__footer {
+  flex: 0 0 auto;
+  padding: 12px 16px;
+  border-top: 1px solid var(--dcc-border-subtle);
+  font-size: 14px;
+  color: var(--dcc-fg-muted);
+}
+
+/* Lista de navegación: el ListItemButton de MUI con los colores del kit. */
+.dcc-drawer__nav { display: flex; flex-direction: column; gap: 2px; }
+.dcc-drawer__link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  background: none;
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  font-size: 15px;
+  line-height: 1.3;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-drawer__link .dcc-icon { width: 20px; height: 20px; flex: 0 0 20px; color: var(--dcc-fg-muted); }
+.dcc-drawer__link:hover { background: var(--dcc-surface-muted); }
+.dcc-drawer__link:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+.dcc-drawer__link[aria-current="page"] {
+  background: color-mix(in srgb, var(--dcc-accent) 12%, transparent);
+  color: var(--dcc-fg-accent);
+  font-weight: 600;
+}
+.dcc-drawer__link[aria-current="page"] .dcc-icon { color: inherit; }
+
+.dcc-drawer__divider {
+  height: 0;
+  margin: 8px 0;
+  border: 0;
+  border-top: 1px solid var(--dcc-border-subtle);
+}
+.dcc-drawer__subheader {
+  margin: 0;
+  padding: 8px 12px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--dcc-fg-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-drawer,
+  .dcc-drawer::backdrop,
+  .dcc-drawer.dcc-drawer--persistent,
+  .dcc-drawer.dcc-drawer--persistent.is-open,
+  .dcc-drawer__close::before,
+  .dcc-drawer__toggle::before,
+  .dcc-drawer__link { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   CALIFICACIÓN (Rating de MUI)
+
+   Editable, es un grupo de radios nativos: cada estrella es un <label> con su
+   radio escondido adentro. El teclado (flechas dentro del grupo), el envío del
+   formulario y el anuncio del lector de pantalla son los del navegador, y
+   todo funciona sin JS.
+
+   Qué estrellas se pintan lo decide el CSS con `:has()`: una estrella se
+   llena si su radio está marcado o si hay uno marcado más adelante. Así no
+   hace falta invertir el orden de los radios —el truco viejo con `~`—, que
+   dejaba las flechas del teclado al revés.
+
+   Al pasar el mouse se previsualiza el valor: se apagan todas y se encienden
+   la que está bajo el cursor y las anteriores. El JS opcional
+   (src/componentes/calificacion.js) agrega la etiqueta de texto y permite
+   borrar la nota volviendo a hacer clic en la misma estrella, como MUI.
+
+   Sólo lectura, es una imagen (`role="img"` con el valor en aria-label): dos
+   filas de íconos superpuestas, la llena recortada al porcentaje del valor.
+   Sirve para cualquier fracción, no sólo medias.
+   -------------------------------------------------------------------------- */
+.dcc-rating {
+  --dcc-rating-size: 24px;
+  --dcc-rating-main: var(--dcc-warning);
+  --dcc-rating-off: var(--dcc-border);
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  font-family: var(--dcc-font-body);
+  line-height: 1;
+  color: var(--dcc-fg);
+}
+
+.dcc-rating__item {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.dcc-rating__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+/* El <g> del sprite no fija `fill`, así que el valor de acá llega hasta la
+   ruta que dibuja <use>: la misma estrella sirve vacía y llena. */
+.dcc-rating__icon {
+  display: block;
+  flex: none;
+  width: var(--dcc-rating-size);
+  height: var(--dcc-rating-size);
+  /* El reset del kit topa los svg al ancho de su caja; en media estrella la
+     caja mide medio ícono y lo achicaría en vez de recortarlo. */
+  max-width: none;
+  fill: transparent;
+  color: var(--dcc-rating-off);
+  transition: fill .15s cubic-bezier(.4, 0, .2, 1),
+              color .15s cubic-bezier(.4, 0, .2, 1),
+              transform .15s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Llena: la marcada y las anteriores. */
+.dcc-rating__item:where(:has(> .dcc-rating__input:checked),
+:has(~ .dcc-rating__item > .dcc-rating__input:checked)) .dcc-rating__icon {
+  fill: currentColor;
+  color: var(--dcc-rating-main);
+}
+/* Previsualización: con el cursor sobre una estrella, manda el cursor. Las
+   reglas van en este orden y con `:where()` para que la segunda le gane a la
+   de arriba sólo por venir después, y la tercera por especificidad. */
+.dcc-rating:where(:has(.dcc-rating__item:hover)) .dcc-rating__icon {
+  fill: transparent;
+  color: var(--dcc-rating-off);
+}
+.dcc-rating:where(:has(.dcc-rating__item:hover)) .dcc-rating__item:where(:hover,
+:has(~ .dcc-rating__item:hover)) .dcc-rating__icon {
+  fill: currentColor;
+  color: var(--dcc-rating-main);
+}
+.dcc-rating__item:hover .dcc-rating__icon { transform: scale(1.2); }
+
+.dcc-rating__item:has(> .dcc-rating__input:focus-visible) {
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 1px;
+}
+
+/* ---- Medias estrellas ----
+   Cada estrella son dos radios (0,5 y 1; 1,5 y 2…), y cada uno muestra media
+   estrella: la caja mide medio ícono y recorta, y en la mitad derecha el
+   ícono se corre hacia la izquierda. Las dos mitades juntas forman la
+   estrella. La lógica de llenado no cambia: sigue siendo "esta y las
+   anteriores". */
+.dcc-rating--half .dcc-rating__item {
+  width: calc(var(--dcc-rating-size) / 2);
+  overflow: hidden;
+  border-radius: 0;
+}
+.dcc-rating--half .dcc-rating__item:nth-child(even) .dcc-rating__icon {
+  margin-left: calc(var(--dcc-rating-size) / -2);
+}
+/* Agrandar media estrella la descuadraría de su otra mitad. */
+.dcc-rating--half .dcc-rating__item:hover .dcc-rating__icon { transform: none; }
+
+/* Etiqueta del valor ("Excelente"). La escribe el JS; para el lector de
+   pantalla el texto ya está en el nombre de cada radio, así que va con
+   aria-hidden. */
+.dcc-rating__label {
+  margin-left: 12px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--dcc-fg);
+  white-space: nowrap;
+}
+
+/* ---- Sólo lectura ----
+   La etiqueta acompaña al dato (el promedio, cuántas evaluaciones), así que va
+   en el tono secundario. */
+.dcc-rating--readonly .dcc-rating__label { color: var(--dcc-fg-muted); }
+.dcc-rating__track {
+  --dcc-rating-valor: 0;
+  --dcc-rating-max: 5;
+  position: relative;
+  display: inline-flex;
+}
+.dcc-rating__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: inline-flex;
+  width: calc(var(--dcc-rating-valor) / var(--dcc-rating-max) * 100%);
+  overflow: hidden;
+}
+.dcc-rating__fill .dcc-rating__icon {
+  fill: currentColor;
+  color: var(--dcc-rating-main);
+}
+
+/* ---- Tamaños ---- */
+.dcc-rating--sm { --dcc-rating-size: 18px; }
+.dcc-rating--lg { --dcc-rating-size: 30px; }
+.dcc-rating--sm .dcc-rating__label { font-size: 12px; }
+.dcc-rating--lg .dcc-rating__label { font-size: 16px; }
+
+/* ---- Ícono alternativo: corazones, en el rojo de error ---- */
+.dcc-rating--heart { --dcc-rating-main: var(--dcc-danger); }
+
+/* ---- Deshabilitado ----
+   Se apaga entero, igual que el botón, y deja de responder al cursor. */
+.dcc-rating:has(.dcc-rating__input:disabled) {
+  opacity: .45;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-rating__icon { transition: none; }
+    .dcc-rating__item:hover .dcc-rating__icon { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   CHIP  (el Chip de MUI)
+   Un elemento compacto que representa una entrada, un atributo o una acción:
+   un filtro aplicado, una persona invitada, un curso elegido. A diferencia del
+   badge —una etiqueta de 20px que sólo informa—, el chip tiene tamaño de
+   control (32px, o 24px en el pequeño) y puede ser clicable o eliminable.
+
+   Como el botón, se arma con dos ejes independientes:
+
+     variante  →  relleno (por omisión) · --outlined
+     color     →  por omisión (neutro) · --primary · --secondary · --success
+                  · --error · --info · --warning
+
+   El color fija tres variables y la variante decide dónde van:
+     --dcc-chip-fill    el relleno de la variante rellena
+     --dcc-chip-on      el texto sobre ese relleno
+     --dcc-chip-main    el texto y el borde de la delineada
+   El neutro es la excepción: su delineado usa el borde de los campos
+   (--dcc-border, 4,4:1 sobre la superficie) y no el color del texto, que
+   pesaría demasiado.
+
+   Contraste del texto sobre el relleno, en claro:
+     neutro     Grey/Dark sobre Ultralight      9,4:1
+     primary    blanco sobre Grey/Default       8,0:1
+     secondary  blanco sobre Grey/Light         4,35:1 (el mismo caso del botón)
+     success    blanco sobre Green/Dark         6,8:1
+     error      blanco sobre Red/Default        4,9:1
+     info       blanco sobre Lightblue/Dark     7,0:1  (Lightblue/Default da 3,4)
+     warning    blanco sobre Yellow/Dark        7,0:1
+   Todos van por rol, así que en oscuro el relleno se aclara y el texto pasa a
+   oscuro (--dcc-on-accent) sin reglas aparte.
+   -------------------------------------------------------------------------- */
+.dcc-chip {
+  --dcc-chip-fill: var(--dcc-surface-muted);
+  --dcc-chip-on: var(--dcc-fg);
+  --dcc-chip-main: var(--dcc-fg);
+  --dcc-chip-border: var(--dcc-border);
+  --dcc-chip-h: 32px;
+  --dcc-chip-px: 12px;
+  --dcc-chip-adorno: 18px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 100%;
+  height: var(--dcc-chip-h);
+  margin: 0;
+  padding: 0 var(--dcc-chip-px);
+  vertical-align: middle;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--dcc-chip-on);
+  background: var(--dcc-chip-fill);
+  /* El borde existe siempre, transparente en el relleno: así las dos
+     variantes miden lo mismo. */
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              border-color .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+.dcc-chip__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tamaños. Mediano es el de omisión. */
+.dcc-chip--sm {
+  --dcc-chip-h: 24px;
+  --dcc-chip-px: 8px;
+  --dcc-chip-adorno: 16px;
+  gap: 4px;
+  font-size: 13px;
+}
+
+/* Colores */
+.dcc-chip--primary { --dcc-chip-fill: var(--dcc-accent);         --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-accent);         --dcc-chip-border: var(--dcc-accent); }
+.dcc-chip--secondary { --dcc-chip-fill: var(--dcc-fg-muted);       --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-fg-muted);       --dcc-chip-border: var(--dcc-fg-muted); }
+.dcc-chip--success { --dcc-chip-fill: var(--dcc-success-strong); --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-success-strong); --dcc-chip-border: var(--dcc-success-strong); }
+.dcc-chip--error { --dcc-chip-fill: var(--dcc-danger);         --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-danger);         --dcc-chip-border: var(--dcc-danger); }
+.dcc-chip--info { --dcc-chip-fill: var(--dcc-info-strong);    --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-info-strong);    --dcc-chip-border: var(--dcc-info-strong); }
+.dcc-chip--warning { --dcc-chip-fill: var(--dcc-warning-strong); --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-warning-strong); --dcc-chip-border: var(--dcc-warning-strong); }
+
+/* Delineado: sin relleno, texto y borde en el color del chip. */
+.dcc-chip--outlined {
+  background: transparent;
+  color: var(--dcc-chip-main);
+  border-color: var(--dcc-chip-border);
+}
+
+/* ---- Adornos: ícono y avatar al principio ----
+   Se acercan al borde con un margen negativo calculado desde el padding, para
+   que queden a 4px del borde en los dos tamaños, como en MUI. */
+.dcc-chip__icon {
+  width: var(--dcc-chip-adorno);
+  height: var(--dcc-chip-adorno);
+  flex: 0 0 var(--dcc-chip-adorno);
+}
+.dcc-chip > .dcc-chip__icon:first-child { margin-left: calc(6px - var(--dcc-chip-px)); }
+
+.dcc-chip > .dcc-avatar {
+  width: calc(var(--dcc-chip-h) - 8px);
+  height: calc(var(--dcc-chip-h) - 8px);
+  flex: 0 0 auto;
+  font-size: 11px;
+}
+.dcc-chip--sm > .dcc-avatar { font-size: 9px; }
+.dcc-chip > .dcc-avatar:first-child { margin-left: calc(3px - var(--dcc-chip-px)); }
+
+/* ---- Eliminable ----
+   Un <button> propio dentro del chip, con un aria-label que diga qué quita
+   ("Quitar CC3001"): la cruz sola no le dice nada a un lector de pantalla.
+   Mide 24px en el mediano —el mínimo de WCAG 2.2 para un blanco táctil— y
+   cabe en el alto del chip sin agrandarlo. */
+.dcc-chip__delete {
+  display: grid;
+  place-items: center;
+  width: calc(var(--dcc-chip-h) - 8px);
+  height: calc(var(--dcc-chip-h) - 8px);
+  flex: 0 0 auto;
+  margin: 0 calc(3px - var(--dcc-chip-px)) 0 -2px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 9999px;
+  opacity: .75;
+  cursor: pointer;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1),
+              background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-chip__delete > svg { width: 16px; height: 16px; }
+.dcc-chip--sm .dcc-chip__delete > svg { width: 14px; height: 14px; }
+.dcc-chip__delete:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+}
+.dcc-chip__delete:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 0;
+}
+
+/* ---- Clicable ----
+   Un chip que hace algo es un <button> (o un <a> si navega). Responde como el
+   botón del kit: una capa del color del texto al 8% en hover y al 12% al
+   presionar o con foco de teclado. La capa vive en ::before, detrás del
+   contenido, con el radio heredado; no hace falta `overflow: hidden`, que
+   recortaría el anillo de foco de la cruz. */
+:is(button,
+a).dcc-chip { cursor: pointer; }
+:is(button,
+a).dcc-chip::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+:is(button,
+a).dcc-chip:hover::before { opacity: .08; }
+:is(button,
+a).dcc-chip:active::before,
+:is(button,
+a).dcc-chip:focus-visible::before { opacity: .12; }
+:is(button,
+a).dcc-chip:focus-visible {
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 2px;
+}
+
+/* ---- Deshabilitado ----
+   `disabled` en el chip clicable; en el eliminable, `.is-disabled` en el chip
+   y `disabled` en su cruz. Se apaga la pieza entera, como el botón, para que
+   siga leyéndose de qué color era. */
+.dcc-chip:disabled,
+.dcc-chip[aria-disabled="true"],
+.dcc-chip.is-disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+/* Con el mismo peso que el hover (el :is cuenta como su etiqueta), o la capa
+   seguiría apareciendo bajo el cursor. */
+:is(button,
+a).dcc-chip:disabled::before,
+:is(button,
+a).dcc-chip[aria-disabled="true"]::before { opacity: 0; }
+.dcc-chip.is-disabled .dcc-chip__delete,
+.dcc-chip__delete:disabled { cursor: not-allowed; background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-chip,
+  .dcc-chip::before,
+  .dcc-chip__delete { transition: none; }
+}
+
+/* ==========================================================================
+   CONTENEDOR  (MUI Container)
+   Centra el contenido de la página y lo topa en un ancho máximo, con una
+   canaleta a cada lado para que el texto no toque el borde de la pantalla.
+
+   Sin modificador, el contenido mide lo mismo que el de las barras y el pie:
+   --dcc-container-max (1320px) más una canaleta --dcc-gutter-lg a cada lado.
+   Las barras llegan al mismo resultado por otro camino —son bandas a sangre
+   completa, así que la caja ocupa todo el ancho y el relleno crece:
+     padding-inline: max(gutter, (100% − 1320px) / 2)
+   El contenedor no necesita fondo a sangre, así que se topa con max-width y
+   se centra con margin. Los bordes izquierdos coinciden al píxel en cualquier
+   ancho, porque las dos fórmulas dan el mismo contenido:
+     min(100% − 2 × gutter, 1320px)
+   A 1440px de viewport eso son los 60px del frame de Figma. Las canaletas
+   bajan solas en los cortes del kit (32px a ≤1024 y 20px a ≤768), porque se
+   redefinen en :root.
+
+   Los tamaños --xs…--xl son los de MUI y, como en MUI, cuentan la caja entera
+   con sus canaletas (box-sizing: border-box): `--sm` nunca pasa de 600px.
+   ========================================================================== */
+.dcc-container {
+  --dcc-container-gutter: var(--dcc-gutter-lg);
+  --dcc-container-width: calc(var(--dcc-container-max) + 2 * var(--dcc-container-gutter));
+  --dcc-container-step: 100%;
+  display: block;
+  width: 100%;
+  max-width: min(var(--dcc-container-step), var(--dcc-container-width));
+  margin-inline: auto;
+  padding-inline: var(--dcc-container-gutter);
+}
+
+/* Canaleta de la barra de aplicación (40px), para alinear el contenido de una
+   app interna con su `.dcc-nav-app`. */
+.dcc-container--app { --dcc-container-gutter: var(--dcc-gutter-md); }
+/* Sin canaletas (disableGutters): para anidar o cuando el hijo ya trae las suyas. */
+.dcc-container--flush { --dcc-container-gutter: 0px; }
+
+/* Anchos máximos de MUI (maxWidth). */
+.dcc-container--xs { --dcc-container-width: 444px; }
+.dcc-container--sm { --dcc-container-width: 600px; }
+.dcc-container--md { --dcc-container-width: 900px; }
+.dcc-container--lg { --dcc-container-width: 1200px; }
+.dcc-container--xl { --dcc-container-width: 1536px; }
+/* Fluido (maxWidth= {false}): ocupa todo el ancho,
+sólo con las canaletas. */
+.dcc-container--fluid { --dcc-container-width: 100%; }
+
+/* Fijo (fixed): en vez de crecer de manera continua, salta al ancho mínimo de
+   cada breakpoint. El tope del tamaño, si hay uno, sigue mandando: con
+   `--fixed --md` el contenedor salta a 600 y a 900 y ahí se queda. */
+@media (min-width: 600px)  {
+  .dcc-container--fixed { --dcc-container-step: 600px; }
+}
+
+@media (min-width: 900px)  {
+  .dcc-container--fixed { --dcc-container-step: 900px; }
+}
+
+@media (min-width: 1200px) {
+  .dcc-container--fixed { --dcc-container-step: 1200px; }
+}
+
+@media (min-width: 1536px) {
+  .dcc-container--fixed { --dcc-container-step: 1536px; }
+}
+
+/* --------------------------------------------------------------------------
+   DESLIZADOR (Slider de MUI)
+
+   Dos formas con el mismo aspecto:
+
+     · Un valor: un <input type="range"> nativo (`.dcc-slider__input`) al que
+       sólo se le cambia la piel. El teclado, el lector de pantalla y el envío
+       del formulario son los del navegador; si el JS no carga, el control
+       sigue funcionando y sólo se pierde el relleno de la pista.
+     · Rango (dos manillas): manillas `role="slider"` que mueve el JS
+       (src/componentes/deslizador.js), según el patrón de WAI-ARIA para
+       deslizadores con varias manillas. HTML no tiene un range doble.
+
+   La pieza dibuja el riel en `::before` y la parte recorrida en `::after`,
+   entre --dcc-slider-desde y --dcc-slider-hasta, que el JS actualiza en cada
+   movimiento. Todo el color sale de `currentColor`, así que una variante de
+   color sólo cambia --dcc-slider-main.
+
+   El margen lateral es medio botón por lado: en los extremos el centro de la
+   manilla queda justo en el borde del riel, como en MUI, y la mitad que
+   sobresale no se sale del contenedor.
+   -------------------------------------------------------------------------- */
+.dcc-slider {
+  --dcc-slider-main: var(--dcc-accent);
+  --dcc-slider-thumb: 20px;
+  --dcc-slider-rail: 4px;
+  --dcc-slider-desde: 0%;
+  --dcc-slider-hasta: 0%;
+  --dcc-slider-alto: 200px;
+  position: relative;
+  display: block;
+  height: 28px;
+  margin: 0 calc(var(--dcc-slider-thumb) / 2);
+  color: var(--dcc-slider-main);
+  font-family: var(--dcc-font-body);
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Con etiquetas bajo las marcas hace falta aire para el texto. */
+.dcc-slider:has(.dcc-slider__mark:not(:empty)) { margin-bottom: 24px; }
+
+/* Riel: el largo completo, al 38% del color (la opacidad del riel de MUI). */
+.dcc-slider::before,
+.dcc-slider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: var(--dcc-slider-rail);
+  border-radius: 9999px;
+  background: currentColor;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.dcc-slider::before { left: 0; right: 0; opacity: .38; }
+/* Pista: lo recorrido, desde el inicio o entre las dos manillas. */
+.dcc-slider::after {
+  left: var(--dcc-slider-desde);
+  width: calc(var(--dcc-slider-hasta) - var(--dcc-slider-desde));
+}
+
+/* ---- Un valor: el range nativo ----
+   Ocupa el riel más medio botón a cada lado, para que el recorrido del botón
+   nativo —que va de borde a borde del input— coincida con el riel. */
+.dcc-slider__input {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--dcc-slider-thumb) / -2);
+  z-index: 1;
+  width: calc(100% + var(--dcc-slider-thumb));
+  height: var(--dcc-slider-thumb);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transform: translateY(-50%);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.dcc-slider__input:focus { outline: none; }
+.dcc-slider__input::-webkit-slider-runnable-track { height: 100%; background: transparent; border: 0; }
+.dcc-slider__input::-moz-range-track { height: 100%; background: transparent; border: 0; }
+.dcc-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--dcc-slider-thumb);
+  height: var(--dcc-slider-thumb);
+  border: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: var(--dcc-shadow-button);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-slider__input::-moz-range-thumb {
+  width: var(--dcc-slider-thumb);
+  height: var(--dcc-slider-thumb);
+  border: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: var(--dcc-shadow-button);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ---- Rango: manillas con role="slider" ---- */
+.dcc-slider__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 1;
+  width: var(--dcc-slider-thumb);
+  height: var(--dcc-slider-thumb);
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: var(--dcc-shadow-button);
+  cursor: grab;
+  transform: translate(-50%, -50%);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-slider__thumb:focus { outline: none; }
+.dcc-slider__thumb.is-active { cursor: grabbing; }
+
+/* Halo de estado: 8px al pasar el mouse, 14px al arrastrar, como en MUI. Con
+   teclado, además, el anillo de foco del kit separado por la superficie. */
+.dcc-slider__input:hover::-webkit-slider-thumb { box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:hover::-moz-range-thumb { box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__thumb:hover { box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:active::-webkit-slider-thumb { box-shadow: 0 0 0 14px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:active::-moz-range-thumb { box-shadow: 0 0 0 14px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__thumb.is-active { box-shadow: 0 0 0 14px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px var(--dcc-surface), 0 0 0 4px var(--dcc-focus), 0 0 0 10px color-mix(in srgb, currentColor 16%, transparent);
+}
+.dcc-slider__input:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 2px var(--dcc-surface), 0 0 0 4px var(--dcc-focus), 0 0 0 10px color-mix(in srgb, currentColor 16%, transparent);
+}
+.dcc-slider__thumb:focus-visible {
+  box-shadow: 0 0 0 2px var(--dcc-surface), 0 0 0 4px var(--dcc-focus), 0 0 0 10px color-mix(in srgb, currentColor 16%, transparent);
+}
+
+/* ---- Valor visible ----
+   La etiqueta flota sobre la manilla. Por omisión aparece al pasar el mouse,
+   al enfocar o al arrastrar (el `valueLabelDisplay="auto"` de MUI); con
+   `.dcc-slider--value-on` queda siempre a la vista. Es texto oscuro sobre
+   claro invertido —el tono de los títulos de fondo—, igual en todos los
+   colores, para que el número se lea siempre. */
+.dcc-slider__value {
+  position: absolute;
+  bottom: calc(50% + var(--dcc-slider-thumb) / 2 + 10px);
+  left: var(--dcc-slider-hasta);
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--dcc-fg-strong);
+  color: var(--dcc-surface);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%) scale(0);
+  transform-origin: 50% calc(100% + 6px);
+  transition: transform .15s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-slider__value::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.dcc-slider__thumb .dcc-slider__value {
+  bottom: calc(100% + 10px);
+  left: 50%;
+}
+.dcc-slider__input:hover ~ .dcc-slider__value,
+.dcc-slider__input:focus-visible ~ .dcc-slider__value,
+.dcc-slider__input:active ~ .dcc-slider__value,
+.dcc-slider__thumb:hover .dcc-slider__value,
+.dcc-slider__thumb:focus-visible .dcc-slider__value,
+.dcc-slider__thumb.is-active .dcc-slider__value,
+.dcc-slider--value-on .dcc-slider__value { transform: translateX(-50%) scale(1); }
+/* Siempre visible, la etiqueta necesita su alto por encima. */
+.dcc-slider--value-on { margin-top: 36px; }
+
+/* ---- Marcas ----
+   Cada `.dcc-slider__mark` lleva `data-valor`; el JS la ubica. El punto va en
+   `::before` sobre el riel y el texto, si lo hay, debajo. Las marcas que ya
+   quedaron dentro de lo recorrido pasan a la superficie, como en MUI. */
+.dcc-slider__marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.dcc-slider__mark {
+  position: absolute;
+  top: calc(50% + var(--dcc-slider-thumb) / 2 + 4px);
+  left: 0;
+  color: var(--dcc-fg-muted);
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.dcc-slider__mark::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--dcc-slider-thumb) / -2 - 4px);
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--dcc-slider-main);
+  transform: translate(-50%, -50%);
+}
+.dcc-slider__mark.is-active { color: var(--dcc-fg); }
+.dcc-slider__mark.is-active::before { background: var(--dcc-surface); opacity: .8; }
+
+/* ---- Colores, como los del botón ---- */
+.dcc-slider--primary { --dcc-slider-main: var(--dcc-accent); }
+.dcc-slider--secondary { --dcc-slider-main: var(--dcc-fg-muted); }
+.dcc-slider--success { --dcc-slider-main: var(--dcc-success); }
+.dcc-slider--error { --dcc-slider-main: var(--dcc-danger); }
+.dcc-slider--info { --dcc-slider-main: var(--dcc-info); }
+.dcc-slider--warning { --dcc-slider-main: var(--dcc-warning); }
+
+/* ---- Tamaño chico ---- */
+.dcc-slider--sm {
+  --dcc-slider-thumb: 12px;
+  --dcc-slider-rail: 2px;
+  height: 20px;
+}
+
+/* ---- Vertical ----
+   El range nativo se pone de pie con `writing-mode` (y `direction: rtl` para
+   que el mínimo quede abajo). El alto se ajusta con --dcc-slider-alto. */
+.dcc-slider--vertical {
+  display: inline-block;
+  width: 28px;
+  height: var(--dcc-slider-alto);
+  margin: calc(var(--dcc-slider-thumb) / 2) 0;
+  vertical-align: top;
+}
+.dcc-slider--vertical.dcc-slider--sm { width: 20px; }
+.dcc-slider--vertical::before,
+.dcc-slider--vertical::after {
+  top: auto;
+  left: 50%;
+  width: var(--dcc-slider-rail);
+  height: auto;
+  transform: translateX(-50%);
+}
+.dcc-slider--vertical::before { top: 0; bottom: 0; right: auto; }
+.dcc-slider--vertical::after {
+  bottom: var(--dcc-slider-desde);
+  height: calc(var(--dcc-slider-hasta) - var(--dcc-slider-desde));
+}
+.dcc-slider--vertical .dcc-slider__input {
+  top: calc(var(--dcc-slider-thumb) / -2);
+  left: 50%;
+  width: var(--dcc-slider-thumb);
+  height: calc(100% + var(--dcc-slider-thumb));
+  transform: translateX(-50%);
+  writing-mode: vertical-lr;
+  direction: rtl;
+}
+.dcc-slider--vertical .dcc-slider__thumb {
+  top: auto;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.dcc-slider--vertical .dcc-slider__value {
+  bottom: var(--dcc-slider-hasta);
+  left: auto;
+  right: calc(50% + var(--dcc-slider-thumb) / 2 + 10px);
+  transform: translateY(50%) scale(0);
+  transform-origin: calc(100% + 6px) 50%;
+}
+.dcc-slider--vertical .dcc-slider__thumb .dcc-slider__value {
+  bottom: 50%;
+  right: calc(100% + 10px);
+}
+.dcc-slider--vertical .dcc-slider__value::after { top: 50%; left: 100%; }
+.dcc-slider--vertical .dcc-slider__input:hover ~ .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__input:focus-visible ~ .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__input:active ~ .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__thumb:hover .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__thumb:focus-visible .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__thumb.is-active .dcc-slider__value,
+.dcc-slider--vertical.dcc-slider--value-on .dcc-slider__value { transform: translateY(50%) scale(1); }
+.dcc-slider--vertical.dcc-slider--value-on { margin-top: calc(var(--dcc-slider-thumb) / 2); }
+.dcc-slider--vertical .dcc-slider__mark {
+  top: auto;
+  left: calc(50% + var(--dcc-slider-thumb) / 2 + 6px);
+  transform: translateY(50%);
+}
+.dcc-slider--vertical .dcc-slider__mark::before {
+  top: 50%;
+  left: calc(var(--dcc-slider-thumb) / -2 - 6px);
+}
+.dcc-slider--vertical:has(.dcc-slider__mark:not(:empty)) { margin-bottom: calc(var(--dcc-slider-thumb) / 2); margin-right: 64px; }
+
+/* ---- Deshabilitado ----
+   Pasa al gris secundario y deja de responder. Con el range nativo basta el
+   `disabled` del input; las manillas de rango lo toman de `aria-disabled` en
+   la pieza. */
+.dcc-slider:has(.dcc-slider__input:disabled),
+.dcc-slider[aria-disabled="true"] {
+  --dcc-slider-main: var(--dcc-fg-muted);
+  cursor: not-allowed;
+}
+.dcc-slider__input:disabled { cursor: not-allowed; }
+.dcc-slider__input:disabled::-webkit-slider-thumb { box-shadow: none; }
+.dcc-slider__input:disabled::-moz-range-thumb { box-shadow: none; }
+.dcc-slider[aria-disabled="true"] .dcc-slider__thumb { box-shadow: none; pointer-events: none; }
+
+/* Una fila de demostración o de formulario: el deslizador con su etiqueta. */
+.dcc-slider-field { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 320px; }
+.dcc-slider-field__label { font-size: 16px; font-weight: 700; line-height: 1.2; color: var(--dcc-fg); }
+
+/* Los pseudoelementos de cada motor van en reglas aparte: un selector que el
+   navegador no conoce invalida la lista entera. */
+@media (prefers-reduced-motion: reduce) {
+  .dcc-slider__input::-webkit-slider-thumb { transition: none; }
+    .dcc-slider__input::-moz-range-thumb { transition: none; }
+    .dcc-slider__thumb,
+  .dcc-slider__value { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   DIÁLOGO  (MUI Dialog + Modal + Backdrop)
+
+   Se arma sobre <dialog> nativo abierto con showModal(). El navegador ya
+   resuelve lo difícil de un modal —sacarlo a la capa superior, dejar inerte el
+   resto de la página, atrapar el foco y cerrar con Escape— y `::backdrop` hace
+   de Backdrop sin un elemento más. Lo que queda para el kit es el aspecto, el
+   bloqueo del scroll, el cierre animado y devolver el foco al disparador (eso
+   vive en dialogo.js).
+
+   Partes:  __title · __content (con __text para el párrafo) · __actions · __close
+   Tamaños: --sm (444px) · --md (600px, por omisión) · --lg (900px)
+   Pantalla completa: --fullscreen siempre, --fullscreen-mobile bajo 600px.
+   En línea: --inline, sobre un <div>, para mostrarlo dentro de la página.
+   -------------------------------------------------------------------------- */
+.dcc-dialog {
+  --dcc-dialog-max: 600px;
+  /* La sombra de la elevación 24 de MUI, la más alta de su escala: el diálogo
+     es lo que está más cerca de quien mira. */
+  --dcc-dialog-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2),
+                       0 24px 38px 3px rgba(0, 0, 0, .14),
+                       0 9px 46px 8px rgba(0, 0, 0, .12);
+  /* Fuera del ancho máximo, el diálogo ocupa el ancho disponible menos 32px por
+     lado, como el `margin: 32px` del Paper de MUI. */
+  width: calc(100% - 64px);
+  max-width: var(--dcc-dialog-max);
+  max-height: calc(100% - 64px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dcc-card-radius);
+  background: var(--dcc-surface-raised);
+  color: var(--dcc-fg);
+  box-shadow: var(--dcc-dialog-shadow);
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+/* Sólo abierto: sin `[open]` el `display` le ganaría al `display: none` con
+   que el navegador esconde el <dialog> cerrado. */
+.dcc-dialog[open] { display: flex; flex-direction: column; }
+
+/* El Backdrop de MUI: negro al 50%, igual en los dos temas. */
+.dcc-dialog::backdrop { background: var(--dcc-scrim, rgba(26, 32, 44, .5)); }
+
+.dcc-dialog--sm { --dcc-dialog-max: 444px; }
+.dcc-dialog--md { --dcc-dialog-max: 600px; }
+.dcc-dialog--lg { --dcc-dialog-max: 900px; }
+
+.dcc-dialog--fullscreen {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+@media (max-width: 600px) {
+  .dcc-dialog--fullscreen-mobile {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      border-radius: 0;
+    }
+}
+
+/* En la página, no como modal: un <div> con la misma cara, para documentar
+   la anatomía o para mostrar el diálogo dentro de un ejemplo. */
+.dcc-dialog--inline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+}
+
+/* ---- Partes ---- */
+.dcc-dialog__title {
+  flex: 0 0 auto;
+  margin: 0;
+  /* A la derecha se reserva el espacio del botón de cerrar, si lo hay. */
+  padding: 20px 24px 12px;
+  font-family: var(--dcc-font-display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dcc-fg-strong);
+}
+.dcc-dialog__close ~ .dcc-dialog__title,
+.dcc-dialog__title:has(+ .dcc-dialog__close) { padding-right: 64px; }
+
+/* El contenido es lo único que se desplaza: el título y las acciones quedan
+   siempre a la vista, que es el `scroll="paper"` de MUI. */
+.dcc-dialog__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 8px 24px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.dcc-dialog__content:first-child { padding-top: 24px; }
+/* Con divisores, como `<DialogContent dividers>`: marcan dónde corta el
+   desplazamiento cuando el texto es más largo que la ventana. */
+.dcc-dialog__content--dividers {
+  padding: 16px 24px;
+  border-top: 1px solid var(--dcc-border-subtle);
+  border-bottom: 1px solid var(--dcc-border-subtle);
+}
+.dcc-dialog__content:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+
+.dcc-dialog__text { margin: 0; color: var(--dcc-fg-muted); }
+.dcc-dialog__text + .dcc-dialog__text { margin-top: 12px; }
+
+/* Un <form method="dialog"> que envuelve las partes: se comporta como el
+   propio diálogo, para que el contenido siga siendo lo único que se desplaza. */
+.dcc-dialog__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+}
+
+/* Los campos de un formulario dentro del diálogo, uno bajo otro. */
+.dcc-dialog__fields { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+
+.dcc-dialog__actions {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 24px 20px;
+}
+.dcc-dialog__content--dividers + .dcc-dialog__actions { padding-top: 16px; }
+
+/* Botón de cerrar de la esquina: un `.dcc-icon-btn`; aquí sólo se ubica. */
+.dcc-dialog__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+/* Bloqueo del scroll de la página mientras hay un diálogo abierto. La clase la
+   pone dialogo.js en <html>; el ancho de la barra que desaparece se compensa
+   ahí mismo con un padding en línea, para que el fondo no salte. */
+.dcc-dialog-abierto { overflow: hidden; }
+
+/* ---- Animación ----
+   Entra con un fundido y un leve crecimiento —el Fade de MUI más la escala del
+   Grow— y sale al revés. La salida la arranca dialogo.js con `is-closing` y
+   cierra el <dialog> al terminar. Con movimiento reducido no hay animación y el
+   script cierra de inmediato. */
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-dialog[open] { animation: dcc-dialog-entra .225s cubic-bezier(.4, 0, .2, 1); }
+    .dcc-dialog[open]::backdrop { animation: dcc-dialog-fondo-entra .225s cubic-bezier(.4, 0, .2, 1); }
+    .dcc-dialog.is-closing { animation: dcc-dialog-sale .195s cubic-bezier(.4, 0, .2, 1) forwards; }
+    .dcc-dialog.is-closing::backdrop { animation: dcc-dialog-fondo-sale .195s cubic-bezier(.4, 0, .2, 1) forwards; }
+}
+
+@keyframes dcc-dialog-entra { from { opacity: 0; transform: scale(.96); } }
+@keyframes dcc-dialog-sale { to { opacity: 0; transform: scale(.96); } }
+@keyframes dcc-dialog-fondo-entra { from { opacity: 0; } }
+@keyframes dcc-dialog-fondo-sale { to { opacity: 0; } }
+
+/* ==========================================================================
+   DIVISOR  (MUI Divider)
+   Una línea fina que separa contenido: entre párrafos, entre ítems de una
+   lista, entre botones de una fila. Sirve sobre <hr> —que ya es un separador
+   para los lectores de pantalla— o sobre cualquier elemento con
+   role="separator".
+
+   El color por defecto es --dcc-border-subtle, el que el kit reserva para
+   divisores: separa sin competir con el contenido. Sobre --dcc-bg (el fondo de
+   página) ese gris se pierde, porque en claro es el mismo color; ahí va
+   `--strong`, que usa el borde de los campos.
+   ========================================================================== */
+.dcc-divider {
+  --dcc-divider-color: var(--dcc-border-subtle);
+  --dcc-divider-inset: 72px;
+  flex-shrink: 0;
+  height: auto;
+  margin: 0;
+  border: 0;
+  border-block-end: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider--strong { --dcc-divider-color: var(--dcc-border); }
+
+/* Variantes de MUI. `inset` deja libre el ancho del ícono o avatar de una
+   lista; `middle` deja un margen igual a ambos lados. */
+.dcc-divider--inset { margin-inline-start: var(--dcc-divider-inset); }
+.dcc-divider--middle { margin-inline: 16px; }
+
+/* Dentro de `.dcc-list` el inset es el de su ítem: 16px de relleno, 20 del
+   ícono y 12 de separación. Con un avatar de 40px serían 68: se ajusta con
+   la variable. */
+.dcc-list .dcc-divider--inset { --dcc-divider-inset: 48px; }
+/* El ítem de la lista ya dibuja su propio borde inferior; cuando le sigue un
+   divisor, el divisor lo reemplaza para no duplicar la línea. */
+.dcc-list__item:has(+ .dcc-divider),
+.dcc-list > :has(+ .dcc-divider) > .dcc-list__item { border-block-end: 0; }
+
+/* Vertical: para una fila flex (barra de herramientas, botonera, datos en
+   línea). Se estira a la altura de la fila como el `flexItem` de MUI; fuera de
+   un flex no tiene alto que tomar, así que tiene uno mínimo de una línea. Con
+   <hr> o role="separator" conviene agregar aria-orientation="vertical". */
+.dcc-divider--vertical {
+  align-self: stretch;
+  min-height: 1.2em;
+  border-block-end: 0;
+  border-inline-end: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider--vertical.dcc-divider--middle { margin-inline: 0; margin-block: 8px; }
+
+/* Con texto: el texto va en un `__text` y las dos líneas son seudoelementos
+   que se reparten lo que sobra. `--start` y `--end` corren el texto hacia un
+   lado (textAlign="left"/"right" de MUI): la línea de ese lado queda en 10%.
+   Ojo: los hijos de un role="separator" son presentacionales y un lector de
+   pantalla puede no leerlos; si el texto importa, repítelo en aria-label. */
+.dcc-divider--text {
+  display: flex;
+  align-items: center;
+  border: 0;
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-align: center;
+}
+.dcc-divider--text::before,
+.dcc-divider--text::after {
+  content: "";
+  flex: 1 1 0;
+  border-block-start: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider__text { padding-inline: 10px; }
+.dcc-divider--start::before { flex: 0 0 10%; }
+.dcc-divider--end::after { flex: 0 0 10%; }
+
+.dcc-divider--text.dcc-divider--vertical {
+  flex-direction: column;
+  /* El texto se come casi todo el alto de una fila de botones: sin un mínimo
+     las líneas desaparecen. */
+  min-height: 72px;
+  border: 0;
+}
+.dcc-divider--text.dcc-divider--vertical::before,
+.dcc-divider--text.dcc-divider--vertical::after {
+  border-block-start: 0;
+  border-inline-start: 1px solid var(--dcc-divider-color);
+}
+.dcc-divider--vertical .dcc-divider__text { padding-inline: 0; padding-block: 6px; }
+
+/* --------------------------------------------------------------------------
+   ESQUELETO  (MUI Skeleton)
+
+   Un bloque gris con la forma del contenido que todavía no llega. Sirve para
+   que la página no salte cuando el contenido aparece y para que se entienda,
+   antes de leer nada, qué tipo de cosa va a haber ahí.
+
+   Formas:    --text (por omisión) · --circular · --rectangular · --rounded
+   Animación: pulso (por omisión) · --wave · --static (sin animación)
+
+   El tamaño se da desde fuera, con `width`/`height` en línea o con la clase de
+   quien lo contiene. El de texto toma el alto de la línea de su contenedor, así
+   que mide lo mismo que el texto que reemplaza. Con hijos dentro, el esqueleto
+   toma el tamaño de ellos y los esconde: es la forma de «calcar» un avatar o
+   un botón sin escribir sus medidas.
+
+   Accesibilidad: los esqueletos no dicen nada útil, así que llevan
+   `aria-hidden="true"`, y el contenedor que está cargando, `aria-busy="true"`
+   —que se pasa a "false" cuando llega el contenido—.
+   -------------------------------------------------------------------------- */
+.dcc-skeleton {
+  /* El color del texto al 12%, translúcido como el de MUI: se lee sobre
+     cualquier superficie —una tarjeta, el fondo de la página, una imagen— y
+     en oscuro aclara en vez de oscurecer. */
+  --dcc-skeleton-color: color-mix(in srgb, var(--dcc-fg) 12%, transparent);
+  /* El brillo de la onda sale del color del texto, para que en oscuro aclare
+     en vez de oscurecer. */
+  --dcc-skeleton-onda: color-mix(in srgb, var(--dcc-fg) 9%, transparent);
+  display: block;
+  background: var(--dcc-skeleton-color);
+}
+
+/* Texto (la forma por omisión): una línea con el alto del texto real,
+   achicada al 60% en vertical para dejar el interlineado, igual que MUI. El
+   espacio duro le da el alto de una línea aunque esté vacía. */
+.dcc-skeleton,
+.dcc-skeleton--text {
+  border-radius: 4px;
+  transform: scale(1, .6);
+  transform-origin: 0 55%;
+}
+.dcc-skeleton:empty::before { content: "\00a0"; }
+
+/* Las demás formas no se achican: miden lo que se les da. */
+.dcc-skeleton--circular,
+.dcc-skeleton--rectangular,
+.dcc-skeleton--rounded { transform: none; flex-shrink: 0; }
+.dcc-skeleton--circular { border-radius: 50%; }
+.dcc-skeleton--rectangular { border-radius: 0; }
+.dcc-skeleton--rounded { border-radius: var(--dcc-radius-md); }
+
+/* Con hijos: calca su tamaño y los esconde. */
+.dcc-skeleton:not(:empty) { width: fit-content; height: auto; }
+.dcc-skeleton > * { visibility: hidden; }
+
+/* ---- Animaciones ----
+   Pulso: 2s de ida y vuelta entre opaco y 40%, como MUI.
+   Onda: un brillo que cruza de izquierda a derecha cada 2s.
+   Con movimiento reducido no hay ninguna de las dos: el bloque queda quieto. */
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-skeleton:not(.dcc-skeleton--wave):not(.dcc-skeleton--static) {
+      animation: dcc-skeleton-pulso 2s ease-in-out .5s infinite;
+    }
+    .dcc-skeleton--wave {
+      position: relative;
+      overflow: hidden;
+      /* Safari no recorta un hijo animado contra el radio sin esto. */
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+    }
+    .dcc-skeleton--wave::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, var(--dcc-skeleton-onda), transparent);
+      transform: translateX(-100%);
+      animation: dcc-skeleton-onda 2s linear .5s infinite;
+    }
+}
+
+@keyframes dcc-skeleton-pulso { 50% { opacity: .4; } }
+@keyframes dcc-skeleton-onda { 60%,
+100% { transform: translateX(100%); } }
+
+/* Para las demos: cajas que ordenan las piezas como lo haría el contenido real. */
+.dcc-skeleton-media { display: flex; align-items: center; gap: 16px; }
+.dcc-skeleton-media__body { flex: 1 1 auto; min-width: 0; }
+.dcc-skeleton-col { display: flex; flex-direction: column; gap: 8px; width: 240px; max-width: 100%; }
+
+/* ==========================================================================
+   GRILLA  (MUI Grid v2)
+   Doce columnas que se reparten el ancho del contenedor, con tamaños por
+   breakpoint, desplazamientos y anidamiento.
+
+   Breakpoints: los de MUI, de móvil hacia arriba (min-width): xs desde 0,
+   sm 600px, md 900px, lg 1200px y xl 1536px. No coinciden con los dos cortes
+   de las barras del kit (1024 y 768, "max-width"): esos ajustan piezas de marca
+   ya diseñadas; éstos dejan que quien arma la página elija dónde cambia cada
+   columna, con los mismos nombres que en MUI.
+
+   Es flexbox y no CSS grid, igual que Grid v2 de MUI. Con `grid-template-columns`
+   de doce pistas fijas no hay forma de pedir "lo que mida el contenido"
+   (`.dcc-col-auto`) ni "lo que sobre" (`.dcc-col-grow`); con flex sí, y el
+   ancho de cada span se calcula para que las cuentas cierren igual que en una
+   grilla de doce pistas:
+     ancho  = (100% + gap) × span / columnas − gap
+     margen = (100% + gap) × offset / columnas
+   Con doce columnas, dos `.dcc-col-6` y un gap de 16px miden exactamente la
+   mitad menos 8px cada una.
+
+   Anidar: la grilla interior va DENTRO de un ítem, no en el ítem mismo
+   (`<div class="dcc-col-8"><div class="dcc-grid">…`). El ancho de un ítem se
+   calcula con el gap de su grilla madre, y si el ítem fuera también grilla
+   leería el suyo. La interior hereda el espaciado de la exterior —como en
+   MUI— salvo que traiga su propia clase de gap.
+   ========================================================================== */
+
+/* Espaciado por defecto de todas las grillas: 2 unidades de 8px, como el gap
+   de las filas de demos del sitio. Se puede cambiar para toda la aplicación
+   redefiniéndolo en :root. MUI parte de 0, pero una grilla sin aire casi nunca
+   es lo que se quiere. */
+:root {
+  --dcc-grid-gap: 16px;
+}
+
+.dcc-grid {
+  --dcc-grid-columns: 12;
+  --dcc-grid-row-gap: var(--dcc-grid-gap);
+  --dcc-grid-column-gap: var(--dcc-grid-gap);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dcc-grid-row-gap) var(--dcc-grid-column-gap);
+  min-width: 0;
+}
+.dcc-grid--nowrap { flex-wrap: nowrap; }
+
+/* Alineación de la fila (justifyContent / alignItems de MUI). */
+.dcc-grid--justify-center { justify-content: center; }
+.dcc-grid--justify-end { justify-content: flex-end; }
+.dcc-grid--justify-between { justify-content: space-between; }
+.dcc-grid--align-start { align-items: flex-start; }
+.dcc-grid--align-center { align-items: center; }
+.dcc-grid--align-end { align-items: flex-end; }
+
+/* Cada hijo directo es un ítem. Sin clase de tamaño ocupa la fila entera,
+   que es lo que hace MUI con un Grid sin `size`. Las variables se declaran acá
+   —y no sólo en las clases— para que un ítem anidado no herede el span ni el
+   offset del ítem que lo contiene. */
+.dcc-grid > * {
+  --dcc-col: var(--dcc-grid-columns);
+  --dcc-offset: 0;
+  --dcc-col-w: calc((100% + var(--dcc-grid-column-gap)) * var(--dcc-col) / var(--dcc-grid-columns) - var(--dcc-grid-column-gap));
+  --dcc-offset-m: calc((100% + var(--dcc-grid-column-gap)) * var(--dcc-offset) / var(--dcc-grid-columns));
+  flex: 0 0 auto;
+  width: var(--dcc-col-w);
+  min-width: 0;
+  margin-inline-start: var(--dcc-offset-m);
+}
+
+/* Tamaños, offsets y espaciado, de móvil hacia arriba.
+   Cada breakpoint repite `flex` y `width` en sus spans para poder volver a un
+   tamaño fijo después de un `-auto` o un `-grow` de un breakpoint menor
+   (`.dcc-col-grow.dcc-col-md-4`); lo mismo los offsets con el margen. */
+/* ---- xs: desde 0 ---- */
+.dcc-col-1,
+.dcc-col-2,
+.dcc-col-3,
+.dcc-col-4,
+.dcc-col-5,
+.dcc-col-6,
+.dcc-col-7,
+.dcc-col-8,
+.dcc-col-9,
+.dcc-col-10,
+.dcc-col-11,
+.dcc-col-12 {
+  flex: 0 0 auto;
+  width: var(--dcc-col-w);
+}
+.dcc-col-1 { --dcc-col: 1; }
+.dcc-col-2 { --dcc-col: 2; }
+.dcc-col-3 { --dcc-col: 3; }
+.dcc-col-4 { --dcc-col: 4; }
+.dcc-col-5 { --dcc-col: 5; }
+.dcc-col-6 { --dcc-col: 6; }
+.dcc-col-7 { --dcc-col: 7; }
+.dcc-col-8 { --dcc-col: 8; }
+.dcc-col-9 { --dcc-col: 9; }
+.dcc-col-10 { --dcc-col: 10; }
+.dcc-col-11 { --dcc-col: 11; }
+.dcc-col-12 { --dcc-col: 12; }
+.dcc-col-auto { flex: 0 0 auto; width: auto; }
+.dcc-col-grow { flex: 1 1 0; width: auto; }
+.dcc-offset-0,
+.dcc-offset-1,
+.dcc-offset-2,
+.dcc-offset-3,
+.dcc-offset-4,
+.dcc-offset-5,
+.dcc-offset-6,
+.dcc-offset-7,
+.dcc-offset-8,
+.dcc-offset-9,
+.dcc-offset-10,
+.dcc-offset-11 { margin-inline-start: var(--dcc-offset-m); }
+.dcc-offset-0 { --dcc-offset: 0; }
+.dcc-offset-1 { --dcc-offset: 1; }
+.dcc-offset-2 { --dcc-offset: 2; }
+.dcc-offset-3 { --dcc-offset: 3; }
+.dcc-offset-4 { --dcc-offset: 4; }
+.dcc-offset-5 { --dcc-offset: 5; }
+.dcc-offset-6 { --dcc-offset: 6; }
+.dcc-offset-7 { --dcc-offset: 7; }
+.dcc-offset-8 { --dcc-offset: 8; }
+.dcc-offset-9 { --dcc-offset: 9; }
+.dcc-offset-10 { --dcc-offset: 10; }
+.dcc-offset-11 { --dcc-offset: 11; }
+.dcc-offset-auto { margin-inline-start: auto; }
+.dcc-grid--gap-0 { --dcc-grid-gap: 0px; }
+.dcc-grid--gap-1 { --dcc-grid-gap: 8px; }
+.dcc-grid--gap-2 { --dcc-grid-gap: 16px; }
+.dcc-grid--gap-3 { --dcc-grid-gap: 24px; }
+.dcc-grid--gap-4 { --dcc-grid-gap: 32px; }
+.dcc-grid--gap-5 { --dcc-grid-gap: 40px; }
+.dcc-grid--gap-6 { --dcc-grid-gap: 48px; }
+.dcc-grid--row-gap-0 { --dcc-grid-row-gap: 0px; }
+.dcc-grid--row-gap-1 { --dcc-grid-row-gap: 8px; }
+.dcc-grid--row-gap-2 { --dcc-grid-row-gap: 16px; }
+.dcc-grid--row-gap-3 { --dcc-grid-row-gap: 24px; }
+.dcc-grid--row-gap-4 { --dcc-grid-row-gap: 32px; }
+.dcc-grid--row-gap-5 { --dcc-grid-row-gap: 40px; }
+.dcc-grid--row-gap-6 { --dcc-grid-row-gap: 48px; }
+.dcc-grid--column-gap-0 { --dcc-grid-column-gap: 0px; }
+.dcc-grid--column-gap-1 { --dcc-grid-column-gap: 8px; }
+.dcc-grid--column-gap-2 { --dcc-grid-column-gap: 16px; }
+.dcc-grid--column-gap-3 { --dcc-grid-column-gap: 24px; }
+.dcc-grid--column-gap-4 { --dcc-grid-column-gap: 32px; }
+.dcc-grid--column-gap-5 { --dcc-grid-column-gap: 40px; }
+.dcc-grid--column-gap-6 { --dcc-grid-column-gap: 48px; }
+
+/* ---- sm: desde 600px ---- */
+@media (min-width: 600px) {
+  .dcc-col-sm-1,
+  .dcc-col-sm-2,
+  .dcc-col-sm-3,
+  .dcc-col-sm-4,
+  .dcc-col-sm-5,
+  .dcc-col-sm-6,
+  .dcc-col-sm-7,
+  .dcc-col-sm-8,
+  .dcc-col-sm-9,
+  .dcc-col-sm-10,
+  .dcc-col-sm-11,
+  .dcc-col-sm-12 {
+      flex: 0 0 auto;
+      width: var(--dcc-col-w);
+    }
+    .dcc-col-sm-1 { --dcc-col: 1; }
+    .dcc-col-sm-2 { --dcc-col: 2; }
+    .dcc-col-sm-3 { --dcc-col: 3; }
+    .dcc-col-sm-4 { --dcc-col: 4; }
+    .dcc-col-sm-5 { --dcc-col: 5; }
+    .dcc-col-sm-6 { --dcc-col: 6; }
+    .dcc-col-sm-7 { --dcc-col: 7; }
+    .dcc-col-sm-8 { --dcc-col: 8; }
+    .dcc-col-sm-9 { --dcc-col: 9; }
+    .dcc-col-sm-10 { --dcc-col: 10; }
+    .dcc-col-sm-11 { --dcc-col: 11; }
+    .dcc-col-sm-12 { --dcc-col: 12; }
+    .dcc-col-sm-auto { flex: 0 0 auto; width: auto; }
+    .dcc-col-sm-grow { flex: 1 1 0; width: auto; }
+    .dcc-offset-sm-0,
+  .dcc-offset-sm-1,
+  .dcc-offset-sm-2,
+  .dcc-offset-sm-3,
+  .dcc-offset-sm-4,
+  .dcc-offset-sm-5,
+  .dcc-offset-sm-6,
+  .dcc-offset-sm-7,
+  .dcc-offset-sm-8,
+  .dcc-offset-sm-9,
+  .dcc-offset-sm-10,
+  .dcc-offset-sm-11 { margin-inline-start: var(--dcc-offset-m); }
+    .dcc-offset-sm-0 { --dcc-offset: 0; }
+    .dcc-offset-sm-1 { --dcc-offset: 1; }
+    .dcc-offset-sm-2 { --dcc-offset: 2; }
+    .dcc-offset-sm-3 { --dcc-offset: 3; }
+    .dcc-offset-sm-4 { --dcc-offset: 4; }
+    .dcc-offset-sm-5 { --dcc-offset: 5; }
+    .dcc-offset-sm-6 { --dcc-offset: 6; }
+    .dcc-offset-sm-7 { --dcc-offset: 7; }
+    .dcc-offset-sm-8 { --dcc-offset: 8; }
+    .dcc-offset-sm-9 { --dcc-offset: 9; }
+    .dcc-offset-sm-10 { --dcc-offset: 10; }
+    .dcc-offset-sm-11 { --dcc-offset: 11; }
+    .dcc-offset-sm-auto { margin-inline-start: auto; }
+    .dcc-grid--gap-sm-0 { --dcc-grid-gap: 0px; }
+    .dcc-grid--gap-sm-1 { --dcc-grid-gap: 8px; }
+    .dcc-grid--gap-sm-2 { --dcc-grid-gap: 16px; }
+    .dcc-grid--gap-sm-3 { --dcc-grid-gap: 24px; }
+    .dcc-grid--gap-sm-4 { --dcc-grid-gap: 32px; }
+    .dcc-grid--gap-sm-5 { --dcc-grid-gap: 40px; }
+    .dcc-grid--gap-sm-6 { --dcc-grid-gap: 48px; }
+}
+
+/* ---- md: desde 900px ---- */
+@media (min-width: 900px) {
+  .dcc-col-md-1,
+  .dcc-col-md-2,
+  .dcc-col-md-3,
+  .dcc-col-md-4,
+  .dcc-col-md-5,
+  .dcc-col-md-6,
+  .dcc-col-md-7,
+  .dcc-col-md-8,
+  .dcc-col-md-9,
+  .dcc-col-md-10,
+  .dcc-col-md-11,
+  .dcc-col-md-12 {
+      flex: 0 0 auto;
+      width: var(--dcc-col-w);
+    }
+    .dcc-col-md-1 { --dcc-col: 1; }
+    .dcc-col-md-2 { --dcc-col: 2; }
+    .dcc-col-md-3 { --dcc-col: 3; }
+    .dcc-col-md-4 { --dcc-col: 4; }
+    .dcc-col-md-5 { --dcc-col: 5; }
+    .dcc-col-md-6 { --dcc-col: 6; }
+    .dcc-col-md-7 { --dcc-col: 7; }
+    .dcc-col-md-8 { --dcc-col: 8; }
+    .dcc-col-md-9 { --dcc-col: 9; }
+    .dcc-col-md-10 { --dcc-col: 10; }
+    .dcc-col-md-11 { --dcc-col: 11; }
+    .dcc-col-md-12 { --dcc-col: 12; }
+    .dcc-col-md-auto { flex: 0 0 auto; width: auto; }
+    .dcc-col-md-grow { flex: 1 1 0; width: auto; }
+    .dcc-offset-md-0,
+  .dcc-offset-md-1,
+  .dcc-offset-md-2,
+  .dcc-offset-md-3,
+  .dcc-offset-md-4,
+  .dcc-offset-md-5,
+  .dcc-offset-md-6,
+  .dcc-offset-md-7,
+  .dcc-offset-md-8,
+  .dcc-offset-md-9,
+  .dcc-offset-md-10,
+  .dcc-offset-md-11 { margin-inline-start: var(--dcc-offset-m); }
+    .dcc-offset-md-0 { --dcc-offset: 0; }
+    .dcc-offset-md-1 { --dcc-offset: 1; }
+    .dcc-offset-md-2 { --dcc-offset: 2; }
+    .dcc-offset-md-3 { --dcc-offset: 3; }
+    .dcc-offset-md-4 { --dcc-offset: 4; }
+    .dcc-offset-md-5 { --dcc-offset: 5; }
+    .dcc-offset-md-6 { --dcc-offset: 6; }
+    .dcc-offset-md-7 { --dcc-offset: 7; }
+    .dcc-offset-md-8 { --dcc-offset: 8; }
+    .dcc-offset-md-9 { --dcc-offset: 9; }
+    .dcc-offset-md-10 { --dcc-offset: 10; }
+    .dcc-offset-md-11 { --dcc-offset: 11; }
+    .dcc-offset-md-auto { margin-inline-start: auto; }
+    .dcc-grid--gap-md-0 { --dcc-grid-gap: 0px; }
+    .dcc-grid--gap-md-1 { --dcc-grid-gap: 8px; }
+    .dcc-grid--gap-md-2 { --dcc-grid-gap: 16px; }
+    .dcc-grid--gap-md-3 { --dcc-grid-gap: 24px; }
+    .dcc-grid--gap-md-4 { --dcc-grid-gap: 32px; }
+    .dcc-grid--gap-md-5 { --dcc-grid-gap: 40px; }
+    .dcc-grid--gap-md-6 { --dcc-grid-gap: 48px; }
+}
+
+/* ---- lg: desde 1200px ---- */
+@media (min-width: 1200px) {
+  .dcc-col-lg-1,
+  .dcc-col-lg-2,
+  .dcc-col-lg-3,
+  .dcc-col-lg-4,
+  .dcc-col-lg-5,
+  .dcc-col-lg-6,
+  .dcc-col-lg-7,
+  .dcc-col-lg-8,
+  .dcc-col-lg-9,
+  .dcc-col-lg-10,
+  .dcc-col-lg-11,
+  .dcc-col-lg-12 {
+      flex: 0 0 auto;
+      width: var(--dcc-col-w);
+    }
+    .dcc-col-lg-1 { --dcc-col: 1; }
+    .dcc-col-lg-2 { --dcc-col: 2; }
+    .dcc-col-lg-3 { --dcc-col: 3; }
+    .dcc-col-lg-4 { --dcc-col: 4; }
+    .dcc-col-lg-5 { --dcc-col: 5; }
+    .dcc-col-lg-6 { --dcc-col: 6; }
+    .dcc-col-lg-7 { --dcc-col: 7; }
+    .dcc-col-lg-8 { --dcc-col: 8; }
+    .dcc-col-lg-9 { --dcc-col: 9; }
+    .dcc-col-lg-10 { --dcc-col: 10; }
+    .dcc-col-lg-11 { --dcc-col: 11; }
+    .dcc-col-lg-12 { --dcc-col: 12; }
+    .dcc-col-lg-auto { flex: 0 0 auto; width: auto; }
+    .dcc-col-lg-grow { flex: 1 1 0; width: auto; }
+    .dcc-offset-lg-0,
+  .dcc-offset-lg-1,
+  .dcc-offset-lg-2,
+  .dcc-offset-lg-3,
+  .dcc-offset-lg-4,
+  .dcc-offset-lg-5,
+  .dcc-offset-lg-6,
+  .dcc-offset-lg-7,
+  .dcc-offset-lg-8,
+  .dcc-offset-lg-9,
+  .dcc-offset-lg-10,
+  .dcc-offset-lg-11 { margin-inline-start: var(--dcc-offset-m); }
+    .dcc-offset-lg-0 { --dcc-offset: 0; }
+    .dcc-offset-lg-1 { --dcc-offset: 1; }
+    .dcc-offset-lg-2 { --dcc-offset: 2; }
+    .dcc-offset-lg-3 { --dcc-offset: 3; }
+    .dcc-offset-lg-4 { --dcc-offset: 4; }
+    .dcc-offset-lg-5 { --dcc-offset: 5; }
+    .dcc-offset-lg-6 { --dcc-offset: 6; }
+    .dcc-offset-lg-7 { --dcc-offset: 7; }
+    .dcc-offset-lg-8 { --dcc-offset: 8; }
+    .dcc-offset-lg-9 { --dcc-offset: 9; }
+    .dcc-offset-lg-10 { --dcc-offset: 10; }
+    .dcc-offset-lg-11 { --dcc-offset: 11; }
+    .dcc-offset-lg-auto { margin-inline-start: auto; }
+    .dcc-grid--gap-lg-0 { --dcc-grid-gap: 0px; }
+    .dcc-grid--gap-lg-1 { --dcc-grid-gap: 8px; }
+    .dcc-grid--gap-lg-2 { --dcc-grid-gap: 16px; }
+    .dcc-grid--gap-lg-3 { --dcc-grid-gap: 24px; }
+    .dcc-grid--gap-lg-4 { --dcc-grid-gap: 32px; }
+    .dcc-grid--gap-lg-5 { --dcc-grid-gap: 40px; }
+    .dcc-grid--gap-lg-6 { --dcc-grid-gap: 48px; }
+}
+
+/* ---- xl: desde 1536px ---- */
+@media (min-width: 1536px) {
+  .dcc-col-xl-1,
+  .dcc-col-xl-2,
+  .dcc-col-xl-3,
+  .dcc-col-xl-4,
+  .dcc-col-xl-5,
+  .dcc-col-xl-6,
+  .dcc-col-xl-7,
+  .dcc-col-xl-8,
+  .dcc-col-xl-9,
+  .dcc-col-xl-10,
+  .dcc-col-xl-11,
+  .dcc-col-xl-12 {
+      flex: 0 0 auto;
+      width: var(--dcc-col-w);
+    }
+    .dcc-col-xl-1 { --dcc-col: 1; }
+    .dcc-col-xl-2 { --dcc-col: 2; }
+    .dcc-col-xl-3 { --dcc-col: 3; }
+    .dcc-col-xl-4 { --dcc-col: 4; }
+    .dcc-col-xl-5 { --dcc-col: 5; }
+    .dcc-col-xl-6 { --dcc-col: 6; }
+    .dcc-col-xl-7 { --dcc-col: 7; }
+    .dcc-col-xl-8 { --dcc-col: 8; }
+    .dcc-col-xl-9 { --dcc-col: 9; }
+    .dcc-col-xl-10 { --dcc-col: 10; }
+    .dcc-col-xl-11 { --dcc-col: 11; }
+    .dcc-col-xl-12 { --dcc-col: 12; }
+    .dcc-col-xl-auto { flex: 0 0 auto; width: auto; }
+    .dcc-col-xl-grow { flex: 1 1 0; width: auto; }
+    .dcc-offset-xl-0,
+  .dcc-offset-xl-1,
+  .dcc-offset-xl-2,
+  .dcc-offset-xl-3,
+  .dcc-offset-xl-4,
+  .dcc-offset-xl-5,
+  .dcc-offset-xl-6,
+  .dcc-offset-xl-7,
+  .dcc-offset-xl-8,
+  .dcc-offset-xl-9,
+  .dcc-offset-xl-10,
+  .dcc-offset-xl-11 { margin-inline-start: var(--dcc-offset-m); }
+    .dcc-offset-xl-0 { --dcc-offset: 0; }
+    .dcc-offset-xl-1 { --dcc-offset: 1; }
+    .dcc-offset-xl-2 { --dcc-offset: 2; }
+    .dcc-offset-xl-3 { --dcc-offset: 3; }
+    .dcc-offset-xl-4 { --dcc-offset: 4; }
+    .dcc-offset-xl-5 { --dcc-offset: 5; }
+    .dcc-offset-xl-6 { --dcc-offset: 6; }
+    .dcc-offset-xl-7 { --dcc-offset: 7; }
+    .dcc-offset-xl-8 { --dcc-offset: 8; }
+    .dcc-offset-xl-9 { --dcc-offset: 9; }
+    .dcc-offset-xl-10 { --dcc-offset: 10; }
+    .dcc-offset-xl-11 { --dcc-offset: 11; }
+    .dcc-offset-xl-auto { margin-inline-start: auto; }
+    .dcc-grid--gap-xl-0 { --dcc-grid-gap: 0px; }
+    .dcc-grid--gap-xl-1 { --dcc-grid-gap: 8px; }
+    .dcc-grid--gap-xl-2 { --dcc-grid-gap: 16px; }
+    .dcc-grid--gap-xl-3 { --dcc-grid-gap: 24px; }
+    .dcc-grid--gap-xl-4 { --dcc-grid-gap: 32px; }
+    .dcc-grid--gap-xl-5 { --dcc-grid-gap: 40px; }
+    .dcc-grid--gap-xl-6 { --dcc-grid-gap: 48px; }
+}
+
+/* --------------------------------------------------------------------------
+   GRUPO DE BOTONES  (ButtonGroup de MUI)
+   Botones relacionados pegados en una sola pieza: "Anterior · Hoy · Siguiente",
+   o el botón dividido, con la acción principal a la izquierda y una flecha que
+   abre las alternativas.
+
+   No hay un botón nuevo: los hijos son `.dcc-btn` con su variante, color y
+   tamaño de siempre, y el grupo sólo les quita los radios interiores y la
+   sombra propia y dibuja la separación según la variante:
+
+     contained  →  una línea de 1px del color de la etiqueta al 40% sobre el
+                   relleno; la sombra pasa al grupo entero.
+     outlined   →  los bordes de 2px se montan uno sobre otro (margen −2px),
+                   así que entre dos botones se ve uno solo.
+     text       →  una línea de 1px del color del botón al 50%.
+
+   La variante se pone en cada botón, igual que fuera del grupo. El radio de
+   las puntas es el de la píldora del botón (24px); se puede cambiar con
+   `--dcc-btn-group-radius`.
+   -------------------------------------------------------------------------- */
+.dcc-btn-group {
+  --dcc-btn-group-radius: 24px;
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+  border-radius: var(--dcc-btn-group-radius);
+}
+
+/* Lo que es igual en todos: sin radio interior y sin sombra propia. Un botón
+   puede ir suelto o dentro de un `.dcc-menu` —el del botón dividido—, y las
+   dos formas cuentan como una pieza del grupo. */
+.dcc-btn-group > .dcc-btn,
+.dcc-btn-group > .dcc-menu > .dcc-btn {
+  border-radius: 0;
+  box-shadow: none;
+}
+.dcc-btn-group > .dcc-btn:hover,
+.dcc-btn-group > .dcc-menu > .dcc-btn:hover { box-shadow: none; z-index: 1; }
+.dcc-btn-group > .dcc-btn:focus-visible,
+.dcc-btn-group > .dcc-menu > .dcc-btn:focus-visible { z-index: 2; }
+
+.dcc-btn-group > .dcc-btn:first-child,
+.dcc-btn-group > .dcc-menu:first-child > .dcc-btn {
+  border-top-left-radius: var(--dcc-btn-group-radius);
+  border-bottom-left-radius: var(--dcc-btn-group-radius);
+}
+.dcc-btn-group > .dcc-btn:last-child,
+.dcc-btn-group > .dcc-menu:last-child > .dcc-btn {
+  border-top-right-radius: var(--dcc-btn-group-radius);
+  border-bottom-right-radius: var(--dcc-btn-group-radius);
+}
+
+/* La sombra la lleva el grupo: si cada botón tuviera la suya, la de uno
+   caería sobre el vecino. */
+.dcc-btn-group:has(> .dcc-btn--contained:not(:disabled),
+> .dcc-menu > .dcc-btn--contained) {
+  box-shadow: var(--dcc-shadow-button);
+}
+
+/* Separadores */
+.dcc-btn-group > .dcc-btn--contained:not(:last-child),
+.dcc-btn-group > .dcc-menu:not(:last-child) > .dcc-btn--contained {
+  border-right: 1px solid color-mix(in srgb, var(--dcc-btn-on) 40%, var(--dcc-btn-main));
+}
+.dcc-btn-group > .dcc-btn--outlined:not(:first-child),
+.dcc-btn-group > .dcc-menu:not(:first-child) > .dcc-btn--outlined { margin-left: -2px; }
+.dcc-btn-group > .dcc-btn--text:not(:last-child),
+.dcc-btn-group > .dcc-menu:not(:last-child) > .dcc-btn--text {
+  border-right: 1px solid color-mix(in srgb, var(--dcc-btn-main) 50%, transparent);
+}
+
+/* ---- Vertical ---- */
+.dcc-btn-group--vertical { flex-direction: column; --dcc-btn-group-radius: 20px; }
+/* Con el atajo completo: las reglas de las puntas horizontales pesan lo mismo
+   y, si sólo se agregaran las esquinas de arriba, la primera pieza quedaría
+   también con la de abajo a la izquierda redondeada. */
+.dcc-btn-group--vertical > .dcc-btn:first-child,
+.dcc-btn-group--vertical > .dcc-menu:first-child > .dcc-btn {
+  border-radius: var(--dcc-btn-group-radius) var(--dcc-btn-group-radius) 0 0;
+}
+.dcc-btn-group--vertical > .dcc-btn:last-child,
+.dcc-btn-group--vertical > .dcc-menu:last-child > .dcc-btn {
+  border-radius: 0 0 var(--dcc-btn-group-radius) var(--dcc-btn-group-radius);
+}
+.dcc-btn-group--vertical > .dcc-btn--contained:not(:last-child),
+.dcc-btn-group--vertical > .dcc-menu:not(:last-child) > .dcc-btn--contained {
+  border-right: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--dcc-btn-on) 40%, var(--dcc-btn-main));
+}
+.dcc-btn-group--vertical > .dcc-btn--outlined:not(:first-child),
+.dcc-btn-group--vertical > .dcc-menu:not(:first-child) > .dcc-btn--outlined { margin-left: 0; margin-top: -2px; }
+.dcc-btn-group--vertical > .dcc-btn--text:not(:last-child),
+.dcc-btn-group--vertical > .dcc-menu:not(:last-child) > .dcc-btn--text {
+  border-right: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--dcc-btn-main) 50%, transparent);
+}
+
+/* A todo el ancho: los botones se reparten el espacio. */
+.dcc-btn-group--full { display: flex; width: 100%; }
+.dcc-btn-group--full > .dcc-btn { flex: 1 1 0; min-width: 0; white-space: normal; text-align: center; }
+
+/* ---- Botón dividido ----
+   La flecha es un `.dcc-btn` que además es `.dcc-menu__trigger`, para usar el
+   menú del kit tal cual. El disparador pesa lo mismo que el botón y se declara
+   después, así que le gana: le quita el fondo, el borde y el relleno. Acá se
+   devuelven, con el grupo por delante, variante por variante. El relleno es
+   más angosto que el del botón: la flecha sola no necesita 12px a cada lado. */
+.dcc-btn-group .dcc-btn.dcc-menu__trigger {
+  gap: 0;
+  padding: 8px 10px;
+  color: var(--dcc-btn-on);
+  background: var(--dcc-btn-main);
+  border: 0 solid transparent;
+}
+.dcc-btn-group .dcc-btn--outlined.dcc-menu__trigger {
+  padding: 6px 8px;
+  color: var(--dcc-btn-main);
+  background: transparent;
+  border: 2px solid var(--dcc-btn-main);
+}
+.dcc-btn-group .dcc-btn--text.dcc-menu__trigger {
+  color: var(--dcc-btn-main);
+  background: transparent;
+}
+.dcc-btn-group .dcc-btn--sm.dcc-menu__trigger { padding: 4px 6px; }
+.dcc-btn-group .dcc-btn--lg.dcc-menu__trigger { padding: 12px 14px; }
+.dcc-btn-group .dcc-btn--outlined.dcc-btn--sm.dcc-menu__trigger { padding: 2px 4px; }
+.dcc-btn-group .dcc-btn--outlined.dcc-btn--lg.dcc-menu__trigger { padding: 10px 12px; }
+.dcc-btn-group .dcc-btn.dcc-menu__trigger:focus-visible { outline-offset: 2px; }
+.dcc-btn-group .dcc-menu__trigger > .dcc-icon {
+  transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-btn-group .dcc-menu__trigger[aria-expanded="true"] > .dcc-icon { transform: rotate(180deg); }
+
+/* La opción elegida del botón dividido lleva un check; las otras guardan su
+   lugar para que los textos queden alineados. */
+.dcc-menu__item[aria-checked="false"] > .dcc-btn-group__check { visibility: hidden; }
+.dcc-menu__item[aria-checked="true"] { font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-btn-group .dcc-menu__trigger > .dcc-icon { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   INDICADOR  (MUI Badge)
+   El contador o punto que se monta en la esquina de otro elemento: un ícono,
+   un botón, un avatar. No confundir con .dcc-badge, que en este kit es una
+   etiqueta suelta (estado, categoría) y no se superpone a nada.
+
+     .dcc-indicator             el envoltorio; se ajusta al tamaño de lo que envuelve
+     .dcc-indicator__badge      el contador o el punto
+
+   Ejes, como en MUI:
+     color     →  --error (por omisión) · --primary · --secondary · --success
+                  · --info · --warning
+     variante  →  contador (por omisión) · --dot
+     posición  →  arriba a la derecha (por omisión) · --top-left · --bottom-right
+                  · --bottom-left
+     ancla     →  rectangular (por omisión) · --circular, para avatares: el
+                  indicador se acerca al centro (14%) para quedar sobre el borde
+                  del círculo y no en el aire.
+
+   El color va por defecto en rojo y no en gris como en MUI: en el kit el
+   contador del avatar ya era rojo, y una notificación pendiente es el caso de
+   uso principal. Contraste del número: igual que el botón del mismo color.
+   -------------------------------------------------------------------------- */
+.dcc-indicator {
+  --dcc-indicator-main: var(--dcc-danger);
+  --dcc-indicator-on: var(--dcc-on-accent);
+  --dcc-indicator-offset: 0px;
+  --dcc-indicator-x: 50%;
+  --dcc-indicator-y: -50%;
+  --dcc-indicator-scale: 1;
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.dcc-indicator__badge {
+  position: absolute;
+  z-index: 1;
+  top: var(--dcc-indicator-offset);
+  right: var(--dcc-indicator-offset);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--dcc-indicator-main);
+  color: var(--dcc-indicator-on);
+  /* Anillo del color de la superficie, como el contador del avatar: separa el
+     indicador de lo que tapa, sea un ícono, un borde o una foto. */
+  box-shadow: 0 0 0 2px var(--dcc-surface);
+  font-family: var(--dcc-font-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(var(--dcc-indicator-x), var(--dcc-indicator-y)) scale(var(--dcc-indicator-scale));
+  transform-origin: 100% 0;
+  transition: transform .225s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Oculto: se encoge hasta desaparecer, como `invisible` en MUI. El script lo
+   pone cuando el valor es 0 (salvo data-mostrar-cero). */
+.dcc-indicator__badge.is-invisible { --dcc-indicator-scale: 0; }
+
+/* Punto: sin número, para "hay algo nuevo" sin decir cuánto. */
+.dcc-indicator--dot .dcc-indicator__badge {
+  min-width: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 4px;
+  font-size: 0;
+}
+
+/* Posición */
+.dcc-indicator--top-left .dcc-indicator__badge {
+  right: auto;
+  left: var(--dcc-indicator-offset);
+  --dcc-indicator-x: -50%;
+  transform-origin: 0 0;
+}
+.dcc-indicator--bottom-right .dcc-indicator__badge {
+  top: auto;
+  bottom: var(--dcc-indicator-offset);
+  --dcc-indicator-y: 50%;
+  transform-origin: 100% 100%;
+}
+.dcc-indicator--bottom-left .dcc-indicator__badge {
+  top: auto;
+  right: auto;
+  bottom: var(--dcc-indicator-offset);
+  left: var(--dcc-indicator-offset);
+  --dcc-indicator-x: -50%;
+  --dcc-indicator-y: 50%;
+  transform-origin: 0 100%;
+}
+
+/* Ancla circular */
+.dcc-indicator--circular { --dcc-indicator-offset: 14%; }
+
+/* Colores: los mismos rellenos que el botón de cada color. */
+.dcc-indicator--primary { --dcc-indicator-main: var(--dcc-accent);         --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--secondary { --dcc-indicator-main: var(--dcc-fg-muted);       --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--success { --dcc-indicator-main: var(--dcc-success-strong); --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--error { --dcc-indicator-main: var(--dcc-danger);         --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--info { --dcc-indicator-main: var(--dcc-info-strong);    --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--warning { --dcc-indicator-main: var(--dcc-warning-strong); --dcc-indicator-on: var(--dcc-on-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-indicator__badge { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   LÍNEA DE TIEMPO  (MUI Lab Timeline)
+   Una lista ordenada de hitos: cada uno con su punto, el conector hacia el
+   siguiente, el contenido y, opcionalmente, un contenido opuesto (la fecha).
+
+     <ol class="dcc-timeline">
+       <li class="dcc-timeline__item">
+         <div class="dcc-timeline__opposite">…</div>        opcional
+         <div class="dcc-timeline__separator">
+           <span class="dcc-timeline__dot"></span>
+           <span class="dcc-timeline__connector"></span>
+         </div>
+         <div class="dcc-timeline__content">…</div>
+       </li>
+     </ol>
+
+   Posición del contenido respecto de la línea, como `position` en MUI:
+     derecha (por omisión) · --left · --alternate · --alternate-reverse
+
+   Diferencia con MUI: allá, un hito sin contenido opuesto deja vacía la mitad
+   izquierda para que la línea quede al centro. Acá eso sólo pasa en las
+   variantes alternadas, que lo necesitan; a la derecha o a la izquierda la
+   línea se pega al borde y el contenido usa todo el ancho, que es lo que casi
+   siempre se quiere.
+
+   En un contenedor de menos de 560px todo pasa a un lado: la línea a la
+   izquierda y, encima de cada contenido, su fecha. Se mide el ancho de la
+   propia línea de tiempo (container query) y no el de la ventana, así también
+   se acomoda dentro de una tarjeta o una columna angosta.
+   -------------------------------------------------------------------------- */
+.dcc-timeline {
+  --dcc-timeline-opposite-width: 30%;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--dcc-font-body);
+  color: var(--dcc-fg);
+}
+
+.dcc-timeline__item {
+  position: relative;
+  display: flex;
+  min-height: 70px;
+}
+
+.dcc-timeline__opposite,
+.dcc-timeline__content {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 16px;
+  font-size: 14px;
+  line-height: 24px;
+}
+/* Fuera de las alternadas, la columna de la fecha no necesita la mitad. */
+.dcc-timeline__opposite {
+  flex: 0 0 var(--dcc-timeline-opposite-width);
+  text-align: right;
+  color: var(--dcc-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+.dcc-timeline__content { text-align: left; }
+
+.dcc-timeline__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--dcc-fg-strong);
+}
+.dcc-timeline__text {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--dcc-fg-muted);
+}
+
+/* ---- Separador: punto + conector ---- */
+.dcc-timeline__separator {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* El punto mide 12px y baja 12px: su centro queda a 18px, el mismo que el de
+   la primera línea del contenido (6px de padding + media línea de 24px). */
+.dcc-timeline__dot {
+  --dcc-timeline-color: var(--dcc-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  margin: 12px 0;
+  border: 2px solid var(--dcc-timeline-color);
+  border-radius: 9999px;
+  background: var(--dcc-timeline-color);
+  color: var(--dcc-on-accent);
+}
+/* Con ícono: 28px, y baja 4px para conservar el centro a 18px. */
+.dcc-timeline__dot--icon {
+  width: 28px;
+  height: 28px;
+  margin: 4px 0;
+}
+.dcc-timeline__dot--icon .dcc-i { width: 16px; height: 16px; }
+
+/* Delineado: sólo el anillo; el ícono, si hay, toma el color del anillo. */
+.dcc-timeline__dot--outlined {
+  background: transparent;
+  color: var(--dcc-timeline-color);
+}
+
+.dcc-timeline__connector {
+  --dcc-timeline-color: var(--dcc-border-subtle);
+  flex: 1 1 auto;
+  width: 2px;
+  min-height: 8px;
+  background: var(--dcc-timeline-color);
+}
+/* El último hito no conecta con nada, aunque el markup traiga el conector. */
+.dcc-timeline__item:last-child .dcc-timeline__connector { display: none; }
+
+/* Colores de punto y conector, por rol. El punto es un objeto gráfico: todos
+   pasan 3:1 contra la superficie en los dos temas. */
+.dcc-timeline__dot--primary,
+.dcc-timeline__connector--primary { --dcc-timeline-color: var(--dcc-accent); }
+.dcc-timeline__dot--secondary,
+.dcc-timeline__connector--secondary { --dcc-timeline-color: var(--dcc-fg-muted); }
+.dcc-timeline__dot--success,
+.dcc-timeline__connector--success { --dcc-timeline-color: var(--dcc-success); }
+.dcc-timeline__dot--error,
+.dcc-timeline__connector--error { --dcc-timeline-color: var(--dcc-danger); }
+.dcc-timeline__dot--info,
+.dcc-timeline__connector--info { --dcc-timeline-color: var(--dcc-info); }
+.dcc-timeline__dot--warning,
+.dcc-timeline__connector--warning { --dcc-timeline-color: var(--dcc-warning); }
+
+/* ---- Posiciones ---- */
+/* A la izquierda: el contenido a la izquierda de la línea, la fecha a la derecha. */
+.dcc-timeline--left .dcc-timeline__item { flex-direction: row-reverse; }
+.dcc-timeline--left .dcc-timeline__content { text-align: right; }
+.dcc-timeline--left .dcc-timeline__opposite { text-align: left; }
+
+/* Alternadas: mitades iguales, y un hito sin fecha deja la suya vacía para que
+   la línea siga al centro. */
+.dcc-timeline--alternate .dcc-timeline__opposite,
+.dcc-timeline--alternate-reverse .dcc-timeline__opposite { flex: 1; }
+.dcc-timeline--alternate .dcc-timeline__item:not(:has(> .dcc-timeline__opposite))::before,
+.dcc-timeline--alternate-reverse .dcc-timeline__item:not(:has(> .dcc-timeline__opposite))::before {
+  content: "";
+  flex: 1;
+  padding: 6px 16px;
+}
+.dcc-timeline--alternate .dcc-timeline__item:nth-child(even),
+.dcc-timeline--alternate-reverse .dcc-timeline__item:nth-child(odd) { flex-direction: row-reverse; }
+.dcc-timeline--alternate .dcc-timeline__item:nth-child(even) .dcc-timeline__content,
+.dcc-timeline--alternate-reverse .dcc-timeline__item:nth-child(odd) .dcc-timeline__content { text-align: right; }
+.dcc-timeline--alternate .dcc-timeline__item:nth-child(even) .dcc-timeline__opposite,
+.dcc-timeline--alternate-reverse .dcc-timeline__item:nth-child(odd) .dcc-timeline__opposite { text-align: left; }
+
+/* ---- Angosto: todo a un lado ----
+   La línea pasa a la primera columna y ocupa las dos filas; la fecha queda
+   arriba del contenido, alineada con el punto. */
+@container (max-width: 560px) {
+  .dcc-timeline .dcc-timeline__item:nth-child(n) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+  .dcc-timeline .dcc-timeline__item:nth-child(n)::before { display: none; }
+  .dcc-timeline .dcc-timeline__item:nth-child(n) .dcc-timeline__separator { grid-column: 1; grid-row: 1 / span 2; }
+  .dcc-timeline .dcc-timeline__item:nth-child(n) .dcc-timeline__opposite {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 6px 0 0 12px;
+    text-align: left;
+  }
+  .dcc-timeline .dcc-timeline__item:nth-child(n) .dcc-timeline__content {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 0 0 16px 12px;
+    text-align: left;
+  }
+  .dcc-timeline .dcc-timeline__item:nth-child(n):not(:has(> .dcc-timeline__opposite)) .dcc-timeline__content {
+    grid-row: 1 / span 2;
+    padding-top: 6px;
+  }
+}
+
+/* ==========================================================================
+   LISTA DE IMÁGENES  (MUI ImageList)
+   Una colección de imágenes en grilla, con cuatro disposiciones —estándar,
+   quilted, woven y masonry— y una barra opcional con título, subtítulo y una
+   acción sobre cada imagen.
+
+   Se escribe como lista (<ul> y <li>), igual que en MUI: quien usa un lector
+   de pantalla oye cuántas imágenes hay. El `alt` de cada imagen describe lo
+   que muestra; si la barra ya trae un título que lo dice todo, el alt puede
+   complementarlo en vez de repetirlo.
+
+   Tres variables controlan la grilla —columnas, alto de fila y separación—,
+   con los valores por defecto de MUI: 3 columnas, filas de 164px y 4px.
+   ========================================================================== */
+.dcc-image-list {
+  --dcc-image-list-cols: 3;
+  --dcc-image-list-row: 164px;
+  --dcc-image-list-gap: 4px;
+  --dcc-image-list-ratio: auto;
+  display: grid;
+  grid-template-columns: repeat(var(--dcc-image-list-cols), minmax(0, 1fr));
+  grid-auto-rows: var(--dcc-image-list-row);
+  gap: var(--dcc-image-list-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dcc-image-list--cols-1 { --dcc-image-list-cols: 1; }
+.dcc-image-list--cols-2 { --dcc-image-list-cols: 2; }
+.dcc-image-list--cols-3 { --dcc-image-list-cols: 3; }
+.dcc-image-list--cols-4 { --dcc-image-list-cols: 4; }
+.dcc-image-list--cols-5 { --dcc-image-list-cols: 5; }
+.dcc-image-list--cols-6 { --dcc-image-list-cols: 6; }
+
+/* Columnas por breakpoint, de móvil hacia arriba con los cortes de MUI
+   (`--cols-1 --cols-sm-3`): MUI lo resuelve con useMediaQuery; acá basta la clase. */
+@media (min-width: 600px) {
+  .dcc-image-list--cols-sm-1 { --dcc-image-list-cols: 1; }
+    .dcc-image-list--cols-sm-2 { --dcc-image-list-cols: 2; }
+    .dcc-image-list--cols-sm-3 { --dcc-image-list-cols: 3; }
+    .dcc-image-list--cols-sm-4 { --dcc-image-list-cols: 4; }
+    .dcc-image-list--cols-sm-5 { --dcc-image-list-cols: 5; }
+    .dcc-image-list--cols-sm-6 { --dcc-image-list-cols: 6; }
+}
+
+@media (min-width: 900px) {
+  .dcc-image-list--cols-md-1 { --dcc-image-list-cols: 1; }
+    .dcc-image-list--cols-md-2 { --dcc-image-list-cols: 2; }
+    .dcc-image-list--cols-md-3 { --dcc-image-list-cols: 3; }
+    .dcc-image-list--cols-md-4 { --dcc-image-list-cols: 4; }
+    .dcc-image-list--cols-md-5 { --dcc-image-list-cols: 5; }
+    .dcc-image-list--cols-md-6 { --dcc-image-list-cols: 6; }
+}
+
+@media (min-width: 1200px) {
+  .dcc-image-list--cols-lg-1 { --dcc-image-list-cols: 1; }
+    .dcc-image-list--cols-lg-2 { --dcc-image-list-cols: 2; }
+    .dcc-image-list--cols-lg-3 { --dcc-image-list-cols: 3; }
+    .dcc-image-list--cols-lg-4 { --dcc-image-list-cols: 4; }
+    .dcc-image-list--cols-lg-5 { --dcc-image-list-cols: 5; }
+    .dcc-image-list--cols-lg-6 { --dcc-image-list-cols: 6; }
+}
+
+@media (min-width: 1536px) {
+  .dcc-image-list--cols-xl-1 { --dcc-image-list-cols: 1; }
+    .dcc-image-list--cols-xl-2 { --dcc-image-list-cols: 2; }
+    .dcc-image-list--cols-xl-3 { --dcc-image-list-cols: 3; }
+    .dcc-image-list--cols-xl-4 { --dcc-image-list-cols: 4; }
+    .dcc-image-list--cols-xl-5 { --dcc-image-list-cols: 5; }
+    .dcc-image-list--cols-xl-6 { --dcc-image-list-cols: 6; }
+}
+
+/* Filas que miden lo que la imagen (rowHeight="auto"): para la barra debajo.
+   Con imágenes de proporciones distintas, --dcc-image-list-ratio (p. ej. 3 / 2)
+   las recorta a todas igual para que las filas queden parejas. */
+.dcc-image-list--rows-auto { --dcc-image-list-row: auto; }
+
+.dcc-image-list__item {
+  position: relative;
+  display: block;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.dcc-image-list__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.dcc-image-list--rows-auto .dcc-image-list__img {
+  height: auto;
+  aspect-ratio: var(--dcc-image-list-ratio);
+}
+
+/* Quilted: algunas celdas ocupan dos o más columnas o filas. `dense` rellena
+   los huecos que dejan las celdas grandes con las chicas que vienen después. */
+.dcc-image-list--quilted { grid-auto-flow: dense; }
+.dcc-image-list__item--cols-2 { grid-column-end: span 2; }
+.dcc-image-list__item--cols-3 { grid-column-end: span 3; }
+.dcc-image-list__item--cols-4 { grid-column-end: span 4; }
+.dcc-image-list__item--rows-2 { grid-row-end: span 2; }
+.dcc-image-list__item--rows-3 { grid-row-end: span 3; }
+.dcc-image-list__item--rows-4 { grid-row-end: span 4; }
+
+/* Woven: las imágenes pares miden 70% de la fila y quedan centradas, lo que
+   da el efecto de tejido. Se ve mejor con filas altas (MUI usa 164 × 2). */
+.dcc-image-list--woven .dcc-image-list__item { align-self: center; height: 100%; }
+.dcc-image-list--woven .dcc-image-list__item:nth-child(even) { height: 70%; }
+
+/* Masonry: columnas de CSS en vez de grilla. Cada imagen conserva su
+   proporción y la columna la acomoda donde quepa; el orden de lectura baja por
+   la primera columna antes de pasar a la segunda. */
+.dcc-image-list--masonry {
+  display: block;
+  column-count: var(--dcc-image-list-cols);
+  column-gap: var(--dcc-image-list-gap);
+}
+.dcc-image-list--masonry .dcc-image-list__item {
+  break-inside: avoid;
+  margin-block-end: var(--dcc-image-list-gap);
+}
+.dcc-image-list--masonry .dcc-image-list__img { height: auto; }
+
+/* ---- Barra de título (ImageListItemBar) ----
+   Sobre la imagen va un velo negro semitransparente con texto blanco: la foto
+   puede ser de cualquier color, y el velo garantiza el contraste en los dos
+   temas. Por eso estos colores son fijos y no de rol. */
+.dcc-image-list__bar {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+  padding-inline: 16px 4px;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  font-family: var(--dcc-font-body);
+}
+.dcc-image-list__bar--top {
+  top: 0;
+  bottom: auto;
+  align-items: flex-start;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, .3) 70%, rgba(0, 0, 0, 0) 100%);
+}
+/* Debajo de la imagen: fuera del velo, con los colores del tema. */
+.dcc-image-list__bar--below {
+  position: static;
+  padding-inline: 0;
+  background: none;
+  color: var(--dcc-fg);
+}
+
+.dcc-image-list__titles {
+  flex: 1;
+  min-width: 0;
+  padding-block: 12px;
+}
+.dcc-image-list__bar--below .dcc-image-list__titles { padding-block: 6px 12px; }
+.dcc-image-list__title,
+.dcc-image-list__subtitle {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dcc-image-list__title { font-size: 16px; line-height: 24px; }
+.dcc-image-list__subtitle { font-size: 12px; line-height: 1.4; }
+.dcc-image-list__bar--below .dcc-image-list__subtitle { color: var(--dcc-fg-accent); }
+
+/* Acción: un botón de ícono redondo, como el IconButton del actionIcon. Sobre
+   el velo es blanco al 85%; debajo de la imagen toma el color del texto. */
+.dcc-image-list__action {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, .85);
+  cursor: pointer;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1), color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-image-list__action .dcc-i { width: 22px; height: 22px; }
+.dcc-image-list__action:hover { background: rgba(255, 255, 255, .16); color: #fff; }
+.dcc-image-list__action:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 0; }
+.dcc-image-list__bar--top .dcc-image-list__action { margin-block-start: 4px; }
+.dcc-image-list__bar--below .dcc-image-list__action { color: var(--dcc-fg-accent); }
+.dcc-image-list__bar--below .dcc-image-list__action:hover { background: var(--dcc-surface-muted); color: var(--dcc-fg-strong); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-image-list__action { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   LISTA DE TRANSFERENCIA (Transfer List de MUI)
+
+   Dos listas con casillas y, entre ellas, los botones que mueven lo marcado
+   de un lado a otro. Las casillas son las `.dcc-control` del kit y los
+   botones, `.dcc-btn--outlined` chicos: este archivo sólo arma la
+   disposición y los paneles.
+
+   Básica: un panel por lado y cuatro botones (todo →, marcados →,
+   ← marcados, ← todo). Mejorada (`.dcc-transfer__panel` con
+   `.dcc-transfer__head`): cada panel lleva título, casilla de "seleccionar
+   todo" y la cuenta de marcados, y basta con los dos botones del medio.
+
+   En un contenedor angosto las listas se apilan y los botones quedan en fila
+   entre ellas, con las flechas giradas hacia abajo y hacia arriba. Se mide el
+   contenedor y no la ventana: en la documentación, por ejemplo, la columna
+   de contenido es bastante más angosta que la pantalla.
+   -------------------------------------------------------------------------- */
+.dcc-transfer {
+  --dcc-transfer-ancho: 240px;
+  --dcc-transfer-alto: 248px;
+  container-type: inline-size;
+  font-family: var(--dcc-font-body);
+  color: var(--dcc-fg);
+}
+.dcc-transfer__layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.dcc-transfer__panel {
+  display: flex;
+  flex-direction: column;
+  width: var(--dcc-transfer-ancho);
+  min-width: 0;
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-md);
+  overflow: hidden;
+}
+
+/* Cabecera de la versión mejorada: casilla de todo, título y cuenta. */
+.dcc-transfer__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--dcc-border-subtle);
+}
+.dcc-transfer__heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dcc-transfer__title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dcc-fg-strong);
+}
+.dcc-transfer__count {
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--dcc-fg-muted);
+}
+
+.dcc-transfer__list {
+  height: var(--dcc-transfer-alto);
+  padding: 4px 0;
+  overflow-y: auto;
+}
+/* El ítem entero es la etiqueta de la casilla: se marca con un clic en
+   cualquier parte de la fila, no sólo en el cuadrito. */
+.dcc-transfer__item .dcc-control {
+  position: relative; /* contiene al input escondido, que si no se ubica fuera del scroll */
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-transfer__item .dcc-control:hover { background: var(--dcc-surface-muted); }
+.dcc-transfer__item .dcc-control:has(input:checked) { background: color-mix(in srgb, var(--dcc-accent) 9%, var(--dcc-surface)); }
+.dcc-transfer__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dcc-transfer__code {
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--dcc-fg-muted);
+}
+/* Lista vacía: el texto lo pone el CSS para no dejar un <li> vacío que el
+   lector de pantalla cuente como elemento. */
+.dcc-transfer__list:empty::before {
+  content: attr(data-vacia);
+  display: block;
+  padding: 24px 16px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--dcc-fg-muted);
+  text-align: center;
+}
+
+.dcc-transfer__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: none;
+}
+.dcc-transfer__actions .dcc-btn { min-width: 48px; min-height: 32px; }
+.dcc-transfer__actions .dcc-i { width: 16px; height: 16px; transition: transform .25s cubic-bezier(.4, 0, .2, 1); }
+
+/* Aviso para el lector de pantalla tras cada movimiento ("2 ramos movidos a
+   Inscritos"). Invisible, pero no `display: none`, que lo silenciaría. */
+.dcc-transfer__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@container (max-width: 560px) {
+  .dcc-transfer__layout { flex-direction: column; align-items: stretch; }
+  .dcc-transfer__panel { width: 100%; }
+  .dcc-transfer__list { height: auto; max-height: var(--dcc-transfer-alto); }
+  .dcc-transfer__actions { flex-direction: row; justify-content: center; }
+  .dcc-transfer__actions .dcc-i { transform: rotate(90deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-transfer__item .dcc-control,
+  .dcc-transfer__actions .dcc-i { transition: none; }
+}
+
+/* ==========================================================================
+   MASONRY  (MUI Lab Masonry)
+   Columnas de igual ancho donde cada elemento conserva su alto y se acomoda
+   bajo el anterior de su columna, sin las filas parejas de una grilla. Sirve
+   para tarjetas de largo distinto: avisos, publicaciones, fotos.
+
+   La base son columnas de CSS (`column-count`), que funcionan en todos los
+   navegadores. Su orden es el de un diario: los elementos bajan por la
+   primera columna y siguen en la segunda. Para el lector de pantalla y el
+   teclado el orden es siempre el del HTML.
+
+   Mejora progresiva: donde el navegador ya trae masonry nativo —`display:
+   grid-lanes`, el nombre que acordó el CSSWG, o la sintaxis anterior
+   `grid-template-rows: masonry`— se usa ese. Ahí el orden pasa a ser por
+   filas, como el `sequential` de MUI: cada elemento va a la columna más corta.
+
+   Columnas y espaciado van en variables, con clases para los valores de MUI:
+   4 columnas y 1 unidad (8px) por defecto.
+   ========================================================================== */
+.dcc-masonry {
+  --dcc-masonry-cols: 4;
+  --dcc-masonry-gap: 8px;
+  column-count: var(--dcc-masonry-cols);
+  column-gap: var(--dcc-masonry-gap);
+  /* El último elemento de cada columna también deja su margen abajo; esto lo
+     descuenta para que la pila no termine con un hueco extra. */
+  margin-block-end: calc(-1 * var(--dcc-masonry-gap));
+}
+/* Cualquier hijo es un elemento: tarjeta, imagen, figura. `break-inside`
+   evita que una tarjeta se parta entre dos columnas. */
+.dcc-masonry > * {
+  break-inside: avoid;
+  margin: 0 0 var(--dcc-masonry-gap);
+}
+
+@supports (grid-template-rows: masonry) {
+  .dcc-masonry {
+    display: grid;
+    grid-template-columns: repeat(var(--dcc-masonry-cols), minmax(0, 1fr));
+    grid-template-rows: masonry;
+    gap: var(--dcc-masonry-gap);
+    margin-block-end: 0;
+  }
+  .dcc-masonry > * { margin: 0; }
+}
+@supports (display: grid-lanes) {
+  .dcc-masonry {
+    display: grid-lanes;
+    grid-template-columns: repeat(var(--dcc-masonry-cols), minmax(0, 1fr));
+    gap: var(--dcc-masonry-gap);
+    margin-block-end: 0;
+  }
+  .dcc-masonry > * { margin: 0; }
+}
+
+/* Columnas (columns) y espaciado (spacing), de móvil hacia arriba con los
+   breakpoints de MUI: `.dcc-masonry--cols-2 .dcc-masonry--cols-md-3`. */
+.dcc-masonry--cols-1 { --dcc-masonry-cols: 1; }
+.dcc-masonry--cols-2 { --dcc-masonry-cols: 2; }
+.dcc-masonry--cols-3 { --dcc-masonry-cols: 3; }
+.dcc-masonry--cols-4 { --dcc-masonry-cols: 4; }
+.dcc-masonry--cols-5 { --dcc-masonry-cols: 5; }
+.dcc-masonry--cols-6 { --dcc-masonry-cols: 6; }
+.dcc-masonry--gap-0 { --dcc-masonry-gap: 0px; }
+.dcc-masonry--gap-1 { --dcc-masonry-gap: 8px; }
+.dcc-masonry--gap-2 { --dcc-masonry-gap: 16px; }
+.dcc-masonry--gap-3 { --dcc-masonry-gap: 24px; }
+.dcc-masonry--gap-4 { --dcc-masonry-gap: 32px; }
+.dcc-masonry--gap-5 { --dcc-masonry-gap: 40px; }
+.dcc-masonry--gap-6 { --dcc-masonry-gap: 48px; }
+@media (min-width: 600px) {
+  .dcc-masonry--cols-sm-1 { --dcc-masonry-cols: 1; }
+    .dcc-masonry--cols-sm-2 { --dcc-masonry-cols: 2; }
+    .dcc-masonry--cols-sm-3 { --dcc-masonry-cols: 3; }
+    .dcc-masonry--cols-sm-4 { --dcc-masonry-cols: 4; }
+    .dcc-masonry--cols-sm-5 { --dcc-masonry-cols: 5; }
+    .dcc-masonry--cols-sm-6 { --dcc-masonry-cols: 6; }
+}
+
+@media (min-width: 900px) {
+  .dcc-masonry--cols-md-1 { --dcc-masonry-cols: 1; }
+    .dcc-masonry--cols-md-2 { --dcc-masonry-cols: 2; }
+    .dcc-masonry--cols-md-3 { --dcc-masonry-cols: 3; }
+    .dcc-masonry--cols-md-4 { --dcc-masonry-cols: 4; }
+    .dcc-masonry--cols-md-5 { --dcc-masonry-cols: 5; }
+    .dcc-masonry--cols-md-6 { --dcc-masonry-cols: 6; }
+}
+
+@media (min-width: 1200px) {
+  .dcc-masonry--cols-lg-1 { --dcc-masonry-cols: 1; }
+    .dcc-masonry--cols-lg-2 { --dcc-masonry-cols: 2; }
+    .dcc-masonry--cols-lg-3 { --dcc-masonry-cols: 3; }
+    .dcc-masonry--cols-lg-4 { --dcc-masonry-cols: 4; }
+    .dcc-masonry--cols-lg-5 { --dcc-masonry-cols: 5; }
+    .dcc-masonry--cols-lg-6 { --dcc-masonry-cols: 6; }
+}
+
+@media (min-width: 1536px) {
+  .dcc-masonry--cols-xl-1 { --dcc-masonry-cols: 1; }
+    .dcc-masonry--cols-xl-2 { --dcc-masonry-cols: 2; }
+    .dcc-masonry--cols-xl-3 { --dcc-masonry-cols: 3; }
+    .dcc-masonry--cols-xl-4 { --dcc-masonry-cols: 4; }
+    .dcc-masonry--cols-xl-5 { --dcc-masonry-cols: 5; }
+    .dcc-masonry--cols-xl-6 { --dcc-masonry-cols: 6; }
+}
+
+/* --------------------------------------------------------------------------
+   SPEED DIAL (MUI SpeedDial)
+   Un botón flotante que despliega de tres a seis acciones relacionadas, cada
+   una en un FAB pequeño con su etiqueta. Se arma con `.dcc-fab` (el botón
+   principal y las acciones son FAB) y el comportamiento vive en
+   src/componentes/marcacion-rapida.js.
+
+     dirección  →  --up (por omisión) · --down · --left · --right
+     etiquetas  →  aparecen al pasar sobre una acción o enfocarla; con
+                   --labels quedan todas a la vista mientras está abierto
+                   (el `tooltipOpen` de MUI, mejor en pantallas táctiles)
+
+   El estado abierto es `.is-open` en la raíz más `aria-expanded` en el botón.
+   La raíz no recibe el puntero (`pointer-events: none`): sólo el botón y, con
+   el dial abierto, la tira de acciones. Así la zona donde aparecerán las
+   acciones no tapa lo que hay detrás mientras está cerrado, y al pasar del
+   botón a una acción el puntero nunca sale del componente —la tira incluye
+   los huecos entre acciones—, que es lo que mantiene abierto el dial por hover.
+   -------------------------------------------------------------------------- */
+.dcc-speed-dial {
+  --dcc-speed-dial-gap: 12px;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  pointer-events: none;
+}
+.dcc-speed-dial__fab { pointer-events: auto; }
+
+/* El ícono gira 45°: el "+" se vuelve "×", como el SpeedDialIcon de MUI. */
+.dcc-speed-dial__icon { transition: transform .25s cubic-bezier(.4, 0, .2, 1); }
+.dcc-speed-dial.is-open .dcc-speed-dial__icon { transform: rotate(45deg); }
+
+.dcc-speed-dial__actions {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--dcc-speed-dial-gap);
+  padding-bottom: var(--dcc-speed-dial-gap);
+  visibility: hidden;
+  /* La visibilidad cambia al final del cierre, para que las acciones alcancen
+     a encogerse antes de desaparecer. */
+  transition: visibility 0s linear .25s;
+}
+.dcc-speed-dial.is-open .dcc-speed-dial__actions {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+/* Direcciones. El botón va primero en el HTML, así que "arriba" y "a la
+   izquierda" invierten el eje; la primera acción queda siempre junto al botón. */
+.dcc-speed-dial--up,
+.dcc-speed-dial--up .dcc-speed-dial__actions { flex-direction: column-reverse; }
+.dcc-speed-dial--down,
+.dcc-speed-dial--down .dcc-speed-dial__actions { flex-direction: column; }
+.dcc-speed-dial--left,
+.dcc-speed-dial--left .dcc-speed-dial__actions { flex-direction: row-reverse; }
+.dcc-speed-dial--right,
+.dcc-speed-dial--right .dcc-speed-dial__actions { flex-direction: row; }
+.dcc-speed-dial--down .dcc-speed-dial__actions { padding: var(--dcc-speed-dial-gap) 0 0; }
+.dcc-speed-dial--left .dcc-speed-dial__actions { padding: 0 var(--dcc-speed-dial-gap) 0 0; }
+.dcc-speed-dial--right .dcc-speed-dial__actions { padding: 0 0 0 var(--dcc-speed-dial-gap); }
+
+.dcc-speed-dial__action {
+  position: relative;
+  display: flex;
+  opacity: 0;
+  transform: scale(.4);
+  transition: opacity .2s cubic-bezier(.4, 0, .2, 1),
+              transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-speed-dial.is-open .dcc-speed-dial__action { opacity: 1; transform: none; }
+/* Escalonadas al abrir, como en MUI: cada acción sale 30ms después de la
+   anterior, de la más cercana al botón a la más lejana. */
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(2) { transition-delay: 30ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(3) { transition-delay: 60ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(4) { transition-delay: 90ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(5) { transition-delay: 120ms; }
+.dcc-speed-dial.is-open .dcc-speed-dial__action:nth-child(6) { transition-delay: 150ms; }
+
+/* Etiqueta: un rótulo sobre Paper. Al costado izquierdo de la acción cuando
+   el dial abre en vertical, encima cuando abre en horizontal. Es sólo visual
+   (`aria-hidden`): el nombre accesible está en el `aria-label` del botón. */
+.dcc-speed-dial__label {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 12px);
+  padding: 4px 10px;
+  border-radius: var(--dcc-radius-sm);
+  background: var(--dcc-surface-raised);
+  color: var(--dcc-fg);
+  box-shadow: var(--dcc-shadow);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity .15s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-speed-dial--left .dcc-speed-dial__label,
+.dcc-speed-dial--right .dcc-speed-dial__label {
+  top: auto;
+  right: auto;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.dcc-speed-dial.is-open .dcc-speed-dial__action:hover .dcc-speed-dial__label,
+.dcc-speed-dial.is-open .dcc-speed-dial__btn:focus-visible + .dcc-speed-dial__label,
+.dcc-speed-dial--labels.is-open .dcc-speed-dial__label { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-speed-dial__icon,
+  .dcc-speed-dial__actions,
+  .dcc-speed-dial.is-open .dcc-speed-dial__actions,
+  .dcc-speed-dial__action,
+  .dcc-speed-dial__label { transition: none; }
+    .dcc-speed-dial__action { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   PAPER (MUI Paper)
+   La superficie base del kit: un fondo, un radio y una sombra. No trae relleno
+   ni disposición; sobre ella se arman la tarjeta genérica, el cajón y
+   cualquier panel que necesite despegarse del fondo.
+
+     elevación  →  --elevation-0 … --elevation-4 (1 por omisión)
+     variante   →  --outlined: borde en vez de sombra
+     forma      →  --square: sin radio, para pegarla a un borde
+
+   Las sombras salen de las que el kit ya tenía, en vez de copiar las 25 de
+   Material: el 1 es la del botón en reposo, el 2 es `--dcc-shadow` —la de los
+   menús y paneles— y el 3 y el 4 le suman una capa ambiental cada vez más
+   ancha. Cinco niveles alcanzan para lo que se usa en la práctica: plano,
+   tarjeta, panel, menú flotante y cajón.
+
+   En oscuro una sombra apenas se ve sobre un fondo casi negro, así que MUI
+   aclara la superficie a medida que sube. Acá se hace igual: cada nivel mezcla
+   `--dcc-surface` con un poco del texto fuerte. La proporción de cada nivel
+   vale 0% en claro y se activa con el tema, de modo que en claro la superficie
+   sigue siendo exactamente `--dcc-surface`.
+   -------------------------------------------------------------------------- */
+:root {
+  --dcc-paper-tint-1: 0%;
+  --dcc-paper-tint-2: 0%;
+  --dcc-paper-tint-3: 0%;
+  --dcc-paper-tint-4: 0%;
+}
+/* Las proporciones de MUI para sus elevaciones 1, 2, 4 y 8 (5, 7, 9 y 11 %
+   de blanco), sobre el texto fuerte del tema en vez de blanco puro. */
+[data-dcc-theme="dark"] {
+  --dcc-paper-tint-1: 5%;
+  --dcc-paper-tint-2: 7%;
+  --dcc-paper-tint-3: 9%;
+  --dcc-paper-tint-4: 11%;
+}
+@media (prefers-color-scheme: dark) {
+  [data-dcc-theme="auto"] {
+      --dcc-paper-tint-1: 5%;
+      --dcc-paper-tint-2: 7%;
+      --dcc-paper-tint-3: 9%;
+      --dcc-paper-tint-4: 11%;
+    }
+}
+
+.dcc-paper {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-1));
+  --dcc-paper-shadow: var(--dcc-shadow-button);
+  --dcc-paper-radius: var(--dcc-radius-md);
+  /* Sin `display`: Paper se combina con componentes que deciden el suyo (la
+     tarjeta es flex, el contenedor del cajón también) y no debe pisarlos. */
+  background: var(--dcc-paper-bg);
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  border-radius: var(--dcc-paper-radius);
+  box-shadow: var(--dcc-paper-shadow);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1),
+              background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+.dcc-paper--elevation-0 {
+  --dcc-paper-bg: var(--dcc-surface);
+  --dcc-paper-shadow: none;
+}
+.dcc-paper--elevation-1 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-1));
+  --dcc-paper-shadow: var(--dcc-shadow-button);
+}
+.dcc-paper--elevation-2 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-2));
+  --dcc-paper-shadow: var(--dcc-shadow);
+}
+.dcc-paper--elevation-3 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-3));
+  --dcc-paper-shadow: var(--dcc-shadow), 0 8px 12px -2px rgba(0, 0, 0, .1);
+}
+.dcc-paper--elevation-4 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-4));
+  --dcc-paper-shadow: var(--dcc-shadow), 0 12px 20px -4px rgba(0, 0, 0, .14), 0 4px 8px -2px rgba(0, 0, 0, .06);
+}
+
+/* Delineada: sin sombra ni tinte, con el borde de los divisores. Es la que
+   conviene dentro de otra superficie, donde una sombra más ensucia. */
+.dcc-paper--outlined {
+  --dcc-paper-bg: var(--dcc-surface);
+  --dcc-paper-shadow: none;
+  border: 1px solid var(--dcc-border-subtle);
+}
+
+.dcc-paper--square { --dcc-paper-radius: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-paper { transition: none; }
+}
+
+/* ==========================================================================
+   STACK  (MUI Stack)
+   Apila a sus hijos en una columna o en una fila, con un espacio parejo entre
+   ellos y, si se pide, un divisor en cada hueco. Es lo que más se usa para
+   ordenar una página por dentro: un formulario, una botonera, una lista de
+   tarjetas.
+
+   `.dcc-stack` ya existía dentro de la alerta (`.dcc-alert .dcc-stack`, en
+   styles.css), donde apila el título y la descripción: es una columna flex sin
+   espacio. Esta regla dice lo mismo —columna, sin gap— y le agrega
+   modificadores, así que la alerta no cambia. Lo suyo, además, pesa más
+   (dos clases contra una) y se mantiene.
+
+   Divisores: en vez de intercalar un elemento entre cada par de hijos —que es
+   lo que hace MUI con la prop `divider`—, `.dcc-stack--divided` dibuja un borde
+   en el lado de cada hijo que mira al anterior y lo separa con un relleno
+   igual al gap: la línea queda centrada en el hueco. De qué lado va el borde
+   lo deciden cuatro interruptores (0 o 1) que fija cada dirección; por eso el
+   divisor gira solo cuando la pila pasa de columna a fila en un breakpoint.
+   ========================================================================== */
+.dcc-stack {
+  --dcc-stack-gap: 0px;
+  --dcc-stack-divider: var(--dcc-border-subtle);
+  /* Interruptores del divisor: inicio y fin en el eje de bloque y en el de
+     línea. La columna parte con el borde arriba. */
+  --dcc-stack-bs: 1;
+  --dcc-stack-be: 0;
+  --dcc-stack-is: 0;
+  --dcc-stack-ie: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--dcc-stack-gap);
+}
+
+/* Dirección (direction). */
+.dcc-stack--row,
+.dcc-stack--row-reverse,
+.dcc-stack--column-reverse { --dcc-stack-bs: 0; }
+.dcc-stack--row { flex-direction: row; --dcc-stack-is: 1; }
+.dcc-stack--row-reverse { flex-direction: row-reverse; --dcc-stack-ie: 1; }
+.dcc-stack--column-reverse { flex-direction: column-reverse; --dcc-stack-be: 1; }
+
+/* Espaciado (spacing), en unidades de 8px como el `theme.spacing` de MUI. */
+.dcc-stack--gap-0 { --dcc-stack-gap: 0px; }
+.dcc-stack--gap-1 { --dcc-stack-gap: 8px; }
+.dcc-stack--gap-2 { --dcc-stack-gap: 16px; }
+.dcc-stack--gap-3 { --dcc-stack-gap: 24px; }
+.dcc-stack--gap-4 { --dcc-stack-gap: 32px; }
+.dcc-stack--gap-5 { --dcc-stack-gap: 40px; }
+.dcc-stack--gap-6 { --dcc-stack-gap: 48px; }
+
+/* Alineación en el eje cruzado (alignItems) y en el principal (justifyContent). */
+.dcc-stack--align-start { align-items: flex-start; }
+.dcc-stack--align-center { align-items: center; }
+.dcc-stack--align-end { align-items: flex-end; }
+.dcc-stack--align-baseline { align-items: baseline; }
+.dcc-stack--align-stretch { align-items: stretch; }
+.dcc-stack--justify-start { justify-content: flex-start; }
+.dcc-stack--justify-center { justify-content: center; }
+.dcc-stack--justify-end { justify-content: flex-end; }
+.dcc-stack--justify-between { justify-content: space-between; }
+.dcc-stack--justify-around { justify-content: space-around; }
+.dcc-stack--justify-evenly { justify-content: space-evenly; }
+
+/* Que los hijos pasen a la línea siguiente cuando no caben (flexWrap). El gap
+   separa también las líneas. */
+.dcc-stack--wrap { flex-wrap: wrap; }
+
+/* Divisores entre hijos. Con `--wrap` el borde sale también al comienzo de
+   cada línea nueva, igual que en MUI: conviene no mezclarlos. */
+.dcc-stack--divided > * + * {
+  border: 0 solid var(--dcc-stack-divider);
+  border-block-start-width: calc(1px * var(--dcc-stack-bs));
+  border-block-end-width: calc(1px * var(--dcc-stack-be));
+  border-inline-start-width: calc(1px * var(--dcc-stack-is));
+  border-inline-end-width: calc(1px * var(--dcc-stack-ie));
+  padding-block-start: calc(var(--dcc-stack-gap) * var(--dcc-stack-bs));
+  padding-block-end: calc(var(--dcc-stack-gap) * var(--dcc-stack-be));
+  padding-inline-start: calc(var(--dcc-stack-gap) * var(--dcc-stack-is));
+  padding-inline-end: calc(var(--dcc-stack-gap) * var(--dcc-stack-ie));
+}
+.dcc-stack--divider-strong { --dcc-stack-divider: var(--dcc-border); }
+
+/* Dirección por breakpoint (direction={{ xs: 'column', sm: 'row' }}), con los
+   cortes de MUI. Cada clase vuelve a fijar los cuatro interruptores. */
+@media (min-width: 600px) {
+  .dcc-stack--sm-row { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+    .dcc-stack--sm-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}
+
+@media (min-width: 900px) {
+  .dcc-stack--md-row { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+    .dcc-stack--md-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}
+
+@media (min-width: 1200px) {
+  .dcc-stack--lg-row { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+    .dcc-stack--lg-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}
+
+@media (min-width: 1536px) {
+  .dcc-stack--xl-row { flex-direction: row;    --dcc-stack-bs: 0; --dcc-stack-be: 0; --dcc-stack-is: 1; --dcc-stack-ie: 0; }
+    .dcc-stack--xl-column { flex-direction: column; --dcc-stack-bs: 1; --dcc-stack-be: 0; --dcc-stack-is: 0; --dcc-stack-ie: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   POPOVER  (MUI Popover / Popper)
+   Panel flotante anclado a un botón. Lo abre, lo cierra y lo ubica
+   src/componentes/popover.js, con el mismo cálculo de posición del tooltip.
+
+   Superficie elevada con borde y sombra, igual que el menú desplegable y el
+   calendario, para que todo lo que flota en el kit se vea de la misma familia.
+   -------------------------------------------------------------------------- */
+.dcc-popover {
+  --dcc-popover-arrow: 24px;
+  position: fixed;
+  z-index: 1300;
+  inset: auto;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: max-content;
+  max-width: min(360px, calc(100vw - 16px));
+  padding: 16px;
+  overflow: visible;
+  background: var(--dcc-surface-raised);
+  color: var(--dcc-fg);
+  border: 1px solid var(--dcc-border);
+  border-radius: 8px;
+  box-shadow: var(--dcc-shadow);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  animation: dcc-popover-entrada .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-popover:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+.dcc-popover[data-placement^="top"] { transform-origin: var(--dcc-popover-arrow) 100%; }
+.dcc-popover[data-placement^="bottom"] { transform-origin: var(--dcc-popover-arrow) 0; }
+.dcc-popover[data-placement^="left"] { transform-origin: 100% var(--dcc-popover-arrow); }
+.dcc-popover[data-placement^="right"] { transform-origin: 0 var(--dcc-popover-arrow); }
+
+@keyframes dcc-popover-entrada {
+  from { opacity: 0; transform: scale(.92); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Partes opcionales del contenido */
+.dcc-popover__title {
+  margin: 0 0 8px;
+  font-family: var(--dcc-font-display);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dcc-fg-strong);
+}
+.dcc-popover__text { margin: 0; color: var(--dcc-fg); }
+.dcc-popover__text + .dcc-popover__text { margin-top: 8px; }
+.dcc-popover__body { display: flex; flex-direction: column; gap: 12px; }
+.dcc-popover__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Botón de cerrar en la esquina: se reserva su lugar a la derecha del título. */
+.dcc-popover__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--dcc-fg-muted);
+  cursor: pointer;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-popover__close:hover { background: var(--dcc-surface-muted); }
+.dcc-popover__close:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 0; }
+.dcc-popover__close .dcc-i { width: 18px; height: 18px; }
+.dcc-popover:has(.dcc-popover__close) .dcc-popover__title { padding-right: 32px; }
+
+/* Flecha: cuadrado girado con el borde en los dos lados que dan hacia afuera,
+   así continúa el contorno del panel. */
+.dcc-popover--arrow::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
+  transform: rotate(45deg);
+}
+.dcc-popover--arrow[data-placement^="bottom"]::before {
+  top: -7px; left: calc(var(--dcc-popover-arrow) - 6px);
+  border-right-color: transparent; border-bottom-color: transparent;
+}
+.dcc-popover--arrow[data-placement^="top"]::before {
+  bottom: -7px; left: calc(var(--dcc-popover-arrow) - 6px);
+  border-left-color: transparent; border-top-color: transparent;
+}
+.dcc-popover--arrow[data-placement^="right"]::before {
+  left: -7px; top: calc(var(--dcc-popover-arrow) - 6px);
+  border-right-color: transparent; border-top-color: transparent;
+}
+.dcc-popover--arrow[data-placement^="left"]::before {
+  right: -7px; top: calc(var(--dcc-popover-arrow) - 6px);
+  border-left-color: transparent; border-bottom-color: transparent;
+}
+
+/* En el flujo, sin script: para documentación y capturas. */
+.dcc-popover--static {
+  position: relative;
+  z-index: auto;
+  display: block;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-popover { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   PROGRESO  (MUI CircularProgress y LinearProgress)
+
+   Dos formas, circular y lineal, cada una en dos modos:
+
+     indeterminado  no se sabe cuánto falta: la animación sólo dice «trabajando».
+                    Es el modo por omisión.
+     determinado    `--determinate` + `aria-valuenow` + la variable
+                    `--dcc-progress-valor` (0 a 100) en línea. DCCUI.progreso.fijar()
+                    mantiene las tres en sincronía (progreso.js).
+
+   Ambos llevan `role="progressbar"` y un nombre (`aria-label` o
+   `aria-labelledby`); el indeterminado va sin `aria-valuenow`, que es como el
+   lector de pantalla sabe que no hay cifra.
+
+   Colores como el botón: primary (por omisión), --secondary, --success,
+   --error, --info, --warning, y --inherit para tomar el color del texto (dentro
+   de un botón, por ejemplo). Todos pasan 3:1 contra la superficie, el mínimo
+   para un indicador gráfico.
+
+   Con movimiento reducido el indeterminado no gira ni se desliza: queda un
+   arco o una barra quietos, pulsando apenas, para que se siga leyendo como
+   «en curso» sin movimiento en la pantalla.
+   -------------------------------------------------------------------------- */
+.dcc-progress-circle,
+.dcc-progress-linear {
+  --dcc-progress-color: var(--dcc-accent);
+  --dcc-progress-valor: 0;
+  --dcc-progress-buffer: 0;
+  color: var(--dcc-progress-color);
+}
+.dcc-progress-circle--secondary,
+.dcc-progress-linear--secondary { --dcc-progress-color: var(--dcc-fg-muted); }
+.dcc-progress-circle--success,
+.dcc-progress-linear--success { --dcc-progress-color: var(--dcc-success); }
+.dcc-progress-circle--error,
+.dcc-progress-linear--error { --dcc-progress-color: var(--dcc-danger); }
+.dcc-progress-circle--info,
+.dcc-progress-linear--info { --dcc-progress-color: var(--dcc-info); }
+.dcc-progress-circle--warning,
+.dcc-progress-linear--warning { --dcc-progress-color: var(--dcc-warning); }
+.dcc-progress-circle--inherit,
+.dcc-progress-linear--inherit { --dcc-progress-color: currentColor; }
+
+/* ---- Circular ----
+   Las medidas del SVG son las de MUI: viewBox de 44 unidades, radio 20,2 y
+   trazo 3,6, así que el grosor escala con el tamaño. El perímetro del arco es
+   2π·20,2 = 126,92. */
+.dcc-progress-circle {
+  --dcc-progress-size: 40px;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--dcc-progress-size);
+  height: var(--dcc-progress-size);
+  vertical-align: middle;
+}
+.dcc-progress-circle--xs { --dcc-progress-size: 16px; }
+.dcc-progress-circle--sm { --dcc-progress-size: 24px; }
+.dcc-progress-circle--md { --dcc-progress-size: 40px; }
+.dcc-progress-circle--lg { --dcc-progress-size: 56px; }
+
+.dcc-progress-circle__svg { display: block; width: 100%; height: 100%; }
+.dcc-progress-circle__track,
+.dcc-progress-circle__bar {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.6;
+}
+/* El riel no está en MUI. Va muy tenue para que el arco determinado se lea
+   como una fracción de algo, y no como un arco suelto. */
+.dcc-progress-circle__track { opacity: .16; }
+.dcc-progress-circle__bar { stroke-linecap: round; }
+
+.dcc-progress-circle--determinate .dcc-progress-circle__svg { transform: rotate(-90deg); }
+.dcc-progress-circle--determinate .dcc-progress-circle__bar {
+  stroke-dasharray: 126.92px;
+  stroke-dashoffset: calc(126.92px * (1 - var(--dcc-progress-valor) / 100));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-circle--determinate .dcc-progress-circle__bar {
+      transition: stroke-dashoffset .3s cubic-bezier(.4, 0, .2, 1);
+    }
+}
+
+/* Indeterminado: el SVG gira y el arco se estira y se encoge, con las mismas
+   curvas y los mismos 1,4s de MUI. */
+.dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__bar {
+  stroke-dasharray: 80px, 200px;
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__svg {
+      animation: dcc-progress-giro 1.4s linear infinite;
+    }
+    .dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__bar {
+      animation: dcc-progress-arco 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes dcc-progress-giro { to { transform: rotate(360deg); } }
+@keyframes dcc-progress-arco {
+  0% { stroke-dasharray: 1px, 200px;   stroke-dashoffset: 0; }
+  50% { stroke-dasharray: 100px, 200px; stroke-dashoffset: -15px; }
+  100% { stroke-dasharray: 100px, 200px; stroke-dashoffset: -125px; }
+}
+
+/* La cifra en el centro (CircularProgressWithLabel). Escala con el círculo. */
+.dcc-progress-circle__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--dcc-font-body);
+  font-size: calc(var(--dcc-progress-size) * .28);
+  font-weight: 700;
+  line-height: 1;
+  /* La cifra va en el color del texto: el del indicador no siempre llega a
+     4,5:1 en un tamaño tan chico. */
+  color: var(--dcc-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Lineal ----
+   Una barra de 4px a lo ancho del contenedor. El riel es el mismo color al
+   24% (el `lighten` de MUI, dicho en función del color y no de un hex, para
+   que siga al tema). */
+.dcc-progress-linear {
+  --dcc-progress-alto: 4px;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: var(--dcc-progress-alto);
+  overflow: hidden;
+  border-radius: var(--dcc-progress-alto);
+  background: color-mix(in srgb, var(--dcc-progress-color) 24%, transparent);
+}
+.dcc-progress-linear--lg { --dcc-progress-alto: 8px; }
+
+.dcc-progress-linear__bar,
+.dcc-progress-linear__buffer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: left center;
+}
+.dcc-progress-linear__bar { background: currentColor; }
+.dcc-progress-linear--determinate .dcc-progress-linear__bar,
+.dcc-progress-linear--buffer .dcc-progress-linear__bar {
+  transform: scaleX(calc(var(--dcc-progress-valor) / 100));
+}
+
+/* Buffer: lo ya descargado, en un tono intermedio, y lo que falta como una
+   línea de puntos que avanza —el aspecto de un video que todavía carga—. */
+.dcc-progress-linear--buffer {
+  background: radial-gradient(color-mix(in srgb, var(--dcc-progress-color) 30%, transparent) 0 50%, transparent 55%)
+              0 50% / 10px 10px repeat-x;
+}
+/* El tramo del buffer es opaco —mezclado con la superficie— para tapar los
+   puntos que tiene debajo. */
+.dcc-progress-linear__buffer {
+  background: color-mix(in srgb, var(--dcc-progress-color) 30%, var(--dcc-surface));
+  transform: scaleX(calc(var(--dcc-progress-buffer) / 100));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-linear--determinate .dcc-progress-linear__bar,
+  .dcc-progress-linear--buffer .dcc-progress-linear__bar,
+  .dcc-progress-linear__buffer { transition: transform .4s linear; }
+    .dcc-progress-linear--buffer { animation: dcc-progress-puntos 3s linear infinite; }
+}
+
+@keyframes dcc-progress-puntos { to { background-position: -40px 50%; } }
+
+/* Indeterminado: dos tramos que cruzan la barra a destiempo, como MUI. */
+.dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer) .dcc-progress-linear__bar {
+  right: auto;
+  width: 40%;
+  left: 30%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer) .dcc-progress-linear__bar {
+      animation: dcc-progress-barra 2.1s cubic-bezier(.65, .815, .735, .395) infinite;
+    }
+    .dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer)::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-radius: inherit;
+      background: currentColor;
+      animation: dcc-progress-barra-2 2.1s cubic-bezier(.165, .84, .44, 1) 1.15s infinite;
+      left: -200%;
+      width: 0;
+    }
+}
+
+@keyframes dcc-progress-barra {
+  0% { left: -35%;  width: 35%; }
+  60% { left: 100%;  width: 90%; }
+  100% { left: 100%;  width: 90%; }
+}
+@keyframes dcc-progress-barra-2 {
+  0% { left: -200%; width: 100%; }
+  60% { left: 107%;  width: 8%; }
+  100% { left: 107%;  width: 8%; }
+}
+
+/* Sin movimiento, el indeterminado pulsa en el lugar. */
+@media (prefers-reduced-motion: reduce) {
+  .dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__bar,
+  .dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer) .dcc-progress-linear__bar {
+      animation: dcc-progress-pulso 2s ease-in-out infinite;
+    }
+}
+
+@keyframes dcc-progress-pulso { 50% { opacity: .4; } }
+
+/* Barra con la cifra al lado (LinearProgressWithLabel). */
+.dcc-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.dcc-progress-row .dcc-progress-linear { flex: 1 1 auto; }
+.dcc-progress-row__value {
+  flex: 0 0 auto;
+  min-width: 3.5ch;
+  text-align: right;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  color: var(--dcc-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dentro de un botón: toma el color y el tamaño del ícono. */
+.dcc-btn .dcc-progress-circle { --dcc-progress-size: 16px; --dcc-progress-color: currentColor; }
+
+/* Para las demos: varias barras, una bajo otra. */
+.dcc-progress-stack { display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: 480px; }
+
+/* --------------------------------------------------------------------------
+   SNACKBAR  (MUI Snackbar)
+
+   Un aviso breve sobre algo que acaba de pasar —«Memoria guardada»—, que
+   aparece en un borde de la pantalla, no interrumpe y se va solo. Lo crea
+   snackbar.js con DCCUI.notificar(); el marcado de abajo es lo que genera, y
+   también se puede escribir a mano con `--inline` para mostrarlo dentro de la
+   página.
+
+   Partes:    __icon · __message · __actions · __action · __close
+   Tipos:     sin tipo (oscuro, el de MUI) · --success · --error · --info · --warning
+   Posición:  --bottom-center (por omisión) · --bottom-left · --bottom-right
+              · --top-left · --top-center · --top-right
+
+   Sin tipo, el fondo es el color de los títulos y el texto el de la superficie:
+   en claro queda oscuro y en oscuro queda claro, que es lo que hace MUI para que
+   el aviso resalte sobre la página en los dos temas.
+   Con tipo, es la versión «filled» de la alerta: el color fuerte del estado con
+   el texto de --dcc-on-accent (6,8:1 o más en claro; en oscuro, texto oscuro
+   sobre el tono claro).
+   -------------------------------------------------------------------------- */
+.dcc-snackbar {
+  --dcc-snackbar-bg: var(--dcc-fg-strong);
+  --dcc-snackbar-fg: var(--dcc-surface);
+  /* Distancia al borde de la pantalla: 24px como MUI; 8px en móvil. */
+  --dcc-snackbar-margen: 24px;
+  position: fixed;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  min-width: 288px;
+  max-width: 560px;
+  padding: 6px 8px 6px 16px;
+  border-radius: var(--dcc-radius-sm);
+  background: var(--dcc-snackbar-bg);
+  color: var(--dcc-snackbar-fg);
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2),
+              0 6px 10px 0 rgba(0, 0, 0, .14),
+              0 1px 18px 0 rgba(0, 0, 0, .12);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.43;
+}
+
+.dcc-snackbar--success { --dcc-snackbar-bg: var(--dcc-success-strong); --dcc-snackbar-fg: var(--dcc-on-accent); }
+.dcc-snackbar--error { --dcc-snackbar-bg: var(--dcc-danger);         --dcc-snackbar-fg: var(--dcc-on-accent); }
+.dcc-snackbar--info { --dcc-snackbar-bg: var(--dcc-info-strong);    --dcc-snackbar-fg: var(--dcc-on-accent); }
+.dcc-snackbar--warning { --dcc-snackbar-bg: var(--dcc-warning-strong); --dcc-snackbar-fg: var(--dcc-on-accent); }
+
+/* ---- Posiciones ---- */
+.dcc-snackbar--bottom-center,
+.dcc-snackbar--bottom-left,
+.dcc-snackbar--bottom-right { bottom: var(--dcc-snackbar-margen); }
+.dcc-snackbar--top-center,
+.dcc-snackbar--top-left,
+.dcc-snackbar--top-right { top: var(--dcc-snackbar-margen); }
+.dcc-snackbar--bottom-left,
+.dcc-snackbar--top-left { left: var(--dcc-snackbar-margen); }
+.dcc-snackbar--bottom-right,
+.dcc-snackbar--top-right { right: var(--dcc-snackbar-margen); }
+.dcc-snackbar--bottom-center,
+.dcc-snackbar--top-center { left: 50%; translate: -50% 0; }
+
+/* En la página, no flotando: para documentar o para un aviso fijo. */
+.dcc-snackbar--inline { position: relative; z-index: auto; }
+
+/* En móvil ocupa el ancho, con 8px a cada lado, como MUI bajo 600px. */
+@media (max-width: 600px) {
+  .dcc-snackbar { --dcc-snackbar-margen: 8px; }
+    .dcc-snackbar:not(.dcc-snackbar--inline) {
+      left: var(--dcc-snackbar-margen);
+      right: var(--dcc-snackbar-margen);
+      translate: none;
+      min-width: 0;
+      max-width: none;
+    }
+    .dcc-snackbar--inline { min-width: 0; }
+}
+
+/* ---- Partes ---- */
+.dcc-snackbar__icon { width: 20px; height: 20px; flex: 0 0 20px; }
+.dcc-snackbar__message { flex: 1 1 0; min-width: 0; padding: 8px 0; }
+.dcc-snackbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  /* Si el mensaje es largo, las acciones bajan a su propia línea, a la derecha. */
+  flex: 0 0 auto;
+}
+
+/* La acción es un botón de texto en el color del aviso: no hay un acento que se
+   lea igual de bien sobre el fondo oscuro y sobre el claro, así que se marca
+   con el peso y la capa de estado. */
+.dcc-snackbar__action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--dcc-font-body);
+}
+.dcc-snackbar__action {
+  min-height: 32px;
+  padding: 4px 10px;
+  border-radius: var(--dcc-radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+/* El de cerrar es `.dcc-icon-btn --sm --inherit`: toma el color del aviso.
+   Conserva su clase propia porque snackbar.js lo busca por ella. */
+.dcc-snackbar__close { flex: none; }
+.dcc-snackbar__action::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-snackbar__action:hover::before { opacity: .12; }
+.dcc-snackbar__action:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+.dcc-snackbar__action:focus-visible::before { opacity: .16; }
+
+/* ---- Entrada y salida ----
+   Crece desde un poco más chico y se funde, como el Grow de MUI. snackbar.js
+   pone `is-visible` un cuadro después de insertarlo y lo quita para cerrar. */
+.dcc-snackbar:not(.dcc-snackbar--inline) { opacity: 0; scale: .9; }
+.dcc-snackbar.is-visible { opacity: 1; scale: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-snackbar:not(.dcc-snackbar--inline) {
+      transition: opacity .225s cubic-bezier(.4, 0, .2, 1), scale .225s cubic-bezier(.4, 0, .2, 1);
+    }
+}
+
+/* La región viva que contiene los avisos. No ocupa lugar: los avisos son fijos. */
+.dcc-snackbar-region { position: static; width: 0; height: 0; }
+
+/* Para las demos: una fila de avisos en línea. */
+.dcc-snackbar-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 24px; }
+
+/* --------------------------------------------------------------------------
+   CARD (MUI Card) — tarjeta genérica
+   Una tarjeta sin contenido fijo, para armar lo que haga falta: una noticia,
+   un curso, una persona, un recurso. Se apoya en `.dcc-paper`, que pone el
+   fondo, el radio, la sombra y el tema; esta hoja sólo ordena las piezas:
+
+     __header       avatar, título, subtítulo y un botón de acción (CardHeader)
+     __media        imagen de alto fijo (CardMedia)
+     __content      el cuerpo, con 16px de relleno (CardContent)
+     __actions      fila de botones de texto (CardActions)
+     __action-area  vuelve clicable un bloque entero (CardActionArea)
+     __collapse     contenido que se despliega con el botón __expand (Collapse)
+
+   Elevada o delineada se elige en el Paper: `.dcc-paper` o
+   `.dcc-paper dcc-paper--outlined`.
+
+   No tiene nada que ver con `.dcc-card` (la tarjeta de programa académico,
+   con etiqueta y descuento) ni con `.dcc-ccard` (la tarjeta comprimida de los
+   listados): esas tienen un contenido y un diseño fijos del Figma.
+
+   La tarjeta no recorta su contenido (`overflow` visible) para que el menú del
+   botón de acción de la cabecera pueda salirse de ella. A cambio, la imagen y
+   el área clicable redondean ellas mismas las esquinas que tocan.
+   -------------------------------------------------------------------------- */
+.dcc-surface-card {
+  --dcc-surface-card-pad: 16px;
+  --dcc-surface-card-media-h: 194px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Cabecera */
+.dcc-surface-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: var(--dcc-surface-card-pad);
+}
+.dcc-surface-card__heading { flex: 1; min-width: 0; }
+.dcc-surface-card__title {
+  margin: 0;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dcc-fg-strong);
+}
+.dcc-surface-card__subheader {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--dcc-fg-muted);
+}
+/* El botón de acción se corre hacia la esquina, como en MUI, para que su
+   borde visual —no su caja de 40px— quede alineado con el relleno. */
+.dcc-surface-card__header > .dcc-surface-card__icon-btn,
+.dcc-surface-card__header > .dcc-menu { align-self: flex-start; margin: -4px -8px 0 0; }
+
+/* Los botones de la cabecera y el de expandir son `.dcc-icon-btn`. `fill: none`
+   porque el corazón y la estrella del sprite no lo fijan: se dejan rellenables
+   para marcar favoritos. La flecha de expandir gira. */
+.dcc-surface-card__icon-btn .dcc-icon {
+  fill: none;
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Medios */
+.dcc-surface-card__media {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: var(--dcc-surface-card-media-h);
+  object-fit: cover;
+  background: var(--dcc-surface-muted);
+}
+.dcc-surface-card > .dcc-surface-card__media:first-child,
+.dcc-surface-card__action-area:first-child > .dcc-surface-card__media:first-child {
+  border-radius: var(--dcc-paper-radius) var(--dcc-paper-radius) 0 0;
+}
+
+/* Contenido */
+.dcc-surface-card__content { padding: var(--dcc-surface-card-pad); }
+.dcc-surface-card__content:last-child { padding-bottom: 24px; }
+.dcc-surface-card__overline {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--dcc-fg-muted);
+}
+.dcc-surface-card__headline {
+  margin: 0 0 8px;
+  font-family: var(--dcc-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--dcc-fg-strong);
+}
+.dcc-surface-card__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--dcc-fg-muted);
+}
+.dcc-surface-card__text + .dcc-surface-card__text { margin-top: 12px; }
+
+/* Acciones */
+.dcc-surface-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+.dcc-surface-card__expand { margin-left: auto; }
+.dcc-surface-card__expand[aria-expanded="true"] .dcc-icon { transform: rotate(180deg); }
+
+/* Área clicable. Va como <a> o <button> y envuelve medios y contenido; el
+   hover es la capa de estado del kit sobre todo el bloque. Las acciones de la
+   tarjeta quedan fuera: un control interactivo no puede ir dentro de otro. */
+.dcc-surface-card__action-area {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.dcc-surface-card__action-area:first-child { border-radius: var(--dcc-paper-radius) var(--dcc-paper-radius) 0 0; }
+.dcc-surface-card__action-area:only-child { border-radius: var(--dcc-paper-radius); }
+.dcc-surface-card__action-area::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-surface-card__action-area:hover::after { opacity: .06; }
+.dcc-surface-card__action-area:active::after,
+.dcc-surface-card__action-area:focus-visible::after { opacity: .12; }
+.dcc-surface-card__action-area:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+/* Contenido expandible. La altura se anima con la fila de la rejilla (0fr →
+   1fr), que no necesita medir el contenido. Cerrado queda `visibility:
+   hidden` —al final de la transición— para que su contenido no se pueda
+   enfocar ni lo lea un lector de pantalla. */
+.dcc-surface-card__collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows .25s cubic-bezier(.4, 0, .2, 1),
+              visibility 0s linear .25s;
+}
+.dcc-surface-card__collapse.is-open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.dcc-surface-card__collapse > * { min-height: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-surface-card__icon-btn .dcc-icon,
+  .dcc-surface-card__icon-btn::before,
+  .dcc-surface-card__action-area::after,
+  .dcc-surface-card__collapse,
+  .dcc-surface-card__collapse.is-open { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   TOOLTIP  (MUI Tooltip)
+   Una etiqueta breve sobre un control. Lo arma y lo ubica
+   src/componentes/tooltip.js; acá sólo vive su aspecto.
+
+   Colores invertidos respecto de la página, como el tooltip "plano" de
+   Material 3: en claro, texto casi blanco sobre el título oscuro
+   (--dcc-fg-strong, 15,6:1); en oscuro se da vuelta solo y queda un globo
+   claro con texto oscuro. Así se despega de cualquier superficie sin sombra.
+   -------------------------------------------------------------------------- */
+.dcc-tooltip {
+  --dcc-tooltip-bg: var(--dcc-fg-strong);
+  --dcc-tooltip-fg: var(--dcc-surface);
+  --dcc-tooltip-arrow: 50%;
+  /* El script escribe left/top. `inset` y `margin` anulan lo que el navegador
+     le pone a un elemento con el atributo `popover` (centrado en la ventana). */
+  position: fixed;
+  z-index: 1500;
+  inset: auto;
+  top: 0;
+  left: 0;
+  margin: 0;
+  max-width: min(300px, calc(100vw - 16px));
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 4px;
+  overflow: visible;
+  background: var(--dcc-tooltip-bg);
+  color: var(--dcc-tooltip-fg);
+  font-family: var(--dcc-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: break-word;
+  animation: dcc-tooltip-entrada .15s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Crece desde el lado del disparador, como el Grow de MUI. */
+.dcc-tooltip[data-placement^="top"] { transform-origin: var(--dcc-tooltip-arrow) 100%; }
+.dcc-tooltip[data-placement^="bottom"] { transform-origin: var(--dcc-tooltip-arrow) 0; }
+.dcc-tooltip[data-placement^="left"] { transform-origin: 100% var(--dcc-tooltip-arrow); }
+.dcc-tooltip[data-placement^="right"] { transform-origin: 0 var(--dcc-tooltip-arrow); }
+
+@keyframes dcc-tooltip-entrada {
+  from { opacity: 0; transform: scale(.85); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Flecha: un cuadrado girado del mismo color, que asoma 4px por el lado que
+   mira al disparador y apunta a su centro (--dcc-tooltip-arrow lo calcula el
+   script, también cuando el globo se corrió para no salirse de la ventana). */
+.dcc-tooltip--arrow::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+.dcc-tooltip--arrow[data-placement^="top"]::before { bottom: -4px; left: calc(var(--dcc-tooltip-arrow) - 4px); }
+.dcc-tooltip--arrow[data-placement^="bottom"]::before { top: -4px;    left: calc(var(--dcc-tooltip-arrow) - 4px); }
+.dcc-tooltip--arrow[data-placement^="left"]::before { right: -4px;  top: calc(var(--dcc-tooltip-arrow) - 4px); }
+.dcc-tooltip--arrow[data-placement^="right"]::before { left: -4px;   top: calc(var(--dcc-tooltip-arrow) - 4px); }
+
+/* Dibujado en el flujo, sin script: para documentar el componente o mostrar
+   un tooltip fijo en una captura. No es interactivo. */
+.dcc-tooltip--static {
+  position: relative;
+  z-index: auto;
+  display: inline-block;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-tooltip { animation: none; }
 }
 

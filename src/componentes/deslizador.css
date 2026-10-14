@@ -1,0 +1,330 @@
+/* --------------------------------------------------------------------------
+   DESLIZADOR (Slider de MUI)
+
+   Dos formas con el mismo aspecto:
+
+     · Un valor: un <input type="range"> nativo (`.dcc-slider__input`) al que
+       sólo se le cambia la piel. El teclado, el lector de pantalla y el envío
+       del formulario son los del navegador; si el JS no carga, el control
+       sigue funcionando y sólo se pierde el relleno de la pista.
+     · Rango (dos manillas): manillas `role="slider"` que mueve el JS
+       (src/componentes/deslizador.js), según el patrón de WAI-ARIA para
+       deslizadores con varias manillas. HTML no tiene un range doble.
+
+   La pieza dibuja el riel en `::before` y la parte recorrida en `::after`,
+   entre --dcc-slider-desde y --dcc-slider-hasta, que el JS actualiza en cada
+   movimiento. Todo el color sale de `currentColor`, así que una variante de
+   color sólo cambia --dcc-slider-main.
+
+   El margen lateral es medio botón por lado: en los extremos el centro de la
+   manilla queda justo en el borde del riel, como en MUI, y la mitad que
+   sobresale no se sale del contenedor.
+   -------------------------------------------------------------------------- */
+.dcc-slider {
+  --dcc-slider-main: var(--dcc-accent);
+  --dcc-slider-thumb: 20px;
+  --dcc-slider-rail: 4px;
+  --dcc-slider-desde: 0%;
+  --dcc-slider-hasta: 0%;
+  --dcc-slider-alto: 200px;
+  position: relative;
+  display: block;
+  height: 28px;
+  margin: 0 calc(var(--dcc-slider-thumb) / 2);
+  color: var(--dcc-slider-main);
+  font-family: var(--dcc-font-body);
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Con etiquetas bajo las marcas hace falta aire para el texto. */
+.dcc-slider:has(.dcc-slider__mark:not(:empty)) { margin-bottom: 24px; }
+
+/* Riel: el largo completo, al 38% del color (la opacidad del riel de MUI). */
+.dcc-slider::before,
+.dcc-slider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: var(--dcc-slider-rail);
+  border-radius: 9999px;
+  background: currentColor;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.dcc-slider::before { left: 0; right: 0; opacity: .38; }
+/* Pista: lo recorrido, desde el inicio o entre las dos manillas. */
+.dcc-slider::after {
+  left: var(--dcc-slider-desde);
+  width: calc(var(--dcc-slider-hasta) - var(--dcc-slider-desde));
+}
+
+/* ---- Un valor: el range nativo ----
+   Ocupa el riel más medio botón a cada lado, para que el recorrido del botón
+   nativo —que va de borde a borde del input— coincida con el riel. */
+.dcc-slider__input {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--dcc-slider-thumb) / -2);
+  z-index: 1;
+  width: calc(100% + var(--dcc-slider-thumb));
+  height: var(--dcc-slider-thumb);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transform: translateY(-50%);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.dcc-slider__input:focus { outline: none; }
+.dcc-slider__input::-webkit-slider-runnable-track { height: 100%; background: transparent; border: 0; }
+.dcc-slider__input::-moz-range-track { height: 100%; background: transparent; border: 0; }
+.dcc-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--dcc-slider-thumb);
+  height: var(--dcc-slider-thumb);
+  border: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: var(--dcc-shadow-button);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-slider__input::-moz-range-thumb {
+  width: var(--dcc-slider-thumb);
+  height: var(--dcc-slider-thumb);
+  border: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: var(--dcc-shadow-button);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ---- Rango: manillas con role="slider" ---- */
+.dcc-slider__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 1;
+  width: var(--dcc-slider-thumb);
+  height: var(--dcc-slider-thumb);
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: var(--dcc-shadow-button);
+  cursor: grab;
+  transform: translate(-50%, -50%);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-slider__thumb:focus { outline: none; }
+.dcc-slider__thumb.is-active { cursor: grabbing; }
+
+/* Halo de estado: 8px al pasar el mouse, 14px al arrastrar, como en MUI. Con
+   teclado, además, el anillo de foco del kit separado por la superficie. */
+.dcc-slider__input:hover::-webkit-slider-thumb { box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:hover::-moz-range-thumb     { box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__thumb:hover                       { box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:active::-webkit-slider-thumb { box-shadow: 0 0 0 14px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:active::-moz-range-thumb     { box-shadow: 0 0 0 14px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__thumb.is-active                    { box-shadow: 0 0 0 14px color-mix(in srgb, currentColor 16%, transparent); }
+.dcc-slider__input:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px var(--dcc-surface), 0 0 0 4px var(--dcc-focus), 0 0 0 10px color-mix(in srgb, currentColor 16%, transparent);
+}
+.dcc-slider__input:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 2px var(--dcc-surface), 0 0 0 4px var(--dcc-focus), 0 0 0 10px color-mix(in srgb, currentColor 16%, transparent);
+}
+.dcc-slider__thumb:focus-visible {
+  box-shadow: 0 0 0 2px var(--dcc-surface), 0 0 0 4px var(--dcc-focus), 0 0 0 10px color-mix(in srgb, currentColor 16%, transparent);
+}
+
+/* ---- Valor visible ----
+   La etiqueta flota sobre la manilla. Por omisión aparece al pasar el mouse,
+   al enfocar o al arrastrar (el `valueLabelDisplay="auto"` de MUI); con
+   `.dcc-slider--value-on` queda siempre a la vista. Es texto oscuro sobre
+   claro invertido —el tono de los títulos de fondo—, igual en todos los
+   colores, para que el número se lea siempre. */
+.dcc-slider__value {
+  position: absolute;
+  bottom: calc(50% + var(--dcc-slider-thumb) / 2 + 10px);
+  left: var(--dcc-slider-hasta);
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--dcc-fg-strong);
+  color: var(--dcc-surface);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%) scale(0);
+  transform-origin: 50% calc(100% + 6px);
+  transition: transform .15s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-slider__value::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.dcc-slider__thumb .dcc-slider__value {
+  bottom: calc(100% + 10px);
+  left: 50%;
+}
+.dcc-slider__input:hover ~ .dcc-slider__value,
+.dcc-slider__input:focus-visible ~ .dcc-slider__value,
+.dcc-slider__input:active ~ .dcc-slider__value,
+.dcc-slider__thumb:hover .dcc-slider__value,
+.dcc-slider__thumb:focus-visible .dcc-slider__value,
+.dcc-slider__thumb.is-active .dcc-slider__value,
+.dcc-slider--value-on .dcc-slider__value { transform: translateX(-50%) scale(1); }
+/* Siempre visible, la etiqueta necesita su alto por encima. */
+.dcc-slider--value-on { margin-top: 36px; }
+
+/* ---- Marcas ----
+   Cada `.dcc-slider__mark` lleva `data-valor`; el JS la ubica. El punto va en
+   `::before` sobre el riel y el texto, si lo hay, debajo. Las marcas que ya
+   quedaron dentro de lo recorrido pasan a la superficie, como en MUI. */
+.dcc-slider__marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.dcc-slider__mark {
+  position: absolute;
+  top: calc(50% + var(--dcc-slider-thumb) / 2 + 4px);
+  left: 0;
+  color: var(--dcc-fg-muted);
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.dcc-slider__mark::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--dcc-slider-thumb) / -2 - 4px);
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--dcc-slider-main);
+  transform: translate(-50%, -50%);
+}
+.dcc-slider__mark.is-active { color: var(--dcc-fg); }
+.dcc-slider__mark.is-active::before { background: var(--dcc-surface); opacity: .8; }
+
+/* ---- Colores, como los del botón ---- */
+.dcc-slider--primary   { --dcc-slider-main: var(--dcc-accent); }
+.dcc-slider--secondary { --dcc-slider-main: var(--dcc-fg-muted); }
+.dcc-slider--success   { --dcc-slider-main: var(--dcc-success); }
+.dcc-slider--error     { --dcc-slider-main: var(--dcc-danger); }
+.dcc-slider--info      { --dcc-slider-main: var(--dcc-info); }
+.dcc-slider--warning   { --dcc-slider-main: var(--dcc-warning); }
+
+/* ---- Tamaño chico ---- */
+.dcc-slider--sm {
+  --dcc-slider-thumb: 12px;
+  --dcc-slider-rail: 2px;
+  height: 20px;
+}
+
+/* ---- Vertical ----
+   El range nativo se pone de pie con `writing-mode` (y `direction: rtl` para
+   que el mínimo quede abajo). El alto se ajusta con --dcc-slider-alto. */
+.dcc-slider--vertical {
+  display: inline-block;
+  width: 28px;
+  height: var(--dcc-slider-alto);
+  margin: calc(var(--dcc-slider-thumb) / 2) 0;
+  vertical-align: top;
+}
+.dcc-slider--vertical.dcc-slider--sm { width: 20px; }
+.dcc-slider--vertical::before,
+.dcc-slider--vertical::after {
+  top: auto;
+  left: 50%;
+  width: var(--dcc-slider-rail);
+  height: auto;
+  transform: translateX(-50%);
+}
+.dcc-slider--vertical::before { top: 0; bottom: 0; right: auto; }
+.dcc-slider--vertical::after {
+  bottom: var(--dcc-slider-desde);
+  height: calc(var(--dcc-slider-hasta) - var(--dcc-slider-desde));
+}
+.dcc-slider--vertical .dcc-slider__input {
+  top: calc(var(--dcc-slider-thumb) / -2);
+  left: 50%;
+  width: var(--dcc-slider-thumb);
+  height: calc(100% + var(--dcc-slider-thumb));
+  transform: translateX(-50%);
+  writing-mode: vertical-lr;
+  direction: rtl;
+}
+.dcc-slider--vertical .dcc-slider__thumb {
+  top: auto;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.dcc-slider--vertical .dcc-slider__value {
+  bottom: var(--dcc-slider-hasta);
+  left: auto;
+  right: calc(50% + var(--dcc-slider-thumb) / 2 + 10px);
+  transform: translateY(50%) scale(0);
+  transform-origin: calc(100% + 6px) 50%;
+}
+.dcc-slider--vertical .dcc-slider__thumb .dcc-slider__value {
+  bottom: 50%;
+  right: calc(100% + 10px);
+}
+.dcc-slider--vertical .dcc-slider__value::after { top: 50%; left: 100%; }
+.dcc-slider--vertical .dcc-slider__input:hover ~ .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__input:focus-visible ~ .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__input:active ~ .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__thumb:hover .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__thumb:focus-visible .dcc-slider__value,
+.dcc-slider--vertical .dcc-slider__thumb.is-active .dcc-slider__value,
+.dcc-slider--vertical.dcc-slider--value-on .dcc-slider__value { transform: translateY(50%) scale(1); }
+.dcc-slider--vertical.dcc-slider--value-on { margin-top: calc(var(--dcc-slider-thumb) / 2); }
+.dcc-slider--vertical .dcc-slider__mark {
+  top: auto;
+  left: calc(50% + var(--dcc-slider-thumb) / 2 + 6px);
+  transform: translateY(50%);
+}
+.dcc-slider--vertical .dcc-slider__mark::before {
+  top: 50%;
+  left: calc(var(--dcc-slider-thumb) / -2 - 6px);
+}
+.dcc-slider--vertical:has(.dcc-slider__mark:not(:empty)) { margin-bottom: calc(var(--dcc-slider-thumb) / 2); margin-right: 64px; }
+
+/* ---- Deshabilitado ----
+   Pasa al gris secundario y deja de responder. Con el range nativo basta el
+   `disabled` del input; las manillas de rango lo toman de `aria-disabled` en
+   la pieza. */
+.dcc-slider:has(.dcc-slider__input:disabled),
+.dcc-slider[aria-disabled="true"] {
+  --dcc-slider-main: var(--dcc-fg-muted);
+  cursor: not-allowed;
+}
+.dcc-slider__input:disabled { cursor: not-allowed; }
+.dcc-slider__input:disabled::-webkit-slider-thumb { box-shadow: none; }
+.dcc-slider__input:disabled::-moz-range-thumb { box-shadow: none; }
+.dcc-slider[aria-disabled="true"] .dcc-slider__thumb { box-shadow: none; pointer-events: none; }
+
+/* Una fila de demostración o de formulario: el deslizador con su etiqueta. */
+.dcc-slider-field { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 320px; }
+.dcc-slider-field__label { font-size: 16px; font-weight: 700; line-height: 1.2; color: var(--dcc-fg); }
+
+/* Los pseudoelementos de cada motor van en reglas aparte: un selector que el
+   navegador no conoce invalida la lista entera. */
+@media (prefers-reduced-motion: reduce) {
+  .dcc-slider__input::-webkit-slider-thumb { transition: none; }
+  .dcc-slider__input::-moz-range-thumb { transition: none; }
+  .dcc-slider__thumb,
+  .dcc-slider__value { transition: none; }
+}

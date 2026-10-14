@@ -1,0 +1,132 @@
+<!--
+titulo: Grilla
+grupo: Diseño
+resumen: Doce columnas que se adaptan al ancho de la pantalla, con tamaños por breakpoint, espaciado, desplazamientos y grillas anidadas.
+miniatura: .dcc-grid
+escala: .5
+ancho: 640px
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p"><code>.dcc-grid</code> reparte su ancho en doce columnas y cada hijo dice cuántas ocupa con
+  <code>.dcc-col-N</code>. Un hijo sin clase ocupa la fila entera. Cuando la suma pasa de doce, el siguiente baja a
+  una nueva fila.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-grid">
+    <div class="dcc-col-8"><div class="dcc-doc-cell">dcc-col-8</div></div>
+    <div class="dcc-col-4"><div class="dcc-doc-cell">dcc-col-4</div></div>
+    <div class="dcc-col-4"><div class="dcc-doc-cell">dcc-col-4</div></div>
+    <div class="dcc-col-8"><div class="dcc-doc-cell">dcc-col-8</div></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="breakpoints">Por breakpoint</h2>
+<p class="dcc-doc-p">El tamaño cambia según el ancho de la pantalla con <code>.dcc-col-{bp}-N</code>, de móvil hacia
+  arriba: la clase sin breakpoint vale desde 0 (<code>xs</code>) y cada breakpoint la reemplaza desde su ancho en
+  adelante. Son los de MUI: <code>sm</code> 600px, <code>md</code> 900px, <code>lg</code> 1200px y <code>xl</code>
+  1536px. En el ejemplo, las tarjetas van una por fila en el teléfono, de a dos en una tableta y de a cuatro en un
+  computador.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-grid">
+    <div class="dcc-col-12 dcc-col-sm-6 dcc-col-md-3"><div class="dcc-doc-cell">CC3001 · Algoritmos y Estructuras de Datos</div></div>
+    <div class="dcc-col-12 dcc-col-sm-6 dcc-col-md-3"><div class="dcc-doc-cell">CC3101 · Matemáticas Discretas</div></div>
+    <div class="dcc-col-12 dcc-col-sm-6 dcc-col-md-3"><div class="dcc-doc-cell">CC3201 · Bases de Datos</div></div>
+    <div class="dcc-col-12 dcc-col-sm-6 dcc-col-md-3"><div class="dcc-doc-cell">CC3501 · Computación Gráfica</div></div>
+  </div>
+</div>
+<p class="dcc-doc-p">Estos cortes no son los de las barras del kit (1024 y 768px): esos ajustan piezas de marca ya
+  diseñadas, y la grilla deja elegir dónde cambia cada columna con los mismos nombres que MUI.</p>
+
+<h2 class="dcc-doc-h2" id="espaciado">Espaciado</h2>
+<p class="dcc-doc-p">El espacio entre ítems va en unidades de 8px, de <code>.dcc-grid--gap-0</code> a
+  <code>--gap-6</code> (por defecto, 2 unidades: 16px). También por breakpoint, como
+  <code>--gap-md-3</code>, y por eje con <code>--row-gap-N</code> y <code>--column-gap-N</code>. El valor por defecto
+  de todas las grillas es la variable <code>--dcc-grid-gap</code>, que se puede cambiar en <code>:root</code>.</p>
+<div class="dcc-doc-demo">
+  <p class="dcc-sub-label">--gap-1 (8px)</p>
+  <div class="dcc-grid dcc-grid--gap-1">
+    <div class="dcc-col-4"><div class="dcc-doc-cell">1</div></div>
+    <div class="dcc-col-4"><div class="dcc-doc-cell">2</div></div>
+    <div class="dcc-col-4"><div class="dcc-doc-cell">3</div></div>
+  </div>
+</div>
+<div class="dcc-doc-demo">
+  <p class="dcc-sub-label">--gap-4 (32px)</p>
+  <div class="dcc-grid dcc-grid--gap-4">
+    <div class="dcc-col-4"><div class="dcc-doc-cell">1</div></div>
+    <div class="dcc-col-4"><div class="dcc-doc-cell">2</div></div>
+    <div class="dcc-col-4"><div class="dcc-doc-cell">3</div></div>
+  </div>
+</div>
+<div class="dcc-doc-demo">
+  <p class="dcc-sub-label">--row-gap-1 --column-gap-5</p>
+  <div class="dcc-grid dcc-grid--row-gap-1 dcc-grid--column-gap-5">
+    <div class="dcc-col-6"><div class="dcc-doc-cell">1</div></div>
+    <div class="dcc-col-6"><div class="dcc-doc-cell">2</div></div>
+    <div class="dcc-col-6"><div class="dcc-doc-cell">3</div></div>
+    <div class="dcc-col-6"><div class="dcc-doc-cell">4</div></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="auto">Automático</h2>
+<p class="dcc-doc-p"><code>.dcc-col-grow</code> toma lo que sobra de la fila y, si hay varios, se lo reparten en
+  partes iguales (<code>size="grow"</code>). <code>.dcc-col-auto</code> mide lo que su contenido
+  (<code>size="auto"</code>). Se mezclan con tamaños fijos.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-grid">
+    <div class="dcc-col-grow"><div class="dcc-doc-cell">grow</div></div>
+    <div class="dcc-col-6"><div class="dcc-doc-cell">dcc-col-6</div></div>
+    <div class="dcc-col-grow"><div class="dcc-doc-cell">grow</div></div>
+  </div>
+</div>
+<div class="dcc-doc-demo">
+  <div class="dcc-grid">
+    <div class="dcc-col-auto"><div class="dcc-doc-cell">auto: lo que mida el texto</div></div>
+    <div class="dcc-col-grow"><div class="dcc-doc-cell">grow</div></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="offset">Desplazamiento</h2>
+<p class="dcc-doc-p"><code>.dcc-offset-N</code> deja N columnas vacías antes del ítem, también por breakpoint
+  (<code>.dcc-offset-md-2</code>). <code>.dcc-offset-auto</code> lo empuja al final de la fila.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-grid">
+    <div class="dcc-col-3"><div class="dcc-doc-cell">dcc-col-3</div></div>
+    <div class="dcc-col-3 dcc-offset-auto"><div class="dcc-doc-cell">dcc-col-3 offset-auto</div></div>
+    <div class="dcc-col-4 dcc-offset-4"><div class="dcc-doc-cell">dcc-col-4 offset-4</div></div>
+    <div class="dcc-col-6 dcc-offset-md-6"><div class="dcc-doc-cell">dcc-col-6 offset-md-6</div></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="anidada">Anidada</h2>
+<p class="dcc-doc-p">Una grilla puede ir dentro de un ítem; la interior vuelve a tener doce columnas, calculadas
+  sobre el ancho de ese ítem, y hereda el espaciado de la exterior. A diferencia de MUI, la grilla interior va
+  <strong>dentro</strong> del ítem y no en el ítem mismo: el ancho de cada ítem se calcula con el espaciado de su
+  grilla madre, y si fuera también grilla usaría el suyo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-grid dcc-grid--gap-1">
+    <div class="dcc-col-12 dcc-col-md-8">
+      <div class="dcc-grid">
+        <div class="dcc-col-6"><div class="dcc-doc-cell">Memorias en curso</div></div>
+        <div class="dcc-col-6"><div class="dcc-doc-cell">Memorias defendidas</div></div>
+        <div class="dcc-col-4"><div class="dcc-doc-cell">2023</div></div>
+        <div class="dcc-col-4"><div class="dcc-doc-cell">2024</div></div>
+        <div class="dcc-col-4"><div class="dcc-doc-cell">2025</div></div>
+      </div>
+    </div>
+    <div class="dcc-col-12 dcc-col-md-4"><div class="dcc-doc-cell dcc-doc-cell--tall">Resumen</div></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="columnas">Columnas y alineación</h2>
+<p class="dcc-doc-p">El número de columnas sale de <code>--dcc-grid-columns</code>: con
+  <code>style="--dcc-grid-columns: 10"</code>, un <code>.dcc-col-2</code> es un quinto. La fila se alinea con
+  <code>--justify-center</code>, <code>--justify-end</code> y <code>--justify-between</code>, los ítems en el eje
+  vertical con <code>--align-start</code>, <code>--align-center</code> y <code>--align-end</code>, y
+  <code>--nowrap</code> impide que bajen a otra fila.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-grid dcc-grid--justify-center" style="--dcc-grid-columns: 10">
+    <div class="dcc-col-2"><div class="dcc-doc-cell">1/5</div></div>
+    <div class="dcc-col-2"><div class="dcc-doc-cell">1/5</div></div>
+    <div class="dcc-col-2"><div class="dcc-doc-cell">1/5</div></div>
+  </div>
+</div>

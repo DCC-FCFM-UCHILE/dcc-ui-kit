@@ -1,0 +1,103 @@
+<!--
+titulo: Progreso
+grupo: Retroalimentación
+resumen: Indicadores circulares y lineales de que algo está en curso: indeterminados cuando no se sabe cuánto falta, determinados cuando sí.
+miniatura: .dcc-doc-row
+escala: .8
+ancho: 360px
+-->
+<h2 class="dcc-doc-h2" id="circular">Circular</h2>
+<p class="dcc-doc-p">Un SVG con <code>role="progressbar"</code> y un nombre en <code>aria-label</code>. Sin más, es
+  indeterminado: gira mientras dura la espera, sin decir cuánto falta. Sirve para esperas cortas, de unos
+  segundos.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-progress-circle" role="progressbar" aria-label="Cargando cursos"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--secondary" role="progressbar" aria-label="Cargando cursos"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--determinate" role="progressbar" aria-label="Avance de la tarea 3" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 72"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="circular-determinado">Circular determinado</h2>
+<p class="dcc-doc-p">Con <code>--determinate</code>, el arco muestra el valor de <code>aria-valuenow</code> (0 a
+  100), que se repite en la variable <code>--dcc-progress-valor</code> para que se dibuje aun sin JavaScript.
+  La cifra al centro va en <code>__label</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-progress-circle dcc-progress-circle--determinate" role="progressbar" aria-label="Avance" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 25"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--determinate" role="progressbar" aria-label="Avance" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 50"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--determinate" role="progressbar" aria-label="Avance" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 75"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--determinate" role="progressbar" aria-label="Avance" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 100"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--lg dcc-progress-circle--determinate" role="progressbar" aria-label="Avance de la memoria" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 60"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg><span class="dcc-progress-circle__label">60%</span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores y tamaños</h2>
+<p class="dcc-doc-p">Los colores del botón —<code>--secondary</code>, <code>--success</code>, <code>--error</code>,
+  <code>--info</code>, <code>--warning</code>—, y <code>--inherit</code> para tomar el del texto. Tamaños
+  <code>--xs</code> (16px), <code>--sm</code> (24px), <code>--md</code> (40px, por omisión) y <code>--lg</code>
+  (56px); el trazo crece con el círculo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+        <span class="dcc-progress-circle" role="progressbar" aria-label="Cargando primario"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--secondary" role="progressbar" aria-label="Cargando secundario"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--success" role="progressbar" aria-label="Cargando éxito"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--error" role="progressbar" aria-label="Cargando error"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--info" role="progressbar" aria-label="Cargando información"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--warning" role="progressbar" aria-label="Cargando advertencia"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+  </div>
+  <div class="dcc-doc-row">
+    <span class="dcc-progress-circle dcc-progress-circle--xs" role="progressbar" aria-label="Cargando"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--sm" role="progressbar" aria-label="Cargando"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--md" role="progressbar" aria-label="Cargando"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+    <span class="dcc-progress-circle dcc-progress-circle--lg" role="progressbar" aria-label="Cargando"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="en-boton">Dentro de un botón</h2>
+<p class="dcc-doc-p">Dentro de un <code>.dcc-btn</code> el círculo mide 16px y toma el color de la etiqueta. El
+  botón se deshabilita mientras dura la acción y cambia la etiqueta, que es lo que lee el lector de pantalla:
+  el círculo va con <code>aria-hidden="true"</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" disabled>
+      <span class="dcc-progress-circle" aria-hidden="true"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span> Guardando…
+    </button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" disabled>
+      <span class="dcc-progress-circle" aria-hidden="true"><svg class="dcc-progress-circle__svg" viewBox="22 22 44 44" aria-hidden="true"><circle class="dcc-progress-circle__track" cx="44" cy="44" r="20.2"/><circle class="dcc-progress-circle__bar" cx="44" cy="44" r="20.2"/></svg></span> Subiendo informe…
+    </button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="lineal">Lineal</h2>
+<p class="dcc-doc-p">Una barra de 4px a lo ancho del contenedor; <code>--lg</code> la deja en 8px. Indeterminada
+  por omisión; con <code>--determinate</code> muestra el valor. Conviene para cargas largas o de página entera,
+  arriba del contenido que se espera.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-progress-stack">
+    <div class="dcc-progress-linear" role="progressbar" aria-label="Cargando la nómina de estudiantes"><span class="dcc-progress-linear__bar"></span></div>
+    <div class="dcc-progress-linear dcc-progress-linear--determinate" role="progressbar" aria-label="Avance de la descarga" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 40"><span class="dcc-progress-linear__bar"></span></div>
+    <div class="dcc-progress-linear dcc-progress-linear--lg dcc-progress-linear--success dcc-progress-linear--determinate" role="progressbar" aria-label="Créditos aprobados" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 80"><span class="dcc-progress-linear__bar"></span></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="lineal-cifra">Con cifra y buffer</h2>
+<p class="dcc-doc-p">Con la cifra al lado, en una <code>.dcc-progress-row</code>. Con <code>--buffer</code>, un
+  segundo tramo (<code>__buffer</code> y <code>--dcc-progress-buffer</code>) muestra lo ya descargado, como en un
+  video que todavía carga, y lo que falta avanza en puntos.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-progress-stack">
+    <div class="dcc-progress-row">
+      <div class="dcc-progress-linear dcc-progress-linear--determinate" role="progressbar" aria-label="Subida de la memoria" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 64"><span class="dcc-progress-linear__bar"></span></div>
+      <span class="dcc-progress-row__value" aria-hidden="true">64%</span>
+    </div>
+    <div class="dcc-progress-linear dcc-progress-linear--buffer" role="progressbar" aria-label="Reproducción de la clase grabada" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="--dcc-progress-valor: 30; --dcc-progress-buffer: 55"><span class="dcc-progress-linear__buffer"></span><span class="dcc-progress-linear__bar"></span></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="api">Desde JavaScript</h2>
+<p class="dcc-doc-p">Un indicador determinado lleva el valor en tres lugares: <code>aria-valuenow</code>, la
+  variable <code>--dcc-progress-valor</code> y la cifra visible, si la hay.
+  <code>DCCUI.progreso.fijar(el, valor)</code> los actualiza juntos —y <code>fijar(el, valor, buffer)</code> en la
+  barra con buffer—; con <code>null</code> el indicador vuelve a indeterminado. Al cargar, el kit toma el dibujo
+  de <code>aria-valuenow</code> si falta la variable.</p>

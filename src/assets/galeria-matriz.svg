@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- Ilustración propia del DCC UI Kit (licencia MIT del kit): una matriz de píxeles. -->
+  <defs>
+    <pattern id="p" width="60" height="60" patternUnits="userSpaceOnUse">
+      <rect x="8" y="8" width="44" height="44" rx="6" fill="#e5f1ff" fill-opacity=".14"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="600" fill="#2a5c7d"/>
+  <rect width="600" height="600" fill="url(#p)"/>
+  <g fill="#e5f1ff">
+    <rect x="128" y="188" width="44" height="44" rx="6"/><rect x="188" y="128" width="44" height="44" rx="6"/>
+    <rect x="248" y="128" width="44" height="44" rx="6"/><rect x="308" y="188" width="44" height="44" rx="6"/>
+    <rect x="368" y="128" width="44" height="44" rx="6"/><rect x="428" y="188" width="44" height="44" rx="6"/>
+    <rect x="128" y="248" width="44" height="44" rx="6"/><rect x="428" y="248" width="44" height="44" rx="6"/>
+    <rect x="188" y="308" width="44" height="44" rx="6"/><rect x="368" y="308" width="44" height="44" rx="6"/>
+    <rect x="248" y="368" width="44" height="44" rx="6"/><rect x="308" y="368" width="44" height="44" rx="6"/>
+  </g>
+  <rect x="278" y="428" width="44" height="44" rx="6" fill="#d23118"/>
+</svg>

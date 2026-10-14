@@ -1,0 +1,77 @@
+/* --------------------------------------------------------------------------
+   TOOLTIP  (MUI Tooltip)
+   Una etiqueta breve sobre un control. Lo arma y lo ubica
+   src/componentes/tooltip.js; acá sólo vive su aspecto.
+
+   Colores invertidos respecto de la página, como el tooltip "plano" de
+   Material 3: en claro, texto casi blanco sobre el título oscuro
+   (--dcc-fg-strong, 15,6:1); en oscuro se da vuelta solo y queda un globo
+   claro con texto oscuro. Así se despega de cualquier superficie sin sombra.
+   -------------------------------------------------------------------------- */
+.dcc-tooltip {
+  --dcc-tooltip-bg: var(--dcc-fg-strong);
+  --dcc-tooltip-fg: var(--dcc-surface);
+  --dcc-tooltip-arrow: 50%;
+  /* El script escribe left/top. `inset` y `margin` anulan lo que el navegador
+     le pone a un elemento con el atributo `popover` (centrado en la ventana). */
+  position: fixed;
+  z-index: 1500;
+  inset: auto;
+  top: 0;
+  left: 0;
+  margin: 0;
+  max-width: min(300px, calc(100vw - 16px));
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 4px;
+  overflow: visible;
+  background: var(--dcc-tooltip-bg);
+  color: var(--dcc-tooltip-fg);
+  font-family: var(--dcc-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: break-word;
+  animation: dcc-tooltip-entrada .15s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Crece desde el lado del disparador, como el Grow de MUI. */
+.dcc-tooltip[data-placement^="top"]    { transform-origin: var(--dcc-tooltip-arrow) 100%; }
+.dcc-tooltip[data-placement^="bottom"] { transform-origin: var(--dcc-tooltip-arrow) 0; }
+.dcc-tooltip[data-placement^="left"]   { transform-origin: 100% var(--dcc-tooltip-arrow); }
+.dcc-tooltip[data-placement^="right"]  { transform-origin: 0 var(--dcc-tooltip-arrow); }
+
+@keyframes dcc-tooltip-entrada {
+  from { opacity: 0; transform: scale(.85); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Flecha: un cuadrado girado del mismo color, que asoma 4px por el lado que
+   mira al disparador y apunta a su centro (--dcc-tooltip-arrow lo calcula el
+   script, también cuando el globo se corrió para no salirse de la ventana). */
+.dcc-tooltip--arrow::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+.dcc-tooltip--arrow[data-placement^="top"]::before    { bottom: -4px; left: calc(var(--dcc-tooltip-arrow) - 4px); }
+.dcc-tooltip--arrow[data-placement^="bottom"]::before { top: -4px;    left: calc(var(--dcc-tooltip-arrow) - 4px); }
+.dcc-tooltip--arrow[data-placement^="left"]::before   { right: -4px;  top: calc(var(--dcc-tooltip-arrow) - 4px); }
+.dcc-tooltip--arrow[data-placement^="right"]::before  { left: -4px;   top: calc(var(--dcc-tooltip-arrow) - 4px); }
+
+/* Dibujado en el flujo, sin script: para documentar el componente o mostrar
+   un tooltip fijo en una captura. No es interactivo. */
+.dcc-tooltip--static {
+  position: relative;
+  z-index: auto;
+  display: inline-block;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-tooltip { animation: none; }
+}

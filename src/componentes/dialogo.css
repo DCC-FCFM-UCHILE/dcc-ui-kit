@@ -1,0 +1,165 @@
+/* --------------------------------------------------------------------------
+   DIÁLOGO  (MUI Dialog + Modal + Backdrop)
+
+   Se arma sobre <dialog> nativo abierto con showModal(). El navegador ya
+   resuelve lo difícil de un modal —sacarlo a la capa superior, dejar inerte el
+   resto de la página, atrapar el foco y cerrar con Escape— y `::backdrop` hace
+   de Backdrop sin un elemento más. Lo que queda para el kit es el aspecto, el
+   bloqueo del scroll, el cierre animado y devolver el foco al disparador (eso
+   vive en dialogo.js).
+
+   Partes:  __title · __content (con __text para el párrafo) · __actions · __close
+   Tamaños: --sm (444px) · --md (600px, por omisión) · --lg (900px)
+   Pantalla completa: --fullscreen siempre, --fullscreen-mobile bajo 600px.
+   En línea: --inline, sobre un <div>, para mostrarlo dentro de la página.
+   -------------------------------------------------------------------------- */
+.dcc-dialog {
+  --dcc-dialog-max: 600px;
+  /* La sombra de la elevación 24 de MUI, la más alta de su escala: el diálogo
+     es lo que está más cerca de quien mira. */
+  --dcc-dialog-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2),
+                       0 24px 38px 3px rgba(0, 0, 0, .14),
+                       0 9px 46px 8px rgba(0, 0, 0, .12);
+  /* Fuera del ancho máximo, el diálogo ocupa el ancho disponible menos 32px por
+     lado, como el `margin: 32px` del Paper de MUI. */
+  width: calc(100% - 64px);
+  max-width: var(--dcc-dialog-max);
+  max-height: calc(100% - 64px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dcc-card-radius);
+  background: var(--dcc-surface-raised);
+  color: var(--dcc-fg);
+  box-shadow: var(--dcc-dialog-shadow);
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+/* Sólo abierto: sin `[open]` el `display` le ganaría al `display: none` con
+   que el navegador esconde el <dialog> cerrado. */
+.dcc-dialog[open] { display: flex; flex-direction: column; }
+
+/* El Backdrop de MUI: negro al 50%, igual en los dos temas. */
+.dcc-dialog::backdrop { background: var(--dcc-scrim, rgba(26, 32, 44, .5)); }
+
+.dcc-dialog--sm { --dcc-dialog-max: 444px; }
+.dcc-dialog--md { --dcc-dialog-max: 600px; }
+.dcc-dialog--lg { --dcc-dialog-max: 900px; }
+
+.dcc-dialog--fullscreen {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+@media (max-width: 600px) {
+  .dcc-dialog--fullscreen-mobile {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+  }
+}
+
+/* En la página, no como modal: un <div> con la misma cara, para documentar
+   la anatomía o para mostrar el diálogo dentro de un ejemplo. */
+.dcc-dialog--inline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+}
+
+/* ---- Partes ---- */
+.dcc-dialog__title {
+  flex: 0 0 auto;
+  margin: 0;
+  /* A la derecha se reserva el espacio del botón de cerrar, si lo hay. */
+  padding: 20px 24px 12px;
+  font-family: var(--dcc-font-display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dcc-fg-strong);
+}
+.dcc-dialog__close ~ .dcc-dialog__title,
+.dcc-dialog__title:has(+ .dcc-dialog__close) { padding-right: 64px; }
+
+/* El contenido es lo único que se desplaza: el título y las acciones quedan
+   siempre a la vista, que es el `scroll="paper"` de MUI. */
+.dcc-dialog__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 8px 24px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.dcc-dialog__content:first-child { padding-top: 24px; }
+/* Con divisores, como `<DialogContent dividers>`: marcan dónde corta el
+   desplazamiento cuando el texto es más largo que la ventana. */
+.dcc-dialog__content--dividers {
+  padding: 16px 24px;
+  border-top: 1px solid var(--dcc-border-subtle);
+  border-bottom: 1px solid var(--dcc-border-subtle);
+}
+.dcc-dialog__content:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: -2px; }
+
+.dcc-dialog__text { margin: 0; color: var(--dcc-fg-muted); }
+.dcc-dialog__text + .dcc-dialog__text { margin-top: 12px; }
+
+/* Un <form method="dialog"> que envuelve las partes: se comporta como el
+   propio diálogo, para que el contenido siga siendo lo único que se desplaza. */
+.dcc-dialog__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+}
+
+/* Los campos de un formulario dentro del diálogo, uno bajo otro. */
+.dcc-dialog__fields { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+
+.dcc-dialog__actions {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 24px 20px;
+}
+.dcc-dialog__content--dividers + .dcc-dialog__actions { padding-top: 16px; }
+
+/* Botón de cerrar de la esquina: un `.dcc-icon-btn`; aquí sólo se ubica. */
+.dcc-dialog__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+/* Bloqueo del scroll de la página mientras hay un diálogo abierto. La clase la
+   pone dialogo.js en <html>; el ancho de la barra que desaparece se compensa
+   ahí mismo con un padding en línea, para que el fondo no salte. */
+.dcc-dialog-abierto { overflow: hidden; }
+
+/* ---- Animación ----
+   Entra con un fundido y un leve crecimiento —el Fade de MUI más la escala del
+   Grow— y sale al revés. La salida la arranca dialogo.js con `is-closing` y
+   cierra el <dialog> al terminar. Con movimiento reducido no hay animación y el
+   script cierra de inmediato. */
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-dialog[open] { animation: dcc-dialog-entra .225s cubic-bezier(.4, 0, .2, 1); }
+  .dcc-dialog[open]::backdrop { animation: dcc-dialog-fondo-entra .225s cubic-bezier(.4, 0, .2, 1); }
+  .dcc-dialog.is-closing { animation: dcc-dialog-sale .195s cubic-bezier(.4, 0, .2, 1) forwards; }
+  .dcc-dialog.is-closing::backdrop { animation: dcc-dialog-fondo-sale .195s cubic-bezier(.4, 0, .2, 1) forwards; }
+}
+@keyframes dcc-dialog-entra { from { opacity: 0; transform: scale(.96); } }
+@keyframes dcc-dialog-sale { to { opacity: 0; transform: scale(.96); } }
+@keyframes dcc-dialog-fondo-entra { from { opacity: 0; } }
+@keyframes dcc-dialog-fondo-sale { to { opacity: 0; } }

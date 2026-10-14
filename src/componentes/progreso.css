@@ -1,0 +1,237 @@
+/* --------------------------------------------------------------------------
+   PROGRESO  (MUI CircularProgress y LinearProgress)
+
+   Dos formas, circular y lineal, cada una en dos modos:
+
+     indeterminado  no se sabe cuánto falta: la animación sólo dice «trabajando».
+                    Es el modo por omisión.
+     determinado    `--determinate` + `aria-valuenow` + la variable
+                    `--dcc-progress-valor` (0 a 100) en línea. DCCUI.progreso.fijar()
+                    mantiene las tres en sincronía (progreso.js).
+
+   Ambos llevan `role="progressbar"` y un nombre (`aria-label` o
+   `aria-labelledby`); el indeterminado va sin `aria-valuenow`, que es como el
+   lector de pantalla sabe que no hay cifra.
+
+   Colores como el botón: primary (por omisión), --secondary, --success,
+   --error, --info, --warning, y --inherit para tomar el color del texto (dentro
+   de un botón, por ejemplo). Todos pasan 3:1 contra la superficie, el mínimo
+   para un indicador gráfico.
+
+   Con movimiento reducido el indeterminado no gira ni se desliza: queda un
+   arco o una barra quietos, pulsando apenas, para que se siga leyendo como
+   «en curso» sin movimiento en la pantalla.
+   -------------------------------------------------------------------------- */
+.dcc-progress-circle,
+.dcc-progress-linear {
+  --dcc-progress-color: var(--dcc-accent);
+  --dcc-progress-valor: 0;
+  --dcc-progress-buffer: 0;
+  color: var(--dcc-progress-color);
+}
+.dcc-progress-circle--secondary,
+.dcc-progress-linear--secondary { --dcc-progress-color: var(--dcc-fg-muted); }
+.dcc-progress-circle--success,
+.dcc-progress-linear--success   { --dcc-progress-color: var(--dcc-success); }
+.dcc-progress-circle--error,
+.dcc-progress-linear--error     { --dcc-progress-color: var(--dcc-danger); }
+.dcc-progress-circle--info,
+.dcc-progress-linear--info      { --dcc-progress-color: var(--dcc-info); }
+.dcc-progress-circle--warning,
+.dcc-progress-linear--warning   { --dcc-progress-color: var(--dcc-warning); }
+.dcc-progress-circle--inherit,
+.dcc-progress-linear--inherit   { --dcc-progress-color: currentColor; }
+
+/* ---- Circular ----
+   Las medidas del SVG son las de MUI: viewBox de 44 unidades, radio 20,2 y
+   trazo 3,6, así que el grosor escala con el tamaño. El perímetro del arco es
+   2π·20,2 = 126,92. */
+.dcc-progress-circle {
+  --dcc-progress-size: 40px;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--dcc-progress-size);
+  height: var(--dcc-progress-size);
+  vertical-align: middle;
+}
+.dcc-progress-circle--xs { --dcc-progress-size: 16px; }
+.dcc-progress-circle--sm { --dcc-progress-size: 24px; }
+.dcc-progress-circle--md { --dcc-progress-size: 40px; }
+.dcc-progress-circle--lg { --dcc-progress-size: 56px; }
+
+.dcc-progress-circle__svg { display: block; width: 100%; height: 100%; }
+.dcc-progress-circle__track,
+.dcc-progress-circle__bar {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.6;
+}
+/* El riel no está en MUI. Va muy tenue para que el arco determinado se lea
+   como una fracción de algo, y no como un arco suelto. */
+.dcc-progress-circle__track { opacity: .16; }
+.dcc-progress-circle__bar { stroke-linecap: round; }
+
+.dcc-progress-circle--determinate .dcc-progress-circle__svg { transform: rotate(-90deg); }
+.dcc-progress-circle--determinate .dcc-progress-circle__bar {
+  stroke-dasharray: 126.92px;
+  stroke-dashoffset: calc(126.92px * (1 - var(--dcc-progress-valor) / 100));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-circle--determinate .dcc-progress-circle__bar {
+    transition: stroke-dashoffset .3s cubic-bezier(.4, 0, .2, 1);
+  }
+}
+
+/* Indeterminado: el SVG gira y el arco se estira y se encoge, con las mismas
+   curvas y los mismos 1,4s de MUI. */
+.dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__bar {
+  stroke-dasharray: 80px, 200px;
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__svg {
+    animation: dcc-progress-giro 1.4s linear infinite;
+  }
+  .dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__bar {
+    animation: dcc-progress-arco 1.4s ease-in-out infinite;
+  }
+}
+@keyframes dcc-progress-giro { to { transform: rotate(360deg); } }
+@keyframes dcc-progress-arco {
+  0%   { stroke-dasharray: 1px, 200px;   stroke-dashoffset: 0; }
+  50%  { stroke-dasharray: 100px, 200px; stroke-dashoffset: -15px; }
+  100% { stroke-dasharray: 100px, 200px; stroke-dashoffset: -125px; }
+}
+
+/* La cifra en el centro (CircularProgressWithLabel). Escala con el círculo. */
+.dcc-progress-circle__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--dcc-font-body);
+  font-size: calc(var(--dcc-progress-size) * .28);
+  font-weight: 700;
+  line-height: 1;
+  /* La cifra va en el color del texto: el del indicador no siempre llega a
+     4,5:1 en un tamaño tan chico. */
+  color: var(--dcc-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Lineal ----
+   Una barra de 4px a lo ancho del contenedor. El riel es el mismo color al
+   24% (el `lighten` de MUI, dicho en función del color y no de un hex, para
+   que siga al tema). */
+.dcc-progress-linear {
+  --dcc-progress-alto: 4px;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: var(--dcc-progress-alto);
+  overflow: hidden;
+  border-radius: var(--dcc-progress-alto);
+  background: color-mix(in srgb, var(--dcc-progress-color) 24%, transparent);
+}
+.dcc-progress-linear--lg { --dcc-progress-alto: 8px; }
+
+.dcc-progress-linear__bar,
+.dcc-progress-linear__buffer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: left center;
+}
+.dcc-progress-linear__bar { background: currentColor; }
+.dcc-progress-linear--determinate .dcc-progress-linear__bar,
+.dcc-progress-linear--buffer .dcc-progress-linear__bar {
+  transform: scaleX(calc(var(--dcc-progress-valor) / 100));
+}
+
+/* Buffer: lo ya descargado, en un tono intermedio, y lo que falta como una
+   línea de puntos que avanza —el aspecto de un video que todavía carga—. */
+.dcc-progress-linear--buffer {
+  background: radial-gradient(color-mix(in srgb, var(--dcc-progress-color) 30%, transparent) 0 50%, transparent 55%)
+              0 50% / 10px 10px repeat-x;
+}
+/* El tramo del buffer es opaco —mezclado con la superficie— para tapar los
+   puntos que tiene debajo. */
+.dcc-progress-linear__buffer {
+  background: color-mix(in srgb, var(--dcc-progress-color) 30%, var(--dcc-surface));
+  transform: scaleX(calc(var(--dcc-progress-buffer) / 100));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-linear--determinate .dcc-progress-linear__bar,
+  .dcc-progress-linear--buffer .dcc-progress-linear__bar,
+  .dcc-progress-linear__buffer { transition: transform .4s linear; }
+  .dcc-progress-linear--buffer { animation: dcc-progress-puntos 3s linear infinite; }
+}
+@keyframes dcc-progress-puntos { to { background-position: -40px 50%; } }
+
+/* Indeterminado: dos tramos que cruzan la barra a destiempo, como MUI. */
+.dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer) .dcc-progress-linear__bar {
+  right: auto;
+  width: 40%;
+  left: 30%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer) .dcc-progress-linear__bar {
+    animation: dcc-progress-barra 2.1s cubic-bezier(.65, .815, .735, .395) infinite;
+  }
+  .dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: dcc-progress-barra-2 2.1s cubic-bezier(.165, .84, .44, 1) 1.15s infinite;
+    left: -200%;
+    width: 0;
+  }
+}
+@keyframes dcc-progress-barra {
+  0%   { left: -35%;  width: 35%; }
+  60%  { left: 100%;  width: 90%; }
+  100% { left: 100%;  width: 90%; }
+}
+@keyframes dcc-progress-barra-2 {
+  0%   { left: -200%; width: 100%; }
+  60%  { left: 107%;  width: 8%; }
+  100% { left: 107%;  width: 8%; }
+}
+
+/* Sin movimiento, el indeterminado pulsa en el lugar. */
+@media (prefers-reduced-motion: reduce) {
+  .dcc-progress-circle:not(.dcc-progress-circle--determinate) .dcc-progress-circle__bar,
+  .dcc-progress-linear:not(.dcc-progress-linear--determinate):not(.dcc-progress-linear--buffer) .dcc-progress-linear__bar {
+    animation: dcc-progress-pulso 2s ease-in-out infinite;
+  }
+}
+@keyframes dcc-progress-pulso { 50% { opacity: .4; } }
+
+/* Barra con la cifra al lado (LinearProgressWithLabel). */
+.dcc-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.dcc-progress-row .dcc-progress-linear { flex: 1 1 auto; }
+.dcc-progress-row__value {
+  flex: 0 0 auto;
+  min-width: 3.5ch;
+  text-align: right;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  color: var(--dcc-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dentro de un botón: toma el color y el tamaño del ícono. */
+.dcc-btn .dcc-progress-circle { --dcc-progress-size: 16px; --dcc-progress-color: currentColor; }
+
+/* Para las demos: varias barras, una bajo otra. */
+.dcc-progress-stack { display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: 480px; }

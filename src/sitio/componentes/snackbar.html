@@ -1,0 +1,132 @@
+<!--
+titulo: Snackbar
+grupo: Retroalimentación
+resumen: Un aviso breve en un borde de la pantalla sobre algo que acaba de pasar. No interrumpe, puede traer una acción como «Deshacer» y se va solo.
+miniatura: .dcc-snackbar--inline
+escala: .7
+ancho: 420px
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">El snackbar se crea desde código con <code>DCCUI.notificar()</code>, o sin escribir código con un
+  botón <code>js-notificar</code> que lleva el mensaje en <code>data-mensaje</code>. Aparece abajo al centro, se
+  cierra solo a los seis segundos y el lector de pantalla lo lee sin quitarle el foco a nadie.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained js-notificar" type="button"
+      data-mensaje="Memoria guardada como borrador">Guardar borrador</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-notificar" type="button"
+      data-mensaje="Se archivó «Detección de plagio en código fuente»" data-accion="Deshacer"
+      data-accion-mensaje="Memoria restaurada">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"/></svg> Archivar memoria
+    </button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="anatomia">Anatomía</h2>
+<p class="dcc-doc-p">El mensaje (<code>__message</code>) y, a la derecha, las acciones (<code>__actions</code>): un
+  botón de texto <code>__action</code> y el botón de cerrar <code>__close</code>. Sin tipo, el aviso usa el color
+  de los títulos de fondo y el de la superficie para el texto, así que es oscuro en el tema claro y claro en el
+  oscuro. Con <code>--inline</code> se dibuja dentro de la página en vez de flotar.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-snackbar dcc-snackbar--inline">
+    <div class="dcc-snackbar__message">Se envió la nota del control 2 a 84 estudiantes</div>
+    <div class="dcc-snackbar__actions">
+      <button class="dcc-snackbar__action" type="button">Deshacer</button>
+      <button class="dcc-icon-btn dcc-icon-btn--sm dcc-icon-btn--inherit dcc-snackbar__close" type="button" aria-label="Cerrar aviso">
+        <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tipos">Con color de alerta</h2>
+<p class="dcc-doc-p">Con <code>tipo</code> (<code>data-tipo</code>) el aviso toma el relleno fuerte del estado y un
+  ícono: <code>success</code>, <code>error</code>, <code>info</code> o <code>warning</code>. Es la alerta
+  «filled» dentro de un snackbar, como recomienda MUI. Los de error se anuncian con <code>role="alert"</code>,
+  que interrumpe al lector de pantalla.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-snackbar-stack">
+    <div class="dcc-snackbar dcc-snackbar--inline dcc-snackbar--success">
+      <svg class="dcc-i dcc-snackbar__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"/></svg>
+      <div class="dcc-snackbar__message">Inscripción en CC3001 confirmada</div>
+    </div>
+    <div class="dcc-snackbar dcc-snackbar--inline dcc-snackbar--info">
+      <svg class="dcc-i dcc-snackbar__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"/></svg>
+      <div class="dcc-snackbar__message">Hay una versión nueva del programa del curso</div>
+    </div>
+    <div class="dcc-snackbar dcc-snackbar--inline dcc-snackbar--warning">
+      <svg class="dcc-i dcc-snackbar__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-triangle-alert"/></svg>
+      <div class="dcc-snackbar__message">Quedan 2 cupos en la sección 1</div>
+    </div>
+    <div class="dcc-snackbar dcc-snackbar--inline dcc-snackbar--error">
+      <svg class="dcc-i dcc-snackbar__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"/></svg>
+      <div class="dcc-snackbar__message">No se pudo subir el informe</div>
+      <div class="dcc-snackbar__actions">
+        <button class="dcc-snackbar__action" type="button">Reintentar</button>
+      </div>
+    </div>
+  </div>
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--success js-notificar" type="button"
+      data-tipo="success" data-mensaje="Inscripción en CC3001 confirmada">Éxito</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-notificar" type="button"
+      data-tipo="info" data-mensaje="Hay una versión nueva del programa del curso">Información</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-notificar" type="button"
+      data-tipo="warning" data-mensaje="Quedan 2 cupos en la sección 1">Advertencia</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--error js-notificar" type="button"
+      data-tipo="error" data-mensaje="No se pudo subir el informe" data-accion="Reintentar"
+      data-accion-mensaje="Informe subido">Error</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="posiciones">Posiciones</h2>
+<p class="dcc-doc-p">Abajo al centro por omisión. <code>posicion</code> (<code>data-posicion</code>) acepta
+  <code>bottom-left</code>, <code>bottom-right</code>, <code>top-left</code>, <code>top-center</code> y
+  <code>top-right</code>. Bajo 600px de ancho el aviso ocupa la pantalla de lado a lado, a 8px de los bordes.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-matrix">
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-notificar" type="button" data-posicion="top-left" data-mensaje="Arriba a la izquierda">Arriba izquierda</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-notificar" type="button" data-posicion="top-center" data-mensaje="Arriba al centro">Arriba centro</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-notificar" type="button" data-posicion="top-right" data-mensaje="Arriba a la derecha">Arriba derecha</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-notificar" type="button" data-posicion="bottom-left" data-mensaje="Abajo a la izquierda">Abajo izquierda</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-notificar" type="button" data-posicion="bottom-center" data-mensaje="Abajo al centro">Abajo centro</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-notificar" type="button" data-posicion="bottom-right" data-mensaje="Abajo a la derecha">Abajo derecha</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="duracion">Duración y cola</h2>
+<p class="dcc-doc-p">El aviso dura seis segundos; <code>duracion</code> (en milisegundos) lo cambia y
+  <code>0</code> lo deja hasta que se cierre a mano. La cuenta se detiene mientras el cursor está encima o el
+  foco está dentro, para alcanzar a leerlo o a usar la acción, y Escape cierra el aviso visible. Se muestra uno
+  a la vez: pulsa varios botones seguidos y los avisos esperan su turno. Un aviso sin duración cede su lugar en
+  cuanto llega otro.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-notificar" type="button" data-duracion="2000"
+      data-mensaje="Copiado al portapapeles">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-copy"/></svg> Dos segundos
+    </button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-notificar" type="button" data-duracion="0"
+      data-mensaje="Sin conexión: los cambios se guardarán al reconectar">Sin cierre automático</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-notificar" type="button"
+      data-mensaje="Se subieron 3 archivos a Material de laboratorio">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-upload"/></svg> Subir archivos
+    </button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="api">Desde JavaScript</h2>
+<p class="dcc-doc-p"><code>DCCUI.notificar(opciones)</code> pone el aviso en la cola y devuelve un objeto con
+  <code>cerrar()</code>. El mensaje se inserta como texto, nunca como HTML.</p>
+<table class="dcc-doc-table">
+  <thead><tr><th>Opción</th><th>Atributo</th><th>Qué hace</th></tr></thead>
+  <tbody>
+    <tr><td><code>mensaje</code></td><td><code>data-mensaje</code></td><td>El texto del aviso.</td></tr>
+    <tr><td><code>tipo</code></td><td><code>data-tipo</code></td><td><code>success</code>, <code>error</code>, <code>info</code> o <code>warning</code>.</td></tr>
+    <tr><td><code>accion</code></td><td><code>data-accion</code></td><td><code>{ texto, alHacer }</code>: el botón de texto y su función. En HTML, <code>data-accion-mensaje</code> muestra otro aviso al pulsarla.</td></tr>
+    <tr><td><code>duracion</code></td><td><code>data-duracion</code></td><td>Milisegundos hasta cerrarse (6000); <code>0</code>, nunca.</td></tr>
+    <tr><td><code>posicion</code></td><td><code>data-posicion</code></td><td><code>bottom-center</code> y las otras cinco.</td></tr>
+    <tr><td><code>cerrable</code></td><td></td><td><code>false</code> quita el botón de cerrar.</td></tr>
+    <tr><td><code>alCerrar</code></td><td></td><td>Función que se llama al cerrarse, por la causa que sea.</td></tr>
+  </tbody>
+</table>

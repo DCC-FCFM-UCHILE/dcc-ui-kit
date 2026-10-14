@@ -1,0 +1,81 @@
+<!--
+titulo: Masonry
+grupo: Diseño
+resumen: Columnas de igual ancho donde cada elemento conserva su alto y se acomoda bajo el anterior, para tarjetas de largo distinto.
+miniatura: .dcc-masonry
+escala: .45
+ancho: 640px
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">Cada hijo de <code>.dcc-masonry</code> es un elemento, sea lo que sea: una tarjeta, una imagen,
+  un aviso. Mide lo que su contenido y se acomoda bajo el anterior de su columna, sin las filas parejas de una
+  grilla. Como en MUI, parte con 4 columnas y 8px de separación.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-masonry">
+    <div class="dcc-doc-cell">1</div>
+    <div class="dcc-doc-cell dcc-doc-cell--tall">2</div>
+    <div class="dcc-doc-cell">3</div>
+    <div class="dcc-doc-cell dcc-doc-cell--tall">4</div>
+    <div class="dcc-doc-cell dcc-doc-cell--tall">5</div>
+    <div class="dcc-doc-cell">6</div>
+    <div class="dcc-doc-cell">7</div>
+    <div class="dcc-doc-cell dcc-doc-cell--tall">8</div>
+    <div class="dcc-doc-cell">9</div>
+    <div class="dcc-doc-cell dcc-doc-cell--tall">10</div>
+    <div class="dcc-doc-cell">11</div>
+    <div class="dcc-doc-cell">12</div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="columnas">Columnas y espaciado</h2>
+<p class="dcc-doc-p">Las columnas van con <code>--cols-1</code> a <code>--cols-6</code> y, por breakpoint, con
+  <code>--cols-{bp}-N</code>, de móvil hacia arriba con los cortes de MUI (<code>sm</code> 600px, <code>md</code> 900px,
+  <code>lg</code> 1200px, <code>xl</code> 1536px). La separación, en unidades de 8px, con <code>--gap-0</code> a
+  <code>--gap-6</code>. Este tablero de avisos tiene una columna en el teléfono, dos en una tableta y tres en un
+  computador.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-masonry dcc-masonry--cols-1 dcc-masonry--cols-sm-2 dcc-masonry--cols-md-3 dcc-masonry--gap-2">
+    <article class="dcc-doc-cell dcc-doc-cell--start dcc-stack dcc-stack--gap-1 dcc-stack--align-start">
+      <span class="dcc-badge dcc-badge--soft-red">Plazo</span>
+      <strong>Inscripción de memorias</strong>
+      <span>Hasta el viernes 17 de octubre en la Secretaría Docente.</span>
+    </article>
+    <article class="dcc-doc-cell dcc-doc-cell--start dcc-stack dcc-stack--gap-1 dcc-stack--align-start">
+      <span class="dcc-badge dcc-badge--soft-blue">Charla</span>
+      <strong>Coloquio del DCC</strong>
+      <span>"Verificación formal de contratos inteligentes". Auditorio Enrique d'Etigny, Beauchef 851, jueves a las 12:00.
+        Abierto a toda la comunidad; habrá transmisión en vivo para quienes no puedan asistir.</span>
+    </article>
+    <article class="dcc-doc-cell dcc-doc-cell--start dcc-stack dcc-stack--gap-1 dcc-stack--align-start">
+      <span class="dcc-badge dcc-badge--soft-green">Beca</span>
+      <strong>Ayudantías CC3001</strong>
+      <span>Se buscan dos ayudantes para Algoritmos y Estructuras de Datos.</span>
+    </article>
+    <article class="dcc-doc-cell dcc-doc-cell--start dcc-stack dcc-stack--gap-1 dcc-stack--align-start">
+      <span class="dcc-badge dcc-badge--soft-lightblue">Aviso</span>
+      <strong>Laboratorio cerrado</strong>
+      <span>El laboratorio del piso 3 estará cerrado por mantención.</span>
+    </article>
+    <article class="dcc-doc-cell dcc-doc-cell--start dcc-stack dcc-stack--gap-1 dcc-stack--align-start">
+      <span class="dcc-badge dcc-badge--soft-lightblue">Postulación</span>
+      <strong>Magíster en Ciencias de la Computación</strong>
+      <span>Abierta la postulación para el primer semestre. Requisitos: licenciatura en un área afín, dos cartas de
+        recomendación y una carta de motivación. Las entrevistas se coordinan por correo.</span>
+    </article>
+    <article class="dcc-doc-cell dcc-doc-cell--start dcc-stack dcc-stack--gap-1 dcc-stack--align-start">
+      <span class="dcc-badge dcc-badge--soft-blue">Charla</span>
+      <strong>Defensa de doctorado</strong>
+      <span>Sala B-212, lunes 10:30.</span>
+    </article>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="orden">Orden</h2>
+<p class="dcc-doc-p">La base son columnas de CSS, que funcionan en todos los navegadores. Su orden es el de un diario:
+  los elementos bajan por la primera columna y siguen en la segunda; en el ejemplo básico, el 1, el 2 y el 3 quedan
+  uno bajo otro. Donde el navegador ya trae masonry nativo (<code>display: grid-lanes</code>), el kit lo usa, y ahí
+  cada elemento va a la columna más corta, de izquierda a derecha, como el <code>sequential</code> de MUI.</p>
+<p class="dcc-doc-p">En los dos casos el teclado y el lector de pantalla siguen el orden del HTML. Pon primero lo más
+  importante y no dependas de en qué columna cae cada cosa.</p>
+<p class="dcc-doc-p">Para imágenes con barra de título está la variante <code>--masonry</code> de la
+  <a class="dcc-link" href="lista-de-imagenes.html">Lista de imágenes</a>.</p>

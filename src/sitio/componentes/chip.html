@@ -1,0 +1,152 @@
+<!--
+titulo: Chip
+grupo: Visualización de datos
+resumen: Elementos compactos que representan una entrada, un filtro o una persona. Pueden llevar ícono o avatar, ser clicables o eliminables.
+miniatura: .dcc-doc-row
+escala: .8
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">El chip combina una <strong>variante</strong> —relleno, por omisión, o
+  <code>--outlined</code>— con un <strong>color</strong> y un <strong>tamaño</strong>. El texto va en
+  <code>.dcc-chip__label</code>, que corta con puntos suspensivos si no cabe.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-chip"><span class="dcc-chip__label">CC3001</span></span>
+    <span class="dcc-chip dcc-chip--outlined"><span class="dcc-chip__label">CC3001</span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="chip-o-badge">Chip o badge</h2>
+<p class="dcc-doc-p">Los dos son píldoras con texto, pero no hacen lo mismo. El <a href="badge.html">badge</a>
+  (<code>.dcc-badge</code>) es una etiqueta de 20px que <em>informa</em>: el estado de una solicitud, la
+  categoría de una noticia. Se lee de pasada y no se toca. El chip mide lo que un control —32px, o 24px el
+  pequeño— y representa algo con lo que se <em>trabaja</em>: un filtro aplicado que se puede quitar, una
+  persona agregada a una lista, una opción que se elige. Si la pieza responde al clic o tiene una cruz para
+  quitarla, es un chip; si sólo describe, es un badge.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-badge dcc-badge--success">Aprobada</span>
+    <span class="dcc-chip dcc-chip--outlined">
+      <span class="dcc-chip__label">Semestre: Otoño 2026</span>
+      <button class="dcc-chip__delete js-chip-delete" type="button" aria-label="Quitar filtro Semestre: Otoño 2026"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores</h2>
+<p class="dcc-doc-p">Además del neutro, seis colores por rol: <code>--primary</code>, <code>--secondary</code>,
+  <code>--success</code>, <code>--error</code>, <code>--info</code> y <code>--warning</code>. Son los del botón
+  más info y warning, en el tono fuerte para que el texto blanco pase de 4,5:1.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-chip"><span class="dcc-chip__label">Neutro</span></span>
+    <span class="dcc-chip dcc-chip--primary"><span class="dcc-chip__label">Primario</span></span>
+    <span class="dcc-chip dcc-chip--secondary"><span class="dcc-chip__label">Secundario</span></span>
+    <span class="dcc-chip dcc-chip--success"><span class="dcc-chip__label">Éxito</span></span>
+    <span class="dcc-chip dcc-chip--error"><span class="dcc-chip__label">Error</span></span>
+    <span class="dcc-chip dcc-chip--info"><span class="dcc-chip__label">Info</span></span>
+    <span class="dcc-chip dcc-chip--warning"><span class="dcc-chip__label">Advertencia</span></span>
+  </div>
+  <div class="dcc-doc-row">
+    <span class="dcc-chip dcc-chip--outlined"><span class="dcc-chip__label">Neutro</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--primary"><span class="dcc-chip__label">Primario</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--secondary"><span class="dcc-chip__label">Secundario</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--success"><span class="dcc-chip__label">Éxito</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--error"><span class="dcc-chip__label">Error</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--info"><span class="dcc-chip__label">Info</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--warning"><span class="dcc-chip__label">Advertencia</span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p">Mediano (32px) por omisión y <code>--sm</code> (24px), que es el que va dentro de un campo,
+  como en el <a href="autocompletar.html">autocompletar</a> múltiple.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-chip dcc-chip--sm"><span class="dcc-chip__label">Pequeño</span></span>
+    <span class="dcc-chip"><span class="dcc-chip__label">Mediano</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--sm"><span class="dcc-chip__label">Pequeño</span></span>
+    <span class="dcc-chip dcc-chip--outlined"><span class="dcc-chip__label">Mediano</span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="icono">Con ícono</h2>
+<p class="dcc-doc-p">El ícono va primero, con <code>.dcc-chip__icon</code>. Toma el color del texto.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-chip"><svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"/></svg><span class="dcc-chip__label">Beauchef 851</span></span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--primary"><svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-graduation-cap"/></svg><span class="dcc-chip__label">Memoria de título</span></span>
+    <span class="dcc-chip dcc-chip--success"><svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"/></svg><span class="dcc-chip__label">Inscrito</span></span>
+    <span class="dcc-chip dcc-chip--sm dcc-chip--outlined"><svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"/></svg><span class="dcc-chip__label">Otoño 2026</span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="avatar">Con avatar</h2>
+<p class="dcc-doc-p">Un <code>.dcc-avatar</code> como primer hijo se achica al alto del chip menos 8px. Sirve
+  para personas: integrantes de una comisión, ayudantes de un curso.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-chip"><span class="dcc-avatar"><span class="dcc-avatar__label">MP</span></span><span class="dcc-chip__label">María Paz Rojas</span></span>
+    <span class="dcc-chip dcc-chip--outlined"><span class="dcc-avatar dcc-avatar--lightblue"><span class="dcc-avatar__label">JT</span></span><span class="dcc-chip__label">Javier Torres</span></span>
+    <span class="dcc-chip dcc-chip--sm dcc-chip--outlined"><span class="dcc-avatar dcc-avatar--green"><span class="dcc-avatar__label">CS</span></span><span class="dcc-chip__label">Camila Soto</span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="clicable">Clicable</h2>
+<p class="dcc-doc-p">Un chip que hace algo es un <code>&lt;button type="button"&gt;</code> —o un <code>&lt;a&gt;</code> si
+  navega—. Responde como el botón: una capa del color del texto al 8% bajo el cursor y al 12% al presionar o
+  con foco de teclado. Si alterna un filtro, ponle <code>aria-pressed</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-chip" type="button"><span class="dcc-chip__label">Electivos</span></button>
+    <button class="dcc-chip dcc-chip--outlined" type="button"><svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-filter"/></svg><span class="dcc-chip__label">Más filtros</span></button>
+    <button class="dcc-chip dcc-chip--primary" type="button" aria-pressed="true"><svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg><span class="dcc-chip__label">Con cupos</span></button>
+    <a class="dcc-chip dcc-chip--outlined dcc-chip--info" href="#clicable"><svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book-open"/></svg><span class="dcc-chip__label">Programa del curso</span></a>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="eliminable">Eliminable</h2>
+<p class="dcc-doc-p">La cruz es un <code>&lt;button class="dcc-chip__delete"&gt;</code> con un
+  <code>aria-label</code> que dice qué quita. Con el gancho <code>js-chip-delete</code> el kit quita el chip al
+  hacer clic —o con Suprimir o Retroceso sobre la cruz— y pasa el foco a la cruz vecina. Antes emite
+  <code>dcc-chip-eliminar</code> en el chip; si la aplicación llama a <code>preventDefault()</code>, el chip
+  se queda. Sin el gancho, la cruz no hace nada y la acción la pone la aplicación.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span class="dcc-chip">
+      <span class="dcc-chip__label">CC3001 Algoritmos y Estructuras de Datos</span>
+      <button class="dcc-chip__delete js-chip-delete" type="button" aria-label="Quitar CC3001"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </span>
+    <span class="dcc-chip dcc-chip--outlined dcc-chip--primary">
+      <span class="dcc-avatar"><span class="dcc-avatar__label">NB</span></span>
+      <span class="dcc-chip__label">Nicolás Bravo</span>
+      <button class="dcc-chip__delete js-chip-delete" type="button" aria-label="Quitar a Nicolás Bravo"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </span>
+    <span class="dcc-chip dcc-chip--sm dcc-chip--info">
+      <svg class="dcc-chip__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"/></svg>
+      <span class="dcc-chip__label">Beauchef 851</span>
+      <button class="dcc-chip__delete js-chip-delete" type="button" aria-label="Quitar Beauchef 851"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="deshabilitado">Deshabilitado</h2>
+<p class="dcc-doc-p">El clicable lleva <code>disabled</code>. El eliminable no es un botón: lleva
+  <code>.is-disabled</code> en el chip y <code>disabled</code> en la cruz. Se apaga la pieza entera y
+  conserva su color.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-chip dcc-chip--primary" type="button" disabled><span class="dcc-chip__label">Inscribir</span></button>
+    <span class="dcc-chip dcc-chip--outlined is-disabled">
+      <span class="dcc-chip__label">Primavera 2025</span>
+      <button class="dcc-chip__delete js-chip-delete" type="button" aria-label="Quitar Primavera 2025" disabled><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="accesibilidad">Accesibilidad</h2>
+<p class="dcc-doc-p">Un chip que sólo muestra es un <code>&lt;span&gt;</code> y no recibe foco. El clicable es un
+  botón de verdad, así que se activa con Enter y Espacio sin código extra. No pongas una cruz dentro de un
+  chip clicable: serían dos botones anidados, que el HTML no permite; si necesitas las dos acciones, pon la
+  acción principal fuera del chip. Todas las combinaciones de color pasan 4,5:1 salvo el secundario
+  relleno (4,35:1), el mismo caso del botón secundario.</p>

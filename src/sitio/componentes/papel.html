@@ -1,0 +1,61 @@
+<!--
+titulo: Paper
+grupo: Superficies
+resumen: La superficie base del kit: un fondo con radio y una de cinco elevaciones, o un borde en su lugar. Las tarjetas y el cajón se arman encima.
+miniatura: .dcc-paper--elevation-3
+escala: .8
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p"><code>.dcc-paper</code> sólo pone fondo, radio y sombra: el relleno y la disposición del
+  contenido los decide quien la usa. Sin modificadores queda en la elevación 1.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-paper" style="padding:16px 20px;max-width:360px">
+      <p class="dcc-t-body-m">Las notas de la Tarea 2 de CC3001 se publican el viernes en U-Cursos.</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="elevacion">Elevación</h2>
+<p class="dcc-doc-p">Cinco niveles, de <code>--elevation-0</code> a <code>--elevation-4</code>. Las sombras
+  salen de las del kit: el 1 es la del botón, el 2 es <code>--dcc-shadow</code> y el 3 y el 4 le suman una capa
+  más ancha. En tema oscuro, donde la sombra casi no se ve, cada nivel además aclara la superficie, como hace
+  MUI: cámbialo con el selector de tema para verlo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:24px">
+    <div class="dcc-paper dcc-paper--elevation-0" style="display:grid;place-items:center;width:104px;height:104px">0</div>
+    <div class="dcc-paper dcc-paper--elevation-1" style="display:grid;place-items:center;width:104px;height:104px">1</div>
+    <div class="dcc-paper dcc-paper--elevation-2" style="display:grid;place-items:center;width:104px;height:104px">2</div>
+    <div class="dcc-paper dcc-paper--elevation-3" style="display:grid;place-items:center;width:104px;height:104px">3</div>
+    <div class="dcc-paper dcc-paper--elevation-4" style="display:grid;place-items:center;width:104px;height:104px">4</div>
+  </div>
+</div>
+<p class="dcc-doc-p">Una guía para elegir: 0 para una superficie que sólo cambia de fondo, 1 para tarjetas, 2 para
+  paneles y menús, 3 para elementos flotantes como el botón flotante desplegado y 4 para el cajón temporal.</p>
+
+<h2 class="dcc-doc-h2" id="variantes">Variantes</h2>
+<p class="dcc-doc-p"><code>--outlined</code> cambia la sombra por un borde de divisor. Es la que conviene dentro
+  de otra superficie —un formulario, un panel lateral—, donde una sombra más ensucia en vez de separar.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:24px">
+    <div class="dcc-paper" style="display:grid;place-items:center;width:160px;height:104px">Elevada</div>
+    <div class="dcc-paper dcc-paper--outlined" style="display:grid;place-items:center;width:160px;height:104px">Delineada</div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="esquinas">Esquinas</h2>
+<p class="dcc-doc-p">Por omisión el radio es <code>--dcc-radius-md</code> (8px). <code>--square</code> lo quita,
+  para superficies que se pegan a un borde de la pantalla o de otro contenedor, como el cajón.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:24px">
+    <div class="dcc-paper dcc-paper--elevation-2" style="display:grid;place-items:center;width:160px;height:104px">Redondeada</div>
+    <div class="dcc-paper dcc-paper--elevation-2 dcc-paper--square" style="display:grid;place-items:center;width:160px;height:104px">Cuadrada</div>
+    <div class="dcc-paper dcc-paper--outlined dcc-paper--square" style="display:grid;place-items:center;width:160px;height:104px">Cuadrada delineada</div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="personalizar">Personalizar</h2>
+<p class="dcc-doc-p">Las tres piezas son variables locales: <code>--dcc-paper-bg</code>,
+  <code>--dcc-paper-shadow</code> y <code>--dcc-paper-radius</code>. Un componente que se apoya en Paper las
+  cambia en vez de pisar <code>background</code> o <code>box-shadow</code>, así sigue respondiendo a la
+  elevación y al tema.</p>

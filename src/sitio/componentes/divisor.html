@@ -1,0 +1,99 @@
+<!--
+titulo: Divisor
+grupo: Visualización de datos
+resumen: Una línea fina que separa contenido en listas y bloques, horizontal o vertical, con texto o sin él.
+miniatura: .dcc-divider--text
+escala: .7
+ancho: 420px
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p"><code>.dcc-divider</code> va sobre un <code>&lt;hr&gt;</code>, que los lectores de pantalla ya
+  anuncian como separador. Si no puedes usar <code>&lt;hr&gt;</code> —dentro de una lista, por ejemplo—, cualquier
+  elemento con <code>role="separator"</code> sirve igual. Por defecto usa el gris que el kit reserva para divisores;
+  sobre el fondo de la página, donde ese gris se pierde, va <code>--strong</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--gap-2">
+    <p class="dcc-t-body-m">El DCC imparte la carrera de Ingeniería Civil en Computación.</p>
+    <hr class="dcc-divider">
+    <p class="dcc-t-body-m">También ofrece el Magíster y el Doctorado en Ciencias de la Computación.</p>
+    <hr class="dcc-divider dcc-divider--strong">
+    <p class="dcc-t-body-m">Y programas de educación continua para profesionales.</p>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="lista">En una lista</h2>
+<p class="dcc-doc-p">Las variantes de MUI. <code>--inset</code> empieza después del ícono, para que la línea agrupe
+  el texto y no corte la columna de íconos; dentro de <code>.dcc-list</code> ya mide lo que el ícono y su espacio
+  (48px). <code>--middle</code> deja 16px a cada lado. Un divisor reemplaza el borde propio del ítem que lo precede,
+  así no se duplica la línea.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-list">
+    <li><div class="dcc-list__item">
+      <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-graduation-cap"></use></svg></span>
+      <span class="dcc-list__body">
+        <span class="dcc-list__title">Pregrado</span>
+        <span class="dcc-list__desc">Ingeniería Civil en Computación</span>
+      </span>
+    </div></li>
+    <li class="dcc-divider dcc-divider--inset" role="separator"></li>
+    <li><div class="dcc-list__item">
+      <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book-open"></use></svg></span>
+      <span class="dcc-list__body">
+        <span class="dcc-list__title">Magíster</span>
+        <span class="dcc-list__desc">Ciencias de la Computación</span>
+      </span>
+    </div></li>
+    <li class="dcc-divider dcc-divider--middle" role="separator"></li>
+    <li><div class="dcc-list__item">
+      <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-award"></use></svg></span>
+      <span class="dcc-list__body">
+        <span class="dcc-list__title">Doctorado</span>
+        <span class="dcc-list__desc">Ciencias mención Computación</span>
+      </span>
+    </div></li>
+    <li class="dcc-divider" role="separator"></li>
+    <li><div class="dcc-list__item">
+      <span class="dcc-list__icon"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-briefcase"></use></svg></span>
+      <span class="dcc-list__body">
+        <span class="dcc-list__title">Educación continua</span>
+        <span class="dcc-list__desc">Diplomas y cursos</span>
+      </span>
+    </div></li>
+  </ul>
+</div>
+
+<h2 class="dcc-doc-h2" id="vertical">Vertical</h2>
+<p class="dcc-doc-p"><code>--vertical</code> va dentro de una fila flex y se estira a su altura, como el
+  <code>flexItem</code> de MUI. Con <code>&lt;hr&gt;</code> conviene decir la orientación con
+  <code>aria-orientation="vertical"</code>. <code>--middle</code> lo recorta 8px arriba y abajo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-left"></use></svg> Izquierda</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-center"></use></svg> Centro</button>
+    <hr class="dcc-divider dcc-divider--vertical" aria-orientation="vertical">
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bold"></use></svg> Negrita</button>
+    <hr class="dcc-divider dcc-divider--vertical dcc-divider--middle" aria-orientation="vertical">
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-italic"></use></svg> Cursiva</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="texto">Con texto</h2>
+<p class="dcc-doc-p"><code>--text</code> pone un texto en medio de la línea, dentro de un
+  <code>.dcc-divider__text</code>. <code>--start</code> y <code>--end</code> lo corren hacia un lado. Los hijos de un
+  <code>role="separator"</code> son presentacionales y un lector de pantalla puede saltárselos: si el texto importa,
+  repítelo en <code>aria-label</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--gap-3">
+    <div class="dcc-divider dcc-divider--text" role="separator" aria-label="Primer semestre"><span class="dcc-divider__text">Primer semestre</span></div>
+    <div class="dcc-divider dcc-divider--text dcc-divider--start" role="separator" aria-label="Segundo semestre"><span class="dcc-divider__text">Segundo semestre</span></div>
+    <div class="dcc-divider dcc-divider--text dcc-divider--end" role="separator" aria-label="Verano"><span class="dcc-divider__text">Verano</span></div>
+  </div>
+</div>
+<p class="dcc-doc-p">También en vertical, por ejemplo entre dos formas de ingresar.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--row dcc-stack--gap-3 dcc-stack--align-center">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-log-in"></use></svg> Pasaporte U. de Chile</button>
+    <div class="dcc-divider dcc-divider--text dcc-divider--vertical" role="separator" aria-orientation="vertical" aria-label="o"><span class="dcc-divider__text">o</span></div>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"></use></svg> Correo</button>
+  </div>
+</div>

@@ -27,8 +27,14 @@ const fragmentos = readdirSync(DIR_FRAGMENTOS).filter((f) => f.endsWith(".html")
   .map((f) => readFileSync(join(DIR_FRAGMENTOS, f), "utf8").replace(/^<!--[\s\S]*?-->\n/, "")).join("\n");
 const guia = `<!DOCTYPE html><html lang="es"><body>${iconos}${fragmentos}` +
   `<script src="behaviors.js" defer></script></body></html>`;
-const css = leer("src/styles.css");
-const comportamiento = leer("src/behaviors.js");
+// La hoja principal más los módulos de src/componentes/, en el mismo orden en
+// que los junta el build.
+const DIR_MODULOS = join(raiz, "src/componentes");
+const modulos = (ext) => existsSync(DIR_MODULOS)
+  ? readdirSync(DIR_MODULOS).filter((f) => f.endsWith(ext)).sort().map((f) => readFileSync(join(DIR_MODULOS, f), "utf8"))
+  : [];
+const css = [leer("src/styles.css"), ...modulos(".css")].join("\n");
+const comportamiento = [leer("src/behaviors.js"), ...modulos(".js")].join("\n");
 const markup = sitio.replace(/<script[\s\S]*?<\/script>/g, "");
 const cssSinComentarios = css.replace(/\/\*[\s\S]*?\*\//g, "");
 
@@ -227,6 +233,7 @@ check(menuLista.hidden === true, "un clic fuera cierra el menú");
 click(menuTrigger);
 click(menu.querySelector(".dcc-menu__item"));
 check(menuLista.hidden === true, "elegir una opción cierra el menú");
+check(doc.activeElement === menuTrigger, "y devuelve el foco al disparador");
 
 // El desplegable va bajo el disparador por defecto: si lo tapara, se perdería
 // de vista el avatar justo cuando el menú está abierto. El `^` ancla la regla
@@ -265,6 +272,90 @@ check(pisadas.length > 0 && sueltas.length === 0,
 const reglaArriba = cssSinComentarios.match(/\.dcc-menu--up\s+\.dcc-menu__list\s*\{[^}]*\}/);
 check(!!reglaArriba && /bottom:\s*calc\(100%/.test(reglaArriba[0]) && /top:\s*auto/.test(reglaArriba[0]),
   "dcc-menu--up lo despliega hacia arriba");
+
+/* ---------- 5b. componentes de src/componentes/ ---------- */
+console.log("\nComponentes nuevos");
+const ev = (el, tipo, extra = {}) => el.dispatchEvent(new window.Event(tipo, { bubbles: true, ...extra }));
+
+// Diálogo: un disparador declarativo lo abre y [data-dcc-cerrar] lo cierra.
+const abreDialogo = [...doc.querySelectorAll("[data-dcc-abrir]")]
+  .find((b) => doc.getElementById(b.getAttribute("data-dcc-abrir"))?.matches("dialog.dcc-dialog"));
+const dialogo = doc.getElementById(abreDialogo.getAttribute("data-dcc-abrir"));
+click(abreDialogo);
+check(dialogo.open, "el diálogo abre con data-dcc-abrir");
+const cierraDialogo = dialogo.querySelector("[data-dcc-cerrar]");
+click(cierraDialogo);
+await new Promise((r) => setTimeout(r, 400));
+check(!dialogo.open, "y se cierra con data-dcc-cerrar");
+
+// Snackbar: la API crea el aviso con el mensaje como texto, nunca como HTML.
+window.DCCUI.notificar({ mensaje: "<b>Guardado</b>", duracion: 0 });
+await new Promise((r) => setTimeout(r, 50));
+const aviso = [...doc.querySelectorAll(".dcc-snackbar")].find((n) => n.textContent.includes("<b>Guardado</b>"));
+check(!!aviso && !aviso.querySelector("b"), "DCCUI.notificar muestra el mensaje como texto");
+
+// Autocompletar: escribir filtra la lista sin distinguir tildes.
+const auto = doc.querySelector(".js-autocomplete:not([data-multiple])");
+const autoInput = auto.querySelector("input:not([type=hidden])");
+const autoOpciones = () => [...auto.querySelectorAll("[role=option]")].filter((o) => !o.hidden && !o.closest("[hidden]"));
+const totalOpciones = autoOpciones().length || auto.querySelectorAll("[role=option]").length;
+const primera = auto.querySelector("[role=option]").textContent.trim();
+autoInput.value = primera.slice(0, 3).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+ev(autoInput, "input");
+const filtradas = autoOpciones();
+check(filtradas.length > 0 && filtradas.length < auto.querySelectorAll("[role=option]").length,
+  "el autocompletar filtra mientras se escribe (también sin tildes)");
+
+// Botones alternables exclusivos: presionar uno suelta el otro.
+const grupoEx = doc.querySelector(".js-toggle-group[data-exclusivo]");
+const [t1, t2] = grupoEx.querySelectorAll(".dcc-toggle");
+click(t1); click(t2);
+check(t2.getAttribute("aria-pressed") === "true" && t1.getAttribute("aria-pressed") === "false",
+  "el grupo exclusivo deja un solo botón presionado");
+
+// Lista de transferencia: mover todo a la derecha deja la izquierda vacía.
+const transfer = doc.querySelector(".js-transfer");
+const listas = transfer.querySelectorAll(".dcc-transfer__list");
+click(transfer.querySelector('[data-mover="todo-derecha"]'));
+check(listas[0].children.length === 0 && listas[1].children.length > 0,
+  "la lista de transferencia mueve todos los elementos");
+
+// Chip eliminable: la cruz lo quita del documento.
+const chipCruz = doc.querySelector(".js-chip-delete");
+const chip = chipCruz.closest(".dcc-chip");
+click(chipCruz);
+check(!chip.isConnected, "el chip eliminable se quita con su cruz");
+
+// Indicador: pasado el máximo muestra "99+".
+const ind = doc.querySelector(".js-indicator");
+window.DCCUI.indicador.fijar(ind, 100);
+check(ind.querySelector(".dcc-indicator__badge").textContent.trim() === "99+", "el indicador topa en 99+");
+
+// Popover: el botón abre y anuncia el estado; Escape lo cierra.
+const pop = doc.querySelector(".js-popover");
+click(pop);
+check(pop.getAttribute("aria-expanded") === "true", "el popover abre y lo anuncia con aria-expanded");
+key(doc.activeElement || pop, "Escape");
+check(pop.getAttribute("aria-expanded") === "false", "y Escape lo cierra");
+
+// Deslizador de rango: las flechas mueven la manilla.
+const rango = [...doc.querySelectorAll(".js-slider")].find((s) => s.querySelectorAll("[role=slider]").length === 2);
+const manilla = rango.querySelector("[role=slider]");
+const antesValor = +manilla.getAttribute("aria-valuenow");
+key(manilla, "ArrowRight");
+check(+manilla.getAttribute("aria-valuenow") > antesValor, "las flechas mueven la manilla del rango");
+
+// Speed dial: el botón principal lo abre.
+const dial = doc.querySelector(".js-speed-dial");
+const dialFab = dial.querySelector("[aria-expanded]");
+click(dialFab);
+check(dialFab.getAttribute("aria-expanded") === "true", "el speed dial abre");
+
+// Tarjeta: "ver más" alterna el contenido expandible.
+const expandir = doc.querySelector(".js-surface-card-expand");
+const estadoExp = expandir.getAttribute("aria-expanded");
+click(expandir);
+check(expandir.getAttribute("aria-expanded") !== estadoExp, "la tarjeta expande su contenido");
 
 /* ---------- 6. la API pública, que es de lo que dependen las apps ---------- */
 console.log("\nAPI de DCCUI");
@@ -325,6 +416,7 @@ const paginaApp = `<!DOCTYPE html><html><body>
     <button class="dcc-accordion__trigger" aria-expanded="false" aria-controls="p1">Requisitos</button>
     <div class="dcc-accordion__panel" id="p1">contenido</div>
   </div>
+  <div class="js-toggle-group" data-exclusivo><button class="dcc-toggle" aria-pressed="false">A</button><button class="dcc-toggle" aria-pressed="false">B</button></div>
   <script>${bundle}<\/script></body></html>`;
 
 const domApp = new JSDOM(paginaApp, { runScripts: "dangerously" });
@@ -340,6 +432,11 @@ const trApp = docApp.querySelector(".dcc-accordion__trigger");
 trApp.dispatchEvent(new domApp.window.MouseEvent("click", { bubbles: true }));
 check(trApp.getAttribute("aria-expanded") === "true",
   "los componentes funcionan con una sola etiqueta <script>");
+const [tA, tB] = docApp.querySelectorAll(".dcc-toggle");
+tA.dispatchEvent(new domApp.window.MouseEvent("click", { bubbles: true }));
+tB.dispatchEvent(new domApp.window.MouseEvent("click", { bubbles: true }));
+check(tB.getAttribute("aria-pressed") === "true" && tA.getAttribute("aria-pressed") === "false",
+  "los módulos de src/componentes/ viajan en el bundle y se enlazan solos");
 
 /* ---------- 8. la documentación no puede apuntar a una versión que no existe ----------
    Los números de versión de las URLs se escriben a mano. Ya ocurrió que la guía

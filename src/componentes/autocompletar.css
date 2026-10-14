@@ -1,0 +1,206 @@
+/* --------------------------------------------------------------------------
+   AUTOCOMPLETAR  (Autocomplete de MUI)
+   Un campo de texto con una lista que se filtra mientras se escribe. Sirve
+   cuando las opciones son demasiadas para un select —los cursos del
+   departamento, los profesores, las salas— y la persona sabe más o menos lo
+   que busca.
+
+   Se arma con piezas que ya existen:
+     - la caja imita a `.dcc-input` y a `.dcc-adorned`: el mismo alto, el
+       mismo borde y el mismo foco de 2px sin halo;
+     - la lista ES la del select propio (`.dcc-combo__list` con opciones
+       `.dcc-combo__option`), así que las dos se ven y se comportan igual;
+     - en el múltiple, cada valor es un `.dcc-chip--sm`.
+   Lo propio es la caja con chips, los botones de borrar y abrir, los títulos
+   de grupo y el aviso de "Sin resultados".
+
+   Patrón ARIA 1.2 de combobox con lista: el <input> lleva role="combobox",
+   aria-expanded y aria-activedescendant; el foco nunca sale del campo mientras
+   se recorre la lista.
+   -------------------------------------------------------------------------- */
+.dcc-autocomplete {
+  position: relative;
+  width: 100%;
+}
+/* El campo que lo contiene toma su ancho máximo (320px, o todo con
+   `--wide`) aunque esté en una fila flexible: si no, se encoge al mínimo del
+   input y la lista sale angosta. */
+.dcc-field:has(> .dcc-autocomplete) { width: 100%; }
+
+/* La caja. Como `.dcc-adorned`, tiene 1px de padding de más que desaparece
+   cuando el borde crece a 2px al enfocar, para que nada se corra. A la derecha
+   deja lugar a los dos botones, que van encima en posición absoluta y quedan
+   centrados aunque los chips ocupen varias líneas. */
+.dcc-autocomplete__control {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-height: var(--dcc-field-h);
+  padding: 4px 68px 4px 12px;
+  font-family: var(--dcc-font-body);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-fg);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  cursor: text;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+/* Sin flecha (texto libre) basta lugar para la cruz. */
+.dcc-autocomplete[data-libre] .dcc-autocomplete__control { padding-right: 40px; }
+/* Con chips, el primero se arrima al borde como el ícono de un adorno. */
+.dcc-autocomplete__control:has(> .dcc-chip) { padding-left: 4px; }
+
+.dcc-autocomplete__control:hover:not(:focus-within) { border-color: var(--dcc-fg-accent); }
+.dcc-autocomplete__control:focus-within {
+  border-width: 2px;
+  border-color: var(--dcc-focus-border);
+  padding: 3px 67px 3px 11px;
+  transition: none;
+}
+.dcc-autocomplete[data-libre] .dcc-autocomplete__control:focus-within { padding-right: 39px; }
+.dcc-autocomplete__control:focus-within:has(> .dcc-chip) { padding-left: 3px; }
+
+.dcc-autocomplete__input {
+  flex: 1 1 80px;
+  min-width: 80px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.dcc-autocomplete__input::placeholder { color: var(--dcc-fg-muted); opacity: 1; }
+.dcc-autocomplete__control > .dcc-chip + .dcc-autocomplete__input { padding-left: 4px; }
+
+/* Botones de borrar y de abrir. Fuera del orden de tabulación, como en MUI:
+   con teclado se borra con Retroceso y se abre con la flecha abajo. */
+.dcc-autocomplete__actions {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: flex;
+  gap: 2px;
+  transform: translateY(-50%);
+}
+.dcc-autocomplete__control:focus-within > .dcc-autocomplete__actions { right: 5px; }
+.dcc-autocomplete__btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--dcc-fg-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--dcc-radius-sm);
+  cursor: pointer;
+}
+.dcc-autocomplete__btn[hidden] { display: none; }
+.dcc-autocomplete__btn > svg {
+  width: 18px;
+  height: 18px;
+  transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-autocomplete__btn:hover { color: var(--dcc-fg-accent); background: var(--dcc-surface-muted); }
+.dcc-autocomplete__clear > svg { width: 16px; height: 16px; }
+.dcc-autocomplete.is-open .dcc-autocomplete__toggle > svg { transform: rotate(180deg); }
+.dcc-autocomplete__control:focus-within .dcc-autocomplete__toggle { color: var(--dcc-focus); }
+
+/* ---- Lista ----
+   `.dcc-combo__list` y `.dcc-combo__option` ponen la caja, el hover, la opción
+   activa y el check de la elegida. Acá sólo lo que el select no tiene: las
+   opciones filtradas se esconden con `hidden` (la regla del select les da
+   `display: flex`, que le gana al atributo) y los grupos. */
+.dcc-autocomplete .dcc-combo__option[hidden],
+.dcc-autocomplete__group[hidden] { display: none; }
+.dcc-autocomplete .dcc-combo__list { max-height: 280px; }
+.dcc-autocomplete .dcc-combo__option[aria-disabled="true"] {
+  opacity: .5;
+  cursor: not-allowed;
+  background: none;
+}
+
+.dcc-autocomplete__group + .dcc-autocomplete__group { margin-top: 4px; }
+/* El título del grupo queda pegado arriba mientras se recorren sus opciones,
+   como el ListSubheader de MUI. El -4px compensa el padding de la lista. */
+.dcc-autocomplete__group-label {
+  position: sticky;
+  top: -4px;
+  z-index: 1;
+  display: block;
+  margin: 0 -4px;
+  padding: 8px 14px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--dcc-fg-muted);
+  background: var(--dcc-surface-raised);
+}
+
+/* La parte del texto que coincide con lo escrito. */
+.dcc-autocomplete__match { font-weight: 700; }
+.dcc-combo__option[aria-selected="true"] .dcc-autocomplete__match { font-weight: inherit; }
+
+/* "Sin resultados": la misma caja flotante que la lista, con el texto en el
+   gris secundario. No va dentro del listbox porque no es una opción. */
+.dcc-autocomplete__empty {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  padding: 12px 14px;
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--dcc-fg-muted);
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  box-shadow: var(--dcc-shadow);
+}
+.dcc-autocomplete__empty[hidden] { display: none; }
+
+/* Región viva para lectores de pantalla: cuenta los resultados y avisa lo que
+   se agrega o se quita. Fuera de la vista pero no fuera del árbol. */
+.dcc-autocomplete__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Estados ---- */
+.dcc-field--error   .dcc-autocomplete__control,
+.dcc-field--error   .dcc-autocomplete__control:focus-within { border-color: var(--dcc-danger); }
+.dcc-field--success .dcc-autocomplete__control,
+.dcc-field--success .dcc-autocomplete__control:focus-within { border-color: var(--dcc-success); }
+
+.dcc-autocomplete__control:has(.dcc-autocomplete__input:disabled) {
+  color: var(--dcc-fg-muted);
+  background: var(--dcc-surface-muted);
+  cursor: not-allowed;
+}
+.dcc-autocomplete__control:has(.dcc-autocomplete__input:disabled):hover { border-color: var(--dcc-border); }
+.dcc-autocomplete__input:disabled { cursor: not-allowed; }
+/* La caja deshabilitada toma el mismo gris que el relleno del chip: el chip
+   pasa a la superficie para seguir viéndose como pieza. */
+.dcc-autocomplete__control:has(.dcc-autocomplete__input:disabled) > .dcc-chip { --dcc-chip-fill: var(--dcc-surface); }
+.dcc-autocomplete__btn:disabled { cursor: not-allowed; background: none; color: var(--dcc-fg-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-autocomplete__btn > svg { transition: none; }
+}

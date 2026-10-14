@@ -23,6 +23,23 @@ cabecera (`titulo`, `grupo`, `resumen`, `miniatura`; ver `scripts/sitio.mjs`) y 
 `<div class="dcc-doc-demo">`. El build le agrega debajo el HTML listo para copiar, y el componente
 aparece solo en la portada y en la navegación.
 
+El CSS y el JavaScript de un componente nuevo van en `src/componentes/<slug>.css` y
+`src/componentes/<slug>.js`, no en `styles.css` ni en `behaviors.js`. El build los junta en orden
+alfabético después de la hoja y el script principales, así que `dist/` sigue siendo un archivo de
+cada tipo. El JS de un componente se engancha así, en ES5 y sin dependencias:
+
+```js
+(function () {
+  "use strict";
+  DCCUI.registrar(function (raiz, cada) {
+    cada(raiz, ".js-mi-componente", "mi-componente", function (el) { /* … */ });
+  });
+})();
+```
+
+`cada` enlaza cada elemento una sola vez, y la función corre también con `DCCUI.init(elemento)` y con
+htmx. Si el comportamiento es importante, agrega su prueba en `scripts/verify.mjs`.
+
 ## Reglas del kit
 
 1. **Prefija todo.** Clases con `dcc-`, variables con `--dcc-`. Sin excepciones salvo `is-*`

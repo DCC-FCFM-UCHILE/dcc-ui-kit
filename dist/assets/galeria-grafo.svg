@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <!-- Ilustración propia del DCC UI Kit (licencia MIT del kit): un grafo. -->
+  <defs>
+    <linearGradient id="f" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2e3764"/><stop offset="1" stop-color="#4957a3"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#f)"/>
+  <g fill="none" stroke="#e4e4fd" stroke-opacity=".45" stroke-width="2">
+    <path d="M90 300 210 140 330 250 470 110 520 290M210 140 300 70 470 110M330 250 520 290M90 300 330 250M300 70 330 250"/>
+  </g>
+  <g fill="#e4e4fd">
+    <circle cx="90" cy="300" r="14"/><circle cx="210" cy="140" r="18"/><circle cx="300" cy="70" r="11"/>
+    <circle cx="470" cy="110" r="16"/><circle cx="520" cy="290" r="12"/>
+  </g>
+  <circle cx="330" cy="250" r="24" fill="#d23118"/>
+</svg>

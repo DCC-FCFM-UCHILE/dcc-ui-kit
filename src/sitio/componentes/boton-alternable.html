@@ -1,0 +1,158 @@
+<!--
+titulo: Botón alternable
+grupo: Entradas
+resumen: Botones que se quedan presionados, solos o en grupo, para elegir una opción entre pocas o activar varias a la vez.
+miniatura: .dcc-toggle-group
+escala: 1.2
+-->
+<h2 class="dcc-doc-h2" id="exclusivo">Grupo exclusivo</h2>
+<p class="dcc-doc-p">Sólo uno presionado a la vez, como la alineación de un párrafo. El contenedor lleva
+  <code>.dcc-toggle-group</code>, <code>role="group"</code> con un <code>aria-label</code>, y el gancho
+  <code>js-toggle-group</code> con <code>data-exclusivo</code>. Cada botón lleva <code>aria-pressed</code>, que es
+  lo que anuncia el lector de pantalla y lo que pinta el CSS. Un botón sólo con ícono necesita su propio
+  <code>aria-label</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-toggle-group js-toggle-group" role="group" aria-label="Alineación del texto" data-exclusivo>
+      <button class="dcc-toggle" type="button" value="izquierda" aria-pressed="true" aria-label="Alinear a la izquierda"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-left"/></svg></button>
+      <button class="dcc-toggle" type="button" value="centro" aria-pressed="false" aria-label="Centrar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-center"/></svg></button>
+      <button class="dcc-toggle" type="button" value="derecha" aria-pressed="false" aria-label="Alinear a la derecha"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-right"/></svg></button>
+      <button class="dcc-toggle" type="button" value="justificado" aria-pressed="false" aria-label="Justificar" disabled><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-justify"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="multiple">Grupo múltiple</h2>
+<p class="dcc-doc-p">Sin <code>data-exclusivo</code>, cada botón se presiona y se suelta por su cuenta: negrita,
+  cursiva y subrayado pueden ir juntos.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-toggle-group js-toggle-group" role="group" aria-label="Formato del texto">
+      <button class="dcc-toggle" type="button" value="negrita" aria-pressed="true" aria-label="Negrita"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bold"/></svg></button>
+      <button class="dcc-toggle" type="button" value="cursiva" aria-pressed="false" aria-label="Cursiva"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-italic"/></svg></button>
+      <button class="dcc-toggle" type="button" value="subrayado" aria-pressed="false" aria-label="Subrayado"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-underline"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="obligatorio">Siempre con un valor</h2>
+<p class="dcc-doc-p">Con <code>data-exclusivo="obligatorio"</code> el botón presionado no se suelta al volver a
+  hacerle clic: siempre hay una opción elegida. Sirve para cambiar de vista, con ícono y texto.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-toggle-group js-toggle-group" role="group" aria-label="Vista de los cursos" data-exclusivo="obligatorio">
+      <button class="dcc-toggle" type="button" value="lista" aria-pressed="true"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-list"/></svg>Lista</button>
+      <button class="dcc-toggle" type="button" value="grilla" aria-pressed="false"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layout-grid"/></svg>Grilla</button>
+      <button class="dcc-toggle" type="button" value="calendario" aria-pressed="false"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar-days"/></svg>Calendario</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p"><code>--sm</code> (32px), mediano (40px, por omisión) y <code>--lg</code> (48px). Se ponen en
+  el grupo —<code>.dcc-toggle-group--sm</code>— o en un botón suelto —<code>.dcc-toggle--sm</code>—.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-toggle-group dcc-toggle-group--sm js-toggle-group" role="group" aria-label="Semestre (pequeño)" data-exclusivo>
+      <button class="dcc-toggle" type="button" aria-pressed="true">Otoño</button>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Primavera</button>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Verano</button>
+    </div>
+    <div class="dcc-toggle-group js-toggle-group" role="group" aria-label="Semestre (mediano)" data-exclusivo>
+      <button class="dcc-toggle" type="button" aria-pressed="true">Otoño</button>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Primavera</button>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Verano</button>
+    </div>
+    <div class="dcc-toggle-group dcc-toggle-group--lg js-toggle-group" role="group" aria-label="Semestre (grande)" data-exclusivo>
+      <button class="dcc-toggle" type="button" aria-pressed="true">Otoño</button>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Primavera</button>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Verano</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores</h2>
+<p class="dcc-doc-p">El color sólo se ve en lo presionado: <code>--primary</code> por omisión,
+  <code>--secondary</code>, <code>--success</code>, <code>--error</code>, <code>--info</code> y
+  <code>--warning</code>. También van en el grupo o en el botón.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-toggle-group dcc-toggle-group--success js-toggle-group" role="group" aria-label="Estado de la memoria" data-exclusivo>
+      <button class="dcc-toggle" type="button" aria-pressed="true"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"/></svg>Aprobada</button>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Pendiente</button>
+    </div>
+    <div class="dcc-toggle-group dcc-toggle-group--info js-toggle-group" role="group" aria-label="Modalidad" data-exclusivo>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Presencial</button>
+      <button class="dcc-toggle" type="button" aria-pressed="true"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-video"/></svg>Remota</button>
+    </div>
+    <div class="dcc-toggle-group dcc-toggle-group--error js-toggle-group" role="group" aria-label="Asistencia" data-exclusivo>
+      <button class="dcc-toggle" type="button" aria-pressed="false">Presente</button>
+      <button class="dcc-toggle" type="button" aria-pressed="true">Ausente</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="vertical">Vertical</h2>
+<p class="dcc-doc-p">Con <code>.dcc-toggle-group--vertical</code> los botones se apilan.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-toggle-group dcc-toggle-group--vertical js-toggle-group" role="group" aria-label="Vista" data-exclusivo="obligatorio">
+      <button class="dcc-toggle" type="button" aria-pressed="true" aria-label="Lista"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-list"/></svg></button>
+      <button class="dcc-toggle" type="button" aria-pressed="false" aria-label="Grilla"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layout-grid"/></svg></button>
+      <button class="dcc-toggle" type="button" aria-pressed="false" aria-label="Mapa de salas"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="barra">Barra de herramientas</h2>
+<p class="dcc-doc-p">Varios grupos en fila, con <code>.dcc-toggle-toolbar</code> para separarlos. En pantallas
+  angostas pasan a la línea siguiente.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-toggle-toolbar" role="group" aria-label="Formato del enunciado">
+    <div class="dcc-toggle-group dcc-toggle-group--sm js-toggle-group" role="group" aria-label="Alineación" data-exclusivo>
+      <button class="dcc-toggle" type="button" aria-pressed="true" aria-label="Alinear a la izquierda"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-left"/></svg></button>
+      <button class="dcc-toggle" type="button" aria-pressed="false" aria-label="Centrar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-center"/></svg></button>
+      <button class="dcc-toggle" type="button" aria-pressed="false" aria-label="Alinear a la derecha"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-align-right"/></svg></button>
+    </div>
+    <div class="dcc-toggle-group dcc-toggle-group--sm js-toggle-group" role="group" aria-label="Estilo">
+      <button class="dcc-toggle" type="button" aria-pressed="false" aria-label="Negrita"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bold"/></svg></button>
+      <button class="dcc-toggle" type="button" aria-pressed="false" aria-label="Cursiva"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-italic"/></svg></button>
+      <button class="dcc-toggle" type="button" aria-pressed="false" aria-label="Subrayado"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-underline"/></svg></button>
+    </div>
+    <button class="dcc-toggle dcc-toggle--sm js-toggle" type="button" aria-pressed="false" aria-label="Insertar enlace"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"/></svg></button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="suelto">Suelto</h2>
+<p class="dcc-doc-p">Un solo botón con <code>.js-toggle</code> se presiona y se suelta por su cuenta, como el
+  favorito de un curso.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-toggle js-toggle" type="button" aria-pressed="false" aria-label="Marcar CC3001 como favorito"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></button>
+    <button class="dcc-toggle dcc-toggle--warning js-toggle" type="button" aria-pressed="true"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bell"/></svg>Avisarme</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="ancho-completo">A todo el ancho</h2>
+<p class="dcc-doc-p"><code>.dcc-toggle-group--full</code> ocupa el ancho del contenedor y reparte el espacio en
+  partes iguales.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-toggle-group dcc-toggle-group--full js-toggle-group" role="group" aria-label="Sede" data-exclusivo="obligatorio">
+    <button class="dcc-toggle" type="button" aria-pressed="true">Beauchef 851</button>
+    <button class="dcc-toggle" type="button" aria-pressed="false">Blanco Encalada</button>
+    <button class="dcc-toggle" type="button" aria-pressed="false">Remoto</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="eventos">Eventos</h2>
+<p class="dcc-doc-p">Tras cada cambio el kit emite <code>dcc-alternar</code> en el grupo —o en el botón suelto—
+  con <code>detail.valores</code>: el <code>value</code> de cada botón presionado, en orden. Si un botón no
+  tiene <code>value</code>, se usa su <code>aria-label</code> o su texto.</p>
+<table class="dcc-doc-table">
+  <thead><tr><th>Atributo</th><th>Efecto</th></tr></thead>
+  <tbody>
+    <tr><td><code>data-exclusivo</code></td><td>Sólo un botón presionado; se puede soltar y quedar sin ninguno.</td></tr>
+    <tr><td><code>data-exclusivo="obligatorio"</code></td><td>Sólo uno y siempre uno.</td></tr>
+    <tr><td>sin atributo</td><td>Cada botón por su cuenta.</td></tr>
+  </tbody>
+</table>

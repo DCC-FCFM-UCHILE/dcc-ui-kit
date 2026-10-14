@@ -1,0 +1,200 @@
+/* --------------------------------------------------------------------------
+   CHIP  (el Chip de MUI)
+   Un elemento compacto que representa una entrada, un atributo o una acción:
+   un filtro aplicado, una persona invitada, un curso elegido. A diferencia del
+   badge —una etiqueta de 20px que sólo informa—, el chip tiene tamaño de
+   control (32px, o 24px en el pequeño) y puede ser clicable o eliminable.
+
+   Como el botón, se arma con dos ejes independientes:
+
+     variante  →  relleno (por omisión) · --outlined
+     color     →  por omisión (neutro) · --primary · --secondary · --success
+                  · --error · --info · --warning
+
+   El color fija tres variables y la variante decide dónde van:
+     --dcc-chip-fill    el relleno de la variante rellena
+     --dcc-chip-on      el texto sobre ese relleno
+     --dcc-chip-main    el texto y el borde de la delineada
+   El neutro es la excepción: su delineado usa el borde de los campos
+   (--dcc-border, 4,4:1 sobre la superficie) y no el color del texto, que
+   pesaría demasiado.
+
+   Contraste del texto sobre el relleno, en claro:
+     neutro     Grey/Dark sobre Ultralight      9,4:1
+     primary    blanco sobre Grey/Default       8,0:1
+     secondary  blanco sobre Grey/Light         4,35:1 (el mismo caso del botón)
+     success    blanco sobre Green/Dark         6,8:1
+     error      blanco sobre Red/Default        4,9:1
+     info       blanco sobre Lightblue/Dark     7,0:1  (Lightblue/Default da 3,4)
+     warning    blanco sobre Yellow/Dark        7,0:1
+   Todos van por rol, así que en oscuro el relleno se aclara y el texto pasa a
+   oscuro (--dcc-on-accent) sin reglas aparte.
+   -------------------------------------------------------------------------- */
+.dcc-chip {
+  --dcc-chip-fill: var(--dcc-surface-muted);
+  --dcc-chip-on: var(--dcc-fg);
+  --dcc-chip-main: var(--dcc-fg);
+  --dcc-chip-border: var(--dcc-border);
+  --dcc-chip-h: 32px;
+  --dcc-chip-px: 12px;
+  --dcc-chip-adorno: 18px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 100%;
+  height: var(--dcc-chip-h);
+  margin: 0;
+  padding: 0 var(--dcc-chip-px);
+  vertical-align: middle;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--dcc-chip-on);
+  background: var(--dcc-chip-fill);
+  /* El borde existe siempre, transparente en el relleno: así las dos
+     variantes miden lo mismo. */
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              border-color .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+.dcc-chip__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tamaños. Mediano es el de omisión. */
+.dcc-chip--sm {
+  --dcc-chip-h: 24px;
+  --dcc-chip-px: 8px;
+  --dcc-chip-adorno: 16px;
+  gap: 4px;
+  font-size: 13px;
+}
+
+/* Colores */
+.dcc-chip--primary   { --dcc-chip-fill: var(--dcc-accent);         --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-accent);         --dcc-chip-border: var(--dcc-accent); }
+.dcc-chip--secondary { --dcc-chip-fill: var(--dcc-fg-muted);       --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-fg-muted);       --dcc-chip-border: var(--dcc-fg-muted); }
+.dcc-chip--success   { --dcc-chip-fill: var(--dcc-success-strong); --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-success-strong); --dcc-chip-border: var(--dcc-success-strong); }
+.dcc-chip--error     { --dcc-chip-fill: var(--dcc-danger);         --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-danger);         --dcc-chip-border: var(--dcc-danger); }
+.dcc-chip--info      { --dcc-chip-fill: var(--dcc-info-strong);    --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-info-strong);    --dcc-chip-border: var(--dcc-info-strong); }
+.dcc-chip--warning   { --dcc-chip-fill: var(--dcc-warning-strong); --dcc-chip-on: var(--dcc-on-accent); --dcc-chip-main: var(--dcc-warning-strong); --dcc-chip-border: var(--dcc-warning-strong); }
+
+/* Delineado: sin relleno, texto y borde en el color del chip. */
+.dcc-chip--outlined {
+  background: transparent;
+  color: var(--dcc-chip-main);
+  border-color: var(--dcc-chip-border);
+}
+
+/* ---- Adornos: ícono y avatar al principio ----
+   Se acercan al borde con un margen negativo calculado desde el padding, para
+   que queden a 4px del borde en los dos tamaños, como en MUI. */
+.dcc-chip__icon {
+  width: var(--dcc-chip-adorno);
+  height: var(--dcc-chip-adorno);
+  flex: 0 0 var(--dcc-chip-adorno);
+}
+.dcc-chip > .dcc-chip__icon:first-child { margin-left: calc(6px - var(--dcc-chip-px)); }
+
+.dcc-chip > .dcc-avatar {
+  width: calc(var(--dcc-chip-h) - 8px);
+  height: calc(var(--dcc-chip-h) - 8px);
+  flex: 0 0 auto;
+  font-size: 11px;
+}
+.dcc-chip--sm > .dcc-avatar { font-size: 9px; }
+.dcc-chip > .dcc-avatar:first-child { margin-left: calc(3px - var(--dcc-chip-px)); }
+
+/* ---- Eliminable ----
+   Un <button> propio dentro del chip, con un aria-label que diga qué quita
+   ("Quitar CC3001"): la cruz sola no le dice nada a un lector de pantalla.
+   Mide 24px en el mediano —el mínimo de WCAG 2.2 para un blanco táctil— y
+   cabe en el alto del chip sin agrandarlo. */
+.dcc-chip__delete {
+  display: grid;
+  place-items: center;
+  width: calc(var(--dcc-chip-h) - 8px);
+  height: calc(var(--dcc-chip-h) - 8px);
+  flex: 0 0 auto;
+  margin: 0 calc(3px - var(--dcc-chip-px)) 0 -2px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 9999px;
+  opacity: .75;
+  cursor: pointer;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1),
+              background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-chip__delete > svg { width: 16px; height: 16px; }
+.dcc-chip--sm .dcc-chip__delete > svg { width: 14px; height: 14px; }
+.dcc-chip__delete:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+}
+.dcc-chip__delete:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 0;
+}
+
+/* ---- Clicable ----
+   Un chip que hace algo es un <button> (o un <a> si navega). Responde como el
+   botón del kit: una capa del color del texto al 8% en hover y al 12% al
+   presionar o con foco de teclado. La capa vive en ::before, detrás del
+   contenido, con el radio heredado; no hace falta `overflow: hidden`, que
+   recortaría el anillo de foco de la cruz. */
+:is(button, a).dcc-chip { cursor: pointer; }
+:is(button, a).dcc-chip::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+:is(button, a).dcc-chip:hover::before { opacity: .08; }
+:is(button, a).dcc-chip:active::before,
+:is(button, a).dcc-chip:focus-visible::before { opacity: .12; }
+:is(button, a).dcc-chip:focus-visible {
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 2px;
+}
+
+/* ---- Deshabilitado ----
+   `disabled` en el chip clicable; en el eliminable, `.is-disabled` en el chip
+   y `disabled` en su cruz. Se apaga la pieza entera, como el botón, para que
+   siga leyéndose de qué color era. */
+.dcc-chip:disabled,
+.dcc-chip[aria-disabled="true"],
+.dcc-chip.is-disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+/* Con el mismo peso que el hover (el :is cuenta como su etiqueta), o la capa
+   seguiría apareciendo bajo el cursor. */
+:is(button, a).dcc-chip:disabled::before,
+:is(button, a).dcc-chip[aria-disabled="true"]::before { opacity: 0; }
+.dcc-chip.is-disabled .dcc-chip__delete,
+.dcc-chip__delete:disabled { cursor: not-allowed; background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-chip,
+  .dcc-chip::before,
+  .dcc-chip__delete { transition: none; }
+}

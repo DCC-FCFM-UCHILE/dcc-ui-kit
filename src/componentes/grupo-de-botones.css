@@ -1,0 +1,141 @@
+/* --------------------------------------------------------------------------
+   GRUPO DE BOTONES  (ButtonGroup de MUI)
+   Botones relacionados pegados en una sola pieza: "Anterior · Hoy · Siguiente",
+   o el botón dividido, con la acción principal a la izquierda y una flecha que
+   abre las alternativas.
+
+   No hay un botón nuevo: los hijos son `.dcc-btn` con su variante, color y
+   tamaño de siempre, y el grupo sólo les quita los radios interiores y la
+   sombra propia y dibuja la separación según la variante:
+
+     contained  →  una línea de 1px del color de la etiqueta al 40% sobre el
+                   relleno; la sombra pasa al grupo entero.
+     outlined   →  los bordes de 2px se montan uno sobre otro (margen −2px),
+                   así que entre dos botones se ve uno solo.
+     text       →  una línea de 1px del color del botón al 50%.
+
+   La variante se pone en cada botón, igual que fuera del grupo. El radio de
+   las puntas es el de la píldora del botón (24px); se puede cambiar con
+   `--dcc-btn-group-radius`.
+   -------------------------------------------------------------------------- */
+.dcc-btn-group {
+  --dcc-btn-group-radius: 24px;
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+  border-radius: var(--dcc-btn-group-radius);
+}
+
+/* Lo que es igual en todos: sin radio interior y sin sombra propia. Un botón
+   puede ir suelto o dentro de un `.dcc-menu` —el del botón dividido—, y las
+   dos formas cuentan como una pieza del grupo. */
+.dcc-btn-group > .dcc-btn,
+.dcc-btn-group > .dcc-menu > .dcc-btn {
+  border-radius: 0;
+  box-shadow: none;
+}
+.dcc-btn-group > .dcc-btn:hover,
+.dcc-btn-group > .dcc-menu > .dcc-btn:hover { box-shadow: none; z-index: 1; }
+.dcc-btn-group > .dcc-btn:focus-visible,
+.dcc-btn-group > .dcc-menu > .dcc-btn:focus-visible { z-index: 2; }
+
+.dcc-btn-group > .dcc-btn:first-child,
+.dcc-btn-group > .dcc-menu:first-child > .dcc-btn {
+  border-top-left-radius: var(--dcc-btn-group-radius);
+  border-bottom-left-radius: var(--dcc-btn-group-radius);
+}
+.dcc-btn-group > .dcc-btn:last-child,
+.dcc-btn-group > .dcc-menu:last-child > .dcc-btn {
+  border-top-right-radius: var(--dcc-btn-group-radius);
+  border-bottom-right-radius: var(--dcc-btn-group-radius);
+}
+
+/* La sombra la lleva el grupo: si cada botón tuviera la suya, la de uno
+   caería sobre el vecino. */
+.dcc-btn-group:has(> .dcc-btn--contained:not(:disabled), > .dcc-menu > .dcc-btn--contained) {
+  box-shadow: var(--dcc-shadow-button);
+}
+
+/* Separadores */
+.dcc-btn-group > .dcc-btn--contained:not(:last-child),
+.dcc-btn-group > .dcc-menu:not(:last-child) > .dcc-btn--contained {
+  border-right: 1px solid color-mix(in srgb, var(--dcc-btn-on) 40%, var(--dcc-btn-main));
+}
+.dcc-btn-group > .dcc-btn--outlined:not(:first-child),
+.dcc-btn-group > .dcc-menu:not(:first-child) > .dcc-btn--outlined { margin-left: -2px; }
+.dcc-btn-group > .dcc-btn--text:not(:last-child),
+.dcc-btn-group > .dcc-menu:not(:last-child) > .dcc-btn--text {
+  border-right: 1px solid color-mix(in srgb, var(--dcc-btn-main) 50%, transparent);
+}
+
+/* ---- Vertical ---- */
+.dcc-btn-group--vertical { flex-direction: column; --dcc-btn-group-radius: 20px; }
+/* Con el atajo completo: las reglas de las puntas horizontales pesan lo mismo
+   y, si sólo se agregaran las esquinas de arriba, la primera pieza quedaría
+   también con la de abajo a la izquierda redondeada. */
+.dcc-btn-group--vertical > .dcc-btn:first-child,
+.dcc-btn-group--vertical > .dcc-menu:first-child > .dcc-btn {
+  border-radius: var(--dcc-btn-group-radius) var(--dcc-btn-group-radius) 0 0;
+}
+.dcc-btn-group--vertical > .dcc-btn:last-child,
+.dcc-btn-group--vertical > .dcc-menu:last-child > .dcc-btn {
+  border-radius: 0 0 var(--dcc-btn-group-radius) var(--dcc-btn-group-radius);
+}
+.dcc-btn-group--vertical > .dcc-btn--contained:not(:last-child),
+.dcc-btn-group--vertical > .dcc-menu:not(:last-child) > .dcc-btn--contained {
+  border-right: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--dcc-btn-on) 40%, var(--dcc-btn-main));
+}
+.dcc-btn-group--vertical > .dcc-btn--outlined:not(:first-child),
+.dcc-btn-group--vertical > .dcc-menu:not(:first-child) > .dcc-btn--outlined { margin-left: 0; margin-top: -2px; }
+.dcc-btn-group--vertical > .dcc-btn--text:not(:last-child),
+.dcc-btn-group--vertical > .dcc-menu:not(:last-child) > .dcc-btn--text {
+  border-right: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--dcc-btn-main) 50%, transparent);
+}
+
+/* A todo el ancho: los botones se reparten el espacio. */
+.dcc-btn-group--full { display: flex; width: 100%; }
+.dcc-btn-group--full > .dcc-btn { flex: 1 1 0; min-width: 0; white-space: normal; text-align: center; }
+
+/* ---- Botón dividido ----
+   La flecha es un `.dcc-btn` que además es `.dcc-menu__trigger`, para usar el
+   menú del kit tal cual. El disparador pesa lo mismo que el botón y se declara
+   después, así que le gana: le quita el fondo, el borde y el relleno. Acá se
+   devuelven, con el grupo por delante, variante por variante. El relleno es
+   más angosto que el del botón: la flecha sola no necesita 12px a cada lado. */
+.dcc-btn-group .dcc-btn.dcc-menu__trigger {
+  gap: 0;
+  padding: 8px 10px;
+  color: var(--dcc-btn-on);
+  background: var(--dcc-btn-main);
+  border: 0 solid transparent;
+}
+.dcc-btn-group .dcc-btn--outlined.dcc-menu__trigger {
+  padding: 6px 8px;
+  color: var(--dcc-btn-main);
+  background: transparent;
+  border: 2px solid var(--dcc-btn-main);
+}
+.dcc-btn-group .dcc-btn--text.dcc-menu__trigger {
+  color: var(--dcc-btn-main);
+  background: transparent;
+}
+.dcc-btn-group .dcc-btn--sm.dcc-menu__trigger { padding: 4px 6px; }
+.dcc-btn-group .dcc-btn--lg.dcc-menu__trigger { padding: 12px 14px; }
+.dcc-btn-group .dcc-btn--outlined.dcc-btn--sm.dcc-menu__trigger { padding: 2px 4px; }
+.dcc-btn-group .dcc-btn--outlined.dcc-btn--lg.dcc-menu__trigger { padding: 10px 12px; }
+.dcc-btn-group .dcc-btn.dcc-menu__trigger:focus-visible { outline-offset: 2px; }
+.dcc-btn-group .dcc-menu__trigger > .dcc-icon {
+  transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-btn-group .dcc-menu__trigger[aria-expanded="true"] > .dcc-icon { transform: rotate(180deg); }
+
+/* La opción elegida del botón dividido lleva un check; las otras guardan su
+   lugar para que los textos queden alineados. */
+.dcc-menu__item[aria-checked="false"] > .dcc-btn-group__check { visibility: hidden; }
+.dcc-menu__item[aria-checked="true"] { font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-btn-group .dcc-menu__trigger > .dcc-icon { transition: none; }
+}

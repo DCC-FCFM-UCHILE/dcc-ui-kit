@@ -1,0 +1,180 @@
+<!--
+titulo: Grupo de botones
+grupo: Entradas
+resumen: Botones relacionados pegados en una sola pieza, en las tres variantes del botón, en fila o en columna, y el botón dividido con su menú.
+miniatura: .dcc-btn-group
+escala: 1
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">Un <code>.dcc-btn-group</code> con <code>role="group"</code> y un <code>aria-label</code>, y
+  dentro botones <code>.dcc-btn</code> comunes. Cada botón lleva su variante, color y tamaño como siempre; el
+  grupo sólo les quita los radios interiores y dibuja la separación que corresponde a la variante.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-btn-group" role="group" aria-label="Semana del calendario (relleno)">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Anterior</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Hoy</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Siguiente</button>
+    </div>
+  </div>
+  <div class="dcc-doc-row">
+    <div class="dcc-btn-group" role="group" aria-label="Semana del calendario (delineado)">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Anterior</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Hoy</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Siguiente</button>
+    </div>
+  </div>
+  <div class="dcc-doc-row">
+    <div class="dcc-btn-group" role="group" aria-label="Semana del calendario (texto)">
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Anterior</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Hoy</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores</h2>
+<p class="dcc-doc-p">Los mismos del botón. En el relleno, la línea entre botones es el color de la etiqueta al
+  40% sobre el relleno; en el de texto, el color del botón al 50%.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-btn-group" role="group" aria-label="Revisión de la memoria">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--success" type="button">Aprobar</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--success" type="button">Con observaciones</button>
+    </div>
+    <div class="dcc-btn-group" role="group" aria-label="Acciones sobre la solicitud">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--error" type="button">Rechazar</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--error" type="button">Anular</button>
+    </div>
+    <div class="dcc-btn-group" role="group" aria-label="Vista del horario">
+      <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--secondary" type="button">Día</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--secondary" type="button">Semana</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--secondary" type="button">Mes</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p">El tamaño también va en cada botón: <code>--sm</code>, <code>--md</code> o <code>--lg</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-btn-group" role="group" aria-label="Paginación pequeña">
+      <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button">Uno</button>
+      <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button">Dos</button>
+      <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button">Tres</button>
+    </div>
+    <div class="dcc-btn-group" role="group" aria-label="Paginación mediana">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Uno</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Dos</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Tres</button>
+    </div>
+    <div class="dcc-btn-group" role="group" aria-label="Paginación grande">
+      <button class="dcc-btn dcc-btn--lg dcc-btn--outlined" type="button">Uno</button>
+      <button class="dcc-btn dcc-btn--lg dcc-btn--outlined" type="button">Dos</button>
+      <button class="dcc-btn dcc-btn--lg dcc-btn--outlined" type="button">Tres</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="iconos">Con íconos</h2>
+<p class="dcc-doc-p">Un botón sólo con ícono necesita <code>aria-label</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-btn-group" role="group" aria-label="Acciones sobre el documento">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Descargar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg></button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Imprimir"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-printer"/></svg></button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" aria-label="Compartir"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-share-2"/></svg></button>
+    </div>
+    <div class="dcc-btn-group" role="group" aria-label="Navegar entre semanas">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg> Anterior</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Siguiente <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="vertical">Vertical</h2>
+<p class="dcc-doc-p">Con <code>.dcc-btn-group--vertical</code> los botones se apilan y toman el ancho del más
+  largo. El radio de las puntas baja a 20px, la mitad del alto del botón mediano.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="align-items:flex-start">
+    <div class="dcc-btn-group dcc-btn-group--vertical" role="group" aria-label="Secciones del curso (relleno)">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Programa</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Evaluaciones</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Material</button>
+    </div>
+    <div class="dcc-btn-group dcc-btn-group--vertical" role="group" aria-label="Secciones del curso (delineado)">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Programa</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Evaluaciones</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Material</button>
+    </div>
+    <div class="dcc-btn-group dcc-btn-group--vertical" role="group" aria-label="Secciones del curso (texto)">
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Programa</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Evaluaciones</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Material</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="dividido">Botón dividido</h2>
+<p class="dcc-doc-p">La acción principal a la izquierda y, a la derecha, una flecha que abre un
+  <a href="menu.html">menú desplegable</a> con las alternativas. La flecha es a la vez
+  <code>.dcc-btn</code> y <code>.dcc-menu__trigger</code>, dentro de un <code>.dcc-menu.js-menu</code>: el menú del kit
+  pone la apertura y el teclado. Con <code>js-split-button</code> en el grupo y opciones
+  <code>role="menuitemradio"</code>, elegir una opción cambia el texto de <code>.js-split-label</code> en el botón
+  principal y emite <code>dcc-elegir</code> con <code>detail.valor</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:200px;align-items:flex-start">
+    <div class="dcc-btn-group js-split-button" role="group" aria-label="Exportar notas">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg> <span class="js-split-label">Exportar a Excel</span></button>
+      <div class="dcc-menu dcc-menu--end js-menu">
+        <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-menu__trigger" type="button" aria-label="Elegir formato de exportación" aria-haspopup="menu" aria-expanded="false" aria-controls="exportar-menu"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        <div class="dcc-menu__list" id="exportar-menu" role="menu" hidden>
+          <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="true" data-valor="xlsx"><svg class="dcc-btn-group__check dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Exportar a Excel</button>
+          <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-valor="csv"><svg class="dcc-btn-group__check dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Exportar a CSV</button>
+          <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" data-valor="pdf"><svg class="dcc-btn-group__check dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Exportar a PDF</button>
+          <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false" aria-disabled="true" data-valor="ucursos"><svg class="dcc-btn-group__check dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Subir a U-Cursos</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dcc-btn-group js-split-button" role="group" aria-label="Guardar el borrador">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button"><span class="js-split-label">Guardar</span></button>
+      <div class="dcc-menu dcc-menu--end js-menu">
+        <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-menu__trigger" type="button" aria-label="Más formas de guardar" aria-haspopup="menu" aria-expanded="false" aria-controls="guardar-menu"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        <div class="dcc-menu__list" id="guardar-menu" role="menu" hidden>
+          <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="true"><svg class="dcc-btn-group__check dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Guardar</button>
+          <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false"><svg class="dcc-btn-group__check dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Guardar y enviar a revisión</button>
+          <button class="dcc-menu__item" type="button" role="menuitemradio" aria-checked="false"><svg class="dcc-btn-group__check dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Guardar como plantilla</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="deshabilitado">Deshabilitado</h2>
+<p class="dcc-doc-p">Cada botón se deshabilita por su cuenta, con <code>disabled</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <div class="dcc-btn-group" role="group" aria-label="Navegar entre entregas">
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" disabled>Anterior</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Tarea 2</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="ancho-completo">A todo el ancho</h2>
+<p class="dcc-doc-p"><code>.dcc-btn-group--full</code> ocupa el ancho del contenedor y reparte el espacio entre
+  los botones.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-btn-group dcc-btn-group--full" role="group" aria-label="Etapa de la postulación">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Antecedentes</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Documentos</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Envío</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="cuando">Grupo de botones o botón alternable</h2>
+<p class="dcc-doc-p">El grupo de botones junta <em>acciones</em>: cada clic hace algo y nada queda marcado. Si los
+  botones eligen un <em>valor</em> que se queda presionado —la vista, la alineación—, usa el
+  <a href="boton-alternable.html">botón alternable</a>.</p>

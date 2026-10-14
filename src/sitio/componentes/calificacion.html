@@ -1,0 +1,156 @@
+<!--
+titulo: Calificación
+grupo: Entradas
+resumen: Pide o muestra una nota en estrellas, con medias estrellas, etiqueta de valor y sólo lectura.
+miniatura: #cal-mini
+escala: 1
+-->
+<h2 class="dcc-doc-h2" id="basica">Básica</h2>
+<p class="dcc-doc-p">Una calificación editable es un grupo de radios nativos: <code>.dcc-rating</code> con
+  <code>role="radiogroup"</code> y, por estrella, un <code>.dcc-rating__item</code> (el <code>&lt;label&gt;</code>)
+  con su <code>.dcc-rating__input</code> escondido y el ícono <code>.dcc-rating__icon</code>. Las flechas cambian la
+  nota, el valor viaja con el formulario y todo funciona sin JS. Cada radio lleva su nombre completo en
+  <code>aria-label</code> («3 estrellas»), que es lo que oye el lector de pantalla.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:40px;align-items:flex-start">
+    <div class="dcc-field" id="cal-mini">
+      <span class="dcc-field__label" id="cal-a-l">Evaluación del curso CC3001</span>
+      <div class="dcc-rating js-rating" role="radiogroup" aria-labelledby="cal-a-l">
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-a" value="1" aria-label="1 estrella"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-a" value="2" aria-label="2 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-a" value="3" aria-label="3 estrellas" checked><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-a" value="4" aria-label="4 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-a" value="5" aria-label="5 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      </div>
+    </div>
+    <div class="dcc-field">
+      <span class="dcc-field__label" id="cal-b-l">Taller de LaTeX (sin responder)</span>
+      <div class="dcc-rating js-rating" role="radiogroup" aria-labelledby="cal-b-l">
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-b" value="1" aria-label="1 estrella"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-b" value="2" aria-label="2 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-b" value="3" aria-label="3 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-b" value="4" aria-label="4 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-b" value="5" aria-label="5 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="dcc-doc-p">Al pasar el mouse se previsualiza la nota. Con el gancho <code>.js-rating</code>, un segundo
+  clic sobre la estrella marcada borra la nota, como en MUI; <code>data-requerida</code> lo impide.</p>
+
+<h2 class="dcc-doc-h2" id="etiqueta">Etiqueta de valor</h2>
+<p class="dcc-doc-p">Con un <code>.dcc-rating__label</code> al final y <code>data-etiqueta</code> en cada radio, el
+  JS escribe el nombre de la nota marcada y, mientras el cursor está sobre una estrella, el de esa estrella. La
+  etiqueta va con <code>aria-hidden</code>: el lector de pantalla ya la oye en el nombre de cada radio.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-field">
+    <span class="dcc-field__label" id="cal-c-l">¿Cómo evaluarías la guía de tu memoria?</span>
+    <div class="dcc-rating js-rating" role="radiogroup" aria-labelledby="cal-c-l" data-vacio="Sin calificar">
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-c" value="1" aria-label="1 estrella, Muy malo" data-etiqueta="Muy malo"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-c" value="2" aria-label="2 estrellas, Malo" data-etiqueta="Malo"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-c" value="3" aria-label="3 estrellas, Regular" data-etiqueta="Regular"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-c" value="4" aria-label="4 estrellas, Bueno" data-etiqueta="Bueno" checked><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-c" value="5" aria-label="5 estrellas, Excelente" data-etiqueta="Excelente"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <span class="dcc-rating__label" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="medias-estrellas">Medias estrellas</h2>
+<p class="dcc-doc-p">Con <code>.dcc-rating--half</code> cada estrella son dos radios, uno por mitad (0,5 y 1; 1,5
+  y 2…), y cada uno dibuja su media estrella. Así el teclado avanza de a media estrella.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-field">
+    <span class="dcc-field__label" id="cal-d-l">Evaluación docente</span>
+    <div class="dcc-rating dcc-rating--half js-rating" role="radiogroup" aria-labelledby="cal-d-l">
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="0.5" aria-label="0,5 estrellas, Pésimo" data-etiqueta="Pésimo"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="1" aria-label="1 estrella, Muy malo" data-etiqueta="Muy malo"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="1.5" aria-label="1,5 estrellas, Malo" data-etiqueta="Malo"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="2" aria-label="2 estrellas, Insuficiente" data-etiqueta="Insuficiente"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="2.5" aria-label="2,5 estrellas, Regular" data-etiqueta="Regular"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="3" aria-label="3 estrellas, Aceptable" data-etiqueta="Aceptable"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="3.5" aria-label="3,5 estrellas, Bueno" data-etiqueta="Bueno" checked><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="4" aria-label="4 estrellas, Muy bueno" data-etiqueta="Muy bueno"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="4.5" aria-label="4,5 estrellas, Destacado" data-etiqueta="Destacado"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-d" value="5" aria-label="5 estrellas, Excelente" data-etiqueta="Excelente"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <span class="dcc-rating__label" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="solo-lectura">Sólo lectura</h2>
+<p class="dcc-doc-p">Para mostrar una nota que no se edita, <code>.dcc-rating--readonly</code> es una imagen
+  (<code>role="img"</code>, con el valor en <code>aria-label</code>). Dentro, <code>.dcc-rating__track</code>
+  lleva el valor en <code>--dcc-rating-valor</code> y una segunda fila de íconos en <code>.dcc-rating__fill</code>,
+  recortada a ese porcentaje: sirve para cualquier fracción, como un promedio de 4,3.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:32px">
+    <span class="dcc-rating dcc-rating--readonly" role="img" aria-label="4,3 de 5 estrellas"><span class="dcc-rating__track" style="--dcc-rating-valor: 4.3"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><span class="dcc-rating__fill"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></span></span><span class="dcc-rating__label">4,3 · 128 evaluaciones</span></span>
+    <span class="dcc-rating dcc-rating--readonly" role="img" aria-label="3,5 de 5 estrellas"><span class="dcc-rating__track" style="--dcc-rating-valor: 3.5"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><span class="dcc-rating__fill"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></span></span></span>
+    <span class="dcc-rating dcc-rating--readonly" role="img" aria-label="2 de 5 estrellas"><span class="dcc-rating__track" style="--dcc-rating-valor: 2"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><span class="dcc-rating__fill"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></span></span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p"><code>.dcc-rating--sm</code> (18px), el mediano por omisión (24px) y
+  <code>.dcc-rating--lg</code> (30px). El tamaño es la variable <code>--dcc-rating-size</code>, que también se
+  puede fijar a mano.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="flex-direction:column;align-items:flex-start;gap:16px">
+    <div class="dcc-rating dcc-rating--sm" role="radiogroup" aria-label="Calificación, tamaño pequeño">
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e1" value="1" aria-label="1 estrella"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e1" value="2" aria-label="2 estrellas" checked><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e1" value="3" aria-label="3 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e1" value="4" aria-label="4 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e1" value="5" aria-label="5 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+    </div>
+    <div class="dcc-rating" role="radiogroup" aria-label="Calificación, tamaño mediano">
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e2" value="1" aria-label="1 estrella"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e2" value="2" aria-label="2 estrellas" checked><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e2" value="3" aria-label="3 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e2" value="4" aria-label="4 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e2" value="5" aria-label="5 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+    </div>
+    <div class="dcc-rating dcc-rating--lg" role="radiogroup" aria-label="Calificación, tamaño grande">
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e3" value="1" aria-label="1 estrella"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e3" value="2" aria-label="2 estrellas" checked><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e3" value="3" aria-label="3 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e3" value="4" aria-label="4 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-e3" value="5" aria-label="5 estrellas"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="icono">Ícono alternativo</h2>
+<p class="dcc-doc-p">El ícono es el que se ponga en el <code>&lt;use&gt;</code>. <code>.dcc-rating--heart</code>
+  cambia el color al rojo de error, para usar corazones.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:40px">
+    <div class="dcc-field">
+      <span class="dcc-field__label" id="cal-f-l">¿Te gustó la charla de Beauchef 851?</span>
+      <div class="dcc-rating dcc-rating--heart js-rating" role="radiogroup" aria-labelledby="cal-f-l">
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-f" value="1" aria-label="1 corazón"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-f" value="2" aria-label="2 corazones"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-f" value="3" aria-label="3 corazones"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-f" value="4" aria-label="4 corazones" checked><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></label>
+        <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-f" value="5" aria-label="5 corazones"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></label>
+      </div>
+    </div>
+    <span class="dcc-rating dcc-rating--readonly dcc-rating--heart" role="img" aria-label="3,5 de 5 corazones"><span class="dcc-rating__track" style="--dcc-rating-valor: 3.5"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><span class="dcc-rating__fill"><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></span></span></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="deshabilitado">Deshabilitado</h2>
+<p class="dcc-doc-p">Con <code>disabled</code> en los radios, la pieza se apaga entera y deja de responder.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-field">
+    <span class="dcc-field__label" id="cal-g-l">Evaluación (periodo cerrado)</span>
+    <div class="dcc-rating" role="radiogroup" aria-labelledby="cal-g-l">
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-g" value="1" aria-label="1 estrella" disabled><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-g" value="2" aria-label="2 estrellas" disabled><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-g" value="3" aria-label="3 estrellas" checked disabled><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-g" value="4" aria-label="4 estrellas" disabled><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+      <label class="dcc-rating__item"><input class="dcc-rating__input" type="radio" name="cal-g" value="5" aria-label="5 estrellas" disabled><svg class="dcc-rating__icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg></label>
+    </div>
+  </div>
+</div>

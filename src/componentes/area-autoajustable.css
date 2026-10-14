@@ -1,0 +1,17 @@
+/* --------------------------------------------------------------------------
+   ÁREA DE TEXTO QUE CRECE (TextareaAutosize de MUI)
+
+   Un `textarea.dcc-input` con `.dcc-input--autosize` y el gancho
+   `.js-autosize`: el JS (src/componentes/area-autoajustable.js) le fija el
+   alto al del texto, entre un mínimo y un máximo de filas. Acá sólo se
+   desactiva lo que estorba: el asa para estirarlo a mano —el alto ya no es
+   del usuario— y el alto mínimo de 96px del área de texto común, porque el
+   mínimo ahora lo dan las filas.
+
+   Sin JS queda un área de texto normal, del alto de su atributo `rows`.
+   -------------------------------------------------------------------------- */
+textarea.dcc-input--autosize {
+  min-height: 0;
+  resize: none;
+  overflow-y: hidden;
+}

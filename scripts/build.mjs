@@ -29,7 +29,7 @@ const check = process.argv.includes("--check");
    -------------------------------------------------------------------------- */
 const ANDAMIAJE = [
   "dcc-doc(?:-[a-z0-9]+)*", "dcc-sg-h3", "dcc-sub-label",
-  "dcc-palette-group", "dcc-swatches", "dcc-swatch", "dcc-chip", "dcc-meta", "dcc-name",
+  "dcc-palette-group", "dcc-swatches", "dcc-swatch", "dcc-meta", "dcc-name",
   "dcc-hex", "dcc-type-grid", "dcc-type-item", "dcc-type-spec", "dcc-type-sample",
   "dcc-demo-grid", "dcc-table-row",
   "dcc-menu-states", "dcc-nav-demo", "dcc-sidebar-demo", "dcc-phone",
@@ -99,7 +99,15 @@ const FUENTES = `/* Fuentes auto-hospedadas. Las rutas son relativas a este arch
 /* --------------------------------------------------------------------------
    2. CSS
    -------------------------------------------------------------------------- */
-const fuenteCss = readFileSync(join(SRC, "styles.css"), "utf8");
+// El CSS de los componentes vive en styles.css y, los más nuevos, en un
+// archivo cada uno en src/componentes/. Se juntan en ese orden: los módulos
+// pueden apoyarse en los tokens y las piezas de la hoja principal.
+const COMPONENTES = join(SRC, "componentes");
+const modulos = (ext) => existsSync(COMPONENTES)
+  ? readdirSync(COMPONENTES).filter((f) => f.endsWith(ext)).sort()
+  : [];
+const fuenteCss = [readFileSync(join(SRC, "styles.css"), "utf8"),
+  ...modulos(".css").map((f) => readFileSync(join(COMPONENTES, f), "utf8"))].join("\n");
 const lib = partirMedia(fuenteCss).map(([tipo, txt]) => {
   if (tipo === "css") return filtrar(txt);
   const cab = txt.slice(0, txt.indexOf("{") + 1);
@@ -177,7 +185,9 @@ const iconosJs = `/*! DCC UI Kit ${VERSION} — inyector del sprite de íconos.
        vivir embebido en la documentación: si no, cada app tendría que copiarlo a
        mano y las copias derivarían entre sí.
    -------------------------------------------------------------------------- */
-const comportamiento = readFileSync(join(SRC, "behaviors.js"), "utf8");
+// behaviors.js primero: define DCCUI.registrar, que usan los módulos.
+const comportamiento = [readFileSync(join(SRC, "behaviors.js"), "utf8"),
+  ...modulos(".js").map((f) => readFileSync(join(COMPONENTES, f), "utf8"))].join("\n");
 
 const banner = (que) => `/*! DCC UI Kit ${VERSION} — ${que} | MIT | ${pkg.homepage} */\n`;
 

@@ -1,0 +1,139 @@
+<!--
+titulo: Card
+grupo: Superficies
+resumen: La tarjeta genérica, para armar con piezas: cabecera con avatar y menú, imagen, contenido, acciones, área clicable y contenido expandible.
+miniatura: #card-completa
+escala: .4
+ancho: 345px
+-->
+<h2 class="dcc-doc-h2" id="cual-usar">¿Cuál tarjeta usar?</h2>
+<p class="dcc-doc-p">El kit tiene tres tarjetas. La <a href="tarjeta.html">tarjeta de programa</a>
+  (<code>.dcc-card</code>) y la <a href="tarjeta-comprimida.html">tarjeta comprimida</a> (<code>.dcc-ccard</code>)
+  vienen del Figma con su contenido fijo: un programa académico con su etiqueta, fechas y descuento, o un ítem de
+  listado con favorito. Si lo que muestras es eso, usa esas. Esta, <code>.dcc-surface-card</code>, es la Card de
+  MUI: no trae contenido fijo, sólo piezas para armar una noticia, un curso, una persona o un recurso que no
+  calza en las otras dos.</p>
+
+<h2 class="dcc-doc-h2" id="basica">Básica</h2>
+<p class="dcc-doc-p">La tarjeta es un <a href="papel.html">Paper</a> con <code>.dcc-surface-card</code>: elevada
+  por omisión, delineada con <code>.dcc-paper--outlined</code>. Adentro, <code>__content</code> para el cuerpo y
+  <code>__actions</code> para una fila de botones de texto.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="align-items:stretch">
+    <article class="dcc-paper dcc-surface-card" style="flex:0 1 300px">
+      <div class="dcc-surface-card__content">
+        <p class="dcc-surface-card__overline">Charla · Auditorio Beauchef 851</p>
+        <h3 class="dcc-surface-card__headline">Verificación formal de contratos inteligentes</h3>
+        <p class="dcc-surface-card__text">Coloquio del DCC con invitada de la Universidad de Edimburgo. Jueves 17 a
+          las 12:00, con transmisión por YouTube.</p>
+      </div>
+      <div class="dcc-surface-card__actions">
+        <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Inscribirme</button>
+      </div>
+    </article>
+    <article class="dcc-paper dcc-paper--outlined dcc-surface-card" style="flex:0 1 300px">
+      <div class="dcc-surface-card__content">
+        <p class="dcc-surface-card__overline">Charla · Sala B-03</p>
+        <h3 class="dcc-surface-card__headline">Cómo escribir tu memoria sin morir en el intento</h3>
+        <p class="dcc-surface-card__text">Taller práctico para estudiantes de último año, con ejemplos de
+          memorias aprobadas el año pasado.</p>
+      </div>
+      <div class="dcc-surface-card__actions">
+        <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Inscribirme</button>
+      </div>
+    </article>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="completa">Completa</h2>
+<p class="dcc-doc-p">Todas las piezas juntas. La <code>__header</code> lleva un <a href="avatar.html">avatar</a>,
+  título, subtítulo y un <a href="menu.html">menú</a> en el botón de ícono. La imagen es
+  <code>__media</code>, de alto fijo (194px, cámbialo con <code>--dcc-surface-card-media-h</code>) y recortada con
+  <code>object-fit: cover</code>. El último botón de la fila, <code>__expand</code>, despliega
+  <code>__collapse</code> y su flecha gira.</p>
+<div class="dcc-doc-demo">
+  <article class="dcc-paper dcc-surface-card" id="card-completa" style="max-width:345px">
+    <header class="dcc-surface-card__header">
+      <span class="dcc-avatar dcc-avatar--red" aria-hidden="true"><span class="dcc-avatar__label">CC</span></span>
+      <div class="dcc-surface-card__heading">
+        <h3 class="dcc-surface-card__title">CC3001 · Algoritmos y Estructuras de Datos</h3>
+        <p class="dcc-surface-card__subheader">Primavera 2026 · Sección 2</p>
+      </div>
+      <div class="dcc-menu dcc-menu--end js-menu">
+        <button class="dcc-icon-btn dcc-menu__trigger dcc-surface-card__icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="card-menu" aria-label="Más opciones">
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ellipsis-vertical"/></svg>
+        </button>
+        <div class="dcc-menu__list" id="card-menu" role="menu" hidden>
+          <a class="dcc-menu__item" role="menuitem" href="#completa"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"/></svg>Ver programa</a>
+          <a class="dcc-menu__item" role="menuitem" href="#completa"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"/></svg>Equipo docente</a>
+        </div>
+      </div>
+    </header>
+    <img class="dcc-surface-card__media" src="assets/card-media.svg" alt="" width="345" height="194">
+    <div class="dcc-surface-card__content">
+      <p class="dcc-surface-card__text">Estructuras de datos fundamentales y el análisis de los algoritmos que las
+        usan. Clases martes y jueves de 10:15 a 11:45 en la sala B-212.</p>
+    </div>
+    <div class="dcc-surface-card__actions">
+      <button class="dcc-icon-btn dcc-surface-card__icon-btn" type="button" aria-label="Agregar a favoritos"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></button>
+      <button class="dcc-icon-btn dcc-surface-card__icon-btn" type="button" aria-label="Compartir"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-share-2"/></svg></button>
+      <button class="dcc-icon-btn dcc-surface-card__icon-btn dcc-surface-card__expand js-surface-card-expand" type="button" aria-expanded="false" aria-controls="card-mas" aria-label="Ver más"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+    </div>
+    <div class="dcc-surface-card__collapse" id="card-mas">
+      <div>
+        <div class="dcc-surface-card__content">
+          <p class="dcc-surface-card__text"><strong>Evaluación.</strong> Tres controles (60%) y cuatro tareas de
+            programación en Python (40%). Hay que aprobar ambas partes por separado.</p>
+          <p class="dcc-surface-card__text"><strong>Requisitos.</strong> CC1002 Introducción a la Programación y
+            MA1101 Introducción al Álgebra.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>
+
+<h2 class="dcc-doc-h2" id="medios">Con imagen</h2>
+<p class="dcc-doc-p">Una imagen arriba, sin cabecera. Cuando la imagen es la primera pieza, redondea ella misma
+  las esquinas superiores. Si la imagen dice algo, ponle un <code>alt</code>; si es decorativa, déjalo vacío.</p>
+<div class="dcc-doc-demo">
+  <article class="dcc-paper dcc-surface-card" style="max-width:345px">
+    <img class="dcc-surface-card__media" src="assets/card-media.svg" alt="" width="345" height="194">
+    <div class="dcc-surface-card__content">
+      <h3 class="dcc-surface-card__headline">Laboratorio de Visualización</h3>
+      <p class="dcc-surface-card__text">Tercer piso de Beauchef 851. Abierto a estudiantes de pregrado de lunes a
+        viernes de 9:00 a 18:00.</p>
+    </div>
+    <div class="dcc-surface-card__actions">
+      <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Compartir</button>
+      <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Reservar</button>
+    </div>
+  </article>
+</div>
+
+<h2 class="dcc-doc-h2" id="area-clicable">Área clicable</h2>
+<p class="dcc-doc-p"><code>__action-area</code> vuelve clicable un bloque entero —aquí la imagen y el texto— con
+  la capa de estado del kit en hover y foco. Es un <code>&lt;a&gt;</code> si navega o un
+  <code>&lt;button&gt;</code> si actúa. Los botones de <code>__actions</code> van afuera: un control no puede ir
+  dentro de otro.</p>
+<div class="dcc-doc-demo">
+  <article class="dcc-paper dcc-surface-card" style="max-width:345px">
+    <a class="dcc-surface-card__action-area" href="#area-clicable">
+      <img class="dcc-surface-card__media" src="assets/card-media.svg" alt="" width="345" height="194">
+      <div class="dcc-surface-card__content">
+        <h3 class="dcc-surface-card__headline">Memorias destacadas 2025</h3>
+        <p class="dcc-surface-card__text">Doce memorias de título premiadas por la comisión de docencia, con su
+          resumen y el código publicado.</p>
+      </div>
+    </a>
+    <div class="dcc-surface-card__actions">
+      <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Compartir</button>
+    </div>
+  </article>
+</div>
+
+<h2 class="dcc-doc-h2" id="accesibilidad">Accesibilidad</h2>
+<p class="dcc-doc-p">Usa <code>&lt;article&gt;</code> cuando la tarjeta es una pieza que se entiende sola (una
+  noticia, un curso) y un título real (<code>&lt;h3&gt;</code> o el nivel que toque) para que se pueda recorrer
+  por encabezados. Los botones de ícono llevan <code>aria-label</code>. El botón de expandir lleva
+  <code>aria-expanded</code> y <code>aria-controls</code>; el comportamiento está en
+  <code>src/componentes/tarjeta-generica.js</code> y se engancha con <code>js-surface-card-expand</code>.</p>

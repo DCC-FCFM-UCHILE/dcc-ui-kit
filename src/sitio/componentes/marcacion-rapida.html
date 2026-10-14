@@ -1,0 +1,184 @@
+<!--
+titulo: Speed Dial
+grupo: Navegación
+resumen: Un botón flotante que despliega de tres a seis acciones relacionadas, cada una con su etiqueta. Se abre con el mouse, con un toque o con el teclado.
+miniatura: .dcc-speed-dial--labels
+escala: .7
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">Úsalo cuando la acción principal de la pantalla tiene variantes que conviene tener a mano
+  —compartir de varias formas, crear distintos tipos de documento— y un <a href="boton-flotante.html">botón
+  flotante</a> solo no alcanza. Pasa el mouse sobre el botón o haz clic: el clic deja el dial fijo hasta que
+  elijas una acción, hagas clic fuera o pulses Escape.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-fab-area" style="height:320px">
+    <div class="dcc-fab-anchor">
+      <div class="dcc-speed-dial js-speed-dial">
+        <button class="dcc-fab dcc-fab--lg dcc-speed-dial__fab" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="sd-basico" aria-label="Acciones del programa del curso">
+          <svg class="dcc-icon dcc-i dcc-speed-dial__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg>
+        </button>
+        <ul class="dcc-speed-dial__actions" id="sd-basico" role="menu" aria-label="Acciones del programa del curso">
+          <li class="dcc-speed-dial__action" role="none">
+            <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Copiar enlace"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-copy"/></svg></button>
+            <span class="dcc-speed-dial__label" aria-hidden="true">Copiar enlace</span>
+          </li>
+          <li class="dcc-speed-dial__action" role="none">
+            <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Guardar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-save"/></svg></button>
+            <span class="dcc-speed-dial__label" aria-hidden="true">Guardar</span>
+          </li>
+          <li class="dcc-speed-dial__action" role="none">
+            <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Imprimir"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-printer"/></svg></button>
+            <span class="dcc-speed-dial__label" aria-hidden="true">Imprimir</span>
+          </li>
+          <li class="dcc-speed-dial__action" role="none">
+            <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Compartir"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-share-2"/></svg></button>
+            <span class="dcc-speed-dial__label" aria-hidden="true">Compartir</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="direcciones">Direcciones</h2>
+<p class="dcc-doc-p"><code>--up</code> (por omisión), <code>--down</code>, <code>--left</code> y
+  <code>--right</code>. Elige la que apunta hacia el centro de la pantalla desde la esquina donde está el botón.
+  Con el teclado, la flecha en esa dirección abre y recorre las acciones, y la contraria vuelve.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="align-items:stretch">
+    <div class="dcc-fab-area dcc-paper dcc-paper--outlined" style="flex:1 1 220px;height:260px">
+      <div class="dcc-fab-anchor dcc-fab-anchor--top">
+        <div class="dcc-speed-dial dcc-speed-dial--down js-speed-dial">
+          <button class="dcc-fab dcc-speed-dial__fab" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="sd-abajo" aria-label="Acciones hacia abajo">
+            <svg class="dcc-icon dcc-i dcc-speed-dial__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg>
+          </button>
+          <ul class="dcc-speed-dial__actions" id="sd-abajo" role="menu" aria-label="Acciones hacia abajo">
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Nuevo documento"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file-text"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Nuevo documento</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Nueva carpeta"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Nueva carpeta</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Subir archivo"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-upload"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Subir archivo</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="dcc-fab-area dcc-paper dcc-paper--outlined" style="flex:1 1 220px;height:260px">
+      <div class="dcc-fab-anchor">
+        <div class="dcc-speed-dial dcc-speed-dial--left js-speed-dial">
+          <button class="dcc-fab dcc-speed-dial__fab" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="sd-izquierda" aria-label="Acciones hacia la izquierda">
+            <svg class="dcc-icon dcc-i dcc-speed-dial__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg>
+          </button>
+          <ul class="dcc-speed-dial__actions" id="sd-izquierda" role="menu" aria-label="Acciones hacia la izquierda">
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Correo"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Correo</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Enlace"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Enlace</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Mensaje"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message-circle"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Mensaje</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dcc-doc-row" style="align-items:stretch">
+    <div class="dcc-fab-area dcc-paper dcc-paper--outlined" style="flex:1 1 220px;height:260px">
+      <div class="dcc-fab-anchor dcc-fab-anchor--start">
+        <div class="dcc-speed-dial dcc-speed-dial--right js-speed-dial">
+          <button class="dcc-fab dcc-speed-dial__fab" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="sd-derecha" aria-label="Acciones hacia la derecha">
+            <svg class="dcc-icon dcc-i dcc-speed-dial__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg>
+          </button>
+          <ul class="dcc-speed-dial__actions" id="sd-derecha" role="menu" aria-label="Acciones hacia la derecha">
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Cámara"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Cámara</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Video"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-video"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Video</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Audio"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mic"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Audio</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="dcc-fab-area dcc-paper dcc-paper--outlined" style="flex:1 1 220px;height:260px">
+      <div class="dcc-fab-anchor">
+        <div class="dcc-speed-dial dcc-speed-dial--up js-speed-dial">
+          <button class="dcc-fab dcc-speed-dial__fab" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="sd-arriba" aria-label="Acciones hacia arriba">
+            <svg class="dcc-icon dcc-i dcc-speed-dial__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg>
+          </button>
+          <ul class="dcc-speed-dial__actions" id="sd-arriba" role="menu" aria-label="Acciones hacia arriba">
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Editar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pencil"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Editar</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Descargar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Descargar</span>
+            </li>
+            <li class="dcc-speed-dial__action" role="none">
+              <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Archivar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"/></svg></button>
+              <span class="dcc-speed-dial__label" aria-hidden="true">Archivar</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="etiquetas">Etiquetas siempre visibles</h2>
+<p class="dcc-doc-p">Por omisión la etiqueta de cada acción aparece al pasar sobre ella o al enfocarla con el
+  teclado. Con <code>--labels</code> aparecen todas al abrir: en una pantalla táctil no hay hover, y sin esto
+  sólo se ven íconos. Este dial está abierto desde el inicio (<code>.is-open</code> y
+  <code>aria-expanded="true"</code>) para mostrarlo.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-fab-area" style="height:300px">
+    <div class="dcc-fab-anchor">
+      <div class="dcc-speed-dial dcc-speed-dial--labels is-open js-speed-dial">
+        <button class="dcc-fab dcc-fab--lg dcc-speed-dial__fab" type="button" aria-haspopup="menu" aria-expanded="true" aria-controls="sd-etiquetas" aria-label="Crear">
+          <svg class="dcc-icon dcc-i dcc-speed-dial__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg>
+        </button>
+        <ul class="dcc-speed-dial__actions" id="sd-etiquetas" role="menu" aria-label="Crear">
+          <li class="dcc-speed-dial__action" role="none">
+            <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Memoria"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-graduation-cap"/></svg></button>
+            <span class="dcc-speed-dial__label" aria-hidden="true">Memoria</span>
+          </li>
+          <li class="dcc-speed-dial__action" role="none">
+            <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Curso"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book-open"/></svg></button>
+            <span class="dcc-speed-dial__label" aria-hidden="true">Curso</span>
+          </li>
+          <li class="dcc-speed-dial__action" role="none">
+            <button class="dcc-fab dcc-fab--sm dcc-fab--surface dcc-speed-dial__btn" type="button" role="menuitem" tabindex="-1" aria-label="Evento"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar-days"/></svg></button>
+            <span class="dcc-speed-dial__label" aria-hidden="true">Evento</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="accesibilidad">Accesibilidad</h2>
+<p class="dcc-doc-p">El botón principal lleva <code>aria-haspopup="menu"</code>, <code>aria-expanded</code> y
+  <code>aria-controls</code>; la tira de acciones es un <code>role="menu"</code> y cada acción un
+  <code>menuitem</code> con su <code>aria-label</code> (la etiqueta visible es <code>aria-hidden</code> para que no
+  se lea dos veces). Las acciones llevan <code>tabindex="-1"</code>: el dial es una sola parada de Tab y adentro
+  se recorre con las flechas. Escape cierra y devuelve el foco al botón; salir con Tab también cierra.</p>
+<p class="dcc-doc-p">El comportamiento está en <code>src/componentes/marcacion-rapida.js</code> y se engancha con
+  la clase <code>js-speed-dial</code>.</p>

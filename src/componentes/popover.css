@@ -1,0 +1,124 @@
+/* --------------------------------------------------------------------------
+   POPOVER  (MUI Popover / Popper)
+   Panel flotante anclado a un botón. Lo abre, lo cierra y lo ubica
+   src/componentes/popover.js, con el mismo cálculo de posición del tooltip.
+
+   Superficie elevada con borde y sombra, igual que el menú desplegable y el
+   calendario, para que todo lo que flota en el kit se vea de la misma familia.
+   -------------------------------------------------------------------------- */
+.dcc-popover {
+  --dcc-popover-arrow: 24px;
+  position: fixed;
+  z-index: 1300;
+  inset: auto;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: max-content;
+  max-width: min(360px, calc(100vw - 16px));
+  padding: 16px;
+  overflow: visible;
+  background: var(--dcc-surface-raised);
+  color: var(--dcc-fg);
+  border: 1px solid var(--dcc-border);
+  border-radius: 8px;
+  box-shadow: var(--dcc-shadow);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  animation: dcc-popover-entrada .2s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-popover:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 2px; }
+
+.dcc-popover[data-placement^="top"]    { transform-origin: var(--dcc-popover-arrow) 100%; }
+.dcc-popover[data-placement^="bottom"] { transform-origin: var(--dcc-popover-arrow) 0; }
+.dcc-popover[data-placement^="left"]   { transform-origin: 100% var(--dcc-popover-arrow); }
+.dcc-popover[data-placement^="right"]  { transform-origin: 0 var(--dcc-popover-arrow); }
+
+@keyframes dcc-popover-entrada {
+  from { opacity: 0; transform: scale(.92); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Partes opcionales del contenido */
+.dcc-popover__title {
+  margin: 0 0 8px;
+  font-family: var(--dcc-font-display);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dcc-fg-strong);
+}
+.dcc-popover__text { margin: 0; color: var(--dcc-fg); }
+.dcc-popover__text + .dcc-popover__text { margin-top: 8px; }
+.dcc-popover__body { display: flex; flex-direction: column; gap: 12px; }
+.dcc-popover__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Botón de cerrar en la esquina: se reserva su lugar a la derecha del título. */
+.dcc-popover__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--dcc-fg-muted);
+  cursor: pointer;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-popover__close:hover { background: var(--dcc-surface-muted); }
+.dcc-popover__close:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 0; }
+.dcc-popover__close .dcc-i { width: 18px; height: 18px; }
+.dcc-popover:has(.dcc-popover__close) .dcc-popover__title { padding-right: 32px; }
+
+/* Flecha: cuadrado girado con el borde en los dos lados que dan hacia afuera,
+   así continúa el contorno del panel. */
+.dcc-popover--arrow::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--dcc-surface-raised);
+  border: 1px solid var(--dcc-border);
+  transform: rotate(45deg);
+}
+.dcc-popover--arrow[data-placement^="bottom"]::before {
+  top: -7px; left: calc(var(--dcc-popover-arrow) - 6px);
+  border-right-color: transparent; border-bottom-color: transparent;
+}
+.dcc-popover--arrow[data-placement^="top"]::before {
+  bottom: -7px; left: calc(var(--dcc-popover-arrow) - 6px);
+  border-left-color: transparent; border-top-color: transparent;
+}
+.dcc-popover--arrow[data-placement^="right"]::before {
+  left: -7px; top: calc(var(--dcc-popover-arrow) - 6px);
+  border-right-color: transparent; border-top-color: transparent;
+}
+.dcc-popover--arrow[data-placement^="left"]::before {
+  right: -7px; top: calc(var(--dcc-popover-arrow) - 6px);
+  border-left-color: transparent; border-bottom-color: transparent;
+}
+
+/* En el flujo, sin script: para documentación y capturas. */
+.dcc-popover--static {
+  position: relative;
+  z-index: auto;
+  display: block;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-popover { animation: none; }
+}

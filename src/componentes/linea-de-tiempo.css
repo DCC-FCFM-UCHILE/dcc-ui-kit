@@ -1,0 +1,187 @@
+/* --------------------------------------------------------------------------
+   LÍNEA DE TIEMPO  (MUI Lab Timeline)
+   Una lista ordenada de hitos: cada uno con su punto, el conector hacia el
+   siguiente, el contenido y, opcionalmente, un contenido opuesto (la fecha).
+
+     <ol class="dcc-timeline">
+       <li class="dcc-timeline__item">
+         <div class="dcc-timeline__opposite">…</div>        opcional
+         <div class="dcc-timeline__separator">
+           <span class="dcc-timeline__dot"></span>
+           <span class="dcc-timeline__connector"></span>
+         </div>
+         <div class="dcc-timeline__content">…</div>
+       </li>
+     </ol>
+
+   Posición del contenido respecto de la línea, como `position` en MUI:
+     derecha (por omisión) · --left · --alternate · --alternate-reverse
+
+   Diferencia con MUI: allá, un hito sin contenido opuesto deja vacía la mitad
+   izquierda para que la línea quede al centro. Acá eso sólo pasa en las
+   variantes alternadas, que lo necesitan; a la derecha o a la izquierda la
+   línea se pega al borde y el contenido usa todo el ancho, que es lo que casi
+   siempre se quiere.
+
+   En un contenedor de menos de 560px todo pasa a un lado: la línea a la
+   izquierda y, encima de cada contenido, su fecha. Se mide el ancho de la
+   propia línea de tiempo (container query) y no el de la ventana, así también
+   se acomoda dentro de una tarjeta o una columna angosta.
+   -------------------------------------------------------------------------- */
+.dcc-timeline {
+  --dcc-timeline-opposite-width: 30%;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--dcc-font-body);
+  color: var(--dcc-fg);
+}
+
+.dcc-timeline__item {
+  position: relative;
+  display: flex;
+  min-height: 70px;
+}
+
+.dcc-timeline__opposite,
+.dcc-timeline__content {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 16px;
+  font-size: 14px;
+  line-height: 24px;
+}
+/* Fuera de las alternadas, la columna de la fecha no necesita la mitad. */
+.dcc-timeline__opposite {
+  flex: 0 0 var(--dcc-timeline-opposite-width);
+  text-align: right;
+  color: var(--dcc-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+.dcc-timeline__content { text-align: left; }
+
+.dcc-timeline__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--dcc-fg-strong);
+}
+.dcc-timeline__text {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--dcc-fg-muted);
+}
+
+/* ---- Separador: punto + conector ---- */
+.dcc-timeline__separator {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* El punto mide 12px y baja 12px: su centro queda a 18px, el mismo que el de
+   la primera línea del contenido (6px de padding + media línea de 24px). */
+.dcc-timeline__dot {
+  --dcc-timeline-color: var(--dcc-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  margin: 12px 0;
+  border: 2px solid var(--dcc-timeline-color);
+  border-radius: 9999px;
+  background: var(--dcc-timeline-color);
+  color: var(--dcc-on-accent);
+}
+/* Con ícono: 28px, y baja 4px para conservar el centro a 18px. */
+.dcc-timeline__dot--icon {
+  width: 28px;
+  height: 28px;
+  margin: 4px 0;
+}
+.dcc-timeline__dot--icon .dcc-i { width: 16px; height: 16px; }
+
+/* Delineado: sólo el anillo; el ícono, si hay, toma el color del anillo. */
+.dcc-timeline__dot--outlined {
+  background: transparent;
+  color: var(--dcc-timeline-color);
+}
+
+.dcc-timeline__connector {
+  --dcc-timeline-color: var(--dcc-border-subtle);
+  flex: 1 1 auto;
+  width: 2px;
+  min-height: 8px;
+  background: var(--dcc-timeline-color);
+}
+/* El último hito no conecta con nada, aunque el markup traiga el conector. */
+.dcc-timeline__item:last-child .dcc-timeline__connector { display: none; }
+
+/* Colores de punto y conector, por rol. El punto es un objeto gráfico: todos
+   pasan 3:1 contra la superficie en los dos temas. */
+.dcc-timeline__dot--primary,   .dcc-timeline__connector--primary   { --dcc-timeline-color: var(--dcc-accent); }
+.dcc-timeline__dot--secondary, .dcc-timeline__connector--secondary { --dcc-timeline-color: var(--dcc-fg-muted); }
+.dcc-timeline__dot--success,   .dcc-timeline__connector--success   { --dcc-timeline-color: var(--dcc-success); }
+.dcc-timeline__dot--error,     .dcc-timeline__connector--error     { --dcc-timeline-color: var(--dcc-danger); }
+.dcc-timeline__dot--info,      .dcc-timeline__connector--info      { --dcc-timeline-color: var(--dcc-info); }
+.dcc-timeline__dot--warning,   .dcc-timeline__connector--warning   { --dcc-timeline-color: var(--dcc-warning); }
+
+/* ---- Posiciones ---- */
+/* A la izquierda: el contenido a la izquierda de la línea, la fecha a la derecha. */
+.dcc-timeline--left .dcc-timeline__item { flex-direction: row-reverse; }
+.dcc-timeline--left .dcc-timeline__content { text-align: right; }
+.dcc-timeline--left .dcc-timeline__opposite { text-align: left; }
+
+/* Alternadas: mitades iguales, y un hito sin fecha deja la suya vacía para que
+   la línea siga al centro. */
+.dcc-timeline--alternate .dcc-timeline__opposite,
+.dcc-timeline--alternate-reverse .dcc-timeline__opposite { flex: 1; }
+.dcc-timeline--alternate .dcc-timeline__item:not(:has(> .dcc-timeline__opposite))::before,
+.dcc-timeline--alternate-reverse .dcc-timeline__item:not(:has(> .dcc-timeline__opposite))::before {
+  content: "";
+  flex: 1;
+  padding: 6px 16px;
+}
+.dcc-timeline--alternate .dcc-timeline__item:nth-child(even),
+.dcc-timeline--alternate-reverse .dcc-timeline__item:nth-child(odd) { flex-direction: row-reverse; }
+.dcc-timeline--alternate .dcc-timeline__item:nth-child(even) .dcc-timeline__content,
+.dcc-timeline--alternate-reverse .dcc-timeline__item:nth-child(odd) .dcc-timeline__content { text-align: right; }
+.dcc-timeline--alternate .dcc-timeline__item:nth-child(even) .dcc-timeline__opposite,
+.dcc-timeline--alternate-reverse .dcc-timeline__item:nth-child(odd) .dcc-timeline__opposite { text-align: left; }
+
+/* ---- Angosto: todo a un lado ----
+   La línea pasa a la primera columna y ocupa las dos filas; la fecha queda
+   arriba del contenido, alineada con el punto. */
+@container (max-width: 560px) {
+  .dcc-timeline .dcc-timeline__item:nth-child(n) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+  .dcc-timeline .dcc-timeline__item:nth-child(n)::before { display: none; }
+  .dcc-timeline .dcc-timeline__item:nth-child(n) .dcc-timeline__separator { grid-column: 1; grid-row: 1 / span 2; }
+  .dcc-timeline .dcc-timeline__item:nth-child(n) .dcc-timeline__opposite {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 6px 0 0 12px;
+    text-align: left;
+  }
+  .dcc-timeline .dcc-timeline__item:nth-child(n) .dcc-timeline__content {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 0 0 16px 12px;
+    text-align: left;
+  }
+  .dcc-timeline .dcc-timeline__item:nth-child(n):not(:has(> .dcc-timeline__opposite)) .dcc-timeline__content {
+    grid-row: 1 / span 2;
+    padding-top: 6px;
+  }
+}

@@ -1,0 +1,150 @@
+/* --------------------------------------------------------------------------
+   SNACKBAR  (MUI Snackbar)
+
+   Un aviso breve sobre algo que acaba de pasar —«Memoria guardada»—, que
+   aparece en un borde de la pantalla, no interrumpe y se va solo. Lo crea
+   snackbar.js con DCCUI.notificar(); el marcado de abajo es lo que genera, y
+   también se puede escribir a mano con `--inline` para mostrarlo dentro de la
+   página.
+
+   Partes:    __icon · __message · __actions · __action · __close
+   Tipos:     sin tipo (oscuro, el de MUI) · --success · --error · --info · --warning
+   Posición:  --bottom-center (por omisión) · --bottom-left · --bottom-right
+              · --top-left · --top-center · --top-right
+
+   Sin tipo, el fondo es el color de los títulos y el texto el de la superficie:
+   en claro queda oscuro y en oscuro queda claro, que es lo que hace MUI para que
+   el aviso resalte sobre la página en los dos temas.
+   Con tipo, es la versión «filled» de la alerta: el color fuerte del estado con
+   el texto de --dcc-on-accent (6,8:1 o más en claro; en oscuro, texto oscuro
+   sobre el tono claro).
+   -------------------------------------------------------------------------- */
+.dcc-snackbar {
+  --dcc-snackbar-bg: var(--dcc-fg-strong);
+  --dcc-snackbar-fg: var(--dcc-surface);
+  /* Distancia al borde de la pantalla: 24px como MUI; 8px en móvil. */
+  --dcc-snackbar-margen: 24px;
+  position: fixed;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  min-width: 288px;
+  max-width: 560px;
+  padding: 6px 8px 6px 16px;
+  border-radius: var(--dcc-radius-sm);
+  background: var(--dcc-snackbar-bg);
+  color: var(--dcc-snackbar-fg);
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2),
+              0 6px 10px 0 rgba(0, 0, 0, .14),
+              0 1px 18px 0 rgba(0, 0, 0, .12);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.43;
+}
+
+.dcc-snackbar--success { --dcc-snackbar-bg: var(--dcc-success-strong); --dcc-snackbar-fg: var(--dcc-on-accent); }
+.dcc-snackbar--error   { --dcc-snackbar-bg: var(--dcc-danger);         --dcc-snackbar-fg: var(--dcc-on-accent); }
+.dcc-snackbar--info    { --dcc-snackbar-bg: var(--dcc-info-strong);    --dcc-snackbar-fg: var(--dcc-on-accent); }
+.dcc-snackbar--warning { --dcc-snackbar-bg: var(--dcc-warning-strong); --dcc-snackbar-fg: var(--dcc-on-accent); }
+
+/* ---- Posiciones ---- */
+.dcc-snackbar--bottom-center,
+.dcc-snackbar--bottom-left,
+.dcc-snackbar--bottom-right { bottom: var(--dcc-snackbar-margen); }
+.dcc-snackbar--top-center,
+.dcc-snackbar--top-left,
+.dcc-snackbar--top-right { top: var(--dcc-snackbar-margen); }
+.dcc-snackbar--bottom-left,
+.dcc-snackbar--top-left { left: var(--dcc-snackbar-margen); }
+.dcc-snackbar--bottom-right,
+.dcc-snackbar--top-right { right: var(--dcc-snackbar-margen); }
+.dcc-snackbar--bottom-center,
+.dcc-snackbar--top-center { left: 50%; translate: -50% 0; }
+
+/* En la página, no flotando: para documentar o para un aviso fijo. */
+.dcc-snackbar--inline { position: relative; z-index: auto; }
+
+/* En móvil ocupa el ancho, con 8px a cada lado, como MUI bajo 600px. */
+@media (max-width: 600px) {
+  .dcc-snackbar { --dcc-snackbar-margen: 8px; }
+  .dcc-snackbar:not(.dcc-snackbar--inline) {
+    left: var(--dcc-snackbar-margen);
+    right: var(--dcc-snackbar-margen);
+    translate: none;
+    min-width: 0;
+    max-width: none;
+  }
+  .dcc-snackbar--inline { min-width: 0; }
+}
+
+/* ---- Partes ---- */
+.dcc-snackbar__icon { width: 20px; height: 20px; flex: 0 0 20px; }
+.dcc-snackbar__message { flex: 1 1 0; min-width: 0; padding: 8px 0; }
+.dcc-snackbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  /* Si el mensaje es largo, las acciones bajan a su propia línea, a la derecha. */
+  flex: 0 0 auto;
+}
+
+/* La acción es un botón de texto en el color del aviso: no hay un acento que se
+   lea igual de bien sobre el fondo oscuro y sobre el claro, así que se marca
+   con el peso y la capa de estado. */
+.dcc-snackbar__action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--dcc-font-body);
+}
+.dcc-snackbar__action {
+  min-height: 32px;
+  padding: 4px 10px;
+  border-radius: var(--dcc-radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+/* El de cerrar es `.dcc-icon-btn --sm --inherit`: toma el color del aviso.
+   Conserva su clase propia porque snackbar.js lo busca por ella. */
+.dcc-snackbar__close { flex: none; }
+.dcc-snackbar__action::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-snackbar__action:hover::before { opacity: .12; }
+.dcc-snackbar__action:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+.dcc-snackbar__action:focus-visible::before { opacity: .16; }
+
+/* ---- Entrada y salida ----
+   Crece desde un poco más chico y se funde, como el Grow de MUI. snackbar.js
+   pone `is-visible` un cuadro después de insertarlo y lo quita para cerrar. */
+.dcc-snackbar:not(.dcc-snackbar--inline) { opacity: 0; scale: .9; }
+.dcc-snackbar.is-visible { opacity: 1; scale: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .dcc-snackbar:not(.dcc-snackbar--inline) {
+    transition: opacity .225s cubic-bezier(.4, 0, .2, 1), scale .225s cubic-bezier(.4, 0, .2, 1);
+  }
+}
+
+/* La región viva que contiene los avisos. No ocupa lugar: los avisos son fijos. */
+.dcc-snackbar-region { position: static; width: 0; height: 0; }
+
+/* Para las demos: una fila de avisos en línea. */
+.dcc-snackbar-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 24px; }

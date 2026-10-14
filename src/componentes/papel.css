@@ -1,0 +1,94 @@
+/* --------------------------------------------------------------------------
+   PAPER (MUI Paper)
+   La superficie base del kit: un fondo, un radio y una sombra. No trae relleno
+   ni disposición; sobre ella se arman la tarjeta genérica, el cajón y
+   cualquier panel que necesite despegarse del fondo.
+
+     elevación  →  --elevation-0 … --elevation-4 (1 por omisión)
+     variante   →  --outlined: borde en vez de sombra
+     forma      →  --square: sin radio, para pegarla a un borde
+
+   Las sombras salen de las que el kit ya tenía, en vez de copiar las 25 de
+   Material: el 1 es la del botón en reposo, el 2 es `--dcc-shadow` —la de los
+   menús y paneles— y el 3 y el 4 le suman una capa ambiental cada vez más
+   ancha. Cinco niveles alcanzan para lo que se usa en la práctica: plano,
+   tarjeta, panel, menú flotante y cajón.
+
+   En oscuro una sombra apenas se ve sobre un fondo casi negro, así que MUI
+   aclara la superficie a medida que sube. Acá se hace igual: cada nivel mezcla
+   `--dcc-surface` con un poco del texto fuerte. La proporción de cada nivel
+   vale 0% en claro y se activa con el tema, de modo que en claro la superficie
+   sigue siendo exactamente `--dcc-surface`.
+   -------------------------------------------------------------------------- */
+:root {
+  --dcc-paper-tint-1: 0%;
+  --dcc-paper-tint-2: 0%;
+  --dcc-paper-tint-3: 0%;
+  --dcc-paper-tint-4: 0%;
+}
+/* Las proporciones de MUI para sus elevaciones 1, 2, 4 y 8 (5, 7, 9 y 11 %
+   de blanco), sobre el texto fuerte del tema en vez de blanco puro. */
+[data-dcc-theme="dark"] {
+  --dcc-paper-tint-1: 5%;
+  --dcc-paper-tint-2: 7%;
+  --dcc-paper-tint-3: 9%;
+  --dcc-paper-tint-4: 11%;
+}
+@media (prefers-color-scheme: dark) {
+  [data-dcc-theme="auto"] {
+    --dcc-paper-tint-1: 5%;
+    --dcc-paper-tint-2: 7%;
+    --dcc-paper-tint-3: 9%;
+    --dcc-paper-tint-4: 11%;
+  }
+}
+
+.dcc-paper {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-1));
+  --dcc-paper-shadow: var(--dcc-shadow-button);
+  --dcc-paper-radius: var(--dcc-radius-md);
+  /* Sin `display`: Paper se combina con componentes que deciden el suyo (la
+     tarjeta es flex, el contenedor del cajón también) y no debe pisarlos. */
+  background: var(--dcc-paper-bg);
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  border-radius: var(--dcc-paper-radius);
+  box-shadow: var(--dcc-paper-shadow);
+  transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1),
+              background-color .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+.dcc-paper--elevation-0 {
+  --dcc-paper-bg: var(--dcc-surface);
+  --dcc-paper-shadow: none;
+}
+.dcc-paper--elevation-1 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-1));
+  --dcc-paper-shadow: var(--dcc-shadow-button);
+}
+.dcc-paper--elevation-2 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-2));
+  --dcc-paper-shadow: var(--dcc-shadow);
+}
+.dcc-paper--elevation-3 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-3));
+  --dcc-paper-shadow: var(--dcc-shadow), 0 8px 12px -2px rgba(0, 0, 0, .1);
+}
+.dcc-paper--elevation-4 {
+  --dcc-paper-bg: color-mix(in srgb, var(--dcc-surface), var(--dcc-fg-strong) var(--dcc-paper-tint-4));
+  --dcc-paper-shadow: var(--dcc-shadow), 0 12px 20px -4px rgba(0, 0, 0, .14), 0 4px 8px -2px rgba(0, 0, 0, .06);
+}
+
+/* Delineada: sin sombra ni tinte, con el borde de los divisores. Es la que
+   conviene dentro de otra superficie, donde una sombra más ensucia. */
+.dcc-paper--outlined {
+  --dcc-paper-bg: var(--dcc-surface);
+  --dcc-paper-shadow: none;
+  border: 1px solid var(--dcc-border-subtle);
+}
+
+.dcc-paper--square { --dcc-paper-radius: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-paper { transition: none; }
+}

@@ -1,0 +1,175 @@
+/* --------------------------------------------------------------------------
+   BOTÓN ALTERNABLE  (ToggleButton y ToggleButtonGroup de MUI)
+   Un botón que se queda presionado: negrita en un editor, la vista en lista o
+   en grilla, la alineación de un párrafo. El estado va en `aria-pressed`, que
+   es lo que anuncia un lector de pantalla ("negrita, botón, presionado") y lo
+   que pinta el CSS, así que no hay una clase de estado que pueda quedar
+   desincronizada.
+
+   En grupo los botones se pegan en una sola pieza con un borde de 1px entre
+   ellos, como en MUI. El grupo puede ser exclusivo —sólo uno presionado, como
+   la alineación— o múltiple —cualquiera, como negrita y cursiva—; eso lo
+   decide el JS (`data-exclusivo`), el aspecto es el mismo.
+
+   El radio es el de los campos (4px) y no la píldora del botón: es un control
+   que guarda un valor, igual que un select, y se arma en filas y columnas
+   donde la píldora no cierra bien.
+
+   Color: lo presionado se pinta en el color del grupo —primario por
+   omisión— con texto de ese color sobre un velo del 16%. El borde no cambia,
+   para que la pieza no salte de tamaño ni de forma al presionarla.
+   -------------------------------------------------------------------------- */
+.dcc-toggle {
+  --dcc-toggle-main: var(--dcc-accent);
+  --dcc-toggle-size: 40px;
+  --dcc-toggle-icon: 20px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: var(--dcc-toggle-size);
+  height: var(--dcc-toggle-size);
+  margin: 0;
+  padding: 0 11px;
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  /* Sin presionar va en el tono de acento y no en el secundario: este último
+     da 4,43:1 sobre la superficie, apenas bajo el 4,5:1 que pide el texto. */
+  color: var(--dcc-fg-accent);
+  background: var(--dcc-surface);
+  border: 1px solid var(--dcc-border);
+  border-radius: var(--dcc-radius-sm);
+  cursor: pointer;
+  transition: background-color .25s cubic-bezier(.4, 0, .2, 1),
+              color .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-toggle > svg {
+  width: var(--dcc-toggle-icon);
+  height: var(--dcc-toggle-icon);
+  flex: 0 0 var(--dcc-toggle-icon);
+}
+
+/* Capa de estado: la misma del botón del kit, del color del texto. */
+.dcc-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-toggle:hover::before { opacity: .08; }
+.dcc-toggle:active::before { opacity: .12; }
+.dcc-toggle:hover { color: var(--dcc-fg); }
+
+.dcc-toggle[aria-pressed="true"] {
+  color: var(--dcc-toggle-main);
+  background: color-mix(in srgb, var(--dcc-toggle-main) 16%, var(--dcc-surface));
+}
+
+.dcc-toggle:focus-visible {
+  z-index: 2;
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 2px;
+}
+
+/* Tamaños: 32, 40 (omisión) y 48px. Son los altos del botón pequeño, del
+   campo y del botón grande. Van en el botón o en el grupo, que los reparte a
+   todos sus botones. */
+:is(.dcc-toggle--sm, .dcc-toggle-group--sm > .dcc-toggle) {
+  --dcc-toggle-size: 32px; --dcc-toggle-icon: 18px; padding: 0 7px; font-size: 13px;
+}
+:is(.dcc-toggle--lg, .dcc-toggle-group--lg > .dcc-toggle) {
+  --dcc-toggle-size: 48px; --dcc-toggle-icon: 24px; padding: 0 15px; font-size: 15px;
+}
+
+/* Colores, por rol, como el botón. También en el botón o en el grupo; la
+   regla del grupo apunta a sus botones porque cada `.dcc-toggle` declara su
+   propio primario por omisión, y eso le ganaría a lo heredado. */
+:is(.dcc-toggle--primary, .dcc-toggle-group--primary > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-accent);
+}
+:is(.dcc-toggle--secondary, .dcc-toggle-group--secondary > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-fg-muted);
+}
+:is(.dcc-toggle--success, .dcc-toggle-group--success > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-success-strong);
+}
+:is(.dcc-toggle--error, .dcc-toggle-group--error > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-danger);
+}
+:is(.dcc-toggle--info, .dcc-toggle-group--info > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-info-strong);
+}
+:is(.dcc-toggle--warning, .dcc-toggle-group--warning > .dcc-toggle) {
+  --dcc-toggle-main: var(--dcc-warning-strong);
+}
+
+/* Deshabilitado: igual que el botón, la pieza entera se apaga. */
+.dcc-toggle:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.dcc-toggle:disabled::before { opacity: 0; }
+.dcc-toggle:disabled:hover { color: var(--dcc-fg-muted); }
+.dcc-toggle[aria-pressed="true"]:disabled:hover { color: var(--dcc-toggle-main); }
+
+/* ---- Grupo ----
+   Los botones se montan 1px sobre el anterior para compartir el borde. El
+   que está bajo el cursor o con foco sube encima, para que su borde y su
+   anillo no queden tapados por el vecino. */
+.dcc-toggle-group {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+.dcc-toggle-group > .dcc-toggle:not(:first-child) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.dcc-toggle-group > .dcc-toggle:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.dcc-toggle-group > .dcc-toggle:hover { z-index: 1; }
+
+/* Vertical */
+.dcc-toggle-group--vertical { flex-direction: column; }
+.dcc-toggle-group--vertical > .dcc-toggle:not(:first-child) {
+  margin-left: 0;
+  margin-top: -1px;
+  border-radius: 0;
+}
+.dcc-toggle-group--vertical > .dcc-toggle:first-child:not(:last-child) {
+  border-radius: var(--dcc-radius-sm) var(--dcc-radius-sm) 0 0;
+}
+.dcc-toggle-group--vertical > .dcc-toggle:last-child:not(:first-child) {
+  border-radius: 0 0 var(--dcc-radius-sm) var(--dcc-radius-sm);
+}
+
+/* A todo el ancho: los botones se reparten el espacio. */
+.dcc-toggle-group--full { display: flex; width: 100%; }
+.dcc-toggle-group--full > .dcc-toggle { flex: 1 1 0; min-width: 0; }
+
+/* Separación entre grupos de una barra de herramientas. */
+.dcc-toggle-toolbar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-toggle,
+  .dcc-toggle::before { transition: none; }
+}

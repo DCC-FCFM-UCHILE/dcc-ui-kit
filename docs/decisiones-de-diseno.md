@@ -1,5 +1,7 @@
 # Qué tuve que suponer
 
+> **Revisión 22** — el resto de Material UI, y el CSS y el JS de los componentes nuevos en un
+> archivo cada uno (sección 0.20).
 > **Revisión 21** — tema oscuro con colores por rol, y adornos en campos y select (sección 0.19).
 > **Revisión 20** — el rojo sale del hover, el botón pasa a variante × color con un solo
 > comportamiento, y el styleguide se reemplaza por un sitio de documentación (sección 0.18).
@@ -33,6 +35,34 @@
 > **Revisión 3** — ancho máximo de contenedor aplicado a las barras (sección 0.1).
 > **Revisión 2** — logo DCC instalado; nav institucional corregida contra los component sets
 > `128:774` (Menú Principal) y `128:1005` (Menú Secundario). Detalle en la sección 0.
+
+---
+
+## 0.20 Todo Material UI, y un archivo por componente
+
+El kit cubre ahora la lista completa de la página "All components" de MUI, salvo las utilidades
+que sólo existen en React (Portal, No SSR, Transitions, useMediaQuery, Click-Away Listener) y el
+paquete aparte MUI X. Material Icons se reemplaza por el sprite de Lucide que el kit ya usaba.
+
+**Un archivo por componente.** `styles.css` había llegado a 3.700 líneas y `behaviors.js` a 560, y
+los treinta componentes nuevos se desarrollaron en paralelo: con un solo archivo se habrían pisado.
+Cada componente nuevo tiene su `src/componentes/<slug>.css` y, si necesita comportamiento, su
+`<slug>.js`. El build los concatena en orden alfabético después de los principales, así que `dist/`
+no cambia de forma: las aplicaciones siguen instalando dos archivos.
+
+El JavaScript de cada módulo se engancha con `DCCUI.registrar(fn)`. La función corre en cada
+`init()` —también con htmx— y, si el documento ya se enlazó, corre al registrarse. Así el orden en
+que carguen los archivos no importa, que es lo que permite agregarlos sin tocar `behaviors.js`.
+
+**Nombres que ya estaban tomados.** `.dcc-card` es la tarjeta de programa y `.dcc-badge` la
+etiqueta, así que la Card genérica de MUI es `.dcc-surface-card` y su Badge (el contador sobre un
+ícono) es `.dcc-indicator`. `.dcc-chip` estaba en el andamiaje de la página de colores y pasó a
+`.dcc-swatch__chip` para dejarle el nombre al Chip.
+
+**Lo que no entró.** No hay utilidades de espaciado al estilo de Box: el kit no usa `!important`, y
+con los módulos en orden alfabético una `.dcc-p-3` ganaría o perdería contra la regla de un
+componente según el nombre de su archivo. La grilla está hecha con flexbox y no con CSS grid, como
+la Grid v2 de MUI, porque las columnas `auto` y `grow` no se pueden expresar con doce pistas fijas.
 
 ---
 

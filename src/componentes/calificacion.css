@@ -1,0 +1,161 @@
+/* --------------------------------------------------------------------------
+   CALIFICACIÓN (Rating de MUI)
+
+   Editable, es un grupo de radios nativos: cada estrella es un <label> con su
+   radio escondido adentro. El teclado (flechas dentro del grupo), el envío del
+   formulario y el anuncio del lector de pantalla son los del navegador, y
+   todo funciona sin JS.
+
+   Qué estrellas se pintan lo decide el CSS con `:has()`: una estrella se
+   llena si su radio está marcado o si hay uno marcado más adelante. Así no
+   hace falta invertir el orden de los radios —el truco viejo con `~`—, que
+   dejaba las flechas del teclado al revés.
+
+   Al pasar el mouse se previsualiza el valor: se apagan todas y se encienden
+   la que está bajo el cursor y las anteriores. El JS opcional
+   (src/componentes/calificacion.js) agrega la etiqueta de texto y permite
+   borrar la nota volviendo a hacer clic en la misma estrella, como MUI.
+
+   Sólo lectura, es una imagen (`role="img"` con el valor en aria-label): dos
+   filas de íconos superpuestas, la llena recortada al porcentaje del valor.
+   Sirve para cualquier fracción, no sólo medias.
+   -------------------------------------------------------------------------- */
+.dcc-rating {
+  --dcc-rating-size: 24px;
+  --dcc-rating-main: var(--dcc-warning);
+  --dcc-rating-off: var(--dcc-border);
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  font-family: var(--dcc-font-body);
+  line-height: 1;
+  color: var(--dcc-fg);
+}
+
+.dcc-rating__item {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.dcc-rating__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+/* El <g> del sprite no fija `fill`, así que el valor de acá llega hasta la
+   ruta que dibuja <use>: la misma estrella sirve vacía y llena. */
+.dcc-rating__icon {
+  display: block;
+  flex: none;
+  width: var(--dcc-rating-size);
+  height: var(--dcc-rating-size);
+  /* El reset del kit topa los svg al ancho de su caja; en media estrella la
+     caja mide medio ícono y lo achicaría en vez de recortarlo. */
+  max-width: none;
+  fill: transparent;
+  color: var(--dcc-rating-off);
+  transition: fill .15s cubic-bezier(.4, 0, .2, 1),
+              color .15s cubic-bezier(.4, 0, .2, 1),
+              transform .15s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Llena: la marcada y las anteriores. */
+.dcc-rating__item:where(:has(> .dcc-rating__input:checked), :has(~ .dcc-rating__item > .dcc-rating__input:checked)) .dcc-rating__icon {
+  fill: currentColor;
+  color: var(--dcc-rating-main);
+}
+/* Previsualización: con el cursor sobre una estrella, manda el cursor. Las
+   reglas van en este orden y con `:where()` para que la segunda le gane a la
+   de arriba sólo por venir después, y la tercera por especificidad. */
+.dcc-rating:where(:has(.dcc-rating__item:hover)) .dcc-rating__icon {
+  fill: transparent;
+  color: var(--dcc-rating-off);
+}
+.dcc-rating:where(:has(.dcc-rating__item:hover)) .dcc-rating__item:where(:hover, :has(~ .dcc-rating__item:hover)) .dcc-rating__icon {
+  fill: currentColor;
+  color: var(--dcc-rating-main);
+}
+.dcc-rating__item:hover .dcc-rating__icon { transform: scale(1.2); }
+
+.dcc-rating__item:has(> .dcc-rating__input:focus-visible) {
+  outline: 2px solid var(--dcc-focus);
+  outline-offset: 1px;
+}
+
+/* ---- Medias estrellas ----
+   Cada estrella son dos radios (0,5 y 1; 1,5 y 2…), y cada uno muestra media
+   estrella: la caja mide medio ícono y recorta, y en la mitad derecha el
+   ícono se corre hacia la izquierda. Las dos mitades juntas forman la
+   estrella. La lógica de llenado no cambia: sigue siendo "esta y las
+   anteriores". */
+.dcc-rating--half .dcc-rating__item {
+  width: calc(var(--dcc-rating-size) / 2);
+  overflow: hidden;
+  border-radius: 0;
+}
+.dcc-rating--half .dcc-rating__item:nth-child(even) .dcc-rating__icon {
+  margin-left: calc(var(--dcc-rating-size) / -2);
+}
+/* Agrandar media estrella la descuadraría de su otra mitad. */
+.dcc-rating--half .dcc-rating__item:hover .dcc-rating__icon { transform: none; }
+
+/* Etiqueta del valor ("Excelente"). La escribe el JS; para el lector de
+   pantalla el texto ya está en el nombre de cada radio, así que va con
+   aria-hidden. */
+.dcc-rating__label {
+  margin-left: 12px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--dcc-fg);
+  white-space: nowrap;
+}
+
+/* ---- Sólo lectura ----
+   La etiqueta acompaña al dato (el promedio, cuántas evaluaciones), así que va
+   en el tono secundario. */
+.dcc-rating--readonly .dcc-rating__label { color: var(--dcc-fg-muted); }
+.dcc-rating__track {
+  --dcc-rating-valor: 0;
+  --dcc-rating-max: 5;
+  position: relative;
+  display: inline-flex;
+}
+.dcc-rating__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: inline-flex;
+  width: calc(var(--dcc-rating-valor) / var(--dcc-rating-max) * 100%);
+  overflow: hidden;
+}
+.dcc-rating__fill .dcc-rating__icon {
+  fill: currentColor;
+  color: var(--dcc-rating-main);
+}
+
+/* ---- Tamaños ---- */
+.dcc-rating--sm { --dcc-rating-size: 18px; }
+.dcc-rating--lg { --dcc-rating-size: 30px; }
+.dcc-rating--sm .dcc-rating__label { font-size: 12px; }
+.dcc-rating--lg .dcc-rating__label { font-size: 16px; }
+
+/* ---- Ícono alternativo: corazones, en el rojo de error ---- */
+.dcc-rating--heart { --dcc-rating-main: var(--dcc-danger); }
+
+/* ---- Deshabilitado ----
+   Se apaga entero, igual que el botón, y deja de responder al cursor. */
+.dcc-rating:has(.dcc-rating__input:disabled) {
+  opacity: .45;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-rating__icon { transition: none; }
+  .dcc-rating__item:hover .dcc-rating__icon { transform: none; }
+}

@@ -9,6 +9,42 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [Sin publicar]
+
+### Agrega
+
+- **El resto de los componentes de Material UI**, cada uno con su página en la documentación:
+  - Entradas: **Autocompletar** (simple, múltiple con chips, agrupado, texto libre), **Botón
+    alternable** y su grupo, **Grupo de botones** con botón dividido, **Botón flotante (FAB)**,
+    **Deslizador** (simple y de rango), **Calificación** y **Lista de transferencia**; y el **área de
+    texto que crece** sola (`.js-autosize`).
+  - Visualización de datos: **Chip** (`.dcc-chip`), **Tooltip**, **Popover**, **Indicador**
+    (el Badge de MUI, `.dcc-indicator`), **Divisor** y **Línea de tiempo**.
+  - Retroalimentación: **Diálogo** (sobre `<dialog>`), **Snackbar** (`DCCUI.notificar`),
+    **Progreso** circular y lineal y **Esqueleto**. La **Alerta** suma título, botón de cerrar,
+    acción, color warning y las variantes outlined y filled.
+  - Superficies: **Paper** (`.dcc-paper`, con elevaciones) y **Card** genérica
+    (`.dcc-surface-card`).
+  - Navegación: **Cajón** (Drawer temporal y persistente) y **Speed Dial**.
+  - Diseño, grupo nuevo: **Contenedor**, **Grilla** de 12 columnas, **Stack**, **Lista de imágenes**
+    y **Masonry**.
+- **Botón de ícono, `.dcc-icon-btn`** (el IconButton de MUI). Lo usan ahora los botones de cerrar
+  del diálogo, el cajón, la alerta y el snackbar, y los de la tarjeta.
+- **`.dcc-sr-only`**, para texto que sólo leen los lectores de pantalla, y el token **`--dcc-scrim`**
+  para el velo de diálogos y cajones.
+- **39 íconos** nuevos de Lucide.
+- **`DCCUI.registrar(fn)`**: los componentes nuevos viven en `src/componentes/`, un archivo por
+  componente, y se enganchan al kit con esta función. Para quien consume el kit no cambia nada:
+  `dist/` sigue teniendo un CSS y un bundle.
+
+### Corrige
+
+- **Elegir una opción de un menú con el mouse devuelve el foco al botón** que lo abrió. Antes el foco
+  quedaba en un ítem que acababa de esconderse.
+- **La lista no dibujaba sus separadores** cuando los ítems iban dentro de un `<li>`, y el título y
+  la descripción salían uno al lado del otro.
+- **La regla de los íconos de la alerta alcanzaba a los íconos de cualquier botón** dentro de ella.
+
 ## [2.7.0] — 2026-10-08
 
 ### Agrega

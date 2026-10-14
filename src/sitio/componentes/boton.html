@@ -82,6 +82,26 @@ escala: .75
   </div>
 </div>
 
+<h2 class="dcc-doc-h2" id="boton-de-icono">Botón de ícono</h2>
+<p class="dcc-doc-p"><code>.dcc-icon-btn</code> es el <code>IconButton</code> de MUI: redondo, sin relleno ni
+  sombra, con la misma capa de estado que el botón. Es la pieza de los botones de cerrar, de los menús de
+  acción y de expandir. Como no tiene texto, siempre lleva <code>aria-label</code>. Tamaños
+  <code>--sm</code> (32px), 40px por omisión y <code>--lg</code> (48px); colores <code>--primary</code>,
+  <code>--error</code> y <code>--inherit</code>, que toma el color del texto que lo rodea.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-icon-btn" type="button" aria-label="Eliminar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trash"/></svg></button>
+    <button class="dcc-icon-btn dcc-icon-btn--primary" type="button" aria-label="Descargar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg></button>
+    <button class="dcc-icon-btn dcc-icon-btn--error" type="button" aria-label="Quitar de favoritos"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></button>
+    <button class="dcc-icon-btn" type="button" aria-label="Configuración" disabled><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"/></svg></button>
+  </div>
+  <div class="dcc-doc-row">
+    <button class="dcc-icon-btn dcc-icon-btn--sm" type="button" aria-label="Cerrar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button class="dcc-icon-btn" type="button" aria-label="Cerrar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button class="dcc-icon-btn dcc-icon-btn--lg" type="button" aria-label="Cerrar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+</div>
+
 <h2 class="dcc-doc-h2" id="deshabilitado">Deshabilitado</h2>
 <p class="dcc-doc-p">Con el atributo <code>disabled</code>, o con <code>aria-disabled="true"</code> en un enlace con
   forma de botón. La pieza se apaga entera y conserva su color.</p>

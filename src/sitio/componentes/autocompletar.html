@@ -1,0 +1,344 @@
+<!--
+titulo: Autocompletar
+grupo: Entradas
+resumen: Un campo de texto con una lista que se filtra mientras se escribe, para elegir uno o varios valores entre muchas opciones.
+miniatura: .dcc-field
+escala: .9
+-->
+<h2 class="dcc-doc-h2" id="simple">Simple</h2>
+<p class="dcc-doc-p">Para cuando las opciones son demasiadas para un <a href="campo-de-texto.html">select</a>: los
+  cursos del departamento, los profesores, las salas. Al escribir, la lista muestra sólo lo que coincide —sin
+  importar tildes ni mayúsculas— y resalta la parte que calza. Se elige con el mouse o con las flechas y
+  Enter. Si sales del campo con un texto a medias, vuelve al valor elegido: lo escrito no es un valor hasta
+  que se elige.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:340px;align-items:flex-start">
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-curso-l" for="ac-curso">Curso</label>
+    <div class="dcc-autocomplete js-autocomplete" data-name="curso">
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-curso" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-curso-lb" autocomplete="off" placeholder="Código o nombre del curso" aria-describedby="ac-curso-h">
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+          <button class="dcc-autocomplete__btn dcc-autocomplete__toggle" type="button" tabindex="-1" aria-label="Mostrar opciones"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-curso-lb" role="listbox" aria-labelledby="ac-curso-l" hidden>
+      <li class="dcc-combo__option" role="option" data-value="CC1000">CC1000 Herramientas Computacionales para Ingeniería y Ciencias<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC1002">CC1002 Introducción a la Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3001">CC3001 Algoritmos y Estructuras de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3101">CC3101 Matemáticas Discretas para la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3102">CC3102 Teoría de la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3201">CC3201 Bases de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3301">CC3301 Programación de Software de Sistemas<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3501">CC3501 Modelación y Computación Gráfica para Ingenieros<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4101">CC4101 Lenguajes de Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4102">CC4102 Diseño y Análisis de Algoritmos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4302">CC4302 Sistemas Operativos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4303">CC4303 Redes<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4401">CC4401 Ingeniería de Software<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5205">CC5205 Minería de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5208">CC5208 Visualización de Información<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+    <p class="dcc-field__help" id="ac-curso-h">Escribe «algo» o «CC3»</p>
+  </div>
+  </div>
+</div>
+<h2 class="dcc-doc-h2" id="anatomia">Anatomía</h2>
+<p class="dcc-doc-p">El contenedor <code>.dcc-autocomplete</code> lleva el gancho <code>js-autocomplete</code>. Adentro,
+  la caja <code>.dcc-autocomplete__control</code> con el <code>&lt;input role="combobox"&gt;</code> y los botones de
+  borrar y de abrir, y la lista, que es la misma del select: <code>.dcc-combo__list</code> con opciones
+  <code>.dcc-combo__option</code>. Las opciones salen del HTML; cada una usa su <code>data-value</code> como valor,
+  o su texto si no lo tiene. Una que viene con <code>aria-selected="true"</code> queda elegida al cargar.</p>
+<table class="dcc-doc-table">
+  <thead><tr><th>Atributo del contenedor</th><th>Efecto</th></tr></thead>
+  <tbody>
+    <tr><td><code>data-multiple</code></td><td>Varios valores, cada uno como chip dentro del campo.</td></tr>
+    <tr><td><code>data-libre</code></td><td>Acepta texto que no está en la lista (el <em>freeSolo</em> de MUI). Sin flecha y sin aviso de “Sin resultados”.</td></tr>
+    <tr><td><code>data-name</code></td><td>Crea <code>&lt;input type="hidden"&gt;</code> con ese nombre y los valores elegidos, para enviarlos en un formulario.</td></tr>
+    <tr><td><code>data-sin-resultados</code></td><td>El texto del aviso cuando nada coincide. Por omisión, “Sin resultados”.</td></tr>
+  </tbody>
+</table>
+<h2 class="dcc-doc-h2" id="multiple">Múltiple</h2>
+<p class="dcc-doc-p">Con <code>data-multiple</code> cada valor entra como un <a href="chip.html">chip</a> pequeño dentro
+  de la caja, y la lista queda abierta para elegir varios seguidos; volver a elegir uno lo quita. Retroceso con
+  el campo vacío quita el último chip. La flecha izquierda al principio del texto pasa el foco a los chips: ahí
+  las flechas se mueven entre ellos y Retroceso o Suprimir quitan el que tiene foco.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:430px;align-items:flex-start">
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-ayudantes-l" for="ac-ayudantes">Equipo docente de CC3001</label>
+    <div class="dcc-autocomplete js-autocomplete" data-multiple data-name="ayudantes">
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-ayudantes" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-ayudantes-lb" autocomplete="off" placeholder="Agregar persona" aria-describedby="ac-ayudantes-h">
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+          <button class="dcc-autocomplete__btn dcc-autocomplete__toggle" type="button" tabindex="-1" aria-label="Mostrar opciones"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-ayudantes-lb" role="listbox" aria-labelledby="ac-ayudantes-l" hidden>
+      <li class="dcc-combo__option" role="option">Andrea Muñoz<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Benjamín Fuentes<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" aria-selected="true">Camila Soto<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Diego Araya<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Fernanda Lagos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Ignacio Pérez<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Javiera Contreras<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Matías Herrera<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" aria-selected="true">Nicolás Bravo<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Valentina Rojas<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+    <p class="dcc-field__help" id="ac-ayudantes-h">Profesores y ayudantes del semestre</p>
+  </div>
+  </div>
+</div>
+<h2 class="dcc-doc-h2" id="grupos">Opciones agrupadas</h2>
+<p class="dcc-doc-p">Cada grupo es un <code>&lt;li class="dcc-autocomplete__group" role="presentation"&gt;</code> con su
+  título <code>.dcc-autocomplete__group-label</code> y un <code>&lt;ul role="group"&gt;</code> que lo nombra con
+  <code>aria-labelledby</code>. El título queda pegado arriba mientras se recorren sus opciones, y un grupo sin
+  coincidencias se esconde entero.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:340px;align-items:flex-start">
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-sala-l" for="ac-sala">Sala</label>
+    <div class="dcc-autocomplete js-autocomplete">
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-sala" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-sala-lb" autocomplete="off" placeholder="Buscar sala">
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+          <button class="dcc-autocomplete__btn dcc-autocomplete__toggle" type="button" tabindex="-1" aria-label="Mostrar opciones"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-sala-lb" role="listbox" aria-labelledby="ac-sala-l" hidden>
+      <li class="dcc-autocomplete__group" role="presentation">
+        <span class="dcc-autocomplete__group-label" id="ac-sala-g0">Beauchef 851, Edificio Norte</span>
+        <ul role="group" aria-labelledby="ac-sala-g0">
+          <li class="dcc-combo__option" role="option">Auditorio Ramón Picarte<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option">Sala 301<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option">Sala 302<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option">Laboratorio de Computación 3<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+        </ul>
+      </li>
+      <li class="dcc-autocomplete__group" role="presentation">
+        <span class="dcc-autocomplete__group-label" id="ac-sala-g1">Beauchef 850</span>
+        <ul role="group" aria-labelledby="ac-sala-g1">
+          <li class="dcc-combo__option" role="option">Sala B-11<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option">Sala B-12<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option">Auditorio Gorbea<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+        </ul>
+      </li>
+      <li class="dcc-autocomplete__group" role="presentation">
+        <span class="dcc-autocomplete__group-label" id="ac-sala-g2">Remoto</span>
+        <ul role="group" aria-labelledby="ac-sala-g2">
+          <li class="dcc-combo__option" role="option">Zoom institucional<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+          <li class="dcc-combo__option" role="option">Google Meet<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+        </ul>
+      </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</div>
+<h2 class="dcc-doc-h2" id="libre">Texto libre</h2>
+<p class="dcc-doc-p">Con <code>data-libre</code> la lista sólo sugiere: Enter acepta lo escrito aunque no esté en ella,
+  y al salir del campo lo escrito pasa a ser el valor. No hay flecha ni aviso de “Sin resultados”, porque
+  escribir algo nuevo es válido. Si el texto coincide con una opción, se elige esa. En el múltiple, cada
+  Enter agrega un chip.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:400px;align-items:flex-start">
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-empresa-l" for="ac-empresa">Empresa de la práctica</label>
+    <div class="dcc-autocomplete js-autocomplete" data-libre>
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-empresa" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-empresa-lb" autocomplete="off" placeholder="Nombre de la empresa">
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-empresa-lb" role="listbox" aria-labelledby="ac-empresa-l" hidden>
+      <li class="dcc-combo__option" role="option">Codelco<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Banco de Chile<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Cornershop<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Entel<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">NIC Chile<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Servicio de Impuestos Internos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+  </div>
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-claves-l" for="ac-claves">Palabras clave de la memoria</label>
+    <div class="dcc-autocomplete js-autocomplete" data-multiple data-libre data-name="palabras_clave">
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-claves" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-claves-lb" autocomplete="off" placeholder="Escribe y presiona Enter" aria-describedby="ac-claves-h">
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-claves-lb" role="listbox" aria-labelledby="ac-claves-l" hidden>
+      <li class="dcc-combo__option" role="option">Aprendizaje automático<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Bases de datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Computación gráfica<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Criptografía<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Procesamiento de lenguaje natural<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Redes<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Seguridad<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Visualización<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+    <p class="dcc-field__help" id="ac-claves-h">Elige de la lista o escribe las tuyas</p>
+  </div>
+  </div>
+</div>
+<h2 class="dcc-doc-h2" id="sin-resultados">Sin resultados</h2>
+<p class="dcc-doc-p">Cuando nada coincide aparece un aviso en la misma caja flotante, fuera de la lista porque no es
+  una opción. Un lector de pantalla oye la cantidad de resultados después de cada tecla, o el aviso. El texto
+  se cambia con <code>data-sin-resultados</code>. Prueba escribir «química».</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:200px;align-items:flex-start">
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-sin-l" for="ac-sin">Curso</label>
+    <div class="dcc-autocomplete js-autocomplete" data-sin-resultados="Ningún curso del DCC coincide">
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-sin" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-sin-lb" autocomplete="off" placeholder="Código o nombre del curso">
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+          <button class="dcc-autocomplete__btn dcc-autocomplete__toggle" type="button" tabindex="-1" aria-label="Mostrar opciones"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-sin-lb" role="listbox" aria-labelledby="ac-sin-l" hidden>
+      <li class="dcc-combo__option" role="option" data-value="CC1000">CC1000 Herramientas Computacionales para Ingeniería y Ciencias<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC1002">CC1002 Introducción a la Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3001">CC3001 Algoritmos y Estructuras de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3101">CC3101 Matemáticas Discretas para la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3102">CC3102 Teoría de la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3201">CC3201 Bases de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3301">CC3301 Programación de Software de Sistemas<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3501">CC3501 Modelación y Computación Gráfica para Ingenieros<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4101">CC4101 Lenguajes de Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4102">CC4102 Diseño y Análisis de Algoritmos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4302">CC4302 Sistemas Operativos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4303">CC4303 Redes<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4401">CC4401 Ingeniería de Software<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5205">CC5205 Minería de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5208">CC5208 Visualización de Información<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</div>
+<h2 class="dcc-doc-h2" id="estados">Etiqueta, ayuda y error</h2>
+<p class="dcc-doc-p">El autocompletar va dentro de un <code>.dcc-field</code> como cualquier campo: etiqueta con
+  <code>for</code>, ayuda enlazada con <code>aria-describedby</code>, y <code>.dcc-field--error</code> con
+  <code>aria-invalid="true"</code> para el error. Una opción con <code>aria-disabled="true"</code> se ve pero no
+  se puede elegir.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:340px;align-items:flex-start">
+  <div class="dcc-field dcc-field--error">
+    <label class="dcc-field__label" id="ac-req-l" for="ac-req">Curso a convalidar <span class="dcc-req" aria-hidden="true">*</span></label>
+    <div class="dcc-autocomplete js-autocomplete">
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-req" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-req-lb" autocomplete="off" placeholder="Código o nombre del curso" aria-describedby="ac-req-h" aria-invalid="true" required>
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+          <button class="dcc-autocomplete__btn dcc-autocomplete__toggle" type="button" tabindex="-1" aria-label="Mostrar opciones"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-req-lb" role="listbox" aria-labelledby="ac-req-l" hidden>
+      <li class="dcc-combo__option" role="option" data-value="CC1000" aria-disabled="true">CC1000 Herramientas Computacionales para Ingeniería y Ciencias<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC1002">CC1002 Introducción a la Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3001">CC3001 Algoritmos y Estructuras de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3101">CC3101 Matemáticas Discretas para la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3102">CC3102 Teoría de la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3201">CC3201 Bases de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3301">CC3301 Programación de Software de Sistemas<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3501">CC3501 Modelación y Computación Gráfica para Ingenieros<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4101">CC4101 Lenguajes de Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4102">CC4102 Diseño y Análisis de Algoritmos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4302">CC4302 Sistemas Operativos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4303">CC4303 Redes<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4401">CC4401 Ingeniería de Software<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5205">CC5205 Minería de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5208">CC5208 Visualización de Información<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+    <p class="dcc-field__help dcc-field__help--error" id="ac-req-h"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"/></svg>Elige un curso de la lista</p>
+  </div>
+  </div>
+</div>
+<h2 class="dcc-doc-h2" id="deshabilitado">Deshabilitado</h2>
+<p class="dcc-doc-p">Con <code>disabled</code> en el input. El kit deshabilita también los botones y los chips.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="min-height:0px;align-items:flex-start">
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-dis-l" for="ac-dis">Curso</label>
+    <div class="dcc-autocomplete js-autocomplete">
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-dis" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-dis-lb" autocomplete="off" value="CC3001 Algoritmos y Estructuras de Datos" disabled>
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+          <button class="dcc-autocomplete__btn dcc-autocomplete__toggle" type="button" tabindex="-1" aria-label="Mostrar opciones" disabled><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-dis-lb" role="listbox" aria-labelledby="ac-dis-l" hidden>
+      <li class="dcc-combo__option" role="option" data-value="CC1000">CC1000 Herramientas Computacionales para Ingeniería y Ciencias<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC1002">CC1002 Introducción a la Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3001" aria-selected="true">CC3001 Algoritmos y Estructuras de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3101">CC3101 Matemáticas Discretas para la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3102">CC3102 Teoría de la Computación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3201">CC3201 Bases de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3301">CC3301 Programación de Software de Sistemas<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC3501">CC3501 Modelación y Computación Gráfica para Ingenieros<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4101">CC4101 Lenguajes de Programación<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4102">CC4102 Diseño y Análisis de Algoritmos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4302">CC4302 Sistemas Operativos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4303">CC4303 Redes<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC4401">CC4401 Ingeniería de Software<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5205">CC5205 Minería de Datos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" data-value="CC5208">CC5208 Visualización de Información<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+  </div>
+  <div class="dcc-field">
+    <label class="dcc-field__label" id="ac-dis-m-l" for="ac-dis-m">Equipo docente</label>
+    <div class="dcc-autocomplete js-autocomplete" data-multiple>
+      <div class="dcc-autocomplete__control">
+        <input class="dcc-autocomplete__input" id="ac-dis-m" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac-dis-m-lb" autocomplete="off" disabled>
+        <div class="dcc-autocomplete__actions">
+          <button class="dcc-autocomplete__btn dcc-autocomplete__clear" type="button" tabindex="-1" aria-label="Borrar" hidden><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+          <button class="dcc-autocomplete__btn dcc-autocomplete__toggle" type="button" tabindex="-1" aria-label="Mostrar opciones" disabled><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </div>
+      <ul class="dcc-combo__list" id="ac-dis-m-lb" role="listbox" aria-labelledby="ac-dis-m-l" hidden>
+      <li class="dcc-combo__option" role="option" aria-selected="true">Andrea Muñoz<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Benjamín Fuentes<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Camila Soto<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option" aria-selected="true">Diego Araya<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Fernanda Lagos<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Ignacio Pérez<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Javiera Contreras<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Matías Herrera<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Nicolás Bravo<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      <li class="dcc-combo__option" role="option">Valentina Rojas<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</div>
+<h2 class="dcc-doc-h2" id="teclado">Teclado</h2>
+<table class="dcc-doc-table">
+  <thead><tr><th>Tecla</th><th>Efecto</th></tr></thead>
+  <tbody>
+    <tr><td>Flecha abajo / arriba</td><td>Abre la lista en la opción elegida —o en la primera— y luego recorre las opciones.</td></tr>
+    <tr><td>Enter</td><td>Elige la opción activa. Con texto libre y ninguna activa, acepta lo escrito.</td></tr>
+    <tr><td>Escape</td><td>Cierra la lista.</td></tr>
+    <tr><td>Retroceso</td><td>En el múltiple con el campo vacío, quita el último chip.</td></tr>
+    <tr><td>Flecha izquierda</td><td>En el múltiple, al principio del texto, pasa a los chips.</td></tr>
+    <tr><td>Tab</td><td>Sale del campo y cierra la lista. Los botones de borrar y abrir no están en el orden de tabulación.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="dcc-doc-h2" id="eventos">Eventos</h2>
+<p class="dcc-doc-p">Tras cada cambio de valor el kit emite <code>dcc-autocompletar</code> en el contenedor, con
+  <code>detail.valor</code>: el valor elegido (o <code>null</code>) en el simple y una lista en el múltiple.</p>

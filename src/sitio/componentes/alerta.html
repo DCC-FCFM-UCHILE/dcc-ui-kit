@@ -5,19 +5,130 @@ resumen: Mensajes breves e importantes que no interrumpen la tarea: información
 miniatura: .dcc-alert
 -->
 <h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+<p class="dcc-doc-p">Cuatro colores: <code>--info</code>, <code>--success</code>, <code>--warning</code> y
+  <code>--error</code>. El ícono va primero, con <code>.dcc-icon</code>, y el texto en un <code>.dcc-stack</code>.
+  Las de información, éxito y advertencia llevan <code>role="status"</code>, que el lector de pantalla lee sin
+  interrumpir; la de error, <code>role="alert"</code>.</p>
 <div class="dcc-doc-demo">
   <div class="dcc-alert-stack">
         <div class="dcc-alert dcc-alert--info" role="status">
-          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-info"></use></svg>
-          <span class="dcc-stack"><strong>Title</strong><span>This is a description</span></span>
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"></use></svg>
+          <span class="dcc-stack"><strong>Inscripción abierta</strong><span>Puedes inscribir cursos del semestre de primavera hasta el 14 de agosto.</span></span>
         </div>
         <div class="dcc-alert dcc-alert--success" role="status">
-          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-circle-check"></use></svg>
-          <span class="dcc-stack"><strong>Title</strong><span>This is a description</span></span>
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"></use></svg>
+          <span class="dcc-stack"><strong>Memoria entregada</strong><span>La Secretaría Docente recibió tu documento final.</span></span>
+        </div>
+        <div class="dcc-alert dcc-alert--warning" role="status">
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-triangle-alert"></use></svg>
+          <span class="dcc-stack"><strong>Quedan 2 cupos</strong><span>La sección 1 de CC3001 está casi completa.</span></span>
         </div>
         <div class="dcc-alert dcc-alert--error" role="alert">
-          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24"><use href="#i-info"></use></svg>
-          <span class="dcc-stack"><strong>Title</strong><span>This is a description</span></span>
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"></use></svg>
+          <span class="dcc-stack"><strong>No se pudo subir el informe</strong><span>El archivo supera los 20 MB permitidos.</span></span>
         </div>
       </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="variantes">Variantes</h2>
+<p class="dcc-doc-p">La de arriba es la variante estándar, de fondo suave. <code>--outlined</code> la deja sin fondo y
+  con un borde del color, para cuando la alerta va sobre otra superficie; <code>--filled</code> la rellena con el
+  tono fuerte, para lo que tiene que verse primero.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-alert-list">
+    <div class="dcc-alert dcc-alert--info dcc-alert--outlined" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"/></svg>
+      <div class="dcc-alert__message">El programa de CC3001 se actualizó el 2 de marzo.</div>
+    </div>
+    <div class="dcc-alert dcc-alert--success dcc-alert--outlined" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"/></svg>
+      <div class="dcc-alert__message">Tu propuesta de memoria fue aprobada.</div>
+    </div>
+    <div class="dcc-alert dcc-alert--warning dcc-alert--outlined" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-triangle-alert"/></svg>
+      <div class="dcc-alert__message">La sala B01 está en mantención esta semana.</div>
+    </div>
+    <div class="dcc-alert dcc-alert--error dcc-alert--outlined" role="alert">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"/></svg>
+      <div class="dcc-alert__message">El RUT ingresado no es válido.</div>
+    </div>
+  </div>
+  <div class="dcc-alert-list">
+    <div class="dcc-alert dcc-alert--info dcc-alert--filled" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"/></svg>
+      <div class="dcc-alert__message">El programa de CC3001 se actualizó el 2 de marzo.</div>
+    </div>
+    <div class="dcc-alert dcc-alert--success dcc-alert--filled" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"/></svg>
+      <div class="dcc-alert__message">Tu propuesta de memoria fue aprobada.</div>
+    </div>
+    <div class="dcc-alert dcc-alert--warning dcc-alert--filled" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-triangle-alert"/></svg>
+      <div class="dcc-alert__message">La sala B01 está en mantención esta semana.</div>
+    </div>
+    <div class="dcc-alert dcc-alert--error dcc-alert--filled" role="alert">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"/></svg>
+      <div class="dcc-alert__message">El RUT ingresado no es válido.</div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="titulo">Con título</h2>
+<p class="dcc-doc-p">El texto va en <code>__message</code> y el título en <code>__title</code>, el AlertTitle de MUI.
+  Con título, el ícono se alinea con la primera línea.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-alert-list">
+    <div class="dcc-alert dcc-alert--warning" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-triangle-alert"/></svg>
+      <div class="dcc-alert__message">
+        <p class="dcc-alert__title">Plazo de inscripción de memoria</p>
+        La inscripción de CC6909 cierra el viernes 21 a las 17:00. Después de esa fecha se necesita la autorización
+        de la Jefatura Docente.
+      </div>
+    </div>
+    <div class="dcc-alert dcc-alert--error dcc-alert--outlined" role="alert">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"/></svg>
+      <div class="dcc-alert__message">
+        <p class="dcc-alert__title">No se pudo enviar la solicitud</p>
+        El servidor de U-Pasaporte no respondió. Inténtalo de nuevo en unos minutos.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="acciones">Acción y cerrar</h2>
+<p class="dcc-doc-p">A la derecha, en <code>__action</code>, un botón de texto del kit —toma el color del texto de la
+  alerta— o el botón de cerrar <code>__close</code>, con <code>aria-label</code>. Cerrar la alerta es tarea de la
+  aplicación: el kit sólo pone el botón.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-alert-list">
+    <div class="dcc-alert dcc-alert--success" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"/></svg>
+      <div class="dcc-alert__message">Se guardaron los cambios del programa.</div>
+      <div class="dcc-alert__action">
+        <button class="dcc-icon-btn dcc-icon-btn--sm dcc-icon-btn--inherit dcc-alert__close" type="button" aria-label="Cerrar alerta">
+          <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="dcc-alert dcc-alert--info dcc-alert--outlined" role="status">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"/></svg>
+      <div class="dcc-alert__message">Hay una versión nueva del reglamento de memorias.</div>
+      <div class="dcc-alert__action">
+        <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Leer</button>
+      </div>
+    </div>
+    <div class="dcc-alert dcc-alert--error dcc-alert--filled" role="alert">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-alert"/></svg>
+      <div class="dcc-alert__message">Se perdió la conexión con el servidor.</div>
+      <div class="dcc-alert__action">
+        <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">
+          <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh-cw"/></svg> Reintentar
+        </button>
+        <button class="dcc-icon-btn dcc-icon-btn--sm dcc-icon-btn--inherit dcc-alert__close" type="button" aria-label="Cerrar alerta">
+          <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

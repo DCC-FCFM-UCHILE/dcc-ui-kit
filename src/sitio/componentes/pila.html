@@ -1,0 +1,97 @@
+<!--
+titulo: Stack
+grupo: Diseño
+resumen: Apila elementos en una columna o una fila con un espacio parejo entre ellos y, si se pide, un divisor en cada hueco.
+miniatura: .dcc-stack--divided
+escala: .6
+ancho: 560px
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p"><code>.dcc-stack</code> pone a sus hijos en una columna. El espacio entre ellos va en unidades
+  de 8px, de <code>--gap-0</code> a <code>--gap-6</code>; sin clase de espaciado no hay espacio, como en MUI.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--gap-2">
+    <div class="dcc-doc-cell">Postulación</div>
+    <div class="dcc-doc-cell">Revisión de antecedentes</div>
+    <div class="dcc-doc-cell">Entrevista</div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="direccion">Dirección</h2>
+<p class="dcc-doc-p"><code>--row</code> los pone en fila; <code>--row-reverse</code> y <code>--column-reverse</code>
+  invierten el orden en pantalla, pero no el del HTML, que es el que siguen el teclado y el lector de pantalla.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--row dcc-stack--gap-1">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button">Cancelar</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Inscribir ramo</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="responsive">Por breakpoint</h2>
+<p class="dcc-doc-p">La dirección cambia según el ancho con <code>--{bp}-row</code> y <code>--{bp}-column</code>, de
+  móvil hacia arriba y con los breakpoints de MUI (<code>sm</code> 600px, <code>md</code> 900px, <code>lg</code>
+  1200px, <code>xl</code> 1536px). Este ejemplo es una columna en el teléfono y una fila desde <code>sm</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--sm-row dcc-stack--gap-2">
+    <div class="dcc-doc-cell">Beauchef 851</div>
+    <div class="dcc-doc-cell">Edificio Poniente, piso 3</div>
+    <div class="dcc-doc-cell">Santiago</div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="divisores">Divisores</h2>
+<p class="dcc-doc-p"><code>--divided</code> dibuja una línea en cada hueco, centrada en el espacio. MUI lo hace
+  intercalando un <code>Divider</code>; acá es un borde en cada hijo después del primero, así que no hay que tocar el
+  HTML, y la línea gira sola si la pila pasa de columna a fila en un breakpoint. <code>--divider-strong</code> la
+  oscurece para fondos de página.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--row dcc-stack--divided dcc-stack--gap-2 dcc-stack--align-center">
+    <span class="dcc-badge dcc-badge--soft-green">Vigente</span>
+    <span>CC3001</span>
+    <span>Sección 2</span>
+  </div>
+</div>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--sm-row dcc-stack--divided dcc-stack--gap-3">
+    <div class="dcc-stack dcc-stack--gap-1"><strong>412</strong><span>Estudiantes de pregrado</span></div>
+    <div class="dcc-stack dcc-stack--gap-1"><strong>96</strong><span>Estudiantes de magíster</span></div>
+    <div class="dcc-stack dcc-stack--gap-1"><strong>38</strong><span>Estudiantes de doctorado</span></div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="alineacion">Alineación</h2>
+<p class="dcc-doc-p">En el eje cruzado, <code>--align-start</code>, <code>--align-center</code>,
+  <code>--align-end</code>, <code>--align-baseline</code> y <code>--align-stretch</code> (el valor por defecto). En el
+  eje principal, <code>--justify-start</code>, <code>--justify-center</code>, <code>--justify-end</code>,
+  <code>--justify-between</code>, <code>--justify-around</code> y <code>--justify-evenly</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--row dcc-stack--justify-between dcc-stack--align-center dcc-stack--gap-2">
+    <span class="dcc-doc-cell">Memoria de título</span>
+    <span class="dcc-badge dcc-badge--soft-blue">En revisión</span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="ajuste">Ajuste de línea</h2>
+<p class="dcc-doc-p">Con <code>--wrap</code> los hijos pasan a la línea siguiente cuando no caben, y el espaciado
+  separa también las líneas. Sin él, una fila larga se aprieta o se desborda.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-stack dcc-stack--row dcc-stack--wrap dcc-stack--gap-1">
+    <span class="dcc-badge dcc-badge--soft-blue">Algoritmos</span>
+    <span class="dcc-badge dcc-badge--soft-blue">Bases de datos</span>
+    <span class="dcc-badge dcc-badge--soft-blue">Computación gráfica</span>
+    <span class="dcc-badge dcc-badge--soft-blue">Redes</span>
+    <span class="dcc-badge dcc-badge--soft-blue">Seguridad</span>
+    <span class="dcc-badge dcc-badge--soft-blue">Aprendizaje de máquina</span>
+    <span class="dcc-badge dcc-badge--soft-blue">Ingeniería de software</span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="box">Box y espaciado</h2>
+<p class="dcc-doc-p">MUI acompaña a Stack con <code>Box</code> y las props de espaciado (<code>m</code>,
+  <code>p</code>, <code>mt</code>…). El kit no trae clases de utilidad de margen y relleno: para que una utilidad
+  sirva tiene que ganarle a la regla del componente, y el kit no usa <code>!important</code>. Sin él, una clase
+  como <code>.dcc-p-3</code> perdería o ganaría según el orden en que se cargan los archivos, que no es algo que quien
+  escribe el HTML deba saber.</p>
+<p class="dcc-doc-p">Para separar bloques, usa el espaciado de <code>.dcc-stack</code> o de <code>.dcc-grid</code>,
+  que es lo que hace MUI en la mayoría de sus ejemplos; para centrar y dar canaletas, <code>.dcc-container</code>.
+  Lo que quede fuera de eso es propio de la página y va en su CSS.</p>

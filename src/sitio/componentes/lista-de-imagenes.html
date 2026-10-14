@@ -1,0 +1,167 @@
+<!--
+titulo: Lista de imágenes
+grupo: Diseño
+resumen: Una colección de imágenes en grilla —estándar, quilted, woven o masonry— con una barra opcional de título y acción.
+miniatura: .dcc-image-list--quilted
+escala: .45
+ancho: 520px
+-->
+<h2 class="dcc-doc-h2" id="estandar">Estándar</h2>
+<p class="dcc-doc-p">Celdas iguales en una grilla. Es una lista (<code>&lt;ul&gt;</code> y <code>&lt;li&gt;</code>),
+  así quien usa un lector de pantalla sabe cuántas imágenes hay; cada imagen lleva un <code>alt</code> que dice qué
+  muestra. Por defecto, como en MUI: 3 columnas, filas de 164px y 4px de separación. Las columnas cambian con
+  <code>--cols-1</code> a <code>--cols-6</code> —también por breakpoint, como <code>--cols-sm-3</code>, con los cortes
+  de MUI—, y el alto y la separación con las variables
+  <code>--dcc-image-list-row</code> y <code>--dcc-image-list-gap</code>.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-image-list">
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-grafo.svg" alt="Grafo de nodos claros sobre fondo azul" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-codigo.svg" alt="Editor de código con líneas de colores" width="600" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-edificio.svg" alt="Fachada reticulada de un edificio" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-arbol.svg" alt="Árbol binario sobre fondo verde" width="400" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-circuito.svg" alt="Pistas de un circuito alrededor de un chip" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-matriz.svg" alt="Matriz de cuadrados con un patrón destacado" width="600" height="600" loading="lazy"></li>
+  </ul>
+</div>
+
+<h2 class="dcc-doc-h2" id="quilted">Quilted</h2>
+<p class="dcc-doc-p">Algunas celdas ocupan más de una columna o fila, con <code>__item--cols-2</code> a
+  <code>--cols-4</code> y <code>__item--rows-2</code> a <code>--rows-4</code>. <code>--quilted</code> rellena los
+  huecos que dejan las celdas grandes con las chicas que vienen después. Úsala para destacar una imagen.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-image-list dcc-image-list--quilted dcc-image-list--cols-4" style="--dcc-image-list-row: 121px">
+    <li class="dcc-image-list__item dcc-image-list__item--cols-2 dcc-image-list__item--rows-2"><img class="dcc-image-list__img" src="assets/galeria-edificio.svg" alt="Fachada reticulada de un edificio" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-grafo.svg" alt="Grafo de nodos claros sobre fondo azul" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-codigo.svg" alt="Editor de código con líneas de colores" width="600" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item dcc-image-list__item--cols-2"><img class="dcc-image-list__img" src="assets/galeria-cordillera.svg" alt="La cordillera al amanecer" width="600" height="300" loading="lazy"></li>
+    <li class="dcc-image-list__item dcc-image-list__item--cols-2"><img class="dcc-image-list__img" src="assets/galeria-circuito.svg" alt="Pistas de un circuito alrededor de un chip" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item dcc-image-list__item--rows-2"><img class="dcc-image-list__img" src="assets/galeria-arbol.svg" alt="Árbol binario sobre fondo verde" width="400" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item dcc-image-list__item--rows-2"><img class="dcc-image-list__img" src="assets/galeria-ondas.svg" alt="Ondas de una señal en tonos rojos" width="400" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item dcc-image-list__item--cols-2"><img class="dcc-image-list__img" src="assets/galeria-matriz.svg" alt="Matriz de cuadrados con un patrón destacado" width="600" height="600" loading="lazy"></li>
+  </ul>
+</div>
+
+<h2 class="dcc-doc-h2" id="woven">Woven</h2>
+<p class="dcc-doc-p">Las imágenes pares miden 70% de la fila y quedan centradas, lo que da un efecto de tejido. Se
+  ve mejor con filas altas.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-image-list dcc-image-list--woven" style="--dcc-image-list-row: 240px; --dcc-image-list-gap: 8px">
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-arbol.svg" alt="Árbol binario sobre fondo verde" width="400" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-ondas.svg" alt="Ondas de una señal en tonos rojos" width="400" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-codigo.svg" alt="Editor de código con líneas de colores" width="600" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-matriz.svg" alt="Matriz de cuadrados con un patrón destacado" width="600" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-grafo.svg" alt="Grafo de nodos claros sobre fondo azul" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-circuito.svg" alt="Pistas de un circuito alrededor de un chip" width="600" height="400" loading="lazy"></li>
+  </ul>
+</div>
+
+<h2 class="dcc-doc-h2" id="masonry">Masonry</h2>
+<p class="dcc-doc-p">Cada imagen conserva su proporción y se acomoda bajo la anterior de su columna. El orden baja por
+  la primera columna antes de pasar a la siguiente. Para tarjetas u otro contenido que no sean imágenes está
+  <a class="dcc-link" href="mamposteria.html">Masonry</a>.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-image-list dcc-image-list--masonry" style="--dcc-image-list-gap: 8px">
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-arbol.svg" alt="Árbol binario sobre fondo verde" width="400" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-grafo.svg" alt="Grafo de nodos claros sobre fondo azul" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-codigo.svg" alt="Editor de código con líneas de colores" width="600" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-cordillera.svg" alt="La cordillera al amanecer" width="600" height="300" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-ondas.svg" alt="Ondas de una señal en tonos rojos" width="400" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-edificio.svg" alt="Fachada reticulada de un edificio" width="600" height="400" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-matriz.svg" alt="Matriz de cuadrados con un patrón destacado" width="600" height="600" loading="lazy"></li>
+    <li class="dcc-image-list__item"><img class="dcc-image-list__img" src="assets/galeria-circuito.svg" alt="Pistas de un circuito alrededor de un chip" width="600" height="400" loading="lazy"></li>
+  </ul>
+</div>
+
+<h2 class="dcc-doc-h2" id="barra">Barra de título</h2>
+<p class="dcc-doc-p"><code>.dcc-image-list__bar</code> pone sobre la imagen un título, un subtítulo y una acción.
+  Va sobre un velo negro semitransparente con texto blanco, que se lee igual sobre una foto clara u oscura y en los
+  dos temas. La acción es un botón de ícono, <code>__action</code>, con un <code>aria-label</code> que nombra la
+  imagen: "Detalles" a secas no dice de cuál.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-image-list dcc-image-list--cols-1 dcc-image-list--cols-sm-2" style="--dcc-image-list-row: 200px">
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-grafo.svg" alt="Grafo de nodos claros sobre fondo azul" width="600" height="400" loading="lazy">
+      <div class="dcc-image-list__bar">
+        <div class="dcc-image-list__titles">
+          <p class="dcc-image-list__title">Teoría de grafos</p>
+          <p class="dcc-image-list__subtitle">CC4102 · Diseño y Análisis de Algoritmos</p>
+        </div>
+        <button class="dcc-image-list__action" type="button" aria-label="Detalles de Teoría de grafos"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"></use></svg></button>
+      </div>
+    </li>
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-circuito.svg" alt="Pistas de un circuito alrededor de un chip" width="600" height="400" loading="lazy">
+      <div class="dcc-image-list__bar">
+        <div class="dcc-image-list__titles">
+          <p class="dcc-image-list__title">Arquitectura de computadores</p>
+          <p class="dcc-image-list__subtitle">CC4301 · Laboratorio del piso 3</p>
+        </div>
+        <button class="dcc-image-list__action" type="button" aria-label="Detalles de Arquitectura de computadores"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"></use></svg></button>
+      </div>
+    </li>
+  </ul>
+</div>
+<p class="dcc-doc-p"><code>__bar--top</code> la sube al borde superior, con un degradado en vez del velo
+  parejo; es el lugar habitual de una acción como marcar favorito.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-image-list dcc-image-list--cols-1 dcc-image-list--cols-sm-3" style="--dcc-image-list-row: 200px">
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-arbol.svg" alt="Árbol binario sobre fondo verde" width="400" height="600" loading="lazy">
+      <div class="dcc-image-list__bar dcc-image-list__bar--top">
+        <div class="dcc-image-list__titles"><p class="dcc-image-list__title">Árboles de búsqueda</p></div>
+        <button class="dcc-image-list__action" type="button" aria-label="Guardar Árboles de búsqueda"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"></use></svg></button>
+      </div>
+    </li>
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-ondas.svg" alt="Ondas de una señal en tonos rojos" width="400" height="600" loading="lazy">
+      <div class="dcc-image-list__bar dcc-image-list__bar--top">
+        <div class="dcc-image-list__titles"><p class="dcc-image-list__title">Procesamiento de señales</p></div>
+        <button class="dcc-image-list__action" type="button" aria-label="Guardar Procesamiento de señales"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"></use></svg></button>
+      </div>
+    </li>
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-matriz.svg" alt="Matriz de cuadrados con un patrón destacado" width="600" height="600" loading="lazy">
+      <div class="dcc-image-list__bar dcc-image-list__bar--top">
+        <div class="dcc-image-list__titles"><p class="dcc-image-list__title">Visión computacional</p></div>
+        <button class="dcc-image-list__action" type="button" aria-label="Guardar Visión computacional"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"></use></svg></button>
+      </div>
+    </li>
+  </ul>
+</div>
+<p class="dcc-doc-p"><code>__bar--below</code> la saca de la imagen y la pone debajo, con los colores del tema.
+  Conviene con <code>--rows-auto</code>, para que la fila mida la imagen más su texto, y con
+  <code>--dcc-image-list-ratio</code> si las imágenes no tienen todas la misma proporción.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-image-list dcc-image-list--cols-1 dcc-image-list--cols-sm-3 dcc-image-list--rows-auto" style="--dcc-image-list-gap: 16px; --dcc-image-list-ratio: 3 / 2">
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-edificio.svg" alt="Fachada reticulada de un edificio" width="600" height="400" loading="lazy">
+      <div class="dcc-image-list__bar dcc-image-list__bar--below">
+        <div class="dcc-image-list__titles">
+          <p class="dcc-image-list__title">Beauchef 851</p>
+          <p class="dcc-image-list__subtitle">Edificio Poniente</p>
+        </div>
+        <button class="dcc-image-list__action" type="button" aria-label="Ver Beauchef 851 en el mapa"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"></use></svg></button>
+      </div>
+    </li>
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-cordillera.svg" alt="La cordillera al amanecer" width="600" height="300" loading="lazy">
+      <div class="dcc-image-list__bar dcc-image-list__bar--below">
+        <div class="dcc-image-list__titles">
+          <p class="dcc-image-list__title">Jornada de bienvenida</p>
+          <p class="dcc-image-list__subtitle">Marzo, cohorte 2026</p>
+        </div>
+        <button class="dcc-image-list__action" type="button" aria-label="Compartir Jornada de bienvenida"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-share-2"></use></svg></button>
+      </div>
+    </li>
+    <li class="dcc-image-list__item">
+      <img class="dcc-image-list__img" src="assets/galeria-codigo.svg" alt="Editor de código con líneas de colores" width="600" height="600" loading="lazy">
+      <div class="dcc-image-list__bar dcc-image-list__bar--below">
+        <div class="dcc-image-list__titles">
+          <p class="dcc-image-list__title">Hackatón DCC</p>
+          <p class="dcc-image-list__subtitle">48 horas de código</p>
+        </div>
+        <button class="dcc-image-list__action" type="button" aria-label="Compartir Hackatón DCC"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-share-2"></use></svg></button>
+      </div>
+    </li>
+  </ul>
+</div>

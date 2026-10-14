@@ -1,0 +1,115 @@
+<!--
+titulo: Tooltip
+grupo: Visualización de datos
+resumen: Una etiqueta breve que explica un control al pasar el cursor o al enfocarlo con el teclado.
+miniatura: .dcc-tooltip--static
+escala: 1.4
+-->
+<h2 class="dcc-doc-h2" id="anatomia">Anatomía</h2>
+<p class="dcc-doc-p">Un globo de texto corto, con los colores invertidos respecto de la página: oscuro en el tema
+  claro y claro en el oscuro. Aquí está dibujado fijo, con <code>.dcc-tooltip--static</code>, para verlo sin
+  pasar el cursor.</p>
+<div class="dcc-doc-demo" data-codigo="no">
+  <div class="dcc-doc-row">
+    <span class="dcc-tooltip dcc-tooltip--static" role="tooltip">Descargar programa del curso</span>
+    <span class="dcc-tooltip dcc-tooltip--static dcc-tooltip--arrow" role="tooltip" data-placement="bottom">Con flecha</span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">Basta con el atributo <code>data-dcc-tooltip</code> en el disparador: el script crea el globo,
+  lo enlaza con <code>role="tooltip"</code> y <code>aria-describedby</code>, y lo abre tras 100 ms de hover o
+  de inmediato con el foco de teclado. En los botones de solo ícono el tooltip repite la etiqueta: pon igual el
+  <code>aria-label</code>, para que el botón tenga nombre aunque el script no cargue. Si dicen lo mismo, el
+  script no lo anuncia dos veces.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--text dcc-btn--error" type="button" aria-label="Eliminar" data-dcc-tooltip="Eliminar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trash"/></svg></button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button" aria-label="Editar" data-dcc-tooltip="Editar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pencil"/></svg></button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button" aria-label="Compartir" data-dcc-tooltip="Compartir"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-share-2"/></svg></button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-tooltip="Se descarga en PDF, 2,4 MB">Programa CC3001</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="posiciones">Posiciones</h2>
+<p class="dcc-doc-p">Con <code>data-dcc-placement</code>: <code>top</code>, <code>bottom</code> (por omisión,
+  como en MUI), <code>left</code> o <code>right</code>, y cada uno con <code>-start</code> o <code>-end</code>
+  para alinearlo a un extremo. Si no cabe en la ventana, se da vuelta al lado opuesto; si se saldría por un
+  costado, se corre hacia adentro.</p>
+<div class="dcc-doc-demo">
+  <div style="display:grid;grid-template-columns:repeat(3,max-content);gap:8px;justify-content:center">
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="top-start">top-start</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="top">top</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="top-end">top-end</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="left-start">left-start</button>
+    <span></span>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="right-start">right-start</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="left">left</button>
+    <span></span>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="right">right</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="left-end">left-end</button>
+    <span></span>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="right-end">right-end</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="bottom-start">bottom-start</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="bottom">bottom</button>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined" type="button" data-dcc-tooltip="Sala B-201, Beauchef 851" data-dcc-placement="bottom-end">bottom-end</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="flecha">Con flecha</h2>
+<p class="dcc-doc-p">Con <code>data-dcc-arrow</code>. La flecha apunta al centro del disparador aunque el globo se
+  haya corrido para no salirse de la pantalla.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-tooltip="Inscripción abierta hasta el 15 de marzo" data-dcc-arrow>Inscribir ramos</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button" aria-label="Ayuda" data-dcc-tooltip="Ayuda" data-dcc-arrow data-dcc-placement="right"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-help"/></svg></button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="contenido">Con formato</h2>
+<p class="dcc-doc-p">Si el texto lleva formato, el globo va en el markup: un <code>.dcc-tooltip</code> con
+  <code>role="tooltip"</code> e <code>hidden</code>, enlazado con <code>aria-describedby</code> a un disparador
+  con la clase <code>.js-tooltip</code>. El contenido sigue siendo texto: un tooltip no se puede enfocar, así que
+  no debe llevar enlaces ni botones. Para eso está el <a href="popover.html">popover</a>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-tooltip" type="button" aria-describedby="tt-cc3001" data-dcc-placement="top">CC3001</button>
+    <span class="dcc-tooltip dcc-tooltip--arrow" role="tooltip" id="tt-cc3001" hidden><strong>Algoritmos y Estructuras de Datos</strong><br>10 créditos · Prerrequisito: CC1002</span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="deshabilitado">En un control deshabilitado</h2>
+<p class="dcc-doc-p">Un botón con <code>disabled</code> no recibe eventos del cursor ni foco, así que no puede abrir
+  su tooltip. Como en MUI, el tooltip va en un envoltorio enfocable que explica por qué está deshabilitado.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <span tabindex="0" data-dcc-tooltip="Disponible cuando el profesor guía apruebe el avance">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" disabled>Agendar defensa</button>
+    </span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="accesibilidad">Accesibilidad</h2>
+<p class="dcc-doc-p">Cumple el criterio 1.4.13 de WCAG (contenido en hover o foco): se cierra con
+  <kbd>Escape</kbd> sin mover el foco, el cursor puede pasar del disparador al globo sin que desaparezca, y no se
+  cierra solo mientras el cursor o el foco sigan ahí. Se abre con el foco de teclado pero no con el foco que deja
+  un clic, y un clic en el disparador lo aparta. Si el disparador no tiene ningún nombre accesible, el tooltip pasa
+  a ser su nombre (<code>aria-labelledby</code>); si lo tiene, queda como descripción. Un <code>title</code> nativo
+  en el disparador se quita, para que no aparezcan dos globos.</p>
+
+<h2 class="dcc-doc-h2" id="api">API</h2>
+<table class="dcc-doc-table">
+  <thead><tr><th>Atributo o función</th><th>Qué hace</th></tr></thead>
+  <tbody>
+    <tr><td><code>data-dcc-tooltip</code></td><td>El texto. Se relee al abrir, así que se puede cambiar en vivo.</td></tr>
+    <tr><td><code>data-dcc-placement</code></td><td>Lado y alineación; <code>bottom</code> por omisión.</td></tr>
+    <tr><td><code>data-dcc-arrow</code></td><td>Agrega la flecha (<code>.dcc-tooltip--arrow</code> en el markup).</td></tr>
+    <tr><td><code>DCCUI.tooltip.abrir(el)</code></td><td>Abre el tooltip del disparador <code>el</code>.</td></tr>
+    <tr><td><code>DCCUI.tooltip.cerrar()</code></td><td>Cierra el que esté abierto.</td></tr>
+    <tr><td><code>DCCUI.posicionar(flotante, ancla, colocacion, opciones)</code></td><td>El cálculo de posición, para
+      cualquier pieza flotante. Opciones: <code>separacion</code> en px y <code>variable</code>, la propiedad CSS donde
+      escribir la posición de la flecha.</td></tr>
+  </tbody>
+</table>
+<p class="dcc-doc-p">No incluye, de MUI: seguir al cursor (<code>followCursor</code>), el modo controlado y el
+  retraso por toque largo en pantallas táctiles; en el teléfono el tooltip aparece con el foco.</p>

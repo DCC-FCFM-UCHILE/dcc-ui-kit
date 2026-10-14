@@ -123,6 +123,8 @@
   --dcc-success-strong: var(--dcc-green-dark);
   --dcc-info-strong:    var(--dcc-lightblue-dark);
   --dcc-warning-strong: var(--dcc-yellow-dark);
+  /* Velo que oscurece la página detrás de un diálogo o un cajón. */
+  --dcc-scrim:          rgba(26, 32, 44, .5);
 }
 
 /* ---- Tema oscuro ----
@@ -165,6 +167,7 @@
   --dcc-success-strong: #7fdce4;
   --dcc-info-strong:    #9ad2f0;
   --dcc-warning-strong: #f0cf8f;
+  --dcc-scrim:          rgba(0, 0, 0, .6);
   --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
 }
 @media (prefers-color-scheme: dark) {
@@ -196,6 +199,7 @@
     --dcc-success-strong: #7fdce4;
     --dcc-info-strong:    #9ad2f0;
     --dcc-warning-strong: #f0cf8f;
+    --dcc-scrim:          rgba(0, 0, 0, .6);
     --dcc-shadow:         0 2px 4px -1px #0000004d, 0 4px 6px -1px #00000066;
   }
 }
@@ -646,6 +650,35 @@ body.dcc-root {
   .dcc-doc-matrix { grid-template-columns: repeat(2, max-content); }
 }
 
+/* --------------------------------------------------------------------------
+   Andamiaje de las demos de Diseño (sitio de documentación)
+   Las páginas de Container, Grilla, Stack y Masonry necesitan algo que se vea
+   dentro de cada celda; MUI usa un `Item` hecho con Paper. Son clases
+   `dcc-doc-*` como el resto del andamiaje y no forman parte de la API del kit.
+   Viven acá y no en la sección 4 de styles.css sólo porque este módulo no
+   puede tocar ese archivo.
+   -------------------------------------------------------------------------- */
+.dcc-doc-cell {
+  padding: 12px 16px;
+  border: 1px solid var(--dcc-border-subtle);
+  border-radius: var(--dcc-radius-md);
+  background: var(--dcc-surface-muted);
+  color: var(--dcc-fg);
+  font-family: var(--dcc-font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+}
+.dcc-doc-cell--start { text-align: start; }
+.dcc-doc-cell--tall { padding-block: 32px; }
+
+/* Marco punteado: deja ver la caja de un contenedor y sus canaletas. */
+.dcc-doc-frame {
+  outline: 1px dashed var(--dcc-border);
+  outline-offset: -1px;
+  background: var(--dcc-info-bg);
+}
+
 /* CONVENCIÓN DEL KIT: el andamiaje de la documentación NUNCA usa selectores por
    etiqueta descendiente (`.dcc-doc-main h3`), porque se filtran dentro de los
    componentes y les ganan por especificidad a sus clases. Todo lo que es
@@ -683,7 +716,7 @@ body.dcc-root {
   gap: 24px;
 }
 .dcc-swatch { display: flex; align-items: center; gap: 16px; }
-.dcc-swatch .dcc-chip {
+.dcc-swatch .dcc-swatch__chip {
   width: 48px;
   height: 48px;
   flex: 0 0 48px;
@@ -853,6 +886,86 @@ body.dcc-root {
 }
 .dcc-btn--secondary-grey { background: var(--dcc-surface); }
 .dcc-btn--secondary-white { --dcc-btn-main: var(--dcc-white); }
+
+/* Botón de ícono (el IconButton de MUI): redondo, sin relleno ni sombra, con
+   la misma capa de estado que `.dcc-btn` —8% en hover, 12% al presionar o con
+   foco de teclado—. Es la pieza de los botones de cerrar, de los menús de
+   acción y de expandir. Siempre necesita un nombre accesible (`aria-label`),
+   porque no tiene texto.
+     tamaño  →  --sm (32px) · 40px por omisión · --lg (48px)
+     color   →  gris secundario por omisión · --primary · --error ·
+                --inherit, que toma el color del texto que lo rodea (para
+                fondos de color: snackbar, alerta rellena)                    */
+.dcc-icon-btn {
+  --dcc-icon-btn-size: 40px;
+  --dcc-icon-btn-icon: 20px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-grid;
+  place-items: center;
+  width: var(--dcc-icon-btn-size);
+  height: var(--dcc-icon-btn-size);
+  flex: 0 0 var(--dcc-icon-btn-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  --dcc-icon-btn-color: var(--dcc-fg-muted);
+  color: var(--dcc-icon-btn-color);
+  font: inherit;
+  cursor: pointer;
+  transition: color .25s cubic-bezier(.4, 0, .2, 1);
+}
+/* `fill: none` porque el corazón y la estrella del sprite no lo fijan —quedan
+   rellenables para marcar favoritos— y sin esto salían rellenos. */
+.dcc-icon-btn svg {
+  width: var(--dcc-icon-btn-icon);
+  height: var(--dcc-icon-btn-icon);
+  flex: none;
+  fill: none;
+}
+.dcc-icon-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.4, 0, .2, 1);
+}
+.dcc-icon-btn:hover::before { opacity: .08; }
+.dcc-icon-btn:active::before,
+.dcc-icon-btn:focus-visible::before { opacity: .12; }
+.dcc-icon-btn:focus-visible { outline: 2px solid var(--dcc-focus); outline-offset: 0; }
+.dcc-icon-btn--sm { --dcc-icon-btn-size: 32px; --dcc-icon-btn-icon: 18px; }
+.dcc-icon-btn--lg { --dcc-icon-btn-size: 48px; --dcc-icon-btn-icon: 24px; }
+/* El color va por variable para que un botón de ícono que además sea otra
+   pieza —el disparador de un menú, que fija su propio color— lo recupere. */
+.dcc-icon-btn--primary { --dcc-icon-btn-color: var(--dcc-fg-accent); }
+.dcc-icon-btn--error   { --dcc-icon-btn-color: var(--dcc-danger); }
+.dcc-icon-btn--inherit { --dcc-icon-btn-color: currentColor; }
+/* Sobre un fondo de color el azul de foco puede no verse: va en el color del texto. */
+.dcc-icon-btn--inherit:focus-visible { outline-color: currentColor; }
+.dcc-icon-btn:disabled,
+.dcc-icon-btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.dcc-icon-btn:disabled::before,
+.dcc-icon-btn[aria-disabled="true"]::before { opacity: 0; }
+
+/* Texto sólo para lectores de pantalla: el nombre de una tabla cuyo título ya
+   está a la vista, la cifra de un contador, un aviso de región viva. */
+.dcc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 /* Links (componente "Frame 248" del kit) */
 .dcc-link {
@@ -1069,16 +1182,16 @@ body.dcc-root {
   font-size: 16px;
   line-height: 1.2;
 }
-.dcc-alert .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; }
+.dcc-alert > .dcc-icon { width: 24px; height: 24px; flex: 0 0 24px; }
 .dcc-alert .dcc-stack { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .dcc-alert .dcc-stack strong { font-weight: 700; }
 
 .dcc-alert--info    { background: var(--dcc-info-bg); }
-.dcc-alert--info    .dcc-icon { color: var(--dcc-info); }
+.dcc-alert--info > .dcc-icon { color: var(--dcc-info); }
 .dcc-alert--success { background: var(--dcc-success-bg); }
-.dcc-alert--success .dcc-icon { color: var(--dcc-success); }
+.dcc-alert--success > .dcc-icon { color: var(--dcc-success); }
 .dcc-alert--error   { background: var(--dcc-danger-bg); }
-.dcc-alert--error   .dcc-icon { color: var(--dcc-danger); }
+.dcc-alert--error > .dcc-icon { color: var(--dcc-danger); }
 
 .dcc-alert-stack { display: flex; flex-direction: column; gap: 36px; }
 
@@ -2220,6 +2333,15 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   border-radius: var(--dcc-radius-sm);
 }
 
+/* Un botón de ícono que abre un menú: el disparador le quita el centrado, el
+   color y la forma redonda del foco, y aquí se los devuelve. */
+.dcc-menu__trigger.dcc-icon-btn {
+  display: inline-grid;
+  gap: 0;
+  color: var(--dcc-icon-btn-color);
+}
+.dcc-menu__trigger.dcc-icon-btn:focus-visible { outline-offset: 0; border-radius: 50%; }
+
 .dcc-menu__list {
   position: absolute;
   z-index: 30;
@@ -2439,7 +2561,11 @@ textarea.dcc-input { height: auto; min-height: 96px; resize: vertical; }
   color: var(--dcc-fg);
   transition: background-color .15s ease;
 }
-.dcc-list__item:last-child { border-bottom: 0; }
+/* El último ítem no lleva línea. Los ítems pueden ir sueltos en la lista o
+   dentro de un <li> —que es lo correcto en una <ul>—; con `:last-child` a secas
+   cada ítem era el último de su <li> y la lista perdía todos los separadores. */
+.dcc-list > .dcc-list__item:last-child,
+.dcc-list > li:last-child > .dcc-list__item { border-bottom: 0; }
 a.dcc-list__item:hover,
 button.dcc-list__item:hover { background: var(--dcc-surface-muted); }
 a.dcc-list__item:focus-visible,
@@ -2459,8 +2585,11 @@ button.dcc-list__item:focus-visible { outline: 2px solid var(--dcc-focus); outli
 .dcc-list__icon svg { width: 20px; height: 20px; }
 
 .dcc-list__body { flex: 1; min-width: 0; }
-.dcc-list__title { font-size: 16px; font-weight: 700; line-height: 1.2; }
+/* En bloque: suelen ser <span> (dentro de un <a> no puede ir un <div>), y en
+   línea el título y la descripción quedaban uno al lado del otro. */
+.dcc-list__title { display: block; font-size: 16px; font-weight: 700; line-height: 1.2; }
 .dcc-list__desc {
+  display: block;
   font-size: 12px;
   line-height: 1.2;
   color: var(--dcc-fg-muted);

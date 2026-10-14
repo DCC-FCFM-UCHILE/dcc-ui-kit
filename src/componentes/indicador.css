@@ -1,0 +1,116 @@
+/* --------------------------------------------------------------------------
+   INDICADOR  (MUI Badge)
+   El contador o punto que se monta en la esquina de otro elemento: un ícono,
+   un botón, un avatar. No confundir con .dcc-badge, que en este kit es una
+   etiqueta suelta (estado, categoría) y no se superpone a nada.
+
+     .dcc-indicator             el envoltorio; se ajusta al tamaño de lo que envuelve
+     .dcc-indicator__badge      el contador o el punto
+
+   Ejes, como en MUI:
+     color     →  --error (por omisión) · --primary · --secondary · --success
+                  · --info · --warning
+     variante  →  contador (por omisión) · --dot
+     posición  →  arriba a la derecha (por omisión) · --top-left · --bottom-right
+                  · --bottom-left
+     ancla     →  rectangular (por omisión) · --circular, para avatares: el
+                  indicador se acerca al centro (14%) para quedar sobre el borde
+                  del círculo y no en el aire.
+
+   El color va por defecto en rojo y no en gris como en MUI: en el kit el
+   contador del avatar ya era rojo, y una notificación pendiente es el caso de
+   uso principal. Contraste del número: igual que el botón del mismo color.
+   -------------------------------------------------------------------------- */
+.dcc-indicator {
+  --dcc-indicator-main: var(--dcc-danger);
+  --dcc-indicator-on: var(--dcc-on-accent);
+  --dcc-indicator-offset: 0px;
+  --dcc-indicator-x: 50%;
+  --dcc-indicator-y: -50%;
+  --dcc-indicator-scale: 1;
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.dcc-indicator__badge {
+  position: absolute;
+  z-index: 1;
+  top: var(--dcc-indicator-offset);
+  right: var(--dcc-indicator-offset);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--dcc-indicator-main);
+  color: var(--dcc-indicator-on);
+  /* Anillo del color de la superficie, como el contador del avatar: separa el
+     indicador de lo que tapa, sea un ícono, un borde o una foto. */
+  box-shadow: 0 0 0 2px var(--dcc-surface);
+  font-family: var(--dcc-font-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(var(--dcc-indicator-x), var(--dcc-indicator-y)) scale(var(--dcc-indicator-scale));
+  transform-origin: 100% 0;
+  transition: transform .225s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Oculto: se encoge hasta desaparecer, como `invisible` en MUI. El script lo
+   pone cuando el valor es 0 (salvo data-mostrar-cero). */
+.dcc-indicator__badge.is-invisible { --dcc-indicator-scale: 0; }
+
+/* Punto: sin número, para "hay algo nuevo" sin decir cuánto. */
+.dcc-indicator--dot .dcc-indicator__badge {
+  min-width: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 4px;
+  font-size: 0;
+}
+
+/* Posición */
+.dcc-indicator--top-left .dcc-indicator__badge {
+  right: auto;
+  left: var(--dcc-indicator-offset);
+  --dcc-indicator-x: -50%;
+  transform-origin: 0 0;
+}
+.dcc-indicator--bottom-right .dcc-indicator__badge {
+  top: auto;
+  bottom: var(--dcc-indicator-offset);
+  --dcc-indicator-y: 50%;
+  transform-origin: 100% 100%;
+}
+.dcc-indicator--bottom-left .dcc-indicator__badge {
+  top: auto;
+  right: auto;
+  bottom: var(--dcc-indicator-offset);
+  left: var(--dcc-indicator-offset);
+  --dcc-indicator-x: -50%;
+  --dcc-indicator-y: 50%;
+  transform-origin: 0 100%;
+}
+
+/* Ancla circular */
+.dcc-indicator--circular { --dcc-indicator-offset: 14%; }
+
+/* Colores: los mismos rellenos que el botón de cada color. */
+.dcc-indicator--primary   { --dcc-indicator-main: var(--dcc-accent);         --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--secondary { --dcc-indicator-main: var(--dcc-fg-muted);       --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--success   { --dcc-indicator-main: var(--dcc-success-strong); --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--error     { --dcc-indicator-main: var(--dcc-danger);         --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--info      { --dcc-indicator-main: var(--dcc-info-strong);    --dcc-indicator-on: var(--dcc-on-accent); }
+.dcc-indicator--warning   { --dcc-indicator-main: var(--dcc-warning-strong); --dcc-indicator-on: var(--dcc-on-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dcc-indicator__badge { transition: none; }
+}

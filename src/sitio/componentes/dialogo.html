@@ -1,0 +1,207 @@
+<!--
+titulo: Diálogo
+grupo: Retroalimentación
+resumen: Una ventana sobre la página que pide una decisión o un dato antes de seguir. Se abre sobre un fondo oscuro, retiene el foco y se cierra con Escape.
+miniatura: .dcc-dialog--inline
+escala: .6
+ancho: 480px
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">El diálogo es un <code>&lt;dialog class="dcc-dialog"&gt;</code> nativo. Un botón con
+  <code>data-dcc-abrir="id"</code> lo abre como modal y cualquier elemento con <code>data-dcc-cerrar</code>
+  dentro lo cierra. El navegador se encarga de atrapar el foco, de dejar inerte el resto de la página y de
+  cerrarlo con Escape; el kit bloquea el scroll del fondo, anima la entrada y la salida, y al cerrar devuelve
+  el foco al botón que lo abrió. Este, además, se cierra con un clic en el fondo, porque lleva
+  <code>data-dcc-cierre-fondo</code>.</p>
+<div class="dcc-doc-demo">
+  <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="dialogo-basico">Ver requisitos</button>
+  <dialog class="dcc-dialog dcc-dialog--sm" id="dialogo-basico" aria-labelledby="dialogo-basico-titulo" aria-describedby="dialogo-basico-texto" data-dcc-cierre-fondo>
+    <h2 class="dcc-dialog__title" id="dialogo-basico-titulo">Requisitos de CC3001</h2>
+    <div class="dcc-dialog__content">
+      <p class="dcc-dialog__text" id="dialogo-basico-texto">Para inscribir Algoritmos y Estructuras de Datos necesitas
+        haber aprobado CC1002 Introducción a la Programación y MA1101 Introducción al Álgebra.</p>
+    </div>
+    <div class="dcc-dialog__actions">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-cerrar>Entendido</button>
+    </div>
+  </dialog>
+</div>
+
+<h2 class="dcc-doc-h2" id="anatomia">Anatomía</h2>
+<p class="dcc-doc-p">Tres partes, como en MUI: <code>__title</code> (DialogTitle), <code>__content</code>
+  (DialogContent, con <code>__text</code> para el párrafo) y <code>__actions</code> (DialogActions), con botones
+  del kit. El botón <code>__close</code> de la esquina es opcional y va antes del título. Con
+  <code>--inline</code> el mismo diseño se dibuja dentro de la página, sobre un <code>&lt;div&gt;</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-dialog dcc-dialog--inline dcc-dialog--sm">
+    <button class="dcc-icon-btn dcc-dialog__close" type="button" aria-label="Cerrar">
+      <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
+    </button>
+    <h2 class="dcc-dialog__title">¿Publicar la nota del control?</h2>
+    <div class="dcc-dialog__content">
+      <p class="dcc-dialog__text">Los 84 estudiantes de la sección 1 la verán en U-Cursos y recibirán un correo.</p>
+    </div>
+    <div class="dcc-dialog__actions">
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button">Cancelar</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button">Publicar</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="confirmacion">Confirmación destructiva</h2>
+<p class="dcc-doc-p">Para una acción que no se puede deshacer: <code>role="alertdialog"</code>, que el lector de
+  pantalla anuncia de inmediato, y el botón de la acción en color <code>--error</code>. El foco inicial va al
+  botón seguro con <code>autofocus</code>, para que un Enter apresurado no borre nada. El fondo no cierra este
+  diálogo: hay que elegir.</p>
+<div class="dcc-doc-demo">
+  <button class="dcc-btn dcc-btn--md dcc-btn--outlined dcc-btn--error" type="button" data-dcc-abrir="dialogo-eliminar">
+    <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trash"/></svg> Eliminar borrador
+  </button>
+  <dialog class="dcc-dialog dcc-dialog--sm" id="dialogo-eliminar" role="alertdialog" aria-labelledby="dialogo-eliminar-titulo" aria-describedby="dialogo-eliminar-texto">
+    <h2 class="dcc-dialog__title" id="dialogo-eliminar-titulo">¿Eliminar el borrador de memoria?</h2>
+    <div class="dcc-dialog__content">
+      <p class="dcc-dialog__text" id="dialogo-eliminar-texto">Se borrarán el documento «Detección de plagio en
+        código fuente» y sus 12 comentarios del profesor guía. Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="dcc-dialog__actions">
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button" data-dcc-cerrar="cancelar" autofocus>Cancelar</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained dcc-btn--error" type="button" data-dcc-cerrar="eliminar">Eliminar</button>
+    </div>
+  </dialog>
+</div>
+
+<h2 class="dcc-doc-h2" id="formulario">Formulario</h2>
+<p class="dcc-doc-p">Con un <code>&lt;form method="dialog"&gt;</code> dentro, enviar el formulario cierra el
+  diálogo —después de validar los campos— y el valor del botón queda en <code>dialog.returnValue</code>. El
+  botón de cancelar es <code>type="button"</code> con <code>data-dcc-cerrar</code>, para que no exija completar
+  nada.</p>
+<div class="dcc-doc-demo">
+  <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-abrir="dialogo-defensa">
+    <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar-days"/></svg> Agendar defensa
+  </button>
+  <dialog class="dcc-dialog dcc-dialog--fullscreen-mobile" id="dialogo-defensa" aria-labelledby="dialogo-defensa-titulo">
+    <form class="dcc-dialog__form" method="dialog">
+      <h2 class="dcc-dialog__title" id="dialogo-defensa-titulo">Agendar defensa de memoria</h2>
+      <div class="dcc-dialog__content">
+        <p class="dcc-dialog__text">La sala y la comisión se confirman por correo. Las defensas se realizan en
+          Beauchef 851, de lunes a viernes.</p>
+        <div class="dcc-dialog__fields">
+          <div class="dcc-field">
+            <label class="dcc-field__label" for="dialogo-defensa-titulo-memoria">Título de la memoria <span class="dcc-req">*</span></label>
+            <input class="dcc-input" id="dialogo-defensa-titulo-memoria" type="text" required>
+          </div>
+          <div class="dcc-field">
+            <label class="dcc-field__label" for="dialogo-defensa-guia">Correo del profesor guía <span class="dcc-req">*</span></label>
+            <input class="dcc-input" id="dialogo-defensa-guia" type="email" placeholder="nombre@dcc.uchile.cl" required>
+          </div>
+          <div class="dcc-field">
+            <label class="dcc-field__label" for="dialogo-defensa-fecha">Fecha preferida</label>
+            <input class="dcc-input" id="dialogo-defensa-fecha" type="date">
+          </div>
+        </div>
+      </div>
+      <div class="dcc-dialog__actions">
+        <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button" data-dcc-cerrar>Cancelar</button>
+        <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="submit" value="agendar">Agendar</button>
+      </div>
+    </form>
+  </dialog>
+</div>
+
+<h2 class="dcc-doc-h2" id="desplazable">Contenido largo</h2>
+<p class="dcc-doc-p">Si el contenido no cabe, se desplaza sólo <code>__content</code>: el título y las acciones
+  quedan a la vista. <code>__content--dividers</code> marca con dos líneas dónde corta. El contenido lleva
+  <code>tabindex="0"</code> para poder desplazarlo con el teclado.</p>
+<div class="dcc-doc-demo">
+  <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="dialogo-reglamento">Leer el reglamento</button>
+  <dialog class="dcc-dialog" id="dialogo-reglamento" aria-labelledby="dialogo-reglamento-titulo">
+    <button class="dcc-icon-btn dcc-dialog__close" type="button" aria-label="Cerrar" data-dcc-cerrar>
+      <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
+    </button>
+    <h2 class="dcc-dialog__title" id="dialogo-reglamento-titulo">Reglamento de memoria de título</h2>
+    <div class="dcc-dialog__content dcc-dialog__content--dividers" tabindex="0" role="region" aria-labelledby="dialogo-reglamento-titulo">
+      <p class="dcc-dialog__text">1. La memoria de título es un trabajo individual en que el estudiante aplica lo
+        aprendido en la carrera a un problema real de computación, bajo la guía de un académico del DCC.</p>
+      <p class="dcc-dialog__text">2. Para inscribirla se requiere haber aprobado todos los cursos obligatorios hasta
+        el octavo semestre y contar con la aceptación escrita del profesor guía.</p>
+      <p class="dcc-dialog__text">3. El tema se presenta en CC6908 Introducción al Trabajo de Título, donde se
+        evalúa la propuesta: objetivos, alcance, metodología y plan de trabajo.</p>
+      <p class="dcc-dialog__text">4. La memoria se desarrolla en CC6909 Trabajo de Título, durante un semestre. Con
+        acuerdo del profesor guía puede extenderse por un semestre adicional.</p>
+      <p class="dcc-dialog__text">5. El documento final se entrega en formato PDF en la Secretaría Docente, junto con
+        el código fuente y los datos necesarios para reproducir los resultados.</p>
+      <p class="dcc-dialog__text">6. La comisión evaluadora la integran el profesor guía y dos académicos, uno de los
+        cuales puede ser externo al departamento.</p>
+      <p class="dcc-dialog__text">7. La defensa es pública, dura cuarenta y cinco minutos y se realiza en Beauchef 851.
+        La comisión delibera en privado y comunica la nota el mismo día.</p>
+      <p class="dcc-dialog__text">8. Las situaciones no previstas en este reglamento las resuelve la Jefatura Docente
+        del departamento, previa consulta al profesor guía.</p>
+    </div>
+    <div class="dcc-dialog__actions">
+      <button class="dcc-btn dcc-btn--md dcc-btn--text" type="button" data-dcc-cerrar>Cerrar</button>
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-cerrar="acepto">Acepto</button>
+    </div>
+  </dialog>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p">El diálogo ocupa el ancho disponible hasta un máximo: <code>--sm</code> (444px),
+  <code>--md</code> (600px, por omisión) o <code>--lg</code> (900px). En pantallas angostas deja 32px por lado.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="dialogo-sm">Pequeño</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="dialogo-md">Mediano</button>
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="dialogo-lg">Grande</button>
+  </div>
+  <dialog class="dcc-dialog dcc-dialog--sm" id="dialogo-sm" aria-labelledby="dialogo-sm-titulo" data-dcc-cierre-fondo>
+    <h2 class="dcc-dialog__title" id="dialogo-sm-titulo">Pequeño</h2>
+    <div class="dcc-dialog__content"><p class="dcc-dialog__text">444px como máximo: confirmaciones y avisos de una frase.</p></div>
+    <div class="dcc-dialog__actions"><button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-cerrar>Cerrar</button></div>
+  </dialog>
+  <dialog class="dcc-dialog dcc-dialog--md" id="dialogo-md" aria-labelledby="dialogo-md-titulo" data-dcc-cierre-fondo>
+    <h2 class="dcc-dialog__title" id="dialogo-md-titulo">Mediano</h2>
+    <div class="dcc-dialog__content"><p class="dcc-dialog__text">600px como máximo, el tamaño por omisión: formularios cortos y textos de un par de párrafos.</p></div>
+    <div class="dcc-dialog__actions"><button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-cerrar>Cerrar</button></div>
+  </dialog>
+  <dialog class="dcc-dialog dcc-dialog--lg" id="dialogo-lg" aria-labelledby="dialogo-lg-titulo" data-dcc-cierre-fondo>
+    <h2 class="dcc-dialog__title" id="dialogo-lg-titulo">Grande</h2>
+    <div class="dcc-dialog__content"><p class="dcc-dialog__text">900px como máximo: tablas, vistas previas de documentos o formularios en dos columnas.</p></div>
+    <div class="dcc-dialog__actions"><button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-cerrar>Cerrar</button></div>
+  </dialog>
+</div>
+
+<h2 class="dcc-doc-h2" id="pantalla-completa">Pantalla completa</h2>
+<p class="dcc-doc-p"><code>--fullscreen-mobile</code> ocupa toda la pantalla bajo 600px de ancho y se ve como un
+  diálogo normal por encima; es lo que conviene a un formulario en el teléfono (el de
+  <a href="#formulario">Formulario</a> lo lleva). <code>--fullscreen</code> ocupa la pantalla siempre.</p>
+<div class="dcc-doc-demo">
+  <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button" data-dcc-abrir="dialogo-completo">Ver horario completo</button>
+  <dialog class="dcc-dialog dcc-dialog--fullscreen" id="dialogo-completo" aria-labelledby="dialogo-completo-titulo">
+    <button class="dcc-icon-btn dcc-dialog__close" type="button" aria-label="Cerrar" data-dcc-cerrar>
+      <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
+    </button>
+    <h2 class="dcc-dialog__title" id="dialogo-completo-titulo">Horario de primavera 2026</h2>
+    <div class="dcc-dialog__content">
+      <p class="dcc-dialog__text">CC3001 Algoritmos y Estructuras de Datos — lunes y miércoles, 10:15, sala B01.</p>
+      <p class="dcc-dialog__text">CC3002 Metodologías de Diseño y Programación — martes y jueves, 12:00, sala B02.</p>
+      <p class="dcc-dialog__text">CC4102 Diseño y Análisis de Algoritmos — viernes, 14:30, auditorio Philippi.</p>
+    </div>
+    <div class="dcc-dialog__actions">
+      <button class="dcc-btn dcc-btn--md dcc-btn--contained" type="button" data-dcc-cerrar>Listo</button>
+    </div>
+  </dialog>
+</div>
+
+<h2 class="dcc-doc-h2" id="api">Desde JavaScript</h2>
+<p class="dcc-doc-p">Para abrir o cerrar desde código, <code>DCCUI.dialogo.abrir(el)</code> y
+  <code>DCCUI.dialogo.cerrar(el, valor)</code>, donde <code>el</code> es el <code>&lt;dialog&gt;</code> o su id.
+  Para saber qué se eligió, escucha el evento nativo <code>close</code> del diálogo y lee
+  <code>returnValue</code>: en la confirmación de arriba vale <code>"eliminar"</code> o <code>"cancelar"</code>.</p>
+<table class="dcc-doc-table">
+  <thead><tr><th>Atributo</th><th>Dónde</th><th>Qué hace</th></tr></thead>
+  <tbody>
+    <tr><td><code>data-dcc-abrir="id"</code></td><td>disparador</td><td>Abre el diálogo con ese id.</td></tr>
+    <tr><td><code>data-dcc-cerrar</code></td><td>dentro del diálogo</td><td>Lo cierra; su valor queda en <code>returnValue</code>.</td></tr>
+    <tr><td><code>data-dcc-cierre-fondo</code></td><td>el diálogo</td><td>Un clic en el fondo también lo cierra.</td></tr>
+  </tbody>
+</table>

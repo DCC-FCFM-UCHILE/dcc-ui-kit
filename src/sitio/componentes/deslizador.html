@@ -1,0 +1,191 @@
+<!--
+titulo: Deslizador
+grupo: Entradas
+resumen: Elige un valor, o un rango entre dos, arrastrando una manilla sobre una pista.
+miniatura: #dz-mini
+escala: .8
+ancho: 360px
+-->
+<h2 class="dcc-doc-h2" id="continuo">Continuo</h2>
+<p class="dcc-doc-p">Para un solo valor el deslizador es un <code>&lt;input type="range"&gt;</code> nativo con la
+  piel del kit: <code>.dcc-slider</code> por fuera y <code>.dcc-slider__input</code> en el campo. El teclado, el
+  lector de pantalla y el envío del formulario los pone el navegador. El gancho <code>.js-slider</code> pinta la
+  parte recorrida de la pista; conviene escribir además el porcentaje inicial en
+  <code>--dcc-slider-hasta</code>, para que se vea bien antes de que cargue el JS.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-slider-field" id="dz-mini">
+    <label class="dcc-slider-field__label" for="dz-avance">Avance de la memoria</label>
+    <div class="dcc-slider js-slider" data-sufijo="%" style="--dcc-slider-hasta: 30%">
+      <input class="dcc-slider__input" id="dz-avance" type="range" min="0" max="100" value="30">
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p">El mediano es el de omisión; <code>.dcc-slider--sm</code> achica la manilla a 12px y el riel
+  a 2px.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-slider-field">
+    <label class="dcc-slider-field__label" for="dz-sm">Volumen de la sala Auditorio DCC</label>
+    <div class="dcc-slider dcc-slider--sm js-slider" style="--dcc-slider-hasta: 50%">
+      <input class="dcc-slider__input" id="dz-sm" type="range" min="0" max="100" value="50">
+    </div>
+    <div class="dcc-slider js-slider" style="--dcc-slider-hasta: 50%">
+      <input class="dcc-slider__input" type="range" min="0" max="100" value="50" aria-label="Volumen, tamaño mediano">
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="pasos-y-marcas">Pasos y marcas</h2>
+<p class="dcc-doc-p">El paso es el <code>step</code> del input. Con <code>data-marcas="pasos"</code> el JS dibuja un
+  punto en cada paso. Las marcas con texto se escriben a mano: un <code>.dcc-slider__mark</code> con
+  <code>data-valor</code> por cada una, dentro de <code>.dcc-slider__marks</code>. Las que quedan dentro de lo
+  recorrido cambian de tono.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-slider-field">
+    <label class="dcc-slider-field__label" for="dz-pasos">Integrantes por grupo de proyecto</label>
+    <div class="dcc-slider js-slider" data-marcas="pasos" style="--dcc-slider-hasta: 40%">
+      <input class="dcc-slider__input" id="dz-pasos" type="range" min="1" max="6" step="1" value="3">
+    </div>
+  </div>
+  <div class="dcc-slider-field" style="margin-top:32px">
+    <label class="dcc-slider-field__label" for="dz-nota">Nota de aprobación</label>
+    <div class="dcc-slider js-slider" style="--dcc-slider-hasta: 50%">
+      <input class="dcc-slider__input" id="dz-nota" type="range" min="1" max="7" step="0.5" value="4">
+      <span class="dcc-slider__marks" aria-hidden="true">
+        <span class="dcc-slider__mark" data-valor="1">1,0</span>
+        <span class="dcc-slider__mark" data-valor="4">4,0</span>
+        <span class="dcc-slider__mark" data-valor="5.5">5,5</span>
+        <span class="dcc-slider__mark" data-valor="7">7,0</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="valor-visible">Valor visible</h2>
+<p class="dcc-doc-p">Un <code>.dcc-slider__value</code> después del input muestra el número sobre la manilla. Por
+  omisión aparece al pasar el mouse, al enfocar o al arrastrar; con <code>.dcc-slider--value-on</code> queda siempre
+  a la vista. <code>data-sufijo</code> agrega la unidad al número y al <code>aria-valuetext</code>, para que el
+  lector de pantalla diga «22 °C» y no «22».</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-slider-field">
+    <label class="dcc-slider-field__label" for="dz-temp">Temperatura de la sala de servidores</label>
+    <div class="dcc-slider js-slider" data-sufijo=" °C" data-marcas="pasos" style="--dcc-slider-hasta: 50%">
+      <input class="dcc-slider__input" id="dz-temp" type="range" min="18" max="26" step="1" value="22">
+      <span class="dcc-slider__value" aria-hidden="true">22 °C</span>
+    </div>
+  </div>
+  <div class="dcc-slider-field" style="margin-top:24px">
+    <label class="dcc-slider-field__label" for="dz-cupos">Cupos del curso CC3001</label>
+    <div class="dcc-slider dcc-slider--value-on js-slider" style="--dcc-slider-hasta: 50%">
+      <input class="dcc-slider__input" id="dz-cupos" type="range" min="20" max="120" step="10" value="70">
+      <span class="dcc-slider__value" aria-hidden="true">70</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="rango">Rango</h2>
+<p class="dcc-doc-p">Para elegir un intervalo van dos manillas <code>.dcc-slider__thumb</code> con
+  <code>role="slider"</code>, según el patrón de WAI-ARIA para deslizadores con varias manillas. Los límites van en
+  <code>data-min</code>, <code>data-max</code> y <code>data-step</code> de la pieza, y el valor inicial en el
+  <code>aria-valuenow</code> de cada manilla. Una manilla no pasa a la otra: el mínimo de la de arriba es el valor
+  de la de abajo. Si hay <code>&lt;input type="hidden"&gt;</code> dentro, el JS les escribe los valores, en orden,
+  para que viajen con el formulario.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-slider-field">
+    <span class="dcc-slider-field__label">Créditos del semestre</span>
+    <div class="dcc-slider js-slider" data-min="0" data-max="60" data-step="3" data-sufijo=" UD" style="--dcc-slider-desde: 30%; --dcc-slider-hasta: 70%">
+      <span class="dcc-slider__thumb" role="slider" tabindex="0" aria-label="Créditos mínimos" aria-valuemin="0" aria-valuemax="42" aria-valuenow="18" style="left: 30%"><span class="dcc-slider__value" aria-hidden="true">18 UD</span></span>
+      <span class="dcc-slider__thumb" role="slider" tabindex="0" aria-label="Créditos máximos" aria-valuemin="18" aria-valuemax="60" aria-valuenow="42" style="left: 70%"><span class="dcc-slider__value" aria-hidden="true">42 UD</span></span>
+      <input type="hidden" name="creditos-min" value="18">
+      <input type="hidden" name="creditos-max" value="42">
+    </div>
+  </div>
+  <div class="dcc-slider-field" style="margin-top:24px">
+    <span class="dcc-slider-field__label">Año de ingreso</span>
+    <div class="dcc-slider js-slider" data-min="2015" data-max="2026" data-step="1" style="--dcc-slider-desde: 27.27%; --dcc-slider-hasta: 81.82%">
+      <span class="dcc-slider__thumb" role="slider" tabindex="0" aria-label="Desde el año" aria-valuemin="2015" aria-valuemax="2024" aria-valuenow="2018" style="left: 27.27%"><span class="dcc-slider__value" aria-hidden="true">2018</span></span>
+      <span class="dcc-slider__thumb" role="slider" tabindex="0" aria-label="Hasta el año" aria-valuemin="2018" aria-valuemax="2026" aria-valuenow="2024" style="left: 81.82%"><span class="dcc-slider__value" aria-hidden="true">2024</span></span>
+      <span class="dcc-slider__marks" aria-hidden="true">
+        <span class="dcc-slider__mark" data-valor="2015">2015</span>
+        <span class="dcc-slider__mark" data-valor="2020">2020</span>
+        <span class="dcc-slider__mark" data-valor="2026">2026</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores</h2>
+<p class="dcc-doc-p">Los mismos del botón y de los estados: <code>--primary</code> (por omisión),
+  <code>--secondary</code>, <code>--success</code>, <code>--error</code>, <code>--info</code> y
+  <code>--warning</code>. Todo el deslizador sale de <code>currentColor</code>, así que el color cambia una sola
+  variable.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-slider-field">
+    <div class="dcc-slider dcc-slider--primary js-slider" style="--dcc-slider-hasta: 60%">
+      <input class="dcc-slider__input" type="range" value="60" aria-label="Primario">
+    </div>
+    <div class="dcc-slider dcc-slider--secondary js-slider" style="--dcc-slider-hasta: 50%">
+      <input class="dcc-slider__input" type="range" value="50" aria-label="Secundario">
+    </div>
+    <div class="dcc-slider dcc-slider--success js-slider" style="--dcc-slider-hasta: 40%">
+      <input class="dcc-slider__input" type="range" value="40" aria-label="Éxito">
+    </div>
+    <div class="dcc-slider dcc-slider--error js-slider" style="--dcc-slider-hasta: 30%">
+      <input class="dcc-slider__input" type="range" value="30" aria-label="Error">
+    </div>
+    <div class="dcc-slider dcc-slider--info js-slider" style="--dcc-slider-hasta: 70%">
+      <input class="dcc-slider__input" type="range" value="70" aria-label="Información">
+    </div>
+    <div class="dcc-slider dcc-slider--warning js-slider" style="--dcc-slider-hasta: 80%">
+      <input class="dcc-slider__input" type="range" value="80" aria-label="Advertencia">
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="vertical">Vertical</h2>
+<p class="dcc-doc-p"><code>.dcc-slider--vertical</code> lo pone de pie, con el mínimo abajo. El alto se ajusta con
+  <code>--dcc-slider-alto</code> (200px por omisión). El input nativo declara además
+  <code>aria-orientation="vertical"</code>, y las manillas de rango también.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row" style="gap:48px;padding-left:56px">
+    <div class="dcc-slider dcc-slider--vertical js-slider" data-sufijo=" °C" style="--dcc-slider-hasta: 50%">
+      <input class="dcc-slider__input" type="range" min="18" max="26" value="22" aria-orientation="vertical" aria-label="Temperatura del laboratorio">
+      <span class="dcc-slider__value" aria-hidden="true">22 °C</span>
+      <span class="dcc-slider__marks" aria-hidden="true">
+        <span class="dcc-slider__mark" data-valor="18">18 °C</span>
+        <span class="dcc-slider__mark" data-valor="22">22 °C</span>
+        <span class="dcc-slider__mark" data-valor="26">26 °C</span>
+      </span>
+    </div>
+    <div class="dcc-slider dcc-slider--vertical js-slider" data-min="0" data-max="100" data-step="5" data-sufijo="%" style="--dcc-slider-desde: 20%; --dcc-slider-hasta: 60%">
+      <span class="dcc-slider__thumb" role="slider" tabindex="0" aria-orientation="vertical" aria-label="Asistencia mínima" aria-valuemin="0" aria-valuemax="60" aria-valuenow="20" style="bottom: 20%"><span class="dcc-slider__value" aria-hidden="true">20%</span></span>
+      <span class="dcc-slider__thumb" role="slider" tabindex="0" aria-orientation="vertical" aria-label="Asistencia máxima" aria-valuemin="20" aria-valuemax="100" aria-valuenow="60" style="bottom: 60%"><span class="dcc-slider__value" aria-hidden="true">60%</span></span>
+    </div>
+    <div class="dcc-slider dcc-slider--vertical dcc-slider--sm dcc-slider--secondary js-slider" style="--dcc-slider-hasta: 70%">
+      <input class="dcc-slider__input" type="range" value="70" aria-orientation="vertical" aria-label="Brillo de la pantalla">
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="deshabilitado">Deshabilitado</h2>
+<p class="dcc-doc-p">El nativo con <code>disabled</code> en el input; el de rango con
+  <code>aria-disabled="true"</code> en la pieza, que además saca las manillas del orden de tabulación.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-slider-field">
+    <label class="dcc-slider-field__label" for="dz-dis">Avance (cerrado)</label>
+    <div class="dcc-slider js-slider" style="--dcc-slider-hasta: 45%">
+      <input class="dcc-slider__input" id="dz-dis" type="range" value="45" disabled>
+    </div>
+    <span class="dcc-slider-field__label" style="margin-top:16px">Créditos (cerrado)</span>
+    <div class="dcc-slider js-slider" aria-disabled="true" data-min="0" data-max="60" data-step="3" style="--dcc-slider-desde: 20%; --dcc-slider-hasta: 80%">
+      <span class="dcc-slider__thumb" role="slider" tabindex="-1" aria-label="Créditos mínimos" aria-valuemin="0" aria-valuemax="48" aria-valuenow="12" style="left: 20%"></span>
+      <span class="dcc-slider__thumb" role="slider" tabindex="-1" aria-label="Créditos máximos" aria-valuemin="12" aria-valuemax="60" aria-valuenow="48" style="left: 80%"></span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="teclado">Teclado</h2>
+<p class="dcc-doc-p">Las flechas mueven un paso; RePág y AvPág, un décimo del recorrido; Inicio y Fin llevan a los
+  extremos (en el rango, a los que permite la otra manilla). En el nativo los pone el navegador y en el rango el
+  JS. Las dos formas emiten <code>input</code> mientras se mueven y <code>change</code> al soltar.</p>

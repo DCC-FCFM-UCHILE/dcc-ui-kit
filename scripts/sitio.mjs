@@ -19,12 +19,12 @@
  *
  * Lo llama scripts/build.mjs, que escribe o verifica las salidas junto con dist/.
  */
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { JSDOM } from "jsdom";
 
 const GRUPOS = [
-  "Fundamentos", "Entradas", "Visualización de datos", "Retroalimentación",
+  "Fundamentos", "Diseño", "Entradas", "Visualización de datos", "Retroalimentación",
   "Superficies", "Navegación",
 ];
 
@@ -109,10 +109,20 @@ export function construirSitio({ raiz, version }) {
       ps.map((p) => `        <li><a href="${p.slug}.html"${p.slug === actual ? ' aria-current="page"' : ""}>${p.meta.titulo}</a></li>`).join("\n") +
       "\n      </ul>").join("\n");
 
+  // Cada módulo de src/componentes/ se carga en todas las páginas, igual que
+  // styles.css y behaviors.js: el sitio usa las fuentes, no dist/.
+  const dirModulos = join(raiz, "src", "componentes");
+  const modulos = (ext) => existsSync(dirModulos)
+    ? readdirSync(dirModulos).filter((f) => f.endsWith(ext)).sort() : [];
+  const estilos = modulos(".css").map((f) => `<link rel="stylesheet" href="../src/componentes/${f}">`).join("\n");
+  const scripts = modulos(".js").map((f) => `<script src="../src/componentes/${f}" defer></script>`).join("\n");
+
   const armar = ({ actual, titulo, descripcion, contenido, indice }) => plantilla
     .replaceAll("{{titulo}}", titulo)
     .replaceAll("{{descripcion}}", escapar(descripcion))
     .replaceAll("{{version}}", version)
+    .replace("{{estilos}}", estilos)
+    .replace("{{scripts}}", scripts)
     .replace("{{iconos}}", iconos)
     .replace("{{navegacion}}", navegacion(actual))
     .replace("{{indice}}", indice)

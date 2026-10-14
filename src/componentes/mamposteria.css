@@ -1,0 +1,102 @@
+/* ==========================================================================
+   MASONRY  (MUI Lab Masonry)
+   Columnas de igual ancho donde cada elemento conserva su alto y se acomoda
+   bajo el anterior de su columna, sin las filas parejas de una grilla. Sirve
+   para tarjetas de largo distinto: avisos, publicaciones, fotos.
+
+   La base son columnas de CSS (`column-count`), que funcionan en todos los
+   navegadores. Su orden es el de un diario: los elementos bajan por la
+   primera columna y siguen en la segunda. Para el lector de pantalla y el
+   teclado el orden es siempre el del HTML.
+
+   Mejora progresiva: donde el navegador ya trae masonry nativo —`display:
+   grid-lanes`, el nombre que acordó el CSSWG, o la sintaxis anterior
+   `grid-template-rows: masonry`— se usa ese. Ahí el orden pasa a ser por
+   filas, como el `sequential` de MUI: cada elemento va a la columna más corta.
+
+   Columnas y espaciado van en variables, con clases para los valores de MUI:
+   4 columnas y 1 unidad (8px) por defecto.
+   ========================================================================== */
+.dcc-masonry {
+  --dcc-masonry-cols: 4;
+  --dcc-masonry-gap: 8px;
+  column-count: var(--dcc-masonry-cols);
+  column-gap: var(--dcc-masonry-gap);
+  /* El último elemento de cada columna también deja su margen abajo; esto lo
+     descuenta para que la pila no termine con un hueco extra. */
+  margin-block-end: calc(-1 * var(--dcc-masonry-gap));
+}
+/* Cualquier hijo es un elemento: tarjeta, imagen, figura. `break-inside`
+   evita que una tarjeta se parta entre dos columnas. */
+.dcc-masonry > * {
+  break-inside: avoid;
+  margin: 0 0 var(--dcc-masonry-gap);
+}
+
+@supports (grid-template-rows: masonry) {
+  .dcc-masonry {
+    display: grid;
+    grid-template-columns: repeat(var(--dcc-masonry-cols), minmax(0, 1fr));
+    grid-template-rows: masonry;
+    gap: var(--dcc-masonry-gap);
+    margin-block-end: 0;
+  }
+  .dcc-masonry > * { margin: 0; }
+}
+@supports (display: grid-lanes) {
+  .dcc-masonry {
+    display: grid-lanes;
+    grid-template-columns: repeat(var(--dcc-masonry-cols), minmax(0, 1fr));
+    gap: var(--dcc-masonry-gap);
+    margin-block-end: 0;
+  }
+  .dcc-masonry > * { margin: 0; }
+}
+
+/* Columnas (columns) y espaciado (spacing), de móvil hacia arriba con los
+   breakpoints de MUI: `.dcc-masonry--cols-2 .dcc-masonry--cols-md-3`. */
+.dcc-masonry--cols-1 { --dcc-masonry-cols: 1; }
+.dcc-masonry--cols-2 { --dcc-masonry-cols: 2; }
+.dcc-masonry--cols-3 { --dcc-masonry-cols: 3; }
+.dcc-masonry--cols-4 { --dcc-masonry-cols: 4; }
+.dcc-masonry--cols-5 { --dcc-masonry-cols: 5; }
+.dcc-masonry--cols-6 { --dcc-masonry-cols: 6; }
+.dcc-masonry--gap-0 { --dcc-masonry-gap: 0px; }
+.dcc-masonry--gap-1 { --dcc-masonry-gap: 8px; }
+.dcc-masonry--gap-2 { --dcc-masonry-gap: 16px; }
+.dcc-masonry--gap-3 { --dcc-masonry-gap: 24px; }
+.dcc-masonry--gap-4 { --dcc-masonry-gap: 32px; }
+.dcc-masonry--gap-5 { --dcc-masonry-gap: 40px; }
+.dcc-masonry--gap-6 { --dcc-masonry-gap: 48px; }
+@media (min-width: 600px) {
+  .dcc-masonry--cols-sm-1 { --dcc-masonry-cols: 1; }
+  .dcc-masonry--cols-sm-2 { --dcc-masonry-cols: 2; }
+  .dcc-masonry--cols-sm-3 { --dcc-masonry-cols: 3; }
+  .dcc-masonry--cols-sm-4 { --dcc-masonry-cols: 4; }
+  .dcc-masonry--cols-sm-5 { --dcc-masonry-cols: 5; }
+  .dcc-masonry--cols-sm-6 { --dcc-masonry-cols: 6; }
+}
+@media (min-width: 900px) {
+  .dcc-masonry--cols-md-1 { --dcc-masonry-cols: 1; }
+  .dcc-masonry--cols-md-2 { --dcc-masonry-cols: 2; }
+  .dcc-masonry--cols-md-3 { --dcc-masonry-cols: 3; }
+  .dcc-masonry--cols-md-4 { --dcc-masonry-cols: 4; }
+  .dcc-masonry--cols-md-5 { --dcc-masonry-cols: 5; }
+  .dcc-masonry--cols-md-6 { --dcc-masonry-cols: 6; }
+}
+@media (min-width: 1200px) {
+  .dcc-masonry--cols-lg-1 { --dcc-masonry-cols: 1; }
+  .dcc-masonry--cols-lg-2 { --dcc-masonry-cols: 2; }
+  .dcc-masonry--cols-lg-3 { --dcc-masonry-cols: 3; }
+  .dcc-masonry--cols-lg-4 { --dcc-masonry-cols: 4; }
+  .dcc-masonry--cols-lg-5 { --dcc-masonry-cols: 5; }
+  .dcc-masonry--cols-lg-6 { --dcc-masonry-cols: 6; }
+}
+@media (min-width: 1536px) {
+  .dcc-masonry--cols-xl-1 { --dcc-masonry-cols: 1; }
+  .dcc-masonry--cols-xl-2 { --dcc-masonry-cols: 2; }
+  .dcc-masonry--cols-xl-3 { --dcc-masonry-cols: 3; }
+  .dcc-masonry--cols-xl-4 { --dcc-masonry-cols: 4; }
+  .dcc-masonry--cols-xl-5 { --dcc-masonry-cols: 5; }
+  .dcc-masonry--cols-xl-6 { --dcc-masonry-cols: 6; }
+}

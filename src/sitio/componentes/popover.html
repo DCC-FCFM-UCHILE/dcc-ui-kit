@@ -1,0 +1,118 @@
+<!--
+titulo: Popover
+grupo: Visualización de datos
+resumen: Un panel flotante anclado a un botón, con contenido libre: una explicación, un filtro, un formulario corto.
+miniatura: .dcc-popover--static
+escala: .8
+-->
+<h2 class="dcc-doc-h2" id="anatomia">Anatomía</h2>
+<p class="dcc-doc-p">Una superficie elevada, con el mismo borde y sombra del menú desplegable. Puede llevar título
+  (<code>.dcc-popover__title</code>), texto (<code>.dcc-popover__text</code>), un botón de cerrar en la esquina
+  (<code>.dcc-popover__close</code>) y acciones al pie (<code>.dcc-popover__actions</code>). Aquí está dibujado
+  fijo, con <code>.dcc-popover--static</code>.</p>
+<div class="dcc-doc-demo" data-codigo="no">
+  <div class="dcc-popover dcc-popover--static" role="dialog" aria-label="Ejemplo de popover">
+    <button class="dcc-popover__close" type="button" aria-label="Cerrar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <p class="dcc-popover__title">Memoria de título</p>
+    <p class="dcc-popover__text">La inscripción se hace en U-Campus antes del inicio del semestre, con la carta del
+      profesor guía firmada.</p>
+    <div class="dcc-popover__actions">
+      <button class="dcc-btn dcc-btn--sm dcc-btn--text" type="button">Más tarde</button>
+      <button class="dcc-btn dcc-btn--sm dcc-btn--contained" type="button">Ver requisitos</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">El botón lleva la clase <code>.js-popover</code>, <code>aria-expanded</code> y
+  <code>aria-controls</code> con el id del panel; el panel va justo después, con <code>hidden</code>. Se cierra
+  con un clic fuera, con <kbd>Escape</kbd> o volviendo a pulsar el botón.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--contained js-popover" type="button" aria-expanded="false" aria-controls="pop-horario">Horario de atención</button>
+    <div class="dcc-popover" id="pop-horario" hidden>
+      <p class="dcc-popover__text">Secretaría docente: lunes a viernes, de 9:00 a 13:00, en el tercer piso de
+        Beauchef 851.</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="formulario">Con un formulario</h2>
+<p class="dcc-doc-p">Si el panel tiene controles, va con <code>role="dialog"</code> y un nombre
+  (<code>aria-labelledby</code> al título). Al abrirse, el foco pasa al primer control —o al que lleve
+  <code>data-dcc-autofocus</code>—; al cerrarse con <kbd>Escape</kbd> o con un <code>.js-popover-close</code>,
+  vuelve al botón. Si el foco sale del panel con <kbd>Tab</kbd>, el panel se cierra.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--md dcc-btn--outlined js-popover" type="button" aria-expanded="false" aria-controls="pop-filtro" aria-haspopup="dialog">
+      <svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-filter"/></svg> Filtrar cursos
+    </button>
+    <div class="dcc-popover" id="pop-filtro" role="dialog" aria-labelledby="pop-filtro-titulo" hidden>
+      <button class="dcc-popover__close js-popover-close" type="button" aria-label="Cerrar"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></button>
+      <p class="dcc-popover__title" id="pop-filtro-titulo">Filtrar cursos</p>
+      <div class="dcc-popover__body">
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="pop-filtro-codigo">Código o nombre</label>
+          <input class="dcc-input" id="pop-filtro-codigo" type="text" placeholder="CC3001" data-dcc-autofocus>
+        </div>
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="pop-filtro-semestre">Semestre</label>
+          <input class="dcc-input" id="pop-filtro-semestre" type="text" placeholder="2026-1">
+        </div>
+      </div>
+      <div class="dcc-popover__actions">
+        <button class="dcc-btn dcc-btn--sm dcc-btn--text js-popover-close" type="button">Cancelar</button>
+        <button class="dcc-btn dcc-btn--sm dcc-btn--contained js-popover-close" type="button">Aplicar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="posiciones">Posiciones y flecha</h2>
+<p class="dcc-doc-p"><code>data-dcc-placement</code> en el botón, igual que en el tooltip: <code>top</code>,
+  <code>bottom</code>, <code>left</code> o <code>right</code>, con <code>-start</code> o <code>-end</code>. Por
+  omisión es <code>bottom-start</code>, el <code>anchorOrigin</code> de MUI. Si no cabe, se da vuelta. La flecha es
+  opcional: <code>.dcc-popover--arrow</code> en el panel.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-popover" type="button" aria-expanded="false" aria-controls="pop-arriba" data-dcc-placement="top">Arriba</button>
+    <div class="dcc-popover dcc-popover--arrow" id="pop-arriba" hidden>
+      <p class="dcc-popover__text">Defensa: jueves 12 de junio, 15:00, auditorio del DCC.</p>
+    </div>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-popover" type="button" aria-expanded="false" aria-controls="pop-abajo" data-dcc-placement="bottom">Abajo</button>
+    <div class="dcc-popover dcc-popover--arrow" id="pop-abajo" hidden>
+      <p class="dcc-popover__text">Defensa: jueves 12 de junio, 15:00, auditorio del DCC.</p>
+    </div>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-popover" type="button" aria-expanded="false" aria-controls="pop-izquierda" data-dcc-placement="left">Izquierda</button>
+    <div class="dcc-popover dcc-popover--arrow" id="pop-izquierda" hidden>
+      <p class="dcc-popover__text">Defensa: jueves 12 de junio.</p>
+    </div>
+    <button class="dcc-btn dcc-btn--sm dcc-btn--outlined js-popover" type="button" aria-expanded="false" aria-controls="pop-derecha" data-dcc-placement="right">Derecha</button>
+    <div class="dcc-popover dcc-popover--arrow" id="pop-derecha" hidden>
+      <p class="dcc-popover__text">Defensa: jueves 12 de junio.</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tooltip-o-popover">¿Tooltip o popover?</h2>
+<p class="dcc-doc-p">El <a href="tooltip.html">tooltip</a> aparece solo, con el cursor o el foco, y lleva únicamente
+  texto: no se puede entrar en él. El popover se abre con un clic, se queda abierto y puede tener enlaces, campos y
+  botones. Si el usuario tiene que hacer algo con el contenido, es un popover.</p>
+
+<h2 class="dcc-doc-h2" id="api">API</h2>
+<table class="dcc-doc-table">
+  <thead><tr><th>Atributo o función</th><th>Qué hace</th></tr></thead>
+  <tbody>
+    <tr><td><code>.js-popover</code> + <code>aria-controls</code></td><td>El botón que abre el panel con ese id.</td></tr>
+    <tr><td><code>data-dcc-placement</code></td><td>Lado y alineación; <code>bottom-start</code> por omisión.</td></tr>
+    <tr><td><code>.js-popover-close</code></td><td>Cualquier elemento del panel que lo cierra y devuelve el foco.</td></tr>
+    <tr><td><code>data-dcc-autofocus</code></td><td>El control que recibe el foco al abrir.</td></tr>
+    <tr><td><code>DCCUI.popover.abrir(boton)</code></td><td>Abre el panel de ese botón.</td></tr>
+    <tr><td><code>DCCUI.popover.cerrar()</code></td><td>Cierra el que esté abierto y devuelve el foco.</td></tr>
+  </tbody>
+</table>
+<p class="dcc-doc-p">El script usa el atributo nativo <code>popover</code> cuando el navegador lo tiene, para que el
+  panel suba a la capa superior y ningún <code>overflow</code> lo recorte; si no, queda en
+  <code>position: fixed</code>. Hay un solo popover abierto a la vez. No incluye, de MUI: anclar a una coordenada en
+  vez de a un elemento (<code>anchorPosition</code>), el fondo que bloquea la página (es un panel no modal: para eso
+  está el diálogo) ni popovers anidados.</p>

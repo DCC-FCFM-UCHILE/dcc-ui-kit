@@ -1,0 +1,355 @@
+/* ==========================================================================
+   GRILLA  (MUI Grid v2)
+   Doce columnas que se reparten el ancho del contenedor, con tamaños por
+   breakpoint, desplazamientos y anidamiento.
+
+   Breakpoints: los de MUI, de móvil hacia arriba (min-width): xs desde 0,
+   sm 600px, md 900px, lg 1200px y xl 1536px. No coinciden con los dos cortes
+   de las barras del kit (1024 y 768, "max-width"): esos ajustan piezas de marca
+   ya diseñadas; éstos dejan que quien arma la página elija dónde cambia cada
+   columna, con los mismos nombres que en MUI.
+
+   Es flexbox y no CSS grid, igual que Grid v2 de MUI. Con `grid-template-columns`
+   de doce pistas fijas no hay forma de pedir "lo que mida el contenido"
+   (`.dcc-col-auto`) ni "lo que sobre" (`.dcc-col-grow`); con flex sí, y el
+   ancho de cada span se calcula para que las cuentas cierren igual que en una
+   grilla de doce pistas:
+     ancho  = (100% + gap) × span / columnas − gap
+     margen = (100% + gap) × offset / columnas
+   Con doce columnas, dos `.dcc-col-6` y un gap de 16px miden exactamente la
+   mitad menos 8px cada una.
+
+   Anidar: la grilla interior va DENTRO de un ítem, no en el ítem mismo
+   (`<div class="dcc-col-8"><div class="dcc-grid">…`). El ancho de un ítem se
+   calcula con el gap de su grilla madre, y si el ítem fuera también grilla
+   leería el suyo. La interior hereda el espaciado de la exterior —como en
+   MUI— salvo que traiga su propia clase de gap.
+   ========================================================================== */
+
+/* Espaciado por defecto de todas las grillas: 2 unidades de 8px, como el gap
+   de las filas de demos del sitio. Se puede cambiar para toda la aplicación
+   redefiniéndolo en :root. MUI parte de 0, pero una grilla sin aire casi nunca
+   es lo que se quiere. */
+:root {
+  --dcc-grid-gap: 16px;
+}
+
+.dcc-grid {
+  --dcc-grid-columns: 12;
+  --dcc-grid-row-gap: var(--dcc-grid-gap);
+  --dcc-grid-column-gap: var(--dcc-grid-gap);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dcc-grid-row-gap) var(--dcc-grid-column-gap);
+  min-width: 0;
+}
+.dcc-grid--nowrap { flex-wrap: nowrap; }
+
+/* Alineación de la fila (justifyContent / alignItems de MUI). */
+.dcc-grid--justify-center  { justify-content: center; }
+.dcc-grid--justify-end     { justify-content: flex-end; }
+.dcc-grid--justify-between { justify-content: space-between; }
+.dcc-grid--align-start     { align-items: flex-start; }
+.dcc-grid--align-center    { align-items: center; }
+.dcc-grid--align-end       { align-items: flex-end; }
+
+/* Cada hijo directo es un ítem. Sin clase de tamaño ocupa la fila entera,
+   que es lo que hace MUI con un Grid sin `size`. Las variables se declaran acá
+   —y no sólo en las clases— para que un ítem anidado no herede el span ni el
+   offset del ítem que lo contiene. */
+.dcc-grid > * {
+  --dcc-col: var(--dcc-grid-columns);
+  --dcc-offset: 0;
+  --dcc-col-w: calc((100% + var(--dcc-grid-column-gap)) * var(--dcc-col) / var(--dcc-grid-columns) - var(--dcc-grid-column-gap));
+  --dcc-offset-m: calc((100% + var(--dcc-grid-column-gap)) * var(--dcc-offset) / var(--dcc-grid-columns));
+  flex: 0 0 auto;
+  width: var(--dcc-col-w);
+  min-width: 0;
+  margin-inline-start: var(--dcc-offset-m);
+}
+
+/* Tamaños, offsets y espaciado, de móvil hacia arriba.
+   Cada breakpoint repite `flex` y `width` en sus spans para poder volver a un
+   tamaño fijo después de un `-auto` o un `-grow` de un breakpoint menor
+   (`.dcc-col-grow.dcc-col-md-4`); lo mismo los offsets con el margen. */
+/* ---- xs: desde 0 ---- */
+.dcc-col-1,
+.dcc-col-2,
+.dcc-col-3,
+.dcc-col-4,
+.dcc-col-5,
+.dcc-col-6,
+.dcc-col-7,
+.dcc-col-8,
+.dcc-col-9,
+.dcc-col-10,
+.dcc-col-11,
+.dcc-col-12 {
+  flex: 0 0 auto;
+  width: var(--dcc-col-w);
+}
+.dcc-col-1 { --dcc-col: 1; }
+.dcc-col-2 { --dcc-col: 2; }
+.dcc-col-3 { --dcc-col: 3; }
+.dcc-col-4 { --dcc-col: 4; }
+.dcc-col-5 { --dcc-col: 5; }
+.dcc-col-6 { --dcc-col: 6; }
+.dcc-col-7 { --dcc-col: 7; }
+.dcc-col-8 { --dcc-col: 8; }
+.dcc-col-9 { --dcc-col: 9; }
+.dcc-col-10 { --dcc-col: 10; }
+.dcc-col-11 { --dcc-col: 11; }
+.dcc-col-12 { --dcc-col: 12; }
+.dcc-col-auto { flex: 0 0 auto; width: auto; }
+.dcc-col-grow { flex: 1 1 0; width: auto; }
+.dcc-offset-0, .dcc-offset-1, .dcc-offset-2, .dcc-offset-3, .dcc-offset-4, .dcc-offset-5, .dcc-offset-6, .dcc-offset-7, .dcc-offset-8, .dcc-offset-9, .dcc-offset-10, .dcc-offset-11 { margin-inline-start: var(--dcc-offset-m); }
+.dcc-offset-0 { --dcc-offset: 0; }
+.dcc-offset-1 { --dcc-offset: 1; }
+.dcc-offset-2 { --dcc-offset: 2; }
+.dcc-offset-3 { --dcc-offset: 3; }
+.dcc-offset-4 { --dcc-offset: 4; }
+.dcc-offset-5 { --dcc-offset: 5; }
+.dcc-offset-6 { --dcc-offset: 6; }
+.dcc-offset-7 { --dcc-offset: 7; }
+.dcc-offset-8 { --dcc-offset: 8; }
+.dcc-offset-9 { --dcc-offset: 9; }
+.dcc-offset-10 { --dcc-offset: 10; }
+.dcc-offset-11 { --dcc-offset: 11; }
+.dcc-offset-auto { margin-inline-start: auto; }
+.dcc-grid--gap-0 { --dcc-grid-gap: 0px; }
+.dcc-grid--gap-1 { --dcc-grid-gap: 8px; }
+.dcc-grid--gap-2 { --dcc-grid-gap: 16px; }
+.dcc-grid--gap-3 { --dcc-grid-gap: 24px; }
+.dcc-grid--gap-4 { --dcc-grid-gap: 32px; }
+.dcc-grid--gap-5 { --dcc-grid-gap: 40px; }
+.dcc-grid--gap-6 { --dcc-grid-gap: 48px; }
+.dcc-grid--row-gap-0 { --dcc-grid-row-gap: 0px; }
+.dcc-grid--row-gap-1 { --dcc-grid-row-gap: 8px; }
+.dcc-grid--row-gap-2 { --dcc-grid-row-gap: 16px; }
+.dcc-grid--row-gap-3 { --dcc-grid-row-gap: 24px; }
+.dcc-grid--row-gap-4 { --dcc-grid-row-gap: 32px; }
+.dcc-grid--row-gap-5 { --dcc-grid-row-gap: 40px; }
+.dcc-grid--row-gap-6 { --dcc-grid-row-gap: 48px; }
+.dcc-grid--column-gap-0 { --dcc-grid-column-gap: 0px; }
+.dcc-grid--column-gap-1 { --dcc-grid-column-gap: 8px; }
+.dcc-grid--column-gap-2 { --dcc-grid-column-gap: 16px; }
+.dcc-grid--column-gap-3 { --dcc-grid-column-gap: 24px; }
+.dcc-grid--column-gap-4 { --dcc-grid-column-gap: 32px; }
+.dcc-grid--column-gap-5 { --dcc-grid-column-gap: 40px; }
+.dcc-grid--column-gap-6 { --dcc-grid-column-gap: 48px; }
+
+/* ---- sm: desde 600px ---- */
+@media (min-width: 600px) {
+  .dcc-col-sm-1,
+  .dcc-col-sm-2,
+  .dcc-col-sm-3,
+  .dcc-col-sm-4,
+  .dcc-col-sm-5,
+  .dcc-col-sm-6,
+  .dcc-col-sm-7,
+  .dcc-col-sm-8,
+  .dcc-col-sm-9,
+  .dcc-col-sm-10,
+  .dcc-col-sm-11,
+  .dcc-col-sm-12 {
+    flex: 0 0 auto;
+    width: var(--dcc-col-w);
+  }
+  .dcc-col-sm-1 { --dcc-col: 1; }
+  .dcc-col-sm-2 { --dcc-col: 2; }
+  .dcc-col-sm-3 { --dcc-col: 3; }
+  .dcc-col-sm-4 { --dcc-col: 4; }
+  .dcc-col-sm-5 { --dcc-col: 5; }
+  .dcc-col-sm-6 { --dcc-col: 6; }
+  .dcc-col-sm-7 { --dcc-col: 7; }
+  .dcc-col-sm-8 { --dcc-col: 8; }
+  .dcc-col-sm-9 { --dcc-col: 9; }
+  .dcc-col-sm-10 { --dcc-col: 10; }
+  .dcc-col-sm-11 { --dcc-col: 11; }
+  .dcc-col-sm-12 { --dcc-col: 12; }
+  .dcc-col-sm-auto { flex: 0 0 auto; width: auto; }
+  .dcc-col-sm-grow { flex: 1 1 0; width: auto; }
+  .dcc-offset-sm-0, .dcc-offset-sm-1, .dcc-offset-sm-2, .dcc-offset-sm-3, .dcc-offset-sm-4, .dcc-offset-sm-5, .dcc-offset-sm-6, .dcc-offset-sm-7, .dcc-offset-sm-8, .dcc-offset-sm-9, .dcc-offset-sm-10, .dcc-offset-sm-11 { margin-inline-start: var(--dcc-offset-m); }
+  .dcc-offset-sm-0 { --dcc-offset: 0; }
+  .dcc-offset-sm-1 { --dcc-offset: 1; }
+  .dcc-offset-sm-2 { --dcc-offset: 2; }
+  .dcc-offset-sm-3 { --dcc-offset: 3; }
+  .dcc-offset-sm-4 { --dcc-offset: 4; }
+  .dcc-offset-sm-5 { --dcc-offset: 5; }
+  .dcc-offset-sm-6 { --dcc-offset: 6; }
+  .dcc-offset-sm-7 { --dcc-offset: 7; }
+  .dcc-offset-sm-8 { --dcc-offset: 8; }
+  .dcc-offset-sm-9 { --dcc-offset: 9; }
+  .dcc-offset-sm-10 { --dcc-offset: 10; }
+  .dcc-offset-sm-11 { --dcc-offset: 11; }
+  .dcc-offset-sm-auto { margin-inline-start: auto; }
+  .dcc-grid--gap-sm-0 { --dcc-grid-gap: 0px; }
+  .dcc-grid--gap-sm-1 { --dcc-grid-gap: 8px; }
+  .dcc-grid--gap-sm-2 { --dcc-grid-gap: 16px; }
+  .dcc-grid--gap-sm-3 { --dcc-grid-gap: 24px; }
+  .dcc-grid--gap-sm-4 { --dcc-grid-gap: 32px; }
+  .dcc-grid--gap-sm-5 { --dcc-grid-gap: 40px; }
+  .dcc-grid--gap-sm-6 { --dcc-grid-gap: 48px; }
+}
+
+/* ---- md: desde 900px ---- */
+@media (min-width: 900px) {
+  .dcc-col-md-1,
+  .dcc-col-md-2,
+  .dcc-col-md-3,
+  .dcc-col-md-4,
+  .dcc-col-md-5,
+  .dcc-col-md-6,
+  .dcc-col-md-7,
+  .dcc-col-md-8,
+  .dcc-col-md-9,
+  .dcc-col-md-10,
+  .dcc-col-md-11,
+  .dcc-col-md-12 {
+    flex: 0 0 auto;
+    width: var(--dcc-col-w);
+  }
+  .dcc-col-md-1 { --dcc-col: 1; }
+  .dcc-col-md-2 { --dcc-col: 2; }
+  .dcc-col-md-3 { --dcc-col: 3; }
+  .dcc-col-md-4 { --dcc-col: 4; }
+  .dcc-col-md-5 { --dcc-col: 5; }
+  .dcc-col-md-6 { --dcc-col: 6; }
+  .dcc-col-md-7 { --dcc-col: 7; }
+  .dcc-col-md-8 { --dcc-col: 8; }
+  .dcc-col-md-9 { --dcc-col: 9; }
+  .dcc-col-md-10 { --dcc-col: 10; }
+  .dcc-col-md-11 { --dcc-col: 11; }
+  .dcc-col-md-12 { --dcc-col: 12; }
+  .dcc-col-md-auto { flex: 0 0 auto; width: auto; }
+  .dcc-col-md-grow { flex: 1 1 0; width: auto; }
+  .dcc-offset-md-0, .dcc-offset-md-1, .dcc-offset-md-2, .dcc-offset-md-3, .dcc-offset-md-4, .dcc-offset-md-5, .dcc-offset-md-6, .dcc-offset-md-7, .dcc-offset-md-8, .dcc-offset-md-9, .dcc-offset-md-10, .dcc-offset-md-11 { margin-inline-start: var(--dcc-offset-m); }
+  .dcc-offset-md-0 { --dcc-offset: 0; }
+  .dcc-offset-md-1 { --dcc-offset: 1; }
+  .dcc-offset-md-2 { --dcc-offset: 2; }
+  .dcc-offset-md-3 { --dcc-offset: 3; }
+  .dcc-offset-md-4 { --dcc-offset: 4; }
+  .dcc-offset-md-5 { --dcc-offset: 5; }
+  .dcc-offset-md-6 { --dcc-offset: 6; }
+  .dcc-offset-md-7 { --dcc-offset: 7; }
+  .dcc-offset-md-8 { --dcc-offset: 8; }
+  .dcc-offset-md-9 { --dcc-offset: 9; }
+  .dcc-offset-md-10 { --dcc-offset: 10; }
+  .dcc-offset-md-11 { --dcc-offset: 11; }
+  .dcc-offset-md-auto { margin-inline-start: auto; }
+  .dcc-grid--gap-md-0 { --dcc-grid-gap: 0px; }
+  .dcc-grid--gap-md-1 { --dcc-grid-gap: 8px; }
+  .dcc-grid--gap-md-2 { --dcc-grid-gap: 16px; }
+  .dcc-grid--gap-md-3 { --dcc-grid-gap: 24px; }
+  .dcc-grid--gap-md-4 { --dcc-grid-gap: 32px; }
+  .dcc-grid--gap-md-5 { --dcc-grid-gap: 40px; }
+  .dcc-grid--gap-md-6 { --dcc-grid-gap: 48px; }
+}
+
+/* ---- lg: desde 1200px ---- */
+@media (min-width: 1200px) {
+  .dcc-col-lg-1,
+  .dcc-col-lg-2,
+  .dcc-col-lg-3,
+  .dcc-col-lg-4,
+  .dcc-col-lg-5,
+  .dcc-col-lg-6,
+  .dcc-col-lg-7,
+  .dcc-col-lg-8,
+  .dcc-col-lg-9,
+  .dcc-col-lg-10,
+  .dcc-col-lg-11,
+  .dcc-col-lg-12 {
+    flex: 0 0 auto;
+    width: var(--dcc-col-w);
+  }
+  .dcc-col-lg-1 { --dcc-col: 1; }
+  .dcc-col-lg-2 { --dcc-col: 2; }
+  .dcc-col-lg-3 { --dcc-col: 3; }
+  .dcc-col-lg-4 { --dcc-col: 4; }
+  .dcc-col-lg-5 { --dcc-col: 5; }
+  .dcc-col-lg-6 { --dcc-col: 6; }
+  .dcc-col-lg-7 { --dcc-col: 7; }
+  .dcc-col-lg-8 { --dcc-col: 8; }
+  .dcc-col-lg-9 { --dcc-col: 9; }
+  .dcc-col-lg-10 { --dcc-col: 10; }
+  .dcc-col-lg-11 { --dcc-col: 11; }
+  .dcc-col-lg-12 { --dcc-col: 12; }
+  .dcc-col-lg-auto { flex: 0 0 auto; width: auto; }
+  .dcc-col-lg-grow { flex: 1 1 0; width: auto; }
+  .dcc-offset-lg-0, .dcc-offset-lg-1, .dcc-offset-lg-2, .dcc-offset-lg-3, .dcc-offset-lg-4, .dcc-offset-lg-5, .dcc-offset-lg-6, .dcc-offset-lg-7, .dcc-offset-lg-8, .dcc-offset-lg-9, .dcc-offset-lg-10, .dcc-offset-lg-11 { margin-inline-start: var(--dcc-offset-m); }
+  .dcc-offset-lg-0 { --dcc-offset: 0; }
+  .dcc-offset-lg-1 { --dcc-offset: 1; }
+  .dcc-offset-lg-2 { --dcc-offset: 2; }
+  .dcc-offset-lg-3 { --dcc-offset: 3; }
+  .dcc-offset-lg-4 { --dcc-offset: 4; }
+  .dcc-offset-lg-5 { --dcc-offset: 5; }
+  .dcc-offset-lg-6 { --dcc-offset: 6; }
+  .dcc-offset-lg-7 { --dcc-offset: 7; }
+  .dcc-offset-lg-8 { --dcc-offset: 8; }
+  .dcc-offset-lg-9 { --dcc-offset: 9; }
+  .dcc-offset-lg-10 { --dcc-offset: 10; }
+  .dcc-offset-lg-11 { --dcc-offset: 11; }
+  .dcc-offset-lg-auto { margin-inline-start: auto; }
+  .dcc-grid--gap-lg-0 { --dcc-grid-gap: 0px; }
+  .dcc-grid--gap-lg-1 { --dcc-grid-gap: 8px; }
+  .dcc-grid--gap-lg-2 { --dcc-grid-gap: 16px; }
+  .dcc-grid--gap-lg-3 { --dcc-grid-gap: 24px; }
+  .dcc-grid--gap-lg-4 { --dcc-grid-gap: 32px; }
+  .dcc-grid--gap-lg-5 { --dcc-grid-gap: 40px; }
+  .dcc-grid--gap-lg-6 { --dcc-grid-gap: 48px; }
+}
+
+/* ---- xl: desde 1536px ---- */
+@media (min-width: 1536px) {
+  .dcc-col-xl-1,
+  .dcc-col-xl-2,
+  .dcc-col-xl-3,
+  .dcc-col-xl-4,
+  .dcc-col-xl-5,
+  .dcc-col-xl-6,
+  .dcc-col-xl-7,
+  .dcc-col-xl-8,
+  .dcc-col-xl-9,
+  .dcc-col-xl-10,
+  .dcc-col-xl-11,
+  .dcc-col-xl-12 {
+    flex: 0 0 auto;
+    width: var(--dcc-col-w);
+  }
+  .dcc-col-xl-1 { --dcc-col: 1; }
+  .dcc-col-xl-2 { --dcc-col: 2; }
+  .dcc-col-xl-3 { --dcc-col: 3; }
+  .dcc-col-xl-4 { --dcc-col: 4; }
+  .dcc-col-xl-5 { --dcc-col: 5; }
+  .dcc-col-xl-6 { --dcc-col: 6; }
+  .dcc-col-xl-7 { --dcc-col: 7; }
+  .dcc-col-xl-8 { --dcc-col: 8; }
+  .dcc-col-xl-9 { --dcc-col: 9; }
+  .dcc-col-xl-10 { --dcc-col: 10; }
+  .dcc-col-xl-11 { --dcc-col: 11; }
+  .dcc-col-xl-12 { --dcc-col: 12; }
+  .dcc-col-xl-auto { flex: 0 0 auto; width: auto; }
+  .dcc-col-xl-grow { flex: 1 1 0; width: auto; }
+  .dcc-offset-xl-0, .dcc-offset-xl-1, .dcc-offset-xl-2, .dcc-offset-xl-3, .dcc-offset-xl-4, .dcc-offset-xl-5, .dcc-offset-xl-6, .dcc-offset-xl-7, .dcc-offset-xl-8, .dcc-offset-xl-9, .dcc-offset-xl-10, .dcc-offset-xl-11 { margin-inline-start: var(--dcc-offset-m); }
+  .dcc-offset-xl-0 { --dcc-offset: 0; }
+  .dcc-offset-xl-1 { --dcc-offset: 1; }
+  .dcc-offset-xl-2 { --dcc-offset: 2; }
+  .dcc-offset-xl-3 { --dcc-offset: 3; }
+  .dcc-offset-xl-4 { --dcc-offset: 4; }
+  .dcc-offset-xl-5 { --dcc-offset: 5; }
+  .dcc-offset-xl-6 { --dcc-offset: 6; }
+  .dcc-offset-xl-7 { --dcc-offset: 7; }
+  .dcc-offset-xl-8 { --dcc-offset: 8; }
+  .dcc-offset-xl-9 { --dcc-offset: 9; }
+  .dcc-offset-xl-10 { --dcc-offset: 10; }
+  .dcc-offset-xl-11 { --dcc-offset: 11; }
+  .dcc-offset-xl-auto { margin-inline-start: auto; }
+  .dcc-grid--gap-xl-0 { --dcc-grid-gap: 0px; }
+  .dcc-grid--gap-xl-1 { --dcc-grid-gap: 8px; }
+  .dcc-grid--gap-xl-2 { --dcc-grid-gap: 16px; }
+  .dcc-grid--gap-xl-3 { --dcc-grid-gap: 24px; }
+  .dcc-grid--gap-xl-4 { --dcc-grid-gap: 32px; }
+  .dcc-grid--gap-xl-5 { --dcc-grid-gap: 40px; }
+  .dcc-grid--gap-xl-6 { --dcc-grid-gap: 48px; }
+}

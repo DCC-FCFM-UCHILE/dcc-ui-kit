@@ -1,0 +1,86 @@
+<!--
+titulo: Botón flotante (FAB)
+grupo: Entradas
+resumen: La acción principal de una pantalla, en un botón que flota sobre el contenido. Circular o extendido, en tres tamaños y con los colores del botón.
+miniatura: .dcc-doc-row
+escala: .8
+-->
+<h2 class="dcc-doc-h2" id="basico">Básico</h2>
+<p class="dcc-doc-p">El botón flotante es para <strong>una sola</strong> acción por pantalla, la más frecuente:
+  crear una tarea, redactar un mensaje, subir una entrega. Si la pantalla no tiene una acción así de clara,
+  usa un <a href="boton.html">botón</a> común. Como el circular no tiene texto, lleva siempre
+  <code>aria-label</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-fab" type="button" aria-label="Agregar tarea"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+    <button class="dcc-fab dcc-fab--secondary" type="button" aria-label="Editar memoria"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pencil"/></svg></button>
+    <button class="dcc-fab dcc-fab--extended" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-upload"/></svg> Subir entrega</button>
+    <button class="dcc-fab dcc-fab--surface" type="button" aria-label="Marcar como favorito"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></button>
+    <button class="dcc-fab" type="button" aria-label="Ubicación" disabled><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"/></svg></button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tamanos">Tamaños</h2>
+<p class="dcc-doc-p"><code>--sm</code> (40px), <code>--md</code> (48px, por omisión) y <code>--lg</code> (56px).
+  En el extendido son 34, 40 y 48px de alto.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-fab dcc-fab--sm" type="button" aria-label="Agregar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+    <button class="dcc-fab dcc-fab--md" type="button" aria-label="Agregar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+    <button class="dcc-fab dcc-fab--lg" type="button" aria-label="Agregar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+  </div>
+  <div class="dcc-doc-row">
+    <button class="dcc-fab dcc-fab--extended dcc-fab--sm" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"/></svg> Enviar</button>
+    <button class="dcc-fab dcc-fab--extended dcc-fab--md" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"/></svg> Enviar</button>
+    <button class="dcc-fab dcc-fab--extended dcc-fab--lg" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"/></svg> Enviar</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="colores">Colores</h2>
+<p class="dcc-doc-p">Los del <a href="boton.html">botón</a>: <code>--primary</code>, <code>--secondary</code>,
+  <code>--success</code> y <code>--error</code>, más <code>--surface</code>, el gris claro que MUI usa por
+  omisión. Responden al cursor igual que el botón: una capa de estado del color de la etiqueta y un escalón de
+  sombra.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-doc-row">
+    <button class="dcc-fab dcc-fab--primary" type="button" aria-label="Agregar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+    <button class="dcc-fab dcc-fab--secondary" type="button" aria-label="Agregar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+    <button class="dcc-fab dcc-fab--success" type="button" aria-label="Aprobar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></button>
+    <button class="dcc-fab dcc-fab--error" type="button" aria-label="Eliminar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trash"/></svg></button>
+    <button class="dcc-fab dcc-fab--surface" type="button" aria-label="Agregar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="fondo-oscuro">Sobre fondo oscuro</h2>
+<p class="dcc-doc-p">Sobre la barra o el pie de marca se usa <code>--white</code>.</p>
+<div class="dcc-doc-demo dcc-doc-demo--oscuro">
+  <div class="dcc-doc-row">
+    <button class="dcc-fab dcc-fab--white" type="button" aria-label="Agregar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg></button>
+    <button class="dcc-fab dcc-fab--white dcc-fab--extended" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message-circle"/></svg> Escribir al DCC</button>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="ubicacion">Ubicación</h2>
+<p class="dcc-doc-p">El botón flotante va en una esquina, casi siempre la inferior derecha. Envuélvelo en
+  <code>.dcc-fab-anchor</code>: se cuelga a 16px de la esquina del contenedor posicionado más cercano
+  (<code>.dcc-fab-area</code> lo es). <code>--start</code> lo pasa a la izquierda y <code>--top</code> arriba.
+  En una aplicación agrega <code>--fixed</code> para que quede fijo a la ventana mientras el contenido scrollea;
+  deja espacio bajo el último elemento de la página para que el botón no lo tape.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-fab-area dcc-paper dcc-paper--outlined" style="height:220px;max-width:520px;padding:16px 20px">
+    <p class="dcc-t-heading-s">Memorias en curso</p>
+    <p class="dcc-t-body-m" style="margin-top:12px">Tres estudiantes inscribieron su memoria este semestre.</p>
+    <div class="dcc-fab-anchor">
+      <button class="dcc-fab dcc-fab--extended" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-plus"/></svg> Inscribir memoria</button>
+    </div>
+    <div class="dcc-fab-anchor dcc-fab-anchor--start">
+      <button class="dcc-fab dcc-fab--sm dcc-fab--surface" type="button" aria-label="Filtrar"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-filter"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="accesibilidad">Accesibilidad</h2>
+<p class="dcc-doc-p">Es un <code>&lt;button&gt;</code> (o un <code>&lt;a&gt;</code> si navega), así que se enfoca y
+  se activa con el teclado sin nada extra. Ponlo en el orden del documento donde tenga sentido para quien
+  recorre con Tab —normalmente al final del contenido que afecta—, no donde se ve. Para varias acciones
+  relacionadas desde un solo botón está el <a href="marcacion-rapida.html">Speed Dial</a>.</p>

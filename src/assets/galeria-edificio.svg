@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <!-- Ilustración propia del DCC UI Kit (licencia MIT del kit): un edificio de fachada reticulada. -->
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3594c7"/><stop offset="1" stop-color="#bdd2ea"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#c)"/>
+  <rect x="120" y="90" width="360" height="270" fill="#40506a"/>
+  <g fill="#e5f1ff" fill-opacity=".8">
+    <rect x="140" y="110" width="50" height="34"/><rect x="205" y="110" width="50" height="34"/><rect x="270" y="110" width="50" height="34"/><rect x="335" y="110" width="50" height="34"/><rect x="400" y="110" width="60" height="34"/>
+    <rect x="140" y="164" width="50" height="34"/><rect x="205" y="164" width="50" height="34"/><rect x="270" y="164" width="50" height="34"/><rect x="335" y="164" width="50" height="34"/><rect x="400" y="164" width="60" height="34"/>
+    <rect x="140" y="218" width="50" height="34"/><rect x="205" y="218" width="50" height="34"/><rect x="270" y="218" width="50" height="34"/><rect x="335" y="218" width="50" height="34"/><rect x="400" y="218" width="60" height="34"/>
+  </g>
+  <rect x="265" y="280" width="70" height="80" fill="#303b4d"/>
+  <rect y="360" width="600" height="40" fill="#303b4d"/>
+</svg>

@@ -1,0 +1,114 @@
+<!--
+titulo: Esqueleto
+grupo: Retroalimentación
+resumen: Un bloque gris con la forma del contenido que todavía no llega, para que la página no salte y se entienda qué va a aparecer.
+miniatura: .dcc-skeleton-media[aria-busy]
+escala: .8
+ancho: 320px
+-->
+<h2 class="dcc-doc-h2" id="formas">Formas</h2>
+<p class="dcc-doc-p">Cuatro formas: texto (por omisión), <code>--circular</code>, <code>--rectangular</code> y
+  <code>--rounded</code>. El de texto toma el alto de la línea de su contenedor y se recorta al 60% para dejar el
+  interlineado, así que mide lo mismo que el texto que reemplaza; las demás miden lo que se les da con
+  <code>width</code> y <code>height</code>.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-skeleton-col" aria-busy="true">
+    <span class="dcc-skeleton dcc-skeleton--text" aria-hidden="true"></span>
+    <span class="dcc-skeleton dcc-skeleton--circular" style="width: 40px; height: 40px" aria-hidden="true"></span>
+    <span class="dcc-skeleton dcc-skeleton--rectangular" style="height: 60px" aria-hidden="true"></span>
+    <span class="dcc-skeleton dcc-skeleton--rounded" style="height: 60px" aria-hidden="true"></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="animaciones">Animaciones</h2>
+<p class="dcc-doc-p">Por omisión el bloque pulsa. <code>--wave</code> lo cruza con un brillo y <code>--static</code>
+  lo deja quieto. Con movimiento reducido no se anima ninguno.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-skeleton-col" aria-busy="true">
+    <span class="dcc-skeleton dcc-skeleton--rounded" style="height: 24px" aria-hidden="true"></span>
+    <span class="dcc-skeleton dcc-skeleton--rounded dcc-skeleton--wave" style="height: 24px" aria-hidden="true"></span>
+    <span class="dcc-skeleton dcc-skeleton--rounded dcc-skeleton--static" style="height: 24px" aria-hidden="true"></span>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="medidas">Medidas tomadas del contenido</h2>
+<p class="dcc-doc-p">Un esqueleto de texto dentro de un título toma el tamaño del título. Y con un elemento dentro,
+  el esqueleto calca su tamaño y lo esconde: es la forma de reservar el lugar de un avatar o de un botón sin
+  escribir sus medidas.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-skeleton-col" aria-busy="true">
+    <p class="dcc-t-heading-m"><span class="dcc-skeleton" aria-hidden="true"></span></p>
+    <p class="dcc-t-body-m"><span class="dcc-skeleton" aria-hidden="true"></span></p>
+    <div class="dcc-skeleton-media">
+      <span class="dcc-skeleton dcc-skeleton--circular" aria-hidden="true"><span class="dcc-avatar"><span class="dcc-avatar__label">CS</span></span></span>
+      <span class="dcc-skeleton dcc-skeleton--rounded" aria-hidden="true"><span class="dcc-btn dcc-btn--md">Inscribir curso</span></span>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tarjeta">Una tarjeta en carga</h2>
+<p class="dcc-doc-p">El esqueleto se arma con las mismas piezas del componente real, cambiando sólo el contenido:
+  así ocupa exactamente el mismo lugar. El contenedor lleva <code>aria-busy="true"</code> mientras carga —y
+  <code>"false"</code> cuando llega el contenido—, y cada esqueleto <code>aria-hidden="true"</code>, porque no
+  dice nada útil.</p>
+<div class="dcc-doc-demo">
+  <article class="dcc-card" aria-busy="true" aria-label="Cargando programa">
+    <div class="dcc-card__paper">
+      <span class="dcc-skeleton dcc-skeleton--rectangular dcc-skeleton--wave" style="height: 200px" aria-hidden="true"></span>
+      <div class="dcc-card__content">
+        <div class="dcc-card__head">
+          <span class="dcc-skeleton dcc-skeleton--wave" style="width: 40%" aria-hidden="true"></span>
+          <span class="dcc-skeleton dcc-skeleton--wave dcc-t-heading-m" aria-hidden="true"></span>
+          <span class="dcc-skeleton dcc-skeleton--wave" style="width: 60%" aria-hidden="true"></span>
+        </div>
+        <div class="dcc-card__foot">
+          <span class="dcc-skeleton dcc-skeleton--wave" style="width: 45%" aria-hidden="true"></span>
+          <span class="dcc-skeleton dcc-skeleton--rounded dcc-skeleton--wave" style="width: 96px; height: 36px" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>
+
+<h2 class="dcc-doc-h2" id="lista">Una lista en carga</h2>
+<p class="dcc-doc-p">Las filas de <a href="lista.html">Lista</a>, con el título y la descripción reemplazados por
+  líneas que llevan las clases tipográficas de la lista: miden lo mismo que el texto que va a llegar.</p>
+<div class="dcc-doc-demo">
+  <ul class="dcc-list" aria-busy="true" aria-label="Cargando archivos">
+    <li class="dcc-list__item">
+      <span class="dcc-skeleton dcc-skeleton--circular" style="width: 20px; height: 20px" aria-hidden="true"></span>
+      <span class="dcc-list__body">
+        <span class="dcc-skeleton dcc-list__title" style="width: 55%" aria-hidden="true"></span>
+        <span class="dcc-skeleton dcc-list__desc" style="width: 35%" aria-hidden="true"></span>
+      </span>
+    </li>
+    <li class="dcc-list__item">
+      <span class="dcc-skeleton dcc-skeleton--circular" style="width: 20px; height: 20px" aria-hidden="true"></span>
+      <span class="dcc-list__body">
+        <span class="dcc-skeleton dcc-list__title" style="width: 70%" aria-hidden="true"></span>
+        <span class="dcc-skeleton dcc-list__desc" style="width: 45%" aria-hidden="true"></span>
+      </span>
+    </li>
+    <li class="dcc-list__item">
+      <span class="dcc-skeleton dcc-skeleton--circular" style="width: 20px; height: 20px" aria-hidden="true"></span>
+      <span class="dcc-list__body">
+        <span class="dcc-skeleton dcc-list__title" style="width: 45%" aria-hidden="true"></span>
+        <span class="dcc-skeleton dcc-list__desc" style="width: 30%" aria-hidden="true"></span>
+      </span>
+    </li>
+  </ul>
+</div>
+
+<h2 class="dcc-doc-h2" id="fila">Avatar y texto</h2>
+<p class="dcc-doc-p">El caso más común: la fila de un comentario o de un estudiante, con <code>.dcc-skeleton-media</code>
+  para alinear el círculo con las líneas.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-skeleton-media" aria-busy="true">
+    <span class="dcc-skeleton dcc-skeleton--circular" style="width: 40px; height: 40px" aria-hidden="true"></span>
+    <div class="dcc-skeleton-media__body">
+      <span class="dcc-skeleton" style="width: 50%" aria-hidden="true"></span>
+      <span class="dcc-skeleton" aria-hidden="true"></span>
+      <span class="dcc-skeleton" style="width: 80%" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>

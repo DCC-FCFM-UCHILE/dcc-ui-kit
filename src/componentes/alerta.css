@@ -1,0 +1,85 @@
+/* --------------------------------------------------------------------------
+   ALERTA — lo que le falta respecto de MUI Alert
+
+   La alerta base vive en styles.css (sección 10) y su marcado sigue igual:
+   `.dcc-alert.dcc-alert--info` con el ícono y un `.dcc-stack` para el texto.
+   Este archivo agrega, sin tocarla:
+
+     color      --warning, que no existía (también hay --info, --success, --error)
+     variante   la de siempre es la «standard» de MUI (fondo suave);
+                --outlined (borde del color, sin fondo) y --filled (relleno fuerte)
+     partes     __message y __title (el AlertTitle), __action a la derecha y
+                __close, el botón de cerrar
+
+   Cada color fija dos variables —`--dcc-alert-color`, el del estado, y
+   `--dcc-alert-strong`, el relleno de la variante filled— y las variantes
+   deciden dónde van, como en el botón.
+
+   Contraste del texto en filled (--dcc-on-accent sobre el relleno), en claro:
+   info Lightblue/Dark 7,1:1 · success Green/Dark 6,8:1 · error Red/Default
+   4,9:1 · warning Yellow/Dark 7,0:1. El ícono de --warning sobre su fondo
+   suave da 3,2:1 en claro y 7,0:1 en oscuro. En oscuro el relleno es el tono claro y
+   el texto, oscuro.
+   -------------------------------------------------------------------------- */
+.dcc-alert {
+  --dcc-alert-color: var(--dcc-info);
+  --dcc-alert-strong: var(--dcc-info-strong);
+}
+.dcc-alert--info    { --dcc-alert-color: var(--dcc-info);    --dcc-alert-strong: var(--dcc-info-strong); }
+.dcc-alert--success { --dcc-alert-color: var(--dcc-success); --dcc-alert-strong: var(--dcc-success-strong); }
+.dcc-alert--error   { --dcc-alert-color: var(--dcc-danger);  --dcc-alert-strong: var(--dcc-danger); }
+.dcc-alert--warning { --dcc-alert-color: var(--dcc-warning); --dcc-alert-strong: var(--dcc-warning-strong); }
+
+/* El color que faltaba, en la variante de siempre. */
+.dcc-alert--warning { background: var(--dcc-warning-bg); }
+.dcc-alert--warning > .dcc-icon { color: var(--dcc-warning); }
+
+/* ---- Variantes ---- */
+.dcc-alert--outlined {
+  background: transparent;
+  border: 1px solid var(--dcc-alert-color);
+}
+.dcc-alert--outlined > .dcc-icon { color: var(--dcc-alert-color); }
+
+.dcc-alert--filled {
+  background: var(--dcc-alert-strong);
+  color: var(--dcc-on-accent);
+}
+.dcc-alert--filled > .dcc-icon { color: inherit; }
+
+/* ---- Partes ---- */
+/* El texto: ocupa lo que queda entre el ícono y las acciones. */
+.dcc-alert__message { flex: 1 1 auto; min-width: 0; }
+/* AlertTitle: el título en negrita sobre la descripción. */
+.dcc-alert__title {
+  display: block;
+  margin: 0 0 2px;
+  font-weight: 700;
+}
+/* Con título, el ícono se alinea con la primera línea y no con el centro. */
+.dcc-alert:has(.dcc-alert__title) { align-items: flex-start; }
+
+/* La acción va pegada a la derecha; si el texto es largo, no se aplasta. */
+.dcc-alert__action {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  margin: -6px -8px -6px auto;
+}
+.dcc-alert:has(.dcc-alert__title) .dcc-alert__action { margin-top: -4px; }
+
+/* Botón de cerrar: `.dcc-icon-btn --sm --inherit`, en el color del texto de la
+   alerta, así sirve igual en las tres variantes. */
+.dcc-alert__close { flex: none; }
+
+
+/* Un botón de texto del kit dentro de la acción toma el color del texto de la
+   alerta: así se lee igual sobre el fondo suave, sin fondo o sobre el relleno. */
+.dcc-alert__action .dcc-btn--text { --dcc-btn-main: currentColor; }
+/* La regla del ícono de la alerta (24px, color del estado) alcanzaría también
+   al ícono de ese botón: se le devuelve el suyo. */
+
+/* Para las demos: alertas una bajo otra, más juntas que `.dcc-alert-stack`. */
+.dcc-alert-list { display: flex; flex-direction: column; gap: 12px; }
+.dcc-alert-list + .dcc-alert-list { margin-top: 24px; }

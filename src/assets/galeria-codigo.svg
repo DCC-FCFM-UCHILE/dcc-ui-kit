@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- Ilustración propia del DCC UI Kit (licencia MIT del kit): un editor de código. -->
+  <rect width="600" height="600" fill="#303b4d"/>
+  <rect x="60" y="80" width="480" height="440" rx="16" fill="#1a202c"/>
+  <g fill="#5d7c8e"><circle cx="96" cy="112" r="8"/><circle cx="124" cy="112" r="8"/><circle cx="152" cy="112" r="8"/></g>
+  <g stroke-linecap="round" stroke-width="14">
+    <path stroke="#3594c7" d="M100 170h90M210 170h140"/>
+    <path stroke="#bdd2ea" d="M140 210h160M320 210h80"/>
+    <path stroke="#eeb397" d="M140 250h60M220 250h200"/>
+    <path stroke="#bdd2ea" d="M180 290h120"/>
+    <path stroke="#0e9ca8" d="M180 330h220"/>
+    <path stroke="#bdd2ea" d="M140 370h40"/>
+    <path stroke="#3594c7" d="M100 410h70M190 410h100"/>
+    <path stroke="#f4d39a" d="M140 450h180"/>
+  </g>
+</svg>
