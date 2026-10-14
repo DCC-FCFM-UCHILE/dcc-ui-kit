@@ -9,7 +9,7 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
-## [Sin publicar]
+## [2.8.0] — 2026-10-14
 
 ### Agrega
 

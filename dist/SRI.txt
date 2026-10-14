@@ -1,10 +1,10 @@
-DCC UI Kit 2.7.0 — hashes de integridad (sha384)
+DCC UI Kit 2.8.0 — hashes de integridad (sha384)
 
-dcc-ui.css             sha384-sxeSEh118KRIj7+z+8wzp4SgXqiIGRveg0cAfJJzzCZ8d8P3XhGC64IrGJHfhMhr
-dcc-ui.min.css         sha384-ztjH/DvFdP4DO+kBp/1w5hVl+jITuGbkcu9OXJY0EeLUXLwEy11JGRxiWIOm3xlz
-dcc-tokens.css         sha384-TZrRYdw3jajFbZy/qgxjU0D89mAqOfjJnD2g0fXen6MIe5yhZriBfNr2LDtqZlI3
-dcc-icons.js           sha384-qFltgS4z3wkhVozsDBBRn6e2R1HkcRwo4F4S1bEVFKwN4qPu3c5JvamnLhfbbg4J
-dcc-behaviors.js       sha384-ZQRedKjK3UYSZSODG+0Kn/1y1gfJEaxGNFlFc99c29s05y0AChPJyhqzfBST5OM5
-dcc-behaviors.min.js   sha384-aKzLIP9KHF2tDe/JFkF2iSoNNrBjttKYtUVSsesvc57bSPtzJk1rEz4RGurM0QBT
-dcc-ui.bundle.js       sha384-D++4q0sWauBUNBAExBoNyobwLHzVRvj3SRp/1TNg4aktEEIeVb308DafGPktA3jF
-dcc-ui.bundle.min.js   sha384-cAGEzMSNNTPzMzJMKVIk+Q5fXyiYO/bwbo4b3yN3xLwZiubWiC/rvhD8ur7s1wNd
+dcc-ui.css             sha384-r0FD7anGfJnnkQtOGhpPBiV65XtE1bGhvbHPwIFFm9zkbejw7BRZjjamwUkU68e4
+dcc-ui.min.css         sha384-F8rskjGneZWg37w762EzDh1Y6rMyCnN6XeibrhM2/nbBD1NkLvsnghQSX/gRcraE
+dcc-tokens.css         sha384-9G73Ch/bfJQL5C0GVJuUzSSL3/r4w/xLLuPdCsyOAOV3GVQNiJpFtr3dovT9VeMc
+dcc-icons.js           sha384-qFh6o3oqgYEpRGcc3g3rDAvyupVsJIFaXRf0EbwB3fYj99S5oouzqf6adQ1LDg3U
+dcc-behaviors.js       sha384-VRBqTvbq4SK78EdZJrjqqw0Ya4nzyyYUzt21kx2aAltsfqcxRl6zJ96oMwLMCGKa
+dcc-behaviors.min.js   sha384-PgOGUAiMkhhv7gebz5lU9P8ZMQaEXUCXgCz+nflgZtDHoml9RuGJ0suuD0AnJMV+
+dcc-ui.bundle.js       sha384-kk2yK7Uf0udmNr4uHbMXBpSu9etR3zp0gVy4pW2AAA6HZgvrDsVAa5bRWIP7/Ijf
+dcc-ui.bundle.min.js   sha384-YS7xNwop8Bd9fzWtlRfmZLfx2QvcsSKYjYVU645RX1kiiStrwlnvoioEWkIVP/Dv
