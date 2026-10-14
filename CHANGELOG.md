@@ -13,9 +13,40 @@ Para este kit eso significa:
 
 ### Agrega
 
-- **Firma de correo del DCC** (`firmas/`): plantilla, generador y ejemplo. Sus imágenes (logotipo,
-  íconos de contacto y redes) se publican con cada versión en `dist/firmas/img/`, para que las firmas
-  y las apps que las arman (Faro) las carguen desde `/ui-kit/<versión>/firmas/img/`.
+- **Las imágenes de la firma se publican con el kit**: el build copia los PNG de `firmas/img/`
+  (logotipo, íconos de contacto y redes) a `dist/firmas/img/`, así que cada versión los deja en
+  `/ui-kit/<versión>/firmas/img/`. Las firmas copiadas desde el generador y las que arman las apps
+  (Faro) los cargan desde ahí, en una dirección fija que no cambia aunque después cambie el logotipo.
+
+## [2.7.0] — 2026-10-08
+
+### Agrega
+
+- **Tabla de líneas, `.dcc-table--lineas`**, al estilo de la `Table` de MUI. No tiene borde
+  exterior: solo divisores de 1px entre filas, cabecera en peso 500 y tono secundario, y hover
+  suave. Fue la elegida entre tres propuestas. Se suma a `.dcc-table`, así que la tabla de siempre no
+  cambia para quien no la pone.
+  - `--densa` (filas de 33px, el `size="small"` de MUI) y `--sticky` (cabecera fija al desplazar).
+  - Contenedor `.dcc-table-card` con barra superior y pie, y pie de paginación `.dcc-table-pager`
+    («Filas por página · 1–5 de 13»).
+  - Ayudantes de celda: `.dcc-cell--num` (números a la derecha con cifras de igual ancho),
+    `--check`, `--nowrap`, `.dcc-cell-clamp` (recorte a dos líneas) y
+    `.dcc-table-caption--hidden`.
+  - La fila marcada se tiñe sola, leyendo su casilla.
+- **Seleccionar todas, `.js-select-all`**: la casilla de la cabecera marca o desmarca todas las
+  filas, y queda indeterminada cuando solo algunas están marcadas.
+- **Badges de estado por rol**: `.dcc-badge--success`, `--info`, `--warning`, `--error` y
+  `--neutral`. En claro se ven como los `soft-*`, pero siguen al tema oscuro.
+- **Firma de correo** en `firmas/`: plantilla, generador y ejemplo, para Gmail, Outlook y Apple Mail.
+
+### Corrige
+
+- **La tabla ordenable leía mal los números con coma decimal**: "6,2" se ordenaba como 6. Ahora
+  entiende coma decimal y punto de miles ("6,2", "4.250.000"), y las celdas sin número van al final.
+- **En las columnas numéricas ordenables la flecha quedaba a la izquierda del título.** Ahora va a
+  la derecha, como en el resto de las columnas.
+- **Una casilla con dos íconos (✓ y raya) dibujaba la raya bajo la caja**, y al marcarla mostraba
+  los dos. Ahora se superponen y cada estado muestra el suyo.
 
 ## [2.6.0] — 2026-09-25
 

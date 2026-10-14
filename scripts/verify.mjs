@@ -141,6 +141,21 @@ click(cal.querySelector('.dcc-calendar__nav[data-step="1"]'));
 check(!cal.hidden, "no se cierra al cambiar de mes");
 check(cal.querySelector(".dcc-calendar__title").textContent !== mes, "y el mes efectivamente cambia");
 
+// Seleccionar casillaTodas: la casilla de la cabecera manda sobre las filas, y las
+// filas le devuelven su estado (marcada, vacía o indeterminada).
+const casillaTodas = doc.querySelector(".js-select-all");
+const filasSel = () => [...casillaTodas.closest("table").querySelectorAll("tbody td.dcc-cell--check input")];
+check(casillaTodas.indeterminate && !casillaTodas.checked, "seleccionar todas empieza indeterminada si hay filas marcadas");
+click(casillaTodas);
+check(filasSel().every((c) => c.checked) && casillaTodas.checked && !casillaTodas.indeterminate,
+  "marcar la cabecera marca todas las filas");
+click(casillaTodas);
+check(filasSel().every((c) => !c.checked) && !casillaTodas.checked, "y desmarcarla las desmarca");
+click(filasSel()[0]);
+check(casillaTodas.indeterminate, "una fila marcada deja la cabecera indeterminada");
+filasSel().slice(1).forEach((c) => click(c));
+check(casillaTodas.checked && !casillaTodas.indeterminate, "con todas las filas marcadas, la cabecera queda marcada");
+
 const th = doc.querySelector(".js-sortable th.is-sortable");
 click(th.querySelector(".dcc-th-sort"));
 check(th.getAttribute("aria-sort") === "descending", "la tabla ordena y expone aria-sort");

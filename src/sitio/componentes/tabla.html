@@ -1,10 +1,154 @@
 <!--
 titulo: Tabla
 grupo: Visualización de datos
-resumen: Datos en filas y columnas, con desplazamiento horizontal en pantallas angostas.
-miniatura: .dcc-table-scroll
+resumen: Datos en filas y columnas, con desplazamiento horizontal en pantallas angostas. La variante de líneas es la de MUI: liviana, ordenable y con selección.
+miniatura: .dcc-table-row .dcc-table-scroll
 -->
-<h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+<h2 class="dcc-doc-h2" id="lineas">Líneas</h2>
+<p class="dcc-doc-p">La <code>Table</code> de Material UI tal como viene: sin borde externo grueso ni cabecera
+  rellena; sólo divisores de 1px entre filas, la cabecera en peso 500 con el texto en tono secundario y un hover
+  suave. Los números van a la derecha con cifras de igual ancho, la fila marcada se tiñe sola (lo lee del
+  checkbox) y el pie es el <code>TablePagination</code> de MUI: «Filas por página» y «1–5 de 13». El
+  contenedor es el <code>Paper</code>: superficie con borde de 1px y radio 8.</p>
+<p class="dcc-doc-p"><code>.dcc-table.dcc-table--lineas</code> dentro de <code>.dcc-table-card</code> →
+  <code>.dcc-table-card__scroll</code>. Reutiliza el checkbox, la cabecera ordenable, los badges de estado, el
+  select y los botones de la paginación.</p>
+<p class="dcc-doc-p">La casilla de la cabecera lleva <code>.js-select-all</code>: marca o desmarca todas las filas
+  de la tabla, y queda a medias (indeterminada) cuando sólo algunas están marcadas.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-table-card">
+    <div class="dcc-table-card__toolbar">
+      <div class="dcc-table-card__heading">
+        <h3 class="dcc-table-card__title" id="tb-a-titulo">Inscripción de memorias</h3>
+        <p class="dcc-table-card__subtitle">Otoño 2026 · Ingeniería Civil en Computación</p>
+      </div>
+      <div class="dcc-table-card__tools">
+        <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"/></svg> Exportar</button>
+      </div>
+    </div>
+    <div class="dcc-table-card__scroll" tabindex="0" role="region" aria-labelledby="tb-a-titulo">
+      <table class="dcc-table dcc-table--lineas js-sortable">
+        <caption class="dcc-table-caption--hidden">Inscripción de memorias, Otoño 2026</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" class="js-select-all" aria-label="Seleccionar todas"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><svg class="dcc-dash dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg></span></label></th>
+            <th scope="col" class="is-sortable" aria-sort="ascending"><button class="dcc-th-sort" type="button">Estudiante<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col">Memoria</th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Créditos<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Antonia Pérez Gallardo"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Antonia Pérez Gallardo</td>
+            <td><span class="dcc-cell-clamp">Verificación formal de contratos inteligentes</span></td>
+            <td class="dcc-cell--num">402</td>
+            <td><span class="dcc-badge dcc-badge--success">Aprobada</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Camila Rojas Fuentes" checked><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Camila Rojas Fuentes</td>
+            <td><span class="dcc-cell-clamp">Detección de anomalías en redes con aprendizaje federado</span></td>
+            <td class="dcc-cell--num">418</td>
+            <td><span class="dcc-badge dcc-badge--info">En revisión</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Diego Muñoz Castro"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Diego Muñoz Castro</td>
+            <td><span class="dcc-cell-clamp">Compilador incremental para un lenguaje funcional</span></td>
+            <td class="dcc-cell--num">386</td>
+            <td><span class="dcc-badge dcc-badge--warning">Pendiente</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Fernanda Díaz Morales"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Fernanda Díaz Morales</td>
+            <td><span class="dcc-cell-clamp">Recomendación de cursos a partir del historial académico</span></td>
+            <td class="dcc-cell--num">411</td>
+            <td><span class="dcc-badge dcc-badge--error">Observada</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Matías Herrera Lagos"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Matías Herrera Lagos</td>
+            <td><span class="dcc-cell-clamp">Visualización interactiva de grafos de conocimiento</span></td>
+            <td class="dcc-cell--num">395</td>
+            <td><span class="dcc-badge dcc-badge--neutral">Borrador</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dcc-table-card__foot">
+      <div class="dcc-table-pager">
+        <div class="dcc-table-pager__rows">
+          <span id="tb-a-filas">Filas por página:</span>
+          <div class="dcc-combo js-combo">
+            <button class="dcc-combo__button" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="tb-a-filas-lb" aria-labelledby="tb-a-filas">
+              <span class="dcc-combo__value">5</span>
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+            </button>
+            <ul class="dcc-combo__list" role="listbox" id="tb-a-filas-lb" aria-labelledby="tb-a-filas" hidden>
+              <li class="dcc-combo__option" role="option" aria-selected="true">5<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+              <li class="dcc-combo__option" role="option" aria-selected="false">10<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+              <li class="dcc-combo__option" role="option" aria-selected="false">25<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></li>
+            </ul>
+          </div>
+        </div>
+        <span class="dcc-table-pager__range">1–5 de 13</span>
+        <nav class="dcc-pagination" aria-label="Páginas de la tabla">
+          <button class="dcc-pagination__btn" type="button" aria-label="Página anterior" disabled><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <button class="dcc-pagination__btn" type="button" aria-label="Página siguiente"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="densa">Densa, ordenable y con cabecera fija</h2>
+<p class="dcc-doc-p">Los dos ajustes de MUI para tablas largas. <code>.dcc-table--densa</code> es su
+  <code>size="small"</code>: filas de 33px en vez de 53px. <code>.dcc-table--sticky</code> es su
+  <code>stickyHeader</code>: la cabecera queda arriba mientras el cuerpo se desplaza dentro de un
+  <code>.dcc-table-card__scroll--limit</code> (360px de alto; se cambia con un <code>max-height</code> en línea).
+  Se ordena igual que la normal; las columnas de notas llevan <code>data-type="number"</code>, que entiende la
+  coma decimal.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-table-card">
+    <div class="dcc-table-card__scroll dcc-table-card__scroll--limit" tabindex="0" role="region" aria-label="Notas de CC3001, sección 1">
+      <table class="dcc-table dcc-table--lineas dcc-table--densa dcc-table--sticky js-sortable">
+        <caption class="dcc-table-caption--hidden">Notas de CC3001 Algoritmos y Estructuras de Datos, sección 1</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="is-sortable" aria-sort="ascending"><button class="dcc-th-sort" type="button">Estudiante<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Tarea 1<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Tarea 2<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Control 1<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Control 2<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Examen<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Nota final<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"/></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></span></button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dcc-cell--nowrap">Araya Vidal, Tomás</td><td class="dcc-cell--num">6,2</td><td class="dcc-cell--num">5,8</td><td class="dcc-cell--num">4,9</td><td class="dcc-cell--num">5,5</td><td class="dcc-cell--num">5,1</td><td class="dcc-cell--num">5,4</td></tr>
+          <tr><td class="dcc-cell--nowrap">Contreras Núñez, Javiera</td><td class="dcc-cell--num">7,0</td><td class="dcc-cell--num">6,5</td><td class="dcc-cell--num">6,1</td><td class="dcc-cell--num">6,8</td><td class="dcc-cell--num">6,3</td><td class="dcc-cell--num">6,5</td></tr>
+          <tr><td class="dcc-cell--nowrap">Díaz Morales, Fernanda</td><td class="dcc-cell--num">5,5</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">4,2</td><td class="dcc-cell--num">4,8</td><td class="dcc-cell--num">4,5</td><td class="dcc-cell--num">4,8</td></tr>
+          <tr><td class="dcc-cell--nowrap">Fuentes Tapia, Catalina</td><td class="dcc-cell--num">6,8</td><td class="dcc-cell--num">7,0</td><td class="dcc-cell--num">5,9</td><td class="dcc-cell--num">6,2</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">6,3</td></tr>
+          <tr><td class="dcc-cell--nowrap">Herrera Lagos, Matías</td><td class="dcc-cell--num">4,5</td><td class="dcc-cell--num">5,2</td><td class="dcc-cell--num">3,8</td><td class="dcc-cell--num">4,4</td><td class="dcc-cell--num">4,1</td><td class="dcc-cell--num">4,3</td></tr>
+          <tr><td class="dcc-cell--nowrap">Muñoz Castro, Diego</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">5,5</td><td class="dcc-cell--num">5,0</td><td class="dcc-cell--num">5,7</td><td class="dcc-cell--num">5,2</td><td class="dcc-cell--num">5,4</td></tr>
+          <tr><td class="dcc-cell--nowrap">Pérez Gallardo, Antonia</td><td class="dcc-cell--num">6,6</td><td class="dcc-cell--num">6,9</td><td class="dcc-cell--num">6,4</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">6,7</td><td class="dcc-cell--num">6,5</td></tr>
+          <tr><td class="dcc-cell--nowrap">Rojas Fuentes, Camila</td><td class="dcc-cell--num">7,0</td><td class="dcc-cell--num">6,8</td><td class="dcc-cell--num">6,6</td><td class="dcc-cell--num">6,9</td><td class="dcc-cell--num">6,4</td><td class="dcc-cell--num">6,7</td></tr>
+          <tr><td class="dcc-cell--nowrap">Silva Reyes, Benjamín</td><td class="dcc-cell--num">5,0</td><td class="dcc-cell--num">4,6</td><td class="dcc-cell--num">3,9</td><td class="dcc-cell--num">4,3</td><td class="dcc-cell--num">3,8</td><td class="dcc-cell--num">4,2</td></tr>
+          <tr><td class="dcc-cell--nowrap">Soto Pizarro, Valentina</td><td class="dcc-cell--num">5,9</td><td class="dcc-cell--num">6,1</td><td class="dcc-cell--num">5,4</td><td class="dcc-cell--num">5,6</td><td class="dcc-cell--num">5,8</td><td class="dcc-cell--num">5,7</td></tr>
+          <tr><td class="dcc-cell--nowrap">Torres Medina, Sebastián</td><td class="dcc-cell--num">6,3</td><td class="dcc-cell--num">5,7</td><td class="dcc-cell--num">4,7</td><td class="dcc-cell--num">5,0</td><td class="dcc-cell--num">4,9</td><td class="dcc-cell--num">5,2</td></tr>
+          <tr><td class="dcc-cell--nowrap">Vergara Rivas, Ignacio</td><td class="dcc-cell--num">4,8</td><td class="dcc-cell--num">5,9</td><td class="dcc-cell--num">4,4</td><td class="dcc-cell--num">4,6</td><td class="dcc-cell--num">4,0</td><td class="dcc-cell--num">4,6</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<h2 class="dcc-doc-h2" id="tabla-actual">Tabla actual</h2>
+<p class="dcc-doc-p">La tabla del Figma, sin cambios: cabecera rellena en Poppins Bold mayúscula, borde de 2px
+  bajo la cabecera y al final, filas de 52px. La de líneas es un modificador que se suma a
+  <code>.dcc-table</code>; sin él la tabla se ve exactamente así.</p>
 <div class="dcc-doc-demo">
   <div class="dcc-table-row">
   

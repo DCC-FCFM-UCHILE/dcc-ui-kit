@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tabla — UI Kit DCC</title>
-<meta name="description" content="Datos en filas y columnas, con desplazamiento horizontal en pantallas angostas.">
+<meta name="description" content="Datos en filas y columnas, con desplazamiento horizontal en pantallas angostas. La variante de líneas es la de MUI: liviana, ordenable y con selección.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,700;1,400&amp;family=Poppins:wght@700&amp;display=swap" rel="stylesheet">
@@ -178,7 +178,7 @@
     <img src="../src/assets/logo-dcc-horizontal.svg" alt="DCC" height="32">
     <span class="dcc-doc-bar__name">UI Kit</span>
   </a>
-  <span class="dcc-doc-bar__version">v2.6.0</span>
+  <span class="dcc-doc-bar__version">v2.7.0</span>
   <a class="dcc-doc-bar__link" href="https://github.com/DCC-FCFM-UCHILE/dcc-ui-kit">GitHub</a>
   <div class="dcc-menu dcc-menu--end dcc-doc-theme js-menu">
     <button class="dcc-menu__trigger dcc-doc-theme__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="dcc-doc-theme-list" aria-label="Tema de color">
@@ -250,8 +250,267 @@
   <main class="dcc-doc-main" id="contenido">
       <p class="dcc-doc-crumb"><a href="index.html">Componentes</a> / Visualización de datos</p>
       <h1 class="dcc-doc-title">Tabla</h1>
-      <p class="dcc-doc-lead">Datos en filas y columnas, con desplazamiento horizontal en pantallas angostas.</p>
-<h2 class="dcc-doc-h2" id="ejemplos">Ejemplos</h2>
+      <p class="dcc-doc-lead">Datos en filas y columnas, con desplazamiento horizontal en pantallas angostas. La variante de líneas es la de MUI: liviana, ordenable y con selección.</p>
+<h2 class="dcc-doc-h2" id="lineas">Líneas</h2>
+<p class="dcc-doc-p">La <code>Table</code> de Material UI tal como viene: sin borde externo grueso ni cabecera
+  rellena; sólo divisores de 1px entre filas, la cabecera en peso 500 con el texto en tono secundario y un hover
+  suave. Los números van a la derecha con cifras de igual ancho, la fila marcada se tiñe sola (lo lee del
+  checkbox) y el pie es el <code>TablePagination</code> de MUI: «Filas por página» y «1–5 de 13». El
+  contenedor es el <code>Paper</code>: superficie con borde de 1px y radio 8.</p>
+<p class="dcc-doc-p"><code>.dcc-table.dcc-table--lineas</code> dentro de <code>.dcc-table-card</code> →
+  <code>.dcc-table-card__scroll</code>. Reutiliza el checkbox, la cabecera ordenable, los badges de estado, el
+  select y los botones de la paginación.</p>
+<p class="dcc-doc-p">La casilla de la cabecera lleva <code>.js-select-all</code>: marca o desmarca todas las filas
+  de la tabla, y queda a medias (indeterminada) cuando sólo algunas están marcadas.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-table-card">
+    <div class="dcc-table-card__toolbar">
+      <div class="dcc-table-card__heading">
+        <h3 class="dcc-table-card__title" id="tb-a-titulo">Inscripción de memorias</h3>
+        <p class="dcc-table-card__subtitle">Otoño 2026 · Ingeniería Civil en Computación</p>
+      </div>
+      <div class="dcc-table-card__tools">
+        <button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button"><svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-download"></use></svg> Exportar</button>
+      </div>
+    </div>
+    <div class="dcc-table-card__scroll" tabindex="0" role="region" aria-labelledby="tb-a-titulo">
+      <table class="dcc-table dcc-table--lineas js-sortable">
+        <caption class="dcc-table-caption--hidden">Inscripción de memorias, Otoño 2026</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" class="js-select-all" aria-label="Seleccionar todas"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg><svg class="dcc-dash dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"></path></svg></span></label></th>
+            <th scope="col" class="is-sortable" aria-sort="ascending"><button class="dcc-th-sort" type="button">Estudiante<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col">Memoria</th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Créditos<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Antonia Pérez Gallardo"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Antonia Pérez Gallardo</td>
+            <td><span class="dcc-cell-clamp">Verificación formal de contratos inteligentes</span></td>
+            <td class="dcc-cell--num">402</td>
+            <td><span class="dcc-badge dcc-badge--success">Aprobada</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Camila Rojas Fuentes" checked=""><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Camila Rojas Fuentes</td>
+            <td><span class="dcc-cell-clamp">Detección de anomalías en redes con aprendizaje federado</span></td>
+            <td class="dcc-cell--num">418</td>
+            <td><span class="dcc-badge dcc-badge--info">En revisión</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Diego Muñoz Castro"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Diego Muñoz Castro</td>
+            <td><span class="dcc-cell-clamp">Compilador incremental para un lenguaje funcional</span></td>
+            <td class="dcc-cell--num">386</td>
+            <td><span class="dcc-badge dcc-badge--warning">Pendiente</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Fernanda Díaz Morales"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Fernanda Díaz Morales</td>
+            <td><span class="dcc-cell-clamp">Recomendación de cursos a partir del historial académico</span></td>
+            <td class="dcc-cell--num">411</td>
+            <td><span class="dcc-badge dcc-badge--error">Observada</span></td>
+          </tr>
+          <tr>
+            <td class="dcc-cell--check"><label class="dcc-control"><input type="checkbox" aria-label="Seleccionar a Matías Herrera Lagos"><span class="dcc-box"><svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></label></td>
+            <td class="dcc-cell--nowrap">Matías Herrera Lagos</td>
+            <td><span class="dcc-cell-clamp">Visualización interactiva de grafos de conocimiento</span></td>
+            <td class="dcc-cell--num">395</td>
+            <td><span class="dcc-badge dcc-badge--neutral">Borrador</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dcc-table-card__foot">
+      <div class="dcc-table-pager">
+        <div class="dcc-table-pager__rows">
+          <span id="tb-a-filas">Filas por página:</span>
+          <div class="dcc-combo js-combo">
+            <button class="dcc-combo__button" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="tb-a-filas-lb" aria-labelledby="tb-a-filas">
+              <span class="dcc-combo__value">5</span>
+              <svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
+            <ul class="dcc-combo__list" role="listbox" id="tb-a-filas-lb" aria-labelledby="tb-a-filas" hidden="">
+              <li class="dcc-combo__option" role="option" aria-selected="true">5<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></li>
+              <li class="dcc-combo__option" role="option" aria-selected="false">10<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></li>
+              <li class="dcc-combo__option" role="option" aria-selected="false">25<svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></li>
+            </ul>
+          </div>
+        </div>
+        <span class="dcc-table-pager__range">1–5 de 13</span>
+        <nav class="dcc-pagination" aria-label="Páginas de la tabla">
+          <button class="dcc-pagination__btn" type="button" aria-label="Página anterior" disabled=""><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"></use></svg></button>
+          <button class="dcc-pagination__btn" type="button" aria-label="Página siguiente"><svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div><details class="dcc-doc-code"><summary>Ver HTML</summary><button class="dcc-doc-code__copy" type="button">Copiar</button><pre><code>&lt;div class="dcc-table-card"&gt;
+  &lt;div class="dcc-table-card__toolbar"&gt;
+    &lt;div class="dcc-table-card__heading"&gt;
+      &lt;h3 class="dcc-table-card__title" id="tb-a-titulo"&gt;Inscripción de memorias&lt;/h3&gt;
+      &lt;p class="dcc-table-card__subtitle"&gt;Otoño 2026 · Ingeniería Civil en Computación&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="dcc-table-card__tools"&gt;
+      &lt;button class="dcc-btn dcc-btn--md dcc-btn--outlined" type="button"&gt;&lt;svg class="dcc-icon dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-download"&gt;&lt;/use&gt;&lt;/svg&gt; Exportar&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="dcc-table-card__scroll" tabindex="0" role="region" aria-labelledby="tb-a-titulo"&gt;
+    &lt;table class="dcc-table dcc-table--lineas js-sortable"&gt;
+      &lt;caption class="dcc-table-caption--hidden"&gt;Inscripción de memorias, Otoño 2026&lt;/caption&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th scope="col" class="dcc-cell--check"&gt;&lt;label class="dcc-control"&gt;&lt;input type="checkbox" class="js-select-all" aria-label="Seleccionar todas"&gt;&lt;span class="dcc-box"&gt;&lt;svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M20 6 9 17l-5-5"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;svg class="dcc-dash dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"&gt;&lt;path d="M5 12h14"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/label&gt;&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable" aria-sort="ascending"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Estudiante&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col"&gt;Memoria&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Créditos&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col"&gt;Estado&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td class="dcc-cell--check"&gt;&lt;label class="dcc-control"&gt;&lt;input type="checkbox" aria-label="Seleccionar a Antonia Pérez Gallardo"&gt;&lt;span class="dcc-box"&gt;&lt;svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M20 6 9 17l-5-5"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/label&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--nowrap"&gt;Antonia Pérez Gallardo&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-cell-clamp"&gt;Verificación formal de contratos inteligentes&lt;/span&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--num"&gt;402&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-badge dcc-badge--success"&gt;Aprobada&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td class="dcc-cell--check"&gt;&lt;label class="dcc-control"&gt;&lt;input type="checkbox" aria-label="Seleccionar a Camila Rojas Fuentes" checked&gt;&lt;span class="dcc-box"&gt;&lt;svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M20 6 9 17l-5-5"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/label&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--nowrap"&gt;Camila Rojas Fuentes&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-cell-clamp"&gt;Detección de anomalías en redes con aprendizaje federado&lt;/span&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--num"&gt;418&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-badge dcc-badge--info"&gt;En revisión&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td class="dcc-cell--check"&gt;&lt;label class="dcc-control"&gt;&lt;input type="checkbox" aria-label="Seleccionar a Diego Muñoz Castro"&gt;&lt;span class="dcc-box"&gt;&lt;svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M20 6 9 17l-5-5"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/label&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--nowrap"&gt;Diego Muñoz Castro&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-cell-clamp"&gt;Compilador incremental para un lenguaje funcional&lt;/span&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--num"&gt;386&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-badge dcc-badge--warning"&gt;Pendiente&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td class="dcc-cell--check"&gt;&lt;label class="dcc-control"&gt;&lt;input type="checkbox" aria-label="Seleccionar a Fernanda Díaz Morales"&gt;&lt;span class="dcc-box"&gt;&lt;svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M20 6 9 17l-5-5"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/label&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--nowrap"&gt;Fernanda Díaz Morales&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-cell-clamp"&gt;Recomendación de cursos a partir del historial académico&lt;/span&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--num"&gt;411&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-badge dcc-badge--error"&gt;Observada&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td class="dcc-cell--check"&gt;&lt;label class="dcc-control"&gt;&lt;input type="checkbox" aria-label="Seleccionar a Matías Herrera Lagos"&gt;&lt;span class="dcc-box"&gt;&lt;svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M20 6 9 17l-5-5"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/label&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--nowrap"&gt;Matías Herrera Lagos&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-cell-clamp"&gt;Visualización interactiva de grafos de conocimiento&lt;/span&gt;&lt;/td&gt;
+          &lt;td class="dcc-cell--num"&gt;395&lt;/td&gt;
+          &lt;td&gt;&lt;span class="dcc-badge dcc-badge--neutral"&gt;Borrador&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;div class="dcc-table-card__foot"&gt;
+    &lt;div class="dcc-table-pager"&gt;
+      &lt;div class="dcc-table-pager__rows"&gt;
+        &lt;span id="tb-a-filas"&gt;Filas por página:&lt;/span&gt;
+        &lt;div class="dcc-combo js-combo"&gt;
+          &lt;button class="dcc-combo__button" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="tb-a-filas-lb" aria-labelledby="tb-a-filas"&gt;
+            &lt;span class="dcc-combo__value"&gt;5&lt;/span&gt;
+            &lt;svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevron-down"&gt;&lt;/use&gt;&lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;ul class="dcc-combo__list" role="listbox" id="tb-a-filas-lb" aria-labelledby="tb-a-filas" hidden&gt;
+            &lt;li class="dcc-combo__option" role="option" aria-selected="true"&gt;5&lt;svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-check"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/li&gt;
+            &lt;li class="dcc-combo__option" role="option" aria-selected="false"&gt;10&lt;svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-check"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/li&gt;
+            &lt;li class="dcc-combo__option" role="option" aria-selected="false"&gt;25&lt;svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-check"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;span class="dcc-table-pager__range"&gt;1–5 de 13&lt;/span&gt;
+      &lt;nav class="dcc-pagination" aria-label="Páginas de la tabla"&gt;
+        &lt;button class="dcc-pagination__btn" type="button" aria-label="Página anterior" disabled&gt;&lt;svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevron-left"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/button&gt;
+        &lt;button class="dcc-pagination__btn" type="button" aria-label="Página siguiente"&gt;&lt;svg class="dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevron-right"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/button&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></details>
+
+<h2 class="dcc-doc-h2" id="densa">Densa, ordenable y con cabecera fija</h2>
+<p class="dcc-doc-p">Los dos ajustes de MUI para tablas largas. <code>.dcc-table--densa</code> es su
+  <code>size="small"</code>: filas de 33px en vez de 53px. <code>.dcc-table--sticky</code> es su
+  <code>stickyHeader</code>: la cabecera queda arriba mientras el cuerpo se desplaza dentro de un
+  <code>.dcc-table-card__scroll--limit</code> (360px de alto; se cambia con un <code>max-height</code> en línea).
+  Se ordena igual que la normal; las columnas de notas llevan <code>data-type="number"</code>, que entiende la
+  coma decimal.</p>
+<div class="dcc-doc-demo">
+  <div class="dcc-table-card">
+    <div class="dcc-table-card__scroll dcc-table-card__scroll--limit" tabindex="0" role="region" aria-label="Notas de CC3001, sección 1">
+      <table class="dcc-table dcc-table--lineas dcc-table--densa dcc-table--sticky js-sortable">
+        <caption class="dcc-table-caption--hidden">Notas de CC3001 Algoritmos y Estructuras de Datos, sección 1</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="is-sortable" aria-sort="ascending"><button class="dcc-th-sort" type="button">Estudiante<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Tarea 1<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Tarea 2<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Control 1<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Control 2<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Examen<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+            <th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"><button class="dcc-th-sort" type="button">Nota final<span class="dcc-sort-ico"><svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevrons-up-down"></use></svg><svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-up"></use></svg><svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dcc-cell--nowrap">Araya Vidal, Tomás</td><td class="dcc-cell--num">6,2</td><td class="dcc-cell--num">5,8</td><td class="dcc-cell--num">4,9</td><td class="dcc-cell--num">5,5</td><td class="dcc-cell--num">5,1</td><td class="dcc-cell--num">5,4</td></tr>
+          <tr><td class="dcc-cell--nowrap">Contreras Núñez, Javiera</td><td class="dcc-cell--num">7,0</td><td class="dcc-cell--num">6,5</td><td class="dcc-cell--num">6,1</td><td class="dcc-cell--num">6,8</td><td class="dcc-cell--num">6,3</td><td class="dcc-cell--num">6,5</td></tr>
+          <tr><td class="dcc-cell--nowrap">Díaz Morales, Fernanda</td><td class="dcc-cell--num">5,5</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">4,2</td><td class="dcc-cell--num">4,8</td><td class="dcc-cell--num">4,5</td><td class="dcc-cell--num">4,8</td></tr>
+          <tr><td class="dcc-cell--nowrap">Fuentes Tapia, Catalina</td><td class="dcc-cell--num">6,8</td><td class="dcc-cell--num">7,0</td><td class="dcc-cell--num">5,9</td><td class="dcc-cell--num">6,2</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">6,3</td></tr>
+          <tr><td class="dcc-cell--nowrap">Herrera Lagos, Matías</td><td class="dcc-cell--num">4,5</td><td class="dcc-cell--num">5,2</td><td class="dcc-cell--num">3,8</td><td class="dcc-cell--num">4,4</td><td class="dcc-cell--num">4,1</td><td class="dcc-cell--num">4,3</td></tr>
+          <tr><td class="dcc-cell--nowrap">Muñoz Castro, Diego</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">5,5</td><td class="dcc-cell--num">5,0</td><td class="dcc-cell--num">5,7</td><td class="dcc-cell--num">5,2</td><td class="dcc-cell--num">5,4</td></tr>
+          <tr><td class="dcc-cell--nowrap">Pérez Gallardo, Antonia</td><td class="dcc-cell--num">6,6</td><td class="dcc-cell--num">6,9</td><td class="dcc-cell--num">6,4</td><td class="dcc-cell--num">6,0</td><td class="dcc-cell--num">6,7</td><td class="dcc-cell--num">6,5</td></tr>
+          <tr><td class="dcc-cell--nowrap">Rojas Fuentes, Camila</td><td class="dcc-cell--num">7,0</td><td class="dcc-cell--num">6,8</td><td class="dcc-cell--num">6,6</td><td class="dcc-cell--num">6,9</td><td class="dcc-cell--num">6,4</td><td class="dcc-cell--num">6,7</td></tr>
+          <tr><td class="dcc-cell--nowrap">Silva Reyes, Benjamín</td><td class="dcc-cell--num">5,0</td><td class="dcc-cell--num">4,6</td><td class="dcc-cell--num">3,9</td><td class="dcc-cell--num">4,3</td><td class="dcc-cell--num">3,8</td><td class="dcc-cell--num">4,2</td></tr>
+          <tr><td class="dcc-cell--nowrap">Soto Pizarro, Valentina</td><td class="dcc-cell--num">5,9</td><td class="dcc-cell--num">6,1</td><td class="dcc-cell--num">5,4</td><td class="dcc-cell--num">5,6</td><td class="dcc-cell--num">5,8</td><td class="dcc-cell--num">5,7</td></tr>
+          <tr><td class="dcc-cell--nowrap">Torres Medina, Sebastián</td><td class="dcc-cell--num">6,3</td><td class="dcc-cell--num">5,7</td><td class="dcc-cell--num">4,7</td><td class="dcc-cell--num">5,0</td><td class="dcc-cell--num">4,9</td><td class="dcc-cell--num">5,2</td></tr>
+          <tr><td class="dcc-cell--nowrap">Vergara Rivas, Ignacio</td><td class="dcc-cell--num">4,8</td><td class="dcc-cell--num">5,9</td><td class="dcc-cell--num">4,4</td><td class="dcc-cell--num">4,6</td><td class="dcc-cell--num">4,0</td><td class="dcc-cell--num">4,6</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><details class="dcc-doc-code"><summary>Ver HTML</summary><button class="dcc-doc-code__copy" type="button">Copiar</button><pre><code>&lt;div class="dcc-table-card"&gt;
+  &lt;div class="dcc-table-card__scroll dcc-table-card__scroll--limit" tabindex="0" role="region" aria-label="Notas de CC3001, sección 1"&gt;
+    &lt;table class="dcc-table dcc-table--lineas dcc-table--densa dcc-table--sticky js-sortable"&gt;
+      &lt;caption class="dcc-table-caption--hidden"&gt;Notas de CC3001 Algoritmos y Estructuras de Datos, sección 1&lt;/caption&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th scope="col" class="is-sortable" aria-sort="ascending"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Estudiante&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Tarea 1&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Tarea 2&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Control 1&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Control 2&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Examen&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+          &lt;th scope="col" class="is-sortable dcc-cell--num" aria-sort="none" data-type="number"&gt;&lt;button class="dcc-th-sort" type="button"&gt;Nota final&lt;span class="dcc-sort-ico"&gt;&lt;svg class="dcc-sort-none dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-chevrons-up-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-asc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-up"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;svg class="dcc-sort-desc dcc-i" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;use href="#i-arrow-down"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Araya Vidal, Tomás&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,2&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,5&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,1&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,4&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Contreras Núñez, Javiera&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;7,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,5&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,1&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,3&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,5&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Díaz Morales, Fernanda&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,5&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,2&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,5&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,8&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Fuentes Tapia, Catalina&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;7,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,2&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,3&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Herrera Lagos, Matías&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,5&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,2&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;3,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,4&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,1&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,3&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Muñoz Castro, Diego&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,5&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,7&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,2&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,4&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Pérez Gallardo, Antonia&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,6&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,4&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,7&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,5&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Rojas Fuentes, Camila&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;7,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,6&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,4&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,7&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Silva Reyes, Benjamín&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,6&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;3,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,3&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;3,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,2&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Soto Pizarro, Valentina&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,1&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,4&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,6&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,7&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Torres Medina, Sebastián&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;6,3&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,7&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,7&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,2&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="dcc-cell--nowrap"&gt;Vergara Rivas, Ignacio&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,8&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;5,9&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,4&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,6&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,0&lt;/td&gt;&lt;td class="dcc-cell--num"&gt;4,6&lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></details>
+
+<h2 class="dcc-doc-h2" id="tabla-actual">Tabla actual</h2>
+<p class="dcc-doc-p">La tabla del Figma, sin cambios: cabecera rellena en Poppins Bold mayúscula, borde de 2px
+  bajo la cabecera y al final, filas de 52px. La de líneas es un modificador que se suma a
+  <code>.dcc-table</code>; sin él la tabla se ve exactamente así.</p>
 <div class="dcc-doc-demo">
   <div class="dcc-table-row">
   
@@ -310,7 +569,14 @@
 
   </main>
 
-  
+  <aside class="dcc-doc-toc" aria-label="En esta página">
+    <p class="dcc-doc-toc__title">En esta página</p>
+    <ul>
+      <li><a href="#lineas">Líneas</a></li>
+      <li><a href="#densa">Densa, ordenable y con cabecera fija</a></li>
+      <li><a href="#tabla-actual">Tabla actual</a></li>
+    </ul>
+  </aside>
 </div>
 
 <script src="../src/behaviors.js" defer></script>
