@@ -36,9 +36,15 @@ Para este kit eso significa:
 - **`DCCUI.registrar(fn)`**: los componentes nuevos viven en `src/componentes/`, un archivo por
   componente, y se enganchan al kit con esta función. Para quien consume el kit no cambia nada:
   `dist/` sigue teniendo un CSS y un bundle.
+- **Las imágenes de la firma se publican con el kit**: el build copia los PNG de `firmas/img/`
+  (logotipo, íconos de contacto y redes) a `dist/firmas/img/`, así que cada versión los deja en
+  `/ui-kit/<versión>/firmas/img/`. Las firmas copiadas desde el generador y las que arman las apps
+  (Faro) los cargan desde ahí, en una dirección fija que no cambia aunque después cambie el logotipo.
 
 ### Corrige
 
+- **Firma de correo: el bloque de nombre, cargo y contacto queda centrado** contra la línea roja, y la
+  última fila de contacto ya no deja aire de más debajo.
 - **Elegir una opción de un menú con el mouse devuelve el foco al botón** que lo abrió. Antes el foco
   quedaba en un ítem que acababa de esconderse.
 - **La lista no dibujaba sus separadores** cuando los ítems iban dentro de un `<li>`, y el título y
