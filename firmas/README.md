@@ -2,8 +2,11 @@
 
 La firma institucional en HTML, lista para Gmail, Outlook y Apple Mail.
 
-- **`index.html`** — el generador. Cada persona completa sus datos, revisa la firma en ancho de
-  escritorio y de teléfono, y la copia o la descarga. Con `npm start` queda en
+- **`index.html`** — el generador. Cada persona completa nombre, cargo, los últimos 5 dígitos de
+  su teléfono (el `+56 2297` es fijo), edificio (Poniente o Norte), piso (2 o 3) y oficina; la calle,
+  Beauchef #851, va fija. Revisa la firma en ancho de escritorio y de teléfono, y la copia o la
+  descarga. Copiar y descargar se bloquean mientras falte un dato, para que nadie envíe una firma con
+  los marcadores "#####" o "Poniente/Norte". Con `npm start` queda en
   `http://localhost:4173/firmas/`.
 - **`plantilla.js`** — la firma misma: `firmaDCC(datos, { base })` devuelve el HTML. La usan el
   generador y `generar-ejemplo.mjs`.
@@ -37,8 +40,8 @@ Un correo no es una página web, y cada decisión sale de lo que los clientes de
 
 1. **Las imágenes ya viajan con el kit.** El build copia los PNG de `img/` a `dist/firmas/img/`, y
    cada versión queda publicada en `https://apps.dcc.uchile.cl/ui-kit/<versión>/firmas/img/`. Las
-   firmas copiadas cargan los PNG desde el campo "Dirección de las imágenes", que apunta ahí por
-   omisión. La dirección lleva la versión a propósito: una firma ya enviada sigue viéndose aunque
+   firmas copiadas cargan los PNG desde esa dirección, que va en un campo oculto del generador
+   (`name="base"`). La dirección lleva la versión a propósito: una firma ya enviada sigue viéndose aunque
    después cambie el logotipo. Al publicar una versión nueva, actualiza ese valor en `index.html`.
 2. **Confirmar las redes.** Los enlaces de TikTok, Facebook, Instagram y LinkedIn suponen la cuenta
    `dccuchile` en todas (`REDES` en `plantilla.js`). Conviene verificar cada URL, en particular la de

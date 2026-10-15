@@ -11,7 +11,9 @@
   .firmas__lead { max-width: 70ch; margin: 8px 0 32px; font-size: 17px; line-height: 1.55; color: var(--dcc-fg-accent); }
   .firmas__grid { display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); gap: 32px; align-items: start; }
   .firmas__panel { background: var(--dcc-surface); border: 1px solid var(--dcc-border-subtle); border-radius: 12px; padding: 24px; }
-  .firmas__form { display: grid; gap: 16px; }
+  /* La columna no puede ser más ancha que el panel: sin `minmax(0, 1fr)` toma
+     el ancho natural de los campos y en el teléfono se sale por la derecha. */
+  .firmas__form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .firmas__form .dcc-field { max-width: none; }
   .firmas__h2 { margin: 0 0 16px; font-size: 18px; color: var(--dcc-fg-strong); }
   .firmas__barra { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
@@ -21,12 +23,12 @@
   .firmas__tamanos button[aria-pressed="true"] { background: var(--dcc-surface); color: var(--dcc-fg-strong); font-weight: 700; box-shadow: var(--dcc-shadow); }
   .firmas__marco { margin: 0 auto; transition: max-width .25s cubic-bezier(.4, 0, .2, 1); }
   .firmas__acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-  .firmas__nota { margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: var(--dcc-fg-muted); }
   .firmas__codigo { margin-top: 16px; }
   .firmas__codigo pre { max-height: 320px; overflow: auto; padding: 16px; border-radius: 8px; background: var(--dcc-grey-dark); color: #e6edf5; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-all; }
   .firmas__pasos { margin: 0; padding-left: 20px; line-height: 1.6; color: var(--dcc-fg); }
   .firmas__pasos li + li { margin-top: 6px; }
   .firmas__estado { min-height: 20px; font-size: 14px; color: var(--dcc-success); }
+  .firmas__estado--error { color: var(--dcc-danger); }
   @media (max-width: 900px) { .firmas__grid { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
@@ -41,33 +43,51 @@
   <div class="firmas__grid">
     <section class="firmas__panel" aria-labelledby="t-datos">
       <h2 class="firmas__h2" id="t-datos">Tus datos</h2>
-      <form class="firmas__form" id="form" autocomplete="off">
+      <form class="firmas__form" id="form" autocomplete="off" novalidate>
         <div class="dcc-field">
           <label class="dcc-field__label" for="f-nombre">Nombre</label>
-          <input class="dcc-input" id="f-nombre" name="nombre" value="Tavata Salazar Vallejos">
+          <input class="dcc-input" id="f-nombre" name="nombre" placeholder="Nombre Apellido Apellido">
         </div>
         <div class="dcc-field">
           <label class="dcc-field__label" for="f-cargo">Cargo</label>
-          <input class="dcc-input" id="f-cargo" name="cargo" value="Encargada de Estudios">
+          <input class="dcc-input" id="f-cargo" name="cargo" placeholder="Cargo">
         </div>
         <div class="dcc-field">
           <label class="dcc-field__label" for="f-telefono">Teléfono</label>
-          <input class="dcc-input" id="f-telefono" name="telefono" value="+56 229784891" inputmode="tel">
+          <div class="dcc-adorned">
+            <span class="dcc-adornment dcc-adornment--box">+56 2297</span>
+            <input class="dcc-adorned__input" id="f-telefono" name="telefono" placeholder="#####"
+                   inputmode="numeric" pattern="[0-9]{5}" aria-describedby="f-telefono-ayuda">
+          </div>
+          <span class="dcc-field__help" id="f-telefono-ayuda">Los últimos 5 dígitos de tu anexo</span>
         </div>
         <div class="dcc-field">
-          <label class="dcc-field__label" for="f-dir1">Dirección</label>
-          <input class="dcc-input" id="f-dir1" name="direccion1" value="Beauchef #851, Edificio Poniente,">
+          <span class="dcc-field__label" id="f-edificio-l">Edificio</span>
+          <div class="dcc-toggle-group dcc-toggle-group--full js-toggle-group" role="group" aria-labelledby="f-edificio-l"
+               data-exclusivo="obligatorio" data-campo="edificio">
+            <button class="dcc-toggle" type="button" value="Poniente" aria-pressed="false">Poniente</button>
+            <button class="dcc-toggle" type="button" value="Norte" aria-pressed="false">Norte</button>
+          </div>
         </div>
         <div class="dcc-field">
-          <label class="dcc-field__label" for="f-dir2">Oficina</label>
-          <input class="dcc-input" id="f-dir2" name="direccion2" value="Piso 2 Of. 205">
+          <span class="dcc-field__label" id="f-piso-l">Piso</span>
+          <div class="dcc-toggle-group dcc-toggle-group--full js-toggle-group" role="group" aria-labelledby="f-piso-l"
+               data-exclusivo="obligatorio" data-campo="piso">
+            <button class="dcc-toggle" type="button" value="2" aria-pressed="false">Piso 2</button>
+            <button class="dcc-toggle" type="button" value="3" aria-pressed="false">Piso 3</button>
+          </div>
         </div>
         <div class="dcc-field">
-          <label class="dcc-field__label" for="f-base">Dirección de las imágenes</label>
-          <input class="dcc-input" id="f-base" name="base" value="https://apps.dcc.uchile.cl/ui-kit/2.8.0/firmas/img/">
-          <span class="dcc-field__help"><span>Donde están publicados los PNG de la carpeta firmas/img/. Las
-            firmas copiadas apuntan acá; la vista previa usa los archivos locales.</span></span>
+          <label class="dcc-field__label" for="f-oficina">Oficina</label>
+          <div class="dcc-adorned">
+            <span class="dcc-adornment dcc-adornment--box">Of.</span>
+            <input class="dcc-adorned__input" id="f-oficina" name="oficina" placeholder="###" maxlength="5">
+          </div>
         </div>
+        <!-- Dónde están publicados los PNG de firmas/img/. Las firmas copiadas
+             apuntan acá; la vista previa usa los archivos locales. Va oculto: no
+             es un dato que la persona tenga que decidir. -->
+        <input type="hidden" name="base" value="https://apps.dcc.uchile.cl/ui-kit/2.8.0/firmas/img/">
       </form>
     </section>
 
@@ -107,8 +127,6 @@
         <li><strong>Apple Mail:</strong> Ajustes → Firmas → <kbd>+</kbd>. Desmarca “Usar siempre mi tipo de letra
           predeterminado” y pega.</li>
       </ol>
-      <p class="firmas__nota">Las imágenes se cargan desde la dirección configurada arriba: tienen que estar
-        publicadas ahí antes de usar la firma, o el destinatario verá los recuadros vacíos.</p>
     </section>
   </div>
 </main>
@@ -122,15 +140,47 @@
     var codigo = document.getElementById("codigo");
     var estado = document.getElementById("estado");
 
-    function datos() {
+    // Lo que no cambia entre personas va fijo; lo que falta se muestra en la
+    // vista previa con el mismo marcador del formulario, para que se vea qué
+    // queda por llenar.
+    var PREFIJO_TEL = "+56 2297";
+    var CALLE = "Beauchef #851";
+
+    function presionado(campo) {
+      var b = form.querySelector('[data-campo="' + campo + '"] .dcc-toggle[aria-pressed="true"]');
+      return b ? b.value : "";
+    }
+    function valores() {
       var f = new FormData(form);
       return {
-        nombre: f.get("nombre"),
-        cargo: f.get("cargo"),
-        telefono: f.get("telefono"),
-        direccion1: f.get("direccion1"),
-        direccion2: f.get("direccion2")
+        nombre: String(f.get("nombre") || "").trim(),
+        cargo: String(f.get("cargo") || "").trim(),
+        telefono: String(f.get("telefono") || "").replace(/\D/g, ""),
+        edificio: presionado("edificio"),
+        piso: presionado("piso"),
+        oficina: String(f.get("oficina") || "").trim()
       };
+    }
+    function datos() {
+      var v = valores();
+      return {
+        nombre: v.nombre || "Nombre Apellido Apellido",
+        cargo: v.cargo || "Cargo",
+        telefono: PREFIJO_TEL + (v.telefono || "#####"),
+        direccion1: CALLE + ", Edificio " + (v.edificio || "Poniente/Norte") + ",",
+        direccion2: "Piso " + (v.piso || "2/3") + " Of. " + (v.oficina || "###")
+      };
+    }
+    /** Los campos que faltan, con el elemento al que llevar el foco. */
+    function faltantes() {
+      var v = valores(), f = [];
+      if (!v.nombre) f.push(["el nombre", "#f-nombre"]);
+      if (!v.cargo) f.push(["el cargo", "#f-cargo"]);
+      if (v.telefono.length !== 5) f.push(["los 5 dígitos del teléfono", "#f-telefono"]);
+      if (!v.edificio) f.push(["el edificio", '[data-campo="edificio"] .dcc-toggle']);
+      if (!v.piso) f.push(["el piso", '[data-campo="piso"] .dcc-toggle']);
+      if (!v.oficina) f.push(["la oficina", "#f-oficina"]);
+      return f;
     }
     function base() { return String(new FormData(form).get("base") || "img/").trim(); }
 
@@ -139,8 +189,18 @@
       marco.innerHTML = firmaDCC(d, { base: "img/" });
       codigo.textContent = firmaDCC(d, { base: base() });
     }
+    // El teléfono sólo admite cifras, y como máximo cinco. El tope lo pone el
+    // script y no `maxlength`, que contaría las letras antes de borrarlas. Si
+    // se pega el número completo (229784891), se toman los últimos cinco: el
+    // prefijo ya está fijo.
+    document.getElementById("f-telefono").addEventListener("input", function (e) {
+      var cifras = e.target.value.replace(/\D/g, "");
+      var limpio = e.inputType === "insertFromPaste" ? cifras.slice(-5) : cifras.slice(0, 5);
+      if (limpio !== e.target.value) e.target.value = limpio;
+    });
     form.addEventListener("input", pintar);
     form.addEventListener("change", pintar);
+    form.addEventListener("dcc-alternar", pintar);
     pintar();
 
 
@@ -151,15 +211,27 @@
       });
     });
 
-    function avisar(texto) {
+    function avisar(texto, error) {
       estado.textContent = texto;
-      setTimeout(function () { estado.textContent = ""; }, 3000);
+      estado.classList.toggle("firmas__estado--error", !!error);
+      clearTimeout(avisar.t);
+      if (!error) avisar.t = setTimeout(function () { estado.textContent = ""; }, 3000);
+    }
+    /** Antes de copiar o descargar: si falta algo, lo dice y lleva el foco ahí. */
+    function completa() {
+      var f = faltantes();
+      if (!f.length) return true;
+      avisar("Falta " + f.map(function (x) { return x[0]; }).join(", ").replace(/, ([^,]*)$/, " y $1") + ".", true);
+      var el = form.querySelector(f[0][1]);
+      if (el) el.focus();
+      return false;
     }
 
     // Se copia como HTML enriquecido, que es lo que entienden los editores de
     // firma. Si el navegador no tiene ClipboardItem, se selecciona una copia
     // oculta —con las URL públicas, no las locales— y se copia la selección.
     document.getElementById("copiar").addEventListener("click", function () {
+      if (!completa()) return;
       var html = firmaDCC(datos(), { base: base() });
       var texto = marco.innerText;
       if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
@@ -189,6 +261,7 @@
     }
 
     document.getElementById("descargar").addEventListener("click", function () {
+      if (!completa()) return;
       var d = datos();
       var blob = new Blob([documentoFirma(d, { base: base() })], { type: "text/html" });
       var a = document.createElement("a");
