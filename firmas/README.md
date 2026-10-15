@@ -2,12 +2,12 @@
 
 La firma institucional en HTML, lista para Gmail, Outlook y Apple Mail.
 
-- **`index.html`** — el generador. Cada persona completa nombre, cargo, los últimos 5 dígitos de
-  su teléfono (el `+56 2297` es fijo), edificio (Poniente o Norte), piso (2 o 3) y oficina; la calle,
-  Beauchef #851, va fija. Revisa la firma en ancho de escritorio y de teléfono, y la copia o la
-  descarga. Copiar y descargar se bloquean mientras falte un dato, para que nadie envíe una firma con
-  los marcadores "#####" o "Poniente/Norte". Con `npm start` queda en
-  `http://localhost:4173/firmas/`.
+- **`index.html`** — el generador. Nombre y cargo son obligatorios. Son opcionales, y si quedan
+  vacíos la firma va sin esa fila: el teléfono (se escriben sólo los últimos 5 dígitos; el
+  `+56 2297` es fijo), la página web (se muestra sin `https://` y enlaza por https) y la dirección,
+  que se incluye con una casilla y entonces pide edificio (Poniente o Norte), piso (2 o 3) y oficina;
+  la calle, Beauchef #851, va fija. Copiar y descargar se bloquean mientras falte un dato obligatorio
+  o uno opcional esté a medias, para que nadie envíe una firma con los marcadores.
 - **`plantilla.js`** — la firma misma: `firmaDCC(datos, { base })` devuelve el HTML. La usan el
   generador y `generar-ejemplo.mjs`.
 - **`ejemplo.html`** — una firma completa de muestra. Se regenera con
@@ -16,7 +16,9 @@ La firma institucional en HTML, lista para Gmail, Outlook y Apple Mail.
   cada versión del kit en `dist/firmas/img/` (ver abajo).
 
 En escritorio la firma tiene dos columnas: a la izquierda el logotipo gris del DCC y las redes;
-a la derecha nombre, cargo, teléfono y dirección, separados de las redes por una línea roja. En el
+a la derecha nombre, cargo y, si los hay, teléfono, web y dirección, separados de las redes por una
+línea roja que mide lo mismo que el bloque del logotipo. El bloque de la derecha queda centrado en
+vertical contra la línea con cualquier combinación de filas. En el
 teléfono las columnas se apilan solas y la línea queda a la izquierda del nombre. No lleva correo:
 quien la recibe ya lo tiene en el remitente.
 

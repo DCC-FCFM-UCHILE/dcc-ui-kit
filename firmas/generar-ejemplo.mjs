@@ -14,6 +14,7 @@ const html = contexto.documentoFirma({
   nombre: "Tavata Salazar Vallejos",
   cargo: "Encargada de Estudios",
   telefono: "+56 229784891",
+  web: "www.dcc.uchile.cl",
   direccion1: "Beauchef #851, Edificio Poniente,",
   direccion2: "Piso 2 Of. 205",
 }, { base: "img/" });

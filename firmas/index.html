@@ -29,6 +29,9 @@
   .firmas__pasos li + li { margin-top: 6px; }
   .firmas__estado { min-height: 20px; font-size: 14px; color: var(--dcc-success); }
   .firmas__estado--error { color: var(--dcc-danger); }
+  .firmas__opcional { font-weight: 400; color: var(--dcc-fg-muted); }
+  .firmas__direccion { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .firmas__direccion[hidden] { display: none; }
   @media (max-width: 900px) { .firmas__grid { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
@@ -53,7 +56,7 @@
           <input class="dcc-input" id="f-cargo" name="cargo" placeholder="Cargo">
         </div>
         <div class="dcc-field">
-          <label class="dcc-field__label" for="f-telefono">Teléfono</label>
+          <label class="dcc-field__label" for="f-telefono">Teléfono <span class="firmas__opcional">(opcional)</span></label>
           <div class="dcc-adorned">
             <span class="dcc-adornment dcc-adornment--box">+56 2297</span>
             <input class="dcc-adorned__input" id="f-telefono" name="telefono" placeholder="#####"
@@ -61,6 +64,22 @@
           </div>
           <span class="dcc-field__help" id="f-telefono-ayuda">Los últimos 5 dígitos de tu anexo</span>
         </div>
+        <div class="dcc-field">
+          <label class="dcc-field__label" for="f-web">Página web <span class="firmas__opcional">(opcional)</span></label>
+          <div class="dcc-adorned">
+            <span class="dcc-adornment dcc-adornment--box">https://</span>
+            <input class="dcc-adorned__input" id="f-web" name="web" placeholder="www.dcc.uchile.cl"
+                   inputmode="url" autocapitalize="off" spellcheck="false">
+          </div>
+        </div>
+        <label class="dcc-control">
+          <input type="checkbox" name="incluir_direccion" id="f-incluir-direccion" checked aria-controls="f-direccion">
+          <span class="dcc-box">
+            <svg class="dcc-check dcc-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <span>Incluir la dirección (Beauchef #851)</span>
+        </label>
+        <div class="firmas__direccion" id="f-direccion">
         <div class="dcc-field">
           <span class="dcc-field__label" id="f-edificio-l">Edificio</span>
           <div class="dcc-toggle-group dcc-toggle-group--full js-toggle-group" role="group" aria-labelledby="f-edificio-l"
@@ -84,10 +103,11 @@
             <input class="dcc-adorned__input" id="f-oficina" name="oficina" placeholder="###" maxlength="5">
           </div>
         </div>
+        </div>
         <!-- Dónde están publicados los PNG de firmas/img/. Las firmas copiadas
              apuntan acá; la vista previa usa los archivos locales. Va oculto: no
              es un dato que la persona tenga que decidir. -->
-        <input type="hidden" name="base" value="https://apps.dcc.uchile.cl/ui-kit/2.8.0/firmas/img/">
+        <input type="hidden" name="base" value="https://apps.dcc.uchile.cl/ui-kit/2.8.1/firmas/img/">
       </form>
     </section>
 
@@ -156,35 +176,47 @@
         nombre: String(f.get("nombre") || "").trim(),
         cargo: String(f.get("cargo") || "").trim(),
         telefono: String(f.get("telefono") || "").replace(/\D/g, ""),
+        web: String(f.get("web") || "").trim().replace(/^https?:\/\//i, "").replace(/\/+$/, ""),
+        conDireccion: f.get("incluir_direccion") === "on",
         edificio: presionado("edificio"),
         piso: presionado("piso"),
         oficina: String(f.get("oficina") || "").trim()
       };
     }
+    // Nombre y cargo son obligatorios y, mientras faltan, la vista previa
+    // muestra su marcador. Teléfono, web y dirección son opcionales: vacíos no
+    // llevan fila; empezados, muestran lo que falta con el marcador.
     function datos() {
       var v = valores();
       return {
         nombre: v.nombre || "Nombre Apellido Apellido",
         cargo: v.cargo || "Cargo",
-        telefono: PREFIJO_TEL + (v.telefono || "#####"),
-        direccion1: CALLE + ", Edificio " + (v.edificio || "Poniente/Norte") + ",",
-        direccion2: "Piso " + (v.piso || "2/3") + " Of. " + (v.oficina || "###")
+        telefono: v.telefono ? PREFIJO_TEL + (v.telefono + "#####").slice(0, 5) : "",
+        web: v.web,
+        direccion1: v.conDireccion ? CALLE + ", Edificio " + (v.edificio || "Poniente/Norte") + "," : "",
+        direccion2: v.conDireccion ? "Piso " + (v.piso || "2/3") + " Of. " + (v.oficina || "###") : ""
       };
     }
-    /** Los campos que faltan, con el elemento al que llevar el foco. */
+    /** Lo que falta o está incompleto, con el elemento al que llevar el foco. */
     function faltantes() {
       var v = valores(), f = [];
       if (!v.nombre) f.push(["el nombre", "#f-nombre"]);
       if (!v.cargo) f.push(["el cargo", "#f-cargo"]);
-      if (v.telefono.length !== 5) f.push(["los 5 dígitos del teléfono", "#f-telefono"]);
-      if (!v.edificio) f.push(["el edificio", '[data-campo="edificio"] .dcc-toggle']);
-      if (!v.piso) f.push(["el piso", '[data-campo="piso"] .dcc-toggle']);
-      if (!v.oficina) f.push(["la oficina", "#f-oficina"]);
+      if (v.telefono && v.telefono.length !== 5) f.push(["completar los 5 dígitos del teléfono", "#f-telefono"]);
+      // Un dominio: sin espacios y con al menos un punto (dcc.uchile.cl).
+      if (v.web && !/^[^\s\/]+\.[^\s\/]+(\/\S*)?$/.test(v.web)) f.push(["una página web válida", "#f-web"]);
+      if (v.conDireccion) {
+        if (!v.edificio) f.push(["el edificio", '[data-campo="edificio"] .dcc-toggle']);
+        if (!v.piso) f.push(["el piso", '[data-campo="piso"] .dcc-toggle']);
+        if (!v.oficina) f.push(["la oficina", "#f-oficina"]);
+      }
       return f;
     }
     function base() { return String(new FormData(form).get("base") || "img/").trim(); }
 
     function pintar() {
+      // Un aviso de "Falta…" deja de valer en cuanto se edita el formulario.
+      if (estado.classList.contains("firmas__estado--error")) avisar("");
       var d = datos();
       marco.innerHTML = firmaDCC(d, { base: "img/" });
       codigo.textContent = firmaDCC(d, { base: base() });
@@ -198,6 +230,13 @@
       var limpio = e.inputType === "insertFromPaste" ? cifras.slice(-5) : cifras.slice(0, 5);
       if (limpio !== e.target.value) e.target.value = limpio;
     });
+    // Sin dirección, sus campos se esconden: no hay nada que llenar.
+    var casillaDireccion = document.getElementById("f-incluir-direccion");
+    function mostrarDireccion() {
+      document.getElementById("f-direccion").hidden = !casillaDireccion.checked;
+    }
+    casillaDireccion.addEventListener("change", mostrarDireccion);
+    mostrarDireccion();
     form.addEventListener("input", pintar);
     form.addEventListener("change", pintar);
     form.addEventListener("dcc-alternar", pintar);

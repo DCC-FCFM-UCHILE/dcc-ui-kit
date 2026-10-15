@@ -28,7 +28,9 @@
   var SECUNDARIO = "#5b6573";
   // El bloque de marca —logotipo de 125px, 18px de aire y la fila de redes de
   // 20px— mide 163px, y la línea roja se fija a esa misma altura para que
-  // empiecen y terminen juntos. AIRE va arriba de las dos columnas: en
+  // empiecen y terminen juntos. Con las tres filas de contacto (teléfono, web
+  // y una dirección de dos líneas) el bloque de la derecha mide 162px: cabe, y
+  // el contenido queda centrado en vertical contra la línea en cualquier caso. AIRE va arriba de las dos columnas: en
   // escritorio no se nota, y en el teléfono separa las redes de la línea.
   var ALTO_MARCA = 163;
   var AIRE = 16;
@@ -51,7 +53,7 @@
       última no lleva aire debajo, para que el bloque quede centrado de verdad
       contra la línea roja. */
   function filaContacto(base, icono, alt, html, ultima) {
-    var aire = ultima ? "0" : "10px";
+    var aire = ultima ? "0" : "8px";
     return (
       '<tr>' +
         '<td width="30" valign="top" style="width:30px;padding:0 0 ' + aire + ' 0;vertical-align:top;">' +
@@ -69,7 +71,8 @@
   }
 
   /**
-   * datos: { nombre, cargo, telefono, direccion1, direccion2 }
+   * datos: { nombre, cargo, telefono, web, direccion1, direccion2 }
+   * Teléfono, web y dirección son opcionales: el que falta no lleva fila.
    * opciones.base: URL (terminada en /) donde están las imágenes.
    */
   function firmaDCC(datos, opciones) {
@@ -84,6 +87,10 @@
 
     var filas = [];
     if (d.telefono) filas.push(["icono-telefono-rojo.png", "Teléfono", enlace("tel:" + tel, esc(d.telefono))]);
+    // La web se muestra sin protocolo ni barra final (dcc.uchile.cl) y enlaza
+    // siempre por https.
+    var web = String(d.web || "").trim().replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+    if (web) filas.push(["icono-web-rojo.png", "Sitio web", enlace("https://" + esc(web), esc(web))]);
     if (direccion) filas.push(["icono-ubicacion-rojo.png", "Dirección", enlace(mapa, direccion)]);
     var contacto = filas.map(function (f, i) {
       return filaContacto(base, f[0], f[1], f[2], i === filas.length - 1);
@@ -141,7 +148,7 @@
                   'border-left:3px solid ' + ROJO + ';padding:0 8px 0 22px;">' +
                   '<p style="margin:0;font-family:' + TITULO + ';font-size:22px;line-height:27px;' +
                     'font-weight:bold;color:' + OSCURO + ';">' + esc(d.nombre) + '</p>' +
-                  (d.cargo ? '<p style="margin:2px 0 ' + (contacto ? "16px" : "0") + ' 0;font-family:' + LETRA + ';font-size:15px;' +
+                  (d.cargo ? '<p style="margin:2px 0 ' + (contacto ? "12px" : "0") + ' 0;font-family:' + LETRA + ';font-size:15px;' +
                     'line-height:21px;font-style:italic;color:' + SECUNDARIO + ';">' + esc(d.cargo) + '</p>' : "") +
                   (contacto ? '<table role="presentation" cellpadding="0" cellspacing="0" border="0">' + contacto + '</table>' : "") +
                 '</td></tr>' +

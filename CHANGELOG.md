@@ -9,6 +9,28 @@ Para este kit eso significa:
 - **minor** — componentes o variantes nuevas, retrocompatibles.
 - **major** — cambia un nombre de clase, un token, o el markup que una app debe escribir.
 
+## [2.8.1] — 2026-10-15
+
+### Agrega
+
+- **Página web en la firma de correo**, opcional: una fila con un ícono de globo
+  (`firmas/img/icono-web-rojo.png`, que se publica en `dist/firmas/img/`). Se muestra sin
+  `https://` y enlaza por https.
+
+### Cambia
+
+- **Teléfono y dirección pasan a ser opcionales en la firma.** Vacíos, la firma va sin esa fila. La
+  dirección se incluye con una casilla; marcada, pide edificio, piso y oficina.
+- **El bloque de la derecha de la firma queda centrado contra la línea roja** con cualquier
+  combinación de filas. Para que quepan las tres, el espacio entre ellas baja de 10 a 8px.
+- **El generador apunta a las imágenes de esta versión** (`/ui-kit/2.8.1/firmas/img/`), que trae
+  el ícono nuevo.
+
+### Corrige
+
+- **El aviso de datos faltantes del generador seguía a la vista** después de corregirlos. Ahora se
+  borra al editar el formulario.
+
 ## [2.8.0] — 2026-10-14
 
 ### Agrega
